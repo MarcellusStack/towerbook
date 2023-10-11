@@ -8,7 +8,19 @@ export const authAction = createSafeActionClient({
     const user = await getUser();
 
     if (!user) {
-      throw new Error("Keine Berechtiung für diese Aktion");
+      throw new Error("Sie haben keine Berechtigung für diese Aktion");
+    }
+
+    return { user };
+  },
+});
+
+export const adminAction = createSafeActionClient({
+  async middleware() {
+    const user = await getUser();
+
+    if (!user || !user.role.includes("admin")) {
+      throw new Error("Sie haben keine Berechtigung für diese Aktion");
     }
 
     return { user };

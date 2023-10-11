@@ -20,14 +20,6 @@ import { getUser } from "@server/lib/utils/get-user";
 
 export const dynamic = "force-dynamic";
 
-/* export const getProfiles = async () => {
-  "use server";
-
-  const profiles = await prisma.organization.findMany({});
-  console.log(profiles);
-  return profiles;
-}; */
-
 export default async function Page() {
   const user = await getUser();
 

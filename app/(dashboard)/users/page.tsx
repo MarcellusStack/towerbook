@@ -18,18 +18,14 @@ import SignUpForm from "@/components/forms/sign-up-form";
 import { redirect } from "next/navigation";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
+import { UsersTable } from "@/components/tables/user-table";
+import { getUsers } from "@server/queries/get-users";
 
 export const dynamic = "force-dynamic";
 
-/* export const getProfiles = async () => {
-  "use server";
-
-  const profiles = await prisma.organization.findMany({});
-  console.log(profiles);
-  return profiles;
-}; */
-
 export default async function Page() {
+  const users = await getUsers();
+  console.log(users, Date.now());
   return (
     <>
       <PrimaryAppHeading title="Benutzer" />
@@ -37,6 +33,7 @@ export default async function Page() {
         modalTitle="Benutzer anlegen"
         modalDescription="Erstellen Sie hier Benutzer für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
       />
+      <UsersTable users={users ?? []} />
     </>
   );
 }
