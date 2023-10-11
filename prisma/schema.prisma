@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id        String    @id @default(uuid())
+  name      String
+  members   Profile[]
+  towers    Tower[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Tower {
+  id             String        @id @default(uuid())
+  name           String
+  members        Profile[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String?
+  status         Status        @default(inactive)
+  type           Type          @default(tower)
+  location       String
+  number         String
+}
+
+model Profile {
+  id                          String        @id @default(uuid())
+  userId                      String        @unique
+  picture                     String?
+  gender                      String?
+  firstName                   String?
+  lastName                    String?
+  salutation                  String?
+  title                       String?
+  birthName                   String?
+  birthDate                   DateTime?     @db.Date
+  birthPlace                  String?
+  street                      String?
+  houseNumber                 String?
+  zipCode                     String?
+  location                    String?
+  email                       String        @unique
+  phone                       String?
+  drkMember                   Boolean?      @default(false)
+  drkMemberLocation           String?
+  emergencyContactLastName    String?
+  emergencyContactFirstName   String?
+  emergencyContactPhone       String?
+  bankName                    String?
+  iban                        String?
+  bic                         String?
+  differentBankholder         String?
+  lifeguardLicense            String?
+  snorkelLicense              String?
+  lifeguardWaterRescueService String?
+  waterRescuer                String?
+  riverRescuer                String?
+  medicalTraining             String?
+  paramedicHelper             String?
+  paramedic                   String?
+  paramedicAssistance         String?
+  paramedicEmergency          String?
+  physician                   String?
+  physicianEmergency          String?
+  squadLeader                 String?
+  groupLeader                 String?
+  guardLeader                 String?
+  trainLeader                 String?
+  carDrivingLicense           String?
+  blueLightInstruction        String?
+  boatmanLake                 String?
+  boatmanInland               String?
+  lifeboatOperator            String?
+  rwcPilotStage               String?
+  srcCertificate              String?
+  bosCertificate              String?
+  droneClass                  String?
+  volunteerDataSheet          String?
+  youthLeaderCard             String?
+  instructorSwimmer           String?
+  lifeguardInstructor         String?
+  instructorWaterRescuer      String?
+  instructorMedicalService    String?
+  guardWalker                 String?
+  boat                        String?
+  car                         String?
+  rwc                         String?
+  guardLeaderInstruction      String?
+  role                        Role[]        @default([intern])
+  createdAt                   DateTime      @default(now())
+  updatedAt                   DateTime      @updatedAt
+  organization                Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId              String?
+  towers                      Tower[]
+}
+
+enum Role {
+  admin
+  support
+  full_time_security_guard
+  volunteer_security_guard
+  towerleader
+  watchman
+  intern
+}
+
+enum Status {
+  inactive
+  active
+  operation
+}
+
+enum Type {
+  tower
+  quad
+}
