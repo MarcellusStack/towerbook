@@ -1,11 +1,12 @@
-// Import styles of packages that you've installed.
-// All packages except `@mantine/hooks` require styles imports
 import "./globals.css";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
+import "@mantine/dates/styles.css";
+import "dayjs/locale/de";
 
 import { Notifications } from "@mantine/notifications";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 
 export const metadata = {
   title: "My Mantine app",
@@ -25,7 +26,7 @@ export default function RootLayout({
       <body>
         <MantineProvider>
           <Notifications />
-          {children}
+          <ModalsProvider>{children}</ModalsProvider>
         </MantineProvider>
       </body>
     </html>

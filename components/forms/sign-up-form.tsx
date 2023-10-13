@@ -26,13 +26,13 @@ const SignUpForm = () => {
     <form onSubmit={form.onSubmit((values) => execute(values))}>
       <Stack gap="md">
         <TextInput
-          label="Email"
+          label="E-Mail"
           type="email"
           placeholder="example@mail.com"
           {...form.getInputProps("email")}
         />
         <PasswordInput
-          label="Name"
+          label="Passwort"
           placeholder="MeinSicheresPasswort123"
           {...form.getInputProps("password")}
         />

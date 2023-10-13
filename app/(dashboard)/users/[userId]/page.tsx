@@ -14,6 +14,7 @@ import {
   Anchor,
   Center,
   Loader,
+  Tabs,
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
@@ -23,26 +24,26 @@ import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
 import { getUsers } from "@server/queries/get-users";
 import { CreateUserForm } from "@components/forms/create-user-form";
+import { SecondaryAppHeading } from "@components/typography/secondary-app-heading";
+import { getUser } from "@server/queries/get-user";
+import UserTabs from "@/components/user-tabs";
+import type { Profile } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { search: string };
-}) {
-  const { search } = searchParams;
-  const users = await getUsers(search, ["admin"]);
+export default async function Page({ params }: { params: { userId: string } }) {
+  const { userId } = params;
+  const user = await getUser(userId, ["admin"]);
+  //query towers that belong to the organization for permissions
 
   return (
     <>
-      <PrimaryAppHeading title="Benutzer" />
-      <QuickSearchAdd
-        modalTitle="Benutzer anlegen"
-        modalDescription="Erstellen Sie hier Benutzer für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<CreateUserForm />}
+      <SecondaryAppHeading
+        title={`Benutzer`}
+        childName={`${user.firstName} ${user.lastName}`}
+        extraInfo={user.role[0]}
       />
-      <UsersTable users={users ?? []} />
+      <UserTabs user={user} />
     </>
   );
 }

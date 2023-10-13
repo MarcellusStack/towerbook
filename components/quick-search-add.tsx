@@ -5,6 +5,7 @@ import { Modal, Button, TextInput, Text, Group } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { modals } from "@mantine/modals";
 
 export type QuickSearchAddProps = {
   modalTitle: string;
@@ -46,16 +47,25 @@ export const QuickSearchAdd = ({
           placeholder="Suche"
           className="w-full"
         />
-        <Button leftSection={<IconPlus size={14} />} onClick={open}>
+        <Button
+          leftSection={<IconPlus size={14} />}
+          onClick={() => {
+            modals.open({
+              title: modalTitle,
+              children: (
+                <>
+                  <Text c="dimmed" size="sm">
+                    {modalDescription}
+                  </Text>
+                  {modalContent}
+                </>
+              ),
+            });
+          }}
+        >
           Hinzufügen
         </Button>
       </Group>
-      <Modal opened={opened} onClose={close} size="md" title={modalTitle}>
-        <Text c="dimmed" size="sm">
-          {modalDescription}
-        </Text>
-        {modalContent}
-      </Modal>
     </>
   );
 };

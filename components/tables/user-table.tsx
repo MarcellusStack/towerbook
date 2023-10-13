@@ -1,15 +1,11 @@
 "use client";
-import {
-  Avatar,
-  Badge,
-  Table,
-  Group,
-  Text,
-  ActionIcon,
-  Anchor,
-  rem,
-} from "@mantine/core";
+import { roles } from "@/constants/roles";
+import { Badge, Table, Group, Text, ActionIcon, rem } from "@mantine/core";
+import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
+import { DeleteUserAction } from "@components/delete-user-action";
+import Link from "next/link";
+import { convertDate } from "@utils/index";
 
 export type UsersTableProps = {
   userId: string;
@@ -18,6 +14,68 @@ export type UsersTableProps = {
   email: string;
   role: string[];
   birthDate: string;
+};
+
+export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
+  return (
+    <Table.Tr key={user.userId}>
+      <Table.Td>
+        <Text size="sm">{user.firstName}</Text>
+      </Table.Td>
+      <Table.Td>
+        <Text size="sm">{user.lastName}</Text>
+      </Table.Td>
+      <Table.Td>
+        <Text size="sm">{user.email}</Text>
+      </Table.Td>
+      <Table.Td>
+        <Group gap="xs">
+          {user.role.map((role) => (
+            <Badge color={roles.filter((r) => r.value === role)[0].color}>
+              {roles.filter((r) => r.value === role)[0].label}
+            </Badge>
+          ))}
+        </Group>
+      </Table.Td>
+      <Table.Td>
+        <Text size="sm">{convertDate(user.birthDate)}</Text>
+      </Table.Td>
+      <Table.Td>
+        <Group gap={0} justify="flex-end">
+          <ActionIcon
+            component={Link}
+            href={`/users/${user.userId}`}
+            variant="subtle"
+          >
+            <IconPencil
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => {
+              modals.open({
+                title: "Benutzer löschen",
+
+                children: (
+                  <>
+                    <DeleteUserAction userId={user.userId} />
+                  </>
+                ),
+              });
+            }}
+            variant="subtle"
+            color="red"
+          >
+            <IconTrash
+              style={{ width: rem(16), height: rem(16) }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+        </Group>
+      </Table.Td>
+    </Table.Tr>
+  );
 };
 
 export function UsersTable({ users }: { users: UsersTableProps[] }) {
@@ -35,43 +93,7 @@ export function UsersTable({ users }: { users: UsersTableProps[] }) {
       </Table.Thead>
       <Table.Tbody>
         {users.map((user) => (
-          <Table.Tr key={user.userId}>
-            <Table.Td>
-              <Text size="sm">{user.firstName}</Text>
-            </Table.Td>
-            <Table.Td>
-              <Text size="sm">{user.lastName}</Text>
-            </Table.Td>
-            <Table.Td>
-              <Text size="sm">{user.email}</Text>
-            </Table.Td>
-            <Table.Td>
-              {user.role.map((role) => (
-                <Badge color="blue" variant="light">
-                  {role}
-                </Badge>
-              ))}
-            </Table.Td>
-            <Table.Td>
-              <Text size="sm">{user.birthDate}</Text>
-            </Table.Td>
-            <Table.Td>
-              <Group gap={0} justify="flex-end">
-                <ActionIcon variant="subtle">
-                  <IconPencil
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                </ActionIcon>
-                <ActionIcon variant="subtle" color="red">
-                  <IconTrash
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                </ActionIcon>
-              </Group>
-            </Table.Td>
-          </Table.Tr>
+          <UserTableRow user={user} />
         ))}
       </Table.Tbody>
     </Table>

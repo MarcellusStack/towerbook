@@ -22,7 +22,6 @@ export default async function Index() {
       <Button component={Link} href="/sign-up">
         Jetzt Starten
       </Button>
-      <LogoutButton />
     </AuthLayout>
   );
 }
