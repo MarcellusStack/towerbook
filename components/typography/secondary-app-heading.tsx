@@ -5,7 +5,7 @@ import React from "react";
 export type SecondaryAppHeadingProps = {
   title: string;
   childName: string;
-  extraInfo: string;
+  extraInfo: React.ReactNode;
 };
 
 export const SecondaryAppHeading = ({
@@ -24,9 +24,10 @@ export const SecondaryAppHeading = ({
           {childName}
         </Text>
       </Group>
-      <Text size="lg" c="dimmed">
+      {extraInfo}
+      {/* <Text size="lg" c="dimmed">
         {extraInfo}
-      </Text>
+      </Text> */}
       <Divider />
     </Stack>
   );

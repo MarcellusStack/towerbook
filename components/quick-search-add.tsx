@@ -3,9 +3,10 @@
 import { useDisclosure, useDebouncedValue } from "@mantine/hooks";
 import { Modal, Button, TextInput, Text, Group } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { modals } from "@mantine/modals";
+import { usePathname } from "next/navigation";
 
 export type QuickSearchAddProps = {
   modalTitle: string;
@@ -18,24 +19,20 @@ export const QuickSearchAdd = ({
   modalDescription,
   modalContent,
 }: QuickSearchAddProps) => {
-  const [opened, { open, close }] = useDisclosure(false);
-
   const router = useRouter();
-  /* const initialRender = useRef(true); */
+  const pathName = usePathname();
+  
 
   const [text, setText] = useState("");
   const [query] = useDebouncedValue(text, 750);
 
   useEffect(() => {
-    /* if (initialRender.current) {
-      initialRender.current = false;
-      return;
-    } */
+    
 
     if (!query) {
-      router.push(`/users`);
+      router.push(`${pathName}`);
     } else {
-      router.push(`/users?search=${query}`);
+      router.push(`${pathName}?search=${query}`);
     }
   }, [query]);
   return (

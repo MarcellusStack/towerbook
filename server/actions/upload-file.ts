@@ -10,8 +10,8 @@ export const uploadFile = adminAction(
   uploadFileSchema,
   async ({ file, fileName, userId }, { user }) => {
     try {
-      //for security reasons its better to create signed Upload Urls for MVP reasons we skip this here and will readd it later
-      //due to extra database  token savings and time because the signed upload urls are valid for 2 hours
+      //for security reasons its better to create signed Upload Urls for MVP reasons we skip this here and will add it later
+      //due to extra database token savings and time because the signed upload urls are valid for 2 hours
       /* const uploadUrl = await supabase.storage
         .from(user.organizationId as string)
         .createSignedUploadUrl(fileName);
@@ -22,7 +22,7 @@ export const uploadFile = adminAction(
 
       const uploadFile = await supabase.storage
         .from(user.organizationId as string)
-        .upload(`${fileName}.pdf`, decode(file), {
+        .upload(`${fileName}`, decode(file), {
           upsert: true,
           cacheControl: "0",
         });

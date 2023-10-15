@@ -16,6 +16,10 @@ export const updateUserPermissions = adminAction(
         },
         data: {
           role: role,
+          towers: {
+            disconnect: [{ id: "1" }],
+            connect: [{ id: "1" }],
+          },
         },
         select: { id: true, role: true, firstName: true, lastName: true },
       });

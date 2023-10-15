@@ -6,31 +6,12 @@ export const getUsers = authQuery(async (search, user) => {
   const users = await unstable_cache(
     async () => {
       const userData = await prisma.profile.findMany({
-        where: search
-          ? {
-              organizationId: user.organizationId,
-              OR: [
-                {
-                  firstName: {
-                    contains: search,
-                    mode: "insensitive",
-                  },
-                },
-                {
-                  lastName: {
-                    contains: search,
-                    mode: "insensitive",
-                  },
-                },
-                {
-                  email: {
-                    contains: search,
-                    mode: "insensitive",
-                  },
-                },
-              ],
-            }
-          : { organizationId: user.organizationId },
+        where: {
+          organizationId: user.organizationId,
+          email: {
+            contains: search ?? undefined,
+          },
+        },
         select: {
           userId: true,
           firstName: true,
@@ -38,6 +19,7 @@ export const getUsers = authQuery(async (search, user) => {
           email: true,
           role: true,
           birthDate: true,
+          towers: true,
         },
       });
       return userData;
@@ -45,8 +27,9 @@ export const getUsers = authQuery(async (search, user) => {
     [],
     {
       tags: ["users"],
-      revalidate: 10,
+      revalidate: 1,
     }
   )();
+
   return users;
 });

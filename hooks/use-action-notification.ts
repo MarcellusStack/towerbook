@@ -24,6 +24,8 @@ export const useActionNotification = ({
       if (executeNotification) {
         notifications.show({
           id: executeNotification,
+          withCloseButton: false,
+          loading: true,
           withBorder: true,
           autoClose: false,
           title: "Bitte warten, die Aktion wird ausgeführt",
@@ -65,7 +67,7 @@ export const useActionNotification = ({
         notifications.hide(executeNotification);
       }
       notifications.show({
-        id: "success-action-notification",
+        id: "error-action-notification",
         withBorder: true,
         autoClose: 5000,
         title: "Fehler",

@@ -65,6 +65,10 @@ export const uploadFileSchema = z.object({
   userId: z.string().min(1, { message: "User Id wird benötigt" }),
 });
 
+export const downloadFileSchema = z.object({
+  fileName: z.string().min(1, { message: "Dateiname wird benötigt" }),
+});
+
 export const createUserSchema = z.intersection(
   baseUserSchema,
   z.object({
@@ -75,6 +79,57 @@ export const createUserSchema = z.intersection(
   })
 );
 
+export const createTowerSchema = z.object({
+  name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
+  type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu." }),
+  number: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Turmnummer hinzu." }),
+  location: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
+});
+
 export const deleteUserSchema = z.object({
   userId: z.string().min(1, { message: "User Id wird benötigt" }),
+});
+
+export const userCertificateSchema = z.object({
+  userId: z.string().min(1, { message: "User Id wird benötigt" }),
+  lifeguardLicense: z.string().nullable(),
+  snorkelLicense: z.string().nullable(),
+  lifeguardWaterRescueService: z.string().nullable(),
+  waterRescuer: z.string().nullable(),
+  riverRescuer: z.string().nullable(),
+  medicalTraining: z.string().nullable(),
+  paramedicHelper: z.string().nullable(),
+  paramedic: z.string().nullable(),
+  paramedicAssistance: z.string().nullable(),
+  paramedicEmergency: z.string().nullable(),
+  physician: z.string().nullable(),
+  physicianEmergency: z.string().nullable(),
+  squadLeader: z.string().nullable(),
+  groupLeader: z.string().nullable(),
+  guardLeader: z.string().nullable(),
+  trainLeader: z.string().nullable(),
+  carDrivingLicense: z.string().nullable(),
+  blueLightInstruction: z.string().nullable(),
+  boatmanLake: z.string().nullable(),
+  boatmanInland: z.string().nullable(),
+  lifeboatOperator: z.string().nullable(),
+  rwcPilotStage: z.string().nullable(),
+  srcCertificate: z.string().nullable(),
+  bosCertificate: z.string().nullable(),
+  droneClass: z.string().nullable(),
+  volunteerDataSheet: z.string().nullable(),
+  youthLeaderCard: z.string().nullable(),
+  instructorSwimmer: z.string().nullable(),
+  lifeguardInstructor: z.string().nullable(),
+  instructorWaterRescuer: z.string().nullable(),
+  instructorMedicalService: z.string().nullable(),
+  guardWalker: z.string().nullable(),
+  boat: z.string().nullable(),
+  car: z.string().nullable(),
+  rwc: z.string().nullable(),
+  guardLeaderInstruction: z.string().nullable(),
 });

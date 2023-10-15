@@ -25,6 +25,7 @@ import { DatePickerInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
 
 import { type Profile } from "@prisma/client";
+import { TableOfContents } from "../table-of-contents";
 
 export const UserAccountForm = ({ user }: { user: Profile }) => {
   const form = useForm({
@@ -76,6 +77,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
             </Text>
           }
         >
+          
           <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
             <FileInput
               label="Profil Bild"

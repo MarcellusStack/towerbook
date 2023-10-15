@@ -15,6 +15,9 @@ import {
   NumberInput,
   Checkbox,
   MultiSelect,
+  Group,
+  ActionIcon,
+  Collapse,
 } from "@mantine/core";
 import { authSchema, userPermissionsSchema } from "@/schemas";
 import { useAction } from "next-safe-action/hook";
@@ -24,10 +27,12 @@ import { useActionNotification } from "@/hooks/use-action-notification";
 import { useRouter } from "next/navigation";
 import { DatePickerInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
+import { useDisclosure } from "@mantine/hooks";
 
 import { type Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
-import { updateUserPermissions } from "@/server/actions/update-user-permissions";
+import { updateUserPermissions } from "@/server/actions/update-user-permission";
+import { IconSelector, IconSwitchVertical } from "@tabler/icons-react";
 
 export const UserPermissionsForm = ({ user }: { user: Profile }) => {
   const form = useForm({

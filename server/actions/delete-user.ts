@@ -14,6 +14,7 @@ export const deleteUser = adminAction(
     try {
       await prisma.$transaction(
         async (tx) => {
+          console.log("before profile delete");
           const profile = await tx.profile.delete({
             where: {
               organizationId: user.organizationId,
@@ -25,9 +26,11 @@ export const deleteUser = adminAction(
               id: true,
             },
           });
+
           if (!profile.id) {
-            throw new Error("Couldnt create profile");
+            throw new Error("Couldnt delete profile");
           }
+          console.log("not prisma error");
           const { error } = await supabase.auth.admin.deleteUser(userId);
 
           if (error) {
@@ -41,6 +44,7 @@ export const deleteUser = adminAction(
         }
       );
     } catch (error) {
+      console.log(error);
       throw new Error("Fehler beim löschen des Benutzer");
     }
 

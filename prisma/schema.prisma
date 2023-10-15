@@ -28,7 +28,7 @@ model Tower {
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String?
   status         Status        @default(inactive)
-  type           Type          @default(tower)
+  type           TowerType     @default(tower)
   location       String
   number         String
 }
@@ -120,7 +120,7 @@ enum Status {
   operation
 }
 
-enum Type {
+enum TowerType {
   tower
   quad
 }
