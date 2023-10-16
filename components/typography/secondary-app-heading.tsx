@@ -13,6 +13,7 @@ export const SecondaryAppHeading = ({
   childName,
   extraInfo,
 }: SecondaryAppHeadingProps) => {
+  
   return (
     <Stack gap="sm">
       <Group gap="0">

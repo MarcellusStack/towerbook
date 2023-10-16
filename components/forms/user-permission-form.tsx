@@ -39,7 +39,7 @@ export const UserPermissionsForm = ({ user }: { user: Profile }) => {
     validate: zodResolver(userPermissionsSchema),
     initialValues: {
       role: user.role,
-      towers: user.towers,
+      towers: user.towers.map((tower) => tower.id),
       userId: user.userId,
     },
   });
@@ -70,7 +70,7 @@ export const UserPermissionsForm = ({ user }: { user: Profile }) => {
             />
             <MultiSelect
               label="Turm"
-              data={roles}
+              data={["ca866760-3848-4053-8c02-cec16180ccb7"]}
               {...form.getInputProps("towers")}
             />
           </SimpleGrid>

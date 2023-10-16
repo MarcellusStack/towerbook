@@ -94,6 +94,10 @@ export const deleteUserSchema = z.object({
   userId: z.string().min(1, { message: "User Id wird benötigt" }),
 });
 
+export const deleteSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+});
+
 export const userCertificateSchema = z.object({
   userId: z.string().min(1, { message: "User Id wird benötigt" }),
   lifeguardLicense: z.string().nullable(),

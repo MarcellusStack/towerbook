@@ -4,7 +4,7 @@ import { unstable_cache } from "next/cache";
 
 export const getUsers = authQuery(async (search, user) => {
   const users = await unstable_cache(
-    async () => {
+    async (search) => {
       const userData = await prisma.profile.findMany({
         where: {
           organizationId: user.organizationId,
@@ -29,7 +29,7 @@ export const getUsers = authQuery(async (search, user) => {
       tags: ["users"],
       revalidate: 1,
     }
-  )();
+  )(search);
 
   return users;
 });

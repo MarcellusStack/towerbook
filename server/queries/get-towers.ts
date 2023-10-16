@@ -4,20 +4,33 @@ import { unstable_cache } from "next/cache";
 
 export const getTowers = authQuery(async (search, user) => {
   const towers = await unstable_cache(
-    async () => {
-      const towerData = await prisma.tower.findMany({
+    async (search) => {
+      if (user.role.includes("admin")) {
+        return await prisma.tower.findMany({
+          where: {
+            organizationId: user.organizationId,
+            number: search ?? undefined,
+          },
+        });
+      }
+
+      return await prisma.tower.findMany({
         where: {
           organizationId: user.organizationId,
           number: search ?? undefined,
+          members: {
+            some: {
+              id: user.profileId,
+            },
+          },
         },
       });
-      return towerData;
     },
     [],
     {
       tags: ["towers"],
       revalidate: 1,
     }
-  )();
+  )(search);
   return towers;
 });

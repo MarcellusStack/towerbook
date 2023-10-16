@@ -11,11 +11,18 @@ export const getUser = async () => {
 
   const user = await prisma.profile.findFirst({
     where: { userId: session.user.id },
-    select: { userId: true, email: true, role: true, organizationId: true },
+    select: {
+      userId: true,
+      id: true,
+      email: true,
+      role: true,
+      organizationId: true,
+    },
   });
 
   return {
     id: user?.userId,
+    profileId: user?.id,
     email: user?.email,
     role: user?.role,
     organizationId: user?.organizationId,

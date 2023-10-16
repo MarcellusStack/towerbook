@@ -7,8 +7,29 @@ import { revalidateTag } from "next/cache";
 
 export const updateUserPermissions = adminAction(
   userPermissionsSchema,
-  async ({ role, userId }, { user }) => {
+  async ({ userId, role, towers }, { user }) => {
     try {
+      const filteredProfile = await prisma.profile.findUnique({
+        where: { userId: userId, organizationId: user.organizationId },
+        include: {
+          towers: true,
+        },
+      });
+
+      if (!filteredProfile) {
+        throw new Error("Couldnt find profile");
+      }
+
+      const currentTowerIds = filteredProfile.towers.map((tower) => tower.id);
+
+      const towersToDisconnect = currentTowerIds.filter(
+        (id) => !towers.includes(id)
+      );
+
+      const towersToConnect = towers.filter(
+        (id) => !currentTowerIds.includes(id)
+      );
+
       const profile = await prisma.profile.update({
         where: {
           organizationId: user.organizationId,
@@ -17,8 +38,8 @@ export const updateUserPermissions = adminAction(
         data: {
           role: role,
           towers: {
-            disconnect: [{ id: "1" }],
-            connect: [{ id: "1" }],
+            disconnect: towersToDisconnect.map((id) => ({ id })),
+            connect: towersToConnect.map((id) => ({ id })),
           },
         },
         select: { id: true, role: true, firstName: true, lastName: true },

@@ -7,18 +7,27 @@ import { UserAccountForm } from "@components/forms/user-account-form";
 import { UserPermissionsForm } from "@/components/forms/user-permission-form";
 import { UserCertificateForm } from "@components/forms/user-certificate-form";
 import { TableOfContents } from "@components/table-of-contents";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
-const UserTabs = ({ user }: { user: Profile }) => {
+export const UserTabs = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { userId } = useParams();
   return (
-    <Tabs variant="pills" defaultValue="account">
-      <Tabs.List className="  ">
+    <Tabs
+      variant="pills"
+      value={pathname.split("/")[3] ?? "/"}
+      onChange={(value) => router.push(`/users/${userId}/${value}`)}
+    >
+      <Tabs.List>
+        <Tabs.Tab value="/">Übersicht</Tabs.Tab>
         <Tabs.Tab value="account">Stammdaten</Tabs.Tab>
-        <Tabs.Tab value="certificates">Zertifikate</Tabs.Tab>
+        <Tabs.Tab value="certificate">Zertifikate</Tabs.Tab>
         <Tabs.Tab value="permissions">Berechtigungen</Tabs.Tab>
         <Tabs.Tab value="duty-plan">Dienstplan</Tabs.Tab>
       </Tabs.List>
-      <Divider my="sm" />
-      <Grid>
+      <Divider mt="sm" />
+      {/* <Grid>
         <Grid.Col span={10}>
           <Tabs.Panel value="account">
             <UserAccountForm user={user} />
@@ -34,9 +43,7 @@ const UserTabs = ({ user }: { user: Profile }) => {
         <Grid.Col span={2}>
           <TableOfContents />
         </Grid.Col>
-      </Grid>
+      </Grid> */}
     </Tabs>
   );
 };
-
-export default UserTabs;

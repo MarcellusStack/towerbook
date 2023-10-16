@@ -37,16 +37,17 @@ export const dynamic = "force-dynamic";
 export default async function Page({ params }: { params: { userId: string } }) {
   const { userId } = params;
   const user = await getUser(userId, ["admin"]);
+
   //query towers that belong to the organization for permissions
 
   return (
     <>
-      <SecondaryAppHeading
+      {/* <SecondaryAppHeading
         title={`Benutzer`}
         childName={`${user.firstName} ${user.lastName}`}
         extraInfo={<RoleBadge user={user} />}
-      />
-      <UserTabs user={user} />
+      /> */}
+      {/* <UserTabs  /> */}
     </>
   );
 }

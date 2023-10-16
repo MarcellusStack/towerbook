@@ -2,6 +2,7 @@ import { getUser } from "@server/lib/utils/get-user";
 
 export type UserProps = {
   id: string;
+  profileId:string;
   email: string;
   organizationId: string;
   role: string[];

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Badge, Group } from "@mantine/core";
 import { roles } from "@/constants/roles";

@@ -20,7 +20,7 @@ export const getUser = authQuery(async (search, user) => {
     [],
     {
       tags: [search],
-      revalidate: 10,
+      revalidate: 1,
     }
   )(search);
   return userData;
