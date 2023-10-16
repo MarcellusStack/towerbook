@@ -28,13 +28,19 @@ import { useRouter } from "next/navigation";
 import { DatePickerInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
 import { useDisclosure } from "@mantine/hooks";
-
 import { type Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import { updateUserPermissions } from "@/server/actions/update-user-permission";
-import { IconSelector, IconSwitchVertical } from "@tabler/icons-react";
+import { type Tower } from "@prisma/client";
+import { capitalizeFirstLetter } from "@/utils";
 
-export const UserPermissionsForm = ({ user }: { user: Profile }) => {
+export const UserPermissionForm = ({
+  user,
+  towers,
+}: {
+  user: Profile;
+  towers: Tower[];
+}) => {
   const form = useForm({
     validate: zodResolver(userPermissionsSchema),
     initialValues: {
@@ -70,7 +76,12 @@ export const UserPermissionsForm = ({ user }: { user: Profile }) => {
             />
             <MultiSelect
               label="Turm"
-              data={["ca866760-3848-4053-8c02-cec16180ccb7"]}
+              data={towers.map((tower) => ({
+                value: tower.id,
+                label: `${capitalizeFirstLetter(tower.type)} ${
+                  tower.number
+                } - ${tower.name}`,
+              }))}
               {...form.getInputProps("towers")}
             />
           </SimpleGrid>

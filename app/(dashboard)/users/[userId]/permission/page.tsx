@@ -14,6 +14,8 @@ import {
   Anchor,
   Center,
   Loader,
+  Tabs,
+  Badge,
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
@@ -23,29 +25,26 @@ import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
 import { getUsers } from "@server/queries/get-users";
 import { CreateUserForm } from "@components/forms/create-user-form";
-import { getTowers } from "@/server/queries/get-towers";
-import { CreateTowerForm } from "@/components/forms/create-tower-form";
-import { TowerTable } from "@/components/tables/tower-table";
+import { SecondaryAppHeading } from "@components/typography/secondary-app-heading";
+import { getUser } from "@server/queries/get-user";
+import type { Profile } from "@prisma/client";
+import { roles } from "@/constants/roles";
+import RoleBadge from "@/components/role-badge";
+import { UserPermissionForm } from "@components/forms/user-permission-form";
+import { getUserPermission } from "@server/queries/get-user-permission";
+import { getTowers } from "@server/queries/get-towers";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { search: string };
-}) {
-  const { search } = searchParams;
-  const towers = await getTowers(search, []);
+export default async function Page({ params }: { params: { userId: string } }) {
+  const { userId } = params;
+  const user = await getUserPermission(userId, ["admin"]);
+  const towers = await getTowers(undefined, ["admin"]);
+  console.log(towers);
 
   return (
     <>
-      <PrimaryAppHeading title="Türme" />
-      <QuickSearchAdd
-        modalTitle="Türme anlegen"
-        modalDescription="Erstellen Sie hier Türme für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<CreateTowerForm />}
-      />
-      <TowerTable towers={towers ?? []} />
+      <UserPermissionForm user={user} towers={towers ?? []} />
     </>
   );
 }

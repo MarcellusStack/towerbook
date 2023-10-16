@@ -31,12 +31,14 @@ import type { Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import { UserCertificateForm } from "@components/forms/user-certificate-form";
+import { getUserCertificate } from "@server/queries/get-user-certificate";
+import { getTowers } from "@server/queries/get-towers";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const { userId } = params;
-  const user = await getUser(userId, ["admin"]);
+  const user = await getUserCertificate(userId, ["admin"]);
 
   return (
     <>

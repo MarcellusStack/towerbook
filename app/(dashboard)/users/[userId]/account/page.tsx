@@ -27,17 +27,17 @@ import { getUsers } from "@server/queries/get-users";
 import { CreateUserForm } from "@components/forms/create-user-form";
 import { SecondaryAppHeading } from "@components/typography/secondary-app-heading";
 import { getUser } from "@server/queries/get-user";
-import UserTabs from "@/components/user-tabs";
 import type { Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import { UserAccountForm } from "@components/forms/user-account-form";
+import { getUserAccount } from "@server/queries/get-user-account";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const { userId } = params;
-  const user = await getUser(userId, ["admin"]);
+  const user = await getUserAccount(userId, ["admin"]);
 
   return (
     <>

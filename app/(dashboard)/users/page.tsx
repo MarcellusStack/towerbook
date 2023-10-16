@@ -33,7 +33,6 @@ export default async function Page({
 }) {
   const { search } = searchParams;
   const users = await getUsers(search, ["admin"]);
-  console.log(users);
 
   return (
     <>

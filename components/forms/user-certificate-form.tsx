@@ -36,6 +36,7 @@ import { IconDownload, IconListSearch } from "@tabler/icons-react";
 import { UploadInput } from "@components/upload-input";
 import { certificateInputs } from "@constants/certificate-inputs";
 
+
 export const UserCertificateForm = ({ user }: { user: Profile }) => {
   const form = useForm({
     validate: zodResolver(userCertificateSchema),

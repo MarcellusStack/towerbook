@@ -2,7 +2,7 @@ import { getUser } from "@server/lib/utils/get-user";
 
 export type UserProps = {
   id: string;
-  profileId:string;
+  profileId: string;
   email: string;
   organizationId: string;
   role: string[];
@@ -15,6 +15,10 @@ export const authQuery =
 
     if (!user) {
       throw new Error("Sie haben keine Berechtigung für diese Aktion");
+    }
+
+    if (requiredRoles.length === 0) {
+      return queryFunction(search, user);
     }
 
     if (!requiredRoles.every((role) => user.role.includes(role))) {
