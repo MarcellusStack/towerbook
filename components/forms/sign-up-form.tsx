@@ -36,7 +36,7 @@ const SignUpForm = () => {
           placeholder="MeinSicheresPasswort123"
           {...form.getInputProps("password")}
         />
-        <Button loading={status === "executing"} type="submit">
+        <Button variant="filled" loading={status === "executing"} type="submit">
           Registrieren
         </Button>
         <Anchor component={Link} href="/sign-in" className="self-center">

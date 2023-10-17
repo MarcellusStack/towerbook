@@ -16,6 +16,7 @@ import {
   Loader,
   Tabs,
   Badge,
+  SimpleGrid,
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
@@ -27,10 +28,10 @@ import { getUsers } from "@server/queries/get-users";
 import { CreateUserForm } from "@components/forms/create-user-form";
 import { SecondaryAppHeading } from "@components/typography/secondary-app-heading";
 import { getUser } from "@server/queries/get-user";
-import UserTabs from "@/components/user-tabs";
 import type { Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
+import UserDashboard from "@components/user-dashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -38,16 +39,5 @@ export default async function Page({ params }: { params: { userId: string } }) {
   const { userId } = params;
   const user = await getUser(userId, ["admin"]);
 
-  //query towers that belong to the organization for permissions
-
-  return (
-    <>
-      {/* <SecondaryAppHeading
-        title={`Benutzer`}
-        childName={`${user.firstName} ${user.lastName}`}
-        extraInfo={<RoleBadge user={user} />}
-      /> */}
-      {/* <UserTabs  /> */}
-    </>
-  );
+  return <UserDashboard />;
 }

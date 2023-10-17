@@ -77,7 +77,6 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
             </Text>
           }
         >
-          
           <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
             <FileInput
               label="Profil Bild"
@@ -105,8 +104,8 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
               {...form.getInputProps("lastName")}
             />
             <Select
-              label="Geschlecht"
-              placeholder="Geschlecht"
+              label="Anrede"
+              placeholder="Anrede"
               data={[
                 { value: "mr", label: "Herr" },
                 { value: "mrs", label: "Frau" },

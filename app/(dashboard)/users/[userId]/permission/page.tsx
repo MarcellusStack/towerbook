@@ -40,7 +40,6 @@ export default async function Page({ params }: { params: { userId: string } }) {
   const { userId } = params;
   const user = await getUserPermission(userId, ["admin"]);
   const towers = await getTowers(undefined, ["admin"]);
-  console.log(towers);
 
   return (
     <>

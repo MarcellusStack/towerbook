@@ -20,13 +20,70 @@ import {
   IconBell,
   IconSettings,
   IconLogout,
+  IconRefresh,
+  IconFileInfo,
+  IconFileExport,
 } from "@tabler/icons-react";
 import { navLinks } from "@constants/nav-links";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { Router } from "next/router";
+import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
+import { refreshSession } from "@server/actions/refresh-session";
+import { useAction } from "next-safe-action/hook";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
   const [opened, { toggle }] = useDisclosure();
+  const refresh = useAction(refreshSession, {
+    onExecute() {
+      notifications.show({
+        id: "Sitzung wird aktualisiert",
+        withCloseButton: false,
+        loading: true,
+        withBorder: true,
+        autoClose: false,
+        title: "Bitte warten, die Aktion wird ausgeführt",
+        message: "Sitzung wird aktualisiert",
+        color: "yellow",
+      });
+    },
+    onSuccess(data, input, reset) {
+      if (!data) {
+        return;
+      }
+
+      notifications.hide("Sitzung wird aktualisiert");
+
+      notifications.show({
+        id: "success-action-notification",
+        withBorder: true,
+        autoClose: 5000,
+        title: "Erfolgreich",
+        message: data as string,
+        color: "green",
+      });
+
+      router.refresh();
+    },
+    onError(error, input, reset) {
+      if (!error) {
+        return;
+      }
+
+      notifications.hide("Sitzung wird aktualisiert");
+
+      notifications.show({
+        id: "error-action-notification",
+        withBorder: true,
+        autoClose: 5000,
+        title: "Fehler",
+        message: "Aktion fehlgeschlagen, versuchen sie es später erneut",
+        color: "red",
+      });
+    },
+  });
 
   return (
     <AppShell
@@ -81,6 +138,14 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
               </Menu.Target>
               <Menu.Dropdown>
                 <Menu.Item
+                  onClick={() => refresh.execute({})}
+                  leftSection={
+                    <IconRefresh style={{ width: rem(14), height: rem(14) }} />
+                  }
+                >
+                  Sitzung Aktualisieren
+                </Menu.Item>
+                <Menu.Item
                   leftSection={
                     <IconSettings style={{ width: rem(14), height: rem(14) }} />
                   }
@@ -89,6 +154,9 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item
+                  onClick={() => {
+                    signOut();
+                  }}
                   leftSection={
                     <IconLogout style={{ width: rem(14), height: rem(14) }} />
                   }
@@ -162,7 +230,30 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       <AppShell.Main>
         <Stack gap="sm">{children}</Stack>
       </AppShell.Main>
-      <AppShell.Aside p="sm">Aside</AppShell.Aside>
+      <AppShell.Aside p="sm">
+        <Stack justify="space-between" className="h-full">
+          <List spacing="sm" size="sm" center>
+            <List.Item className="grid place-items-center">
+              <ActionIcon variant="subtle" size="lg" aria-label="Informationen">
+                <IconFileInfo
+                  style={{ width: "70%", height: "70%" }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+              <Divider mt="sm" />
+            </List.Item>
+            <List.Item className="grid place-items-center">
+              <ActionIcon variant="subtle" size="lg" aria-label="Export">
+                <IconFileExport
+                  style={{ width: "70%", height: "70%" }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+              <Divider mt="sm" />
+            </List.Item>
+          </List>
+        </Stack>
+      </AppShell.Aside>
     </AppShell>
   );
 };

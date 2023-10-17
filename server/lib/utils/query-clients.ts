@@ -9,7 +9,7 @@ export type UserProps = {
 };
 
 export const authQuery =
-  (queryFunction: (search: string, user: UserProps) => void) =>
+  (queryFunction: (search: string | undefined, user: UserProps) => void) =>
   async (search: string, requiredRoles: string[] = []) => {
     const user = await getUser();
 
@@ -21,7 +21,7 @@ export const authQuery =
       return queryFunction(search, user);
     }
 
-    if (!requiredRoles.every((role) => user.role.includes(role))) {
+    if (!requiredRoles.some((role) => user.role.includes(role))) {
       return [];
     }
 

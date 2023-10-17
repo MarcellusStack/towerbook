@@ -5,11 +5,16 @@ import { Box, Text } from "@mantine/core";
 
 export const Branding = () => {
   return (
-    <Link href="/" passHref className="flex items-center gap-3">
+    <Link
+      href="/"
+      passHref
+      className="flex items-center gap-3 text-black"
+      style={{ textDecoration: "none" }}
+    >
       <Box className="p-3 rounded-sm bg-gray-100">
         <Image src="/branding.png" width={32} height={32} alt="branding" />
       </Box>
-      <Text fw={700} size="xl" >
+      <Text fw={700} size="xl">
         Digitales Turmbuch
       </Text>
     </Link>

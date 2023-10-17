@@ -21,8 +21,8 @@ export const CreateOrganizationForm = () => {
   });
   return (
     <form onSubmit={form.onSubmit((values) => execute(values))}>
-      <Stack gap="md">
-        <Text c="dimmed" size="sm">
+      <Stack gap="sm">
+        <Text c="dimmed" size="sm" mt="sm">
           Erstellen Sie hier eine Organisation um Ihre Türme & Benutzer zu
           verwalten. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind.
         </Text>
@@ -39,5 +39,3 @@ export const CreateOrganizationForm = () => {
     </form>
   );
 };
-
-
