@@ -25,6 +25,15 @@ export const baseUserSchema = z.object({
   email: z.string().email({ message: "Ungültige E-Mail Adresse" }),
 });
 
+export const signUpSchema = z.intersection(
+  baseUserSchema,
+  z.object({
+    password: z
+      .string()
+      .min(6, { message: "Passwort muss mindestens 6 Zeichen lang sein." }),
+  })
+);
+
 export const userProfileSchema = z.intersection(
   baseUserSchema,
   z.object({

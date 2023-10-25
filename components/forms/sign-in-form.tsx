@@ -52,7 +52,7 @@ const SignInForm = () => {
           {...form.getInputProps("email")}
         />
         <PasswordInput
-          label="Name"
+          label="Passwort"
           placeholder="MeinSicheresPasswort123"
           {...form.getInputProps("password")}
         />

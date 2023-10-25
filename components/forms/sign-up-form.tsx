@@ -2,7 +2,7 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { PasswordInput, TextInput, Button, Stack, Anchor } from "@mantine/core";
-import { authSchema } from "@/schemas";
+import { signUpSchema } from "@/schemas";
 import { useAction } from "next-safe-action/hook";
 import Link from "next/link";
 import { signUp } from "@/server/actions/sign-up";
@@ -11,8 +11,10 @@ import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const form = useForm({
-    validate: zodResolver(authSchema),
+    validate: zodResolver(signUpSchema),
     initialValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     },
@@ -30,6 +32,16 @@ const SignUpForm = () => {
           type="email"
           placeholder="example@mail.com"
           {...form.getInputProps("email")}
+        />
+        <TextInput
+          label="Vorname"
+          placeholder="Vorname"
+          {...form.getInputProps("firstName")}
+        />
+        <TextInput
+          label="Nachname"
+          placeholder="Nachname"
+          {...form.getInputProps("lastName")}
         />
         <PasswordInput
           label="Passwort"
