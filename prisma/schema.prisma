@@ -106,7 +106,6 @@ model Profile {
 
 enum Role {
   admin
-  support
   full_time_security_guard
   volunteer_security_guard
   towerleader

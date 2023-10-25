@@ -5,11 +5,6 @@ export const roles = [
     color: "red",
   },
   {
-    label: "👨‍💻 Support",
-    value: "support",
-    color: "yellow",
-  },
-  {
     label: "🛠 Hauptamtlicher Wachleiter / Kreisleiter, stellv. Kreisleiter",
     value: "full_time_security_guard",
     color: "violet",
