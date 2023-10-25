@@ -32,12 +32,13 @@ import type { Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
+import { getUserOverview } from "@/server/queries/get-user-overview";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const { userId } = params;
-  const user = await getUser(userId, ["admin"]);
+  const user = await getUserOverview(userId, ["admin"]);
 
-  return <UserDashboard />;
+  return <UserDashboard user={user} />;
 }

@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import {
+  IconBuildingBroadcastTower,
   IconCalendar,
   IconMail,
   IconPhone,
@@ -23,8 +24,9 @@ import FullCalendar from "@fullcalendar/react";
 import deLocale from "@fullcalendar/core/locales/de";
 import { IconAlertCircle } from "@tabler/icons-react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import { type Profile } from "@prisma/client";
 
-const UserDashboard = () => {
+const UserDashboard = ({ user }: { user: Profile }) => {
   return (
     <>
       <SimpleGrid cols={4} spacing="sm" verticalSpacing="sm">
@@ -37,7 +39,8 @@ const UserDashboard = () => {
               <IconUser size={28} stroke={1.5} />
             </Group>
             <Avatar color="blue" radius="xl">
-              TE
+              {user.firstName?.charAt(0)}
+              {user.lastName?.charAt(0)}
             </Avatar>
             <List center spacing="sm">
               <List.Item
@@ -47,7 +50,7 @@ const UserDashboard = () => {
                   </ThemeIcon>
                 }
               >
-                Herr Vorname Nachname
+                {user.firstName} {user.lastName}
               </List.Item>
               <List.Item
                 icon={
@@ -56,7 +59,7 @@ const UserDashboard = () => {
                   </ThemeIcon>
                 }
               >
-                E-Mail
+                {user.email}
               </List.Item>
               <List.Item
                 icon={
@@ -65,7 +68,7 @@ const UserDashboard = () => {
                   </ThemeIcon>
                 }
               >
-                01756352642
+                {user.phone}
               </List.Item>
             </List>
           </Stack>
@@ -76,7 +79,7 @@ const UserDashboard = () => {
               <Text fw={700} size="xl">
                 Turm Berechtigungen
               </Text>
-              <IconUser size={28} stroke={1.5} />
+              <IconBuildingBroadcastTower size={28} stroke={1.5} />
             </Group>
           </Stack>
         </Card>
