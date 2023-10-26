@@ -16,6 +16,8 @@ import {
   Loader,
   Tabs,
   Badge,
+  GridCol,
+  Grid,
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
@@ -33,6 +35,7 @@ import RoleBadge from "@/components/role-badge";
 import { UserPermissionForm } from "@components/forms/user-permission-form";
 import { getUserPermission } from "@server/queries/get-user-permission";
 import { getTowers } from "@server/queries/get-towers";
+import { TableOfContents } from "@/components/table-of-contents";
 
 export const dynamic = "force-dynamic";
 
@@ -42,8 +45,13 @@ export default async function Page({ params }: { params: { userId: string } }) {
   const towers = await getTowers(undefined, ["admin"]);
 
   return (
-    <>
-      <UserPermissionForm user={user} towers={towers ?? []} />
-    </>
+    <Grid>
+      <GridCol span={10}>
+        <UserPermissionForm user={user} towers={towers ?? []} />
+      </GridCol>
+      <GridCol span={2}>
+        <TableOfContents />
+      </GridCol>
+    </Grid>
   );
 }

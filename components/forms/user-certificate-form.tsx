@@ -36,7 +36,6 @@ import { IconDownload, IconListSearch } from "@tabler/icons-react";
 import { UploadInput } from "@components/upload-input";
 import { certificateInputs } from "@constants/certificate-inputs";
 
-
 export const UserCertificateForm = ({ user }: { user: Profile }) => {
   const form = useForm({
     validate: zodResolver(userCertificateSchema),
@@ -91,6 +90,7 @@ export const UserCertificateForm = ({ user }: { user: Profile }) => {
       <Stack gap="md">
         {certificateInputs.map((section) => (
           <Fieldset
+            id={section.sectionAnchor}
             legend={
               <Text fw={700} size="xl">
                 {section.section}

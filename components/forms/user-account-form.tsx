@@ -2,11 +2,9 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import {
-  PasswordInput,
   TextInput,
   Button,
   Stack,
-  Anchor,
   Fieldset,
   SimpleGrid,
   FileInput,
@@ -15,17 +13,11 @@ import {
   NumberInput,
   Checkbox,
 } from "@mantine/core";
-import { authSchema, userProfileSchema } from "@/schemas";
-import { useAction } from "next-safe-action/hook";
-import Link from "next/link";
-import { signUp } from "@server/actions/sign-up";
+import {  userProfileSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { useRouter } from "next/navigation";
 import { DatePickerInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
-
 import { type Profile } from "@prisma/client";
-import { TableOfContents } from "../table-of-contents";
 
 export const UserAccountForm = ({ user }: { user: Profile }) => {
   const form = useForm({
@@ -71,6 +63,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
     >
       <Stack gap="md">
         <Fieldset
+          id="base-data"
           legend={
             <Text fw={700} size="xl">
               Stammdaten
@@ -184,9 +177,10 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           </SimpleGrid>
         </Fieldset>
         <Fieldset
+          id="emergency-contact"
           legend={
             <Text fw={700} size="xl">
-              Notfallkontakte
+              Notfallkontakt
             </Text>
           }
         >
@@ -209,6 +203,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           </SimpleGrid>
         </Fieldset>
         <Fieldset
+        id="bank-details"
           legend={
             <Text fw={700} size="xl">
               Bankverbindung

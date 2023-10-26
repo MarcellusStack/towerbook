@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 .fc-button-primary {
   background-color: #228be6 !important;
   border-color: transparent !important;
