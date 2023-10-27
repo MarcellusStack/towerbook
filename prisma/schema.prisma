@@ -15,6 +15,9 @@ model Organization {
   name      String
   members   Profile[]
   towers    Tower[]
+  material  Json?
+  weather   Json?
+  todo      Json?
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -27,10 +30,57 @@ model Tower {
   updatedAt      DateTime      @updatedAt
   organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String?
-  status         Status        @default(inactive)
+  status         TowerStatus   @default(lifeguard_on_duty)
   type           TowerType     @default(tower)
   location       String
   number         String
+  towerdays      TowerDay[]
+
+  @@index(organizationId)
+}
+
+model TowerDay {
+  id          String         @id @default(uuid())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  status      TowerDayStatus @default(open)
+  guardLeader String?
+  towerLeader String?
+  watchman    Json?
+  todo        Json?
+  incident    String?
+  weather     Json?
+  material    Json?
+  towerId     String
+  tower       Tower          @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  dutyplans   DutyPlan[]
+}
+
+model DutyPlan {
+  id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  towerDay   TowerDay? @relation(fields: [towerDayId], references: [id])
+  towerDayId String?
+  shifts     Shift[]
+}
+
+model Shift {
+  id         String    @id @default(uuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  type       ShiftType @default(duty)
+  startTime  DateTime
+  endTime    DateTime
+  user       Profile   @relation(fields: [userId], references: [id])
+  userId     String
+  dutyPlan   DutyPlan? @relation(fields: [dutyPlanId], references: [id])
+  dutyPlanId String?
+}
+
+enum ShiftType {
+  duty
+  prepared
 }
 
 model Profile {
@@ -38,8 +88,8 @@ model Profile {
   userId                      String        @unique
   picture                     String?
   gender                      String?
-  firstName                   String?
-  lastName                    String?
+  firstName                   String
+  lastName                    String
   salutation                  String?
   title                       String?
   birthName                   String?
@@ -102,6 +152,9 @@ model Profile {
   organization                Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId              String?
   towers                      Tower[]
+  shifts                      Shift[]
+
+  @@index([userId, organizationId])
 }
 
 enum Role {
@@ -113,10 +166,16 @@ enum Role {
   intern
 }
 
-enum Status {
-  inactive
-  active
-  operation
+enum TowerStatus {
+  lifeguard_on_duty
+  use_caution_when_swimming
+  beach_closed
+}
+
+enum TowerDayStatus {
+  open
+  ongoing
+  completed
 }
 
 enum TowerType {
