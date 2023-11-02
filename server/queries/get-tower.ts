@@ -2,21 +2,20 @@ import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { unstable_cache } from "next/cache";
 
-export const getUserPermission = authFilterQuery(async (search, user) => {
-  const userData = await unstable_cache(
+export const getTower = authFilterQuery(async (search, user) => {
+  return await unstable_cache(
     async (search) => {
-      const query = await prisma.profile.findFirst({
+      return await prisma.tower.findFirst({
         where: {
           organizationId: user.organizationId,
-          userId: search,
+          id: search,
         },
         select: {
-          role: true,
-          towers: true,
-          userId: true,
+          name: true,
+          location: true,
+          number: true,
         },
       });
-      return query;
     },
     [],
     {
@@ -24,5 +23,4 @@ export const getUserPermission = authFilterQuery(async (search, user) => {
       revalidate: 1,
     }
   )(search);
-  return userData;
 });

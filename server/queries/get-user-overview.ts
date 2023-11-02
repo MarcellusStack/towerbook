@@ -1,8 +1,8 @@
 import { prisma } from "@server/db";
-import { authQuery } from "@server/lib/utils/query-clients";
+import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { unstable_cache } from "next/cache";
 
-export const getUserOverview = authQuery(async (search, user) => {
+export const getUserOverview = authFilterQuery(async (search, user) => {
   const userData = await unstable_cache(
     async (search) => {
       return await prisma.profile.findFirst({

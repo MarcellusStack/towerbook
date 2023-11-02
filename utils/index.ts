@@ -1,10 +1,16 @@
-export const convertDate = (date: string) => {
+export const convertDate = (date: Date) => {
   return new Date(date).toLocaleDateString("de-DE", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   });
+};
+
+export const convertTime = (date: Date) => {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
 };
 
 export const convertBase64 = (file: File) => {

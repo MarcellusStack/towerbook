@@ -36,9 +36,9 @@ import { getUserOverview } from "@/server/queries/get-user-overview";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: { params: { userId: string } }) {
-  const { userId } = params;
-  const user = await getUserOverview(userId, ["admin"]);
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+  /* const user = await getUserOverview(userId, ["admin"]); */
 
-  return <UserDashboard user={user} />;
+  return "Tower Duty Plan";
 }

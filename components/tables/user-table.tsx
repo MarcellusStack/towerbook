@@ -1,11 +1,13 @@
 "use client";
+
 import { roles } from "@/constants/roles";
 import { Badge, Table, Group, Text, ActionIcon, rem } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { DeleteUserAction } from "@components/delete-user-action";
 import Link from "next/link";
 import { convertDate } from "@utils/index";
+import { DeleteModalAction } from "../delete-modal-action";
+import { deleteUser } from "@/server/actions/delete-user";
 
 export type UsersTableProps = {
   userId: string;
@@ -38,7 +40,7 @@ export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
         </Group>
       </Table.Td>
       <Table.Td>
-        <Text size="sm">{convertDate(user.birthDate)}</Text>
+        <Text size="sm">{convertDate(new Date(user.birthDate))}</Text>
       </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
@@ -56,10 +58,13 @@ export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
             onClick={() => {
               modals.open({
                 title: "Benutzer löschen",
-
                 children: (
                   <>
-                    <DeleteUserAction userId={user.userId} />
+                    <DeleteModalAction
+                      id={user.userId}
+                      action={deleteUser}
+                      model="Benutzer"
+                    />
                   </>
                 ),
               });

@@ -10,9 +10,9 @@ const links = [
   { label: "Bankverbindung", link: "#bank-details" },
 ];
 
-export default async function Page({ params }: { params: { userId: string } }) {
-  const { userId } = params;
-  const user = await getUserAccount(userId, ["admin"]);
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const user = await getUserAccount(id, ["admin"]);
 
   return (
     <>

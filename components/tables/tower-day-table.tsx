@@ -4,66 +4,55 @@ import { Badge, Table, Group, Text, ActionIcon, rem } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
-import { capitalizeFirstLetter, convertDate } from "@utils/index";
+import { capitalizeFirstLetter, convertDate, convertTime } from "@utils/index";
 import Image from "next/image";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { deleteTower } from "@server/actions/delete-tower";
+import { type TowerDayStatus } from "@prisma/client";
+import { deleteTowerDay } from "@/server/actions/delete-tower-day";
 
-export type TowerProps = {
+export type TowerDayProps = {
   id: string;
-  type: "tower" | "quad";
-  status: "operation" | "inactive" | "active";
-  name: string;
-  number: string;
-  location: string;
+  createdAt: Date;
+  startedAt: Date;
+  status: TowerDayStatus;
+  guardLeader: { firstName: string; lastName: string };
+  towerLeader: { firstName: string; lastName: string };
 };
 
 const statusColors = {
-  operation: "blue",
-  inactive: "red",
-  active: "green",
+  open: "red",
+  ongoing: "yellow",
+  completed: "green",
 };
 
-export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
+export const TowerDayTableRow = ({ towerday }: { towerday: TowerDayProps }) => {
+  console.log(towerday);
   return (
-    <Table.Tr key={tower.id}>
+    <Table.Tr key={towerday.id}>
       <Table.Td>
-        {tower.type === "tower" && (
-          <Image
-            src="/tower.png"
-            width={28}
-            height={28}
-            style={{ opacity: 0.8 }}
-            alt="type icon"
-          />
-        )}
-        {tower.type === "quad" && (
-          <Image
-            src="/quad.png"
-            width={28}
-            height={28}
-            style={{ opacity: 0.8 }}
-            alt="type icon"
-          />
-        )}
+        <Text size="sm">{convertDate(new Date(towerday.createdAt))}</Text>
       </Table.Td>
       <Table.Td>
-        <Badge color={statusColors[tower.status]}>{tower.status}</Badge>
+        <Text size="sm">{convertTime(new Date(towerday.startedAt))}</Text>
       </Table.Td>
       <Table.Td>
-        <Text size="sm">{tower.name}</Text>
+        <Badge color={statusColors[towerday.status]}>{towerday.status}</Badge>
       </Table.Td>
       <Table.Td>
-        <Text size="sm">{tower.number}</Text>
+        <Text size="sm">
+          {towerday.guardLeader.firstName} {towerday.guardLeader.lastName}
+        </Text>
       </Table.Td>
       <Table.Td>
-        <Text size="sm">{tower.location}</Text>
+        <Text size="sm">
+          {towerday.towerLeader.firstName} {towerday.towerLeader.lastName}
+        </Text>
       </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
           <ActionIcon
             component={Link}
-            href={`/towers/${tower.id}`}
+            href={`/tower-days/${towerday.id}`}
             variant="subtle"
           >
             <IconPencil
@@ -74,13 +63,13 @@ export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
           <ActionIcon
             onClick={() => {
               modals.open({
-                title: "Turm löschen",
+                title: "Turm Tag löschen",
                 children: (
                   <>
                     <DeleteModalAction
-                      id={tower.id}
-                      action={deleteTower}
-                      model="Turm"
+                      id={towerday.id}
+                      action={deleteTowerDay}
+                      model="Turm Tag"
                     />
                   </>
                 ),
@@ -100,22 +89,22 @@ export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
   );
 };
 
-export function TowerTable({ towers }: { towers: TowerProps[] }) {
+export function TowerDayTable({ towerdays }: { towerdays: TowerDayProps[] }) {
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>
         <Table.Tr>
-          <Table.Th>Typ</Table.Th>
+          <Table.Th>Datum</Table.Th>
+          <Table.Th>Zeit</Table.Th>
           <Table.Th>Status</Table.Th>
-          <Table.Th>Name</Table.Th>
-          <Table.Th>Turmnummer</Table.Th>
-          <Table.Th>Standort</Table.Th>
+          <Table.Th>Wachleiter</Table.Th>
+          <Table.Th>Turmleiter</Table.Th>
           <Table.Th />
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {towers.map((tower) => (
-          <TowerTableRow tower={tower} />
+        {towerdays.map((day) => (
+          <TowerDayTableRow towerday={day} />
         ))}
       </Table.Tbody>
     </Table>

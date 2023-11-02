@@ -16,9 +16,9 @@ const links = [
   { label: "Unterweisungen", link: "#instructions" },
 ];
 
-export default async function Page({ params }: { params: { userId: string } }) {
-  const { userId } = params;
-  const user = await getUserCertificate(userId, ["admin"]);
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const user = await getUserCertificate(id, ["admin"]);
 
   return (
     <>

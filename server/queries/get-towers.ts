@@ -1,8 +1,8 @@
 import { prisma } from "@server/db";
-import { authQuery } from "@server/lib/utils/query-clients";
+import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { unstable_cache } from "next/cache";
 
-export const getTowers = authQuery(async (search, user) => {
+export const getTowers = authFilterQuery(async (search, user) => {
   const towers = await unstable_cache(
     async (search) => {
       if (user.role.includes("admin")) {

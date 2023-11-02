@@ -28,7 +28,6 @@ export const uploadFile = adminAction(
         });
 
       if (uploadFile.error) {
-        console.log(uploadFile.error);
         throw new Error("Datei konnte nicht hochgeladen werden");
       }
 

@@ -99,6 +99,18 @@ export const createTowerSchema = z.object({
     .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
 });
 
+export const createTowerDaySchema = z.object({
+  createdAt: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
+  startedAt: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
+  guardLeader: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Wachleiter hinzu." }),
+  towerLeader: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Turmleiter hinzu." }),
+  towerId: z.string().min(1),
+});
+
 export const deleteUserSchema = z.object({
   userId: z.string().min(1, { message: "User Id wird benötigt" }),
 });

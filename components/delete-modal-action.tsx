@@ -1,18 +1,24 @@
 import { useActionNotification } from "@hooks/use-action-notification";
-import { deleteUser } from "@server/actions/delete-user";
 import { Button, Group, Stack, Text } from "@mantine/core";
-import React from "react";
 
-export const DeleteUserAction = ({ userId }: { userId: string }) => {
+export const DeleteModalAction = ({
+  id,
+  action,
+  model,
+}: {
+  id: string;
+  action: any;
+  model: string;
+}) => {
   const { execute, result, status } = useActionNotification({
-    action: deleteUser,
-    executeNotification: "Benutzer wird gelöscht",
+    action: action,
+    executeNotification: `${model} wird gelöscht`,
     hideModals: true,
   });
   return (
     <Stack gap="md">
       <Text size="sm">
-        Sind sie sicher, dass Sie diesen Benutzer löschen wollen? Diese Aktion
+        Sind sie sicher, dass Sie diesen {model} löschen wollen? Diese Aktion
         ist unwiderruflich.
       </Text>
       <Group gap="sm">
@@ -21,10 +27,10 @@ export const DeleteUserAction = ({ userId }: { userId: string }) => {
           color="red"
           loading={status === "executing"}
           onClick={() => {
-            execute({ id: userId });
+            execute({ id: id });
           }}
         >
-          Benutzer löschen
+          {model} löschen
         </Button>
       </Group>
     </Stack>

@@ -11,7 +11,6 @@ export const createOrg = authAction(
     try {
       await prisma.$transaction(
         async (tx) => {
-          
           const organization = await tx.organization.create({
             data: {
               name: name,
@@ -30,7 +29,7 @@ export const createOrg = authAction(
 
           const bucket = await supabase.storage.createBucket(organization.id, {
             public: true,
-            fileSizeLimit: 5120,
+            fileSizeLimit: 5242880,
           });
 
           if (bucket.error) {

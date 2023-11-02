@@ -16,8 +16,7 @@ import {
   Loader,
   Tabs,
   Badge,
-  GridCol,
-  Grid,
+  SimpleGrid,
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
@@ -32,26 +31,14 @@ import { getUser } from "@server/queries/get-user";
 import type { Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
-import { UserPermissionForm } from "@components/forms/user-permission-form";
-import { getUserPermission } from "@server/queries/get-user-permission";
-import { getTowers } from "@server/queries/get-towers";
-import { TableOfContents } from "@/components/table-of-contents";
+import UserDashboard from "@components/user-dashboard";
+import { getUserOverview } from "@/server/queries/get-user-overview";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ params }: { params: { userId: string } }) {
-  const { userId } = params;
-  const user = await getUserPermission(userId, ["admin"]);
-  const towers = await getTowers(undefined, ["admin"]);
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+  /* const user = await getUserOverview(userId, ["admin"]); */
 
-  return (
-    <Grid>
-      <GridCol span={10}>
-        <UserPermissionForm user={user} towers={towers ?? []} />
-      </GridCol>
-      <GridCol span={2}>
-        <TableOfContents />
-      </GridCol>
-    </Grid>
-  );
+  return "Tower Search List";
 }

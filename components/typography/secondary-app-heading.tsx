@@ -26,9 +26,7 @@ export const SecondaryAppHeading = ({
         </Text>
       </Group>
       {extraInfo}
-      {/* <Text size="lg" c="dimmed">
-        {extraInfo}
-      </Text> */}
+      
       <Divider />
     </Stack>
   );
