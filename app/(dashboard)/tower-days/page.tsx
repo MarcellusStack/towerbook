@@ -26,11 +26,9 @@ import { CreateUserForm } from "@components/forms/create-user-form";
 import { getTowers } from "@/server/queries/get-towers";
 import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { TowerTable } from "@/components/tables/tower-table";
-import { Tower } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
+export const revalidate = 1;
 
 export default async function Page({
   searchParams,
@@ -38,18 +36,15 @@ export default async function Page({
   searchParams: { search: string };
 }) {
   const { search } = searchParams;
-  const towers = (await getTowers(search, [])) as Tower[];
 
   return (
     <>
-      <PrimaryAppHeading title="Türme" />
-
-      <QuickSearchAdd
-        modalTitle="Turm anlegen"
-        modalDescription="Erstellen Sie hier einen Turm für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
+      <PrimaryAppHeading title="Turm Tage" />
+      {/* <QuickSearchAdd
+        modalTitle="Turm Tag anlegen"
+        modalDescription="Erstellen Sie hier Türme für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
         modalContent={<CreateTowerForm />}
-      />
-      <TowerTable towers={towers ?? []} />
+      /> */}
     </>
   );
 }

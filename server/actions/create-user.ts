@@ -3,7 +3,8 @@ import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { createUserSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { type Role } from "@prisma/client";
 
 export const createUser = adminAction(
   createUserSchema,
@@ -27,7 +28,7 @@ export const createUser = adminAction(
               firstName: firstName,
               lastName: lastName,
               email: email,
-              role: new Array(role),
+              role: new Array(role) as Role[],
               organization: {
                 connect: {
                   id: user.organizationId as string,
@@ -53,7 +54,7 @@ export const createUser = adminAction(
       throw new Error("Fehler beim Erstellen des Benutzer");
     }
 
-    revalidateTag("users");
+    revalidatePath("/", "layout");
 
     return `Der Benutzer wurde erstellt, ${firstName} ${lastName} kann sich jetzt mit ${email} und seinem Passwort anmelden.`;
   }

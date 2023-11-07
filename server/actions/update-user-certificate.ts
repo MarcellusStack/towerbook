@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userCertificateSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateUserCertificate = adminAction(
   userCertificateSchema,
@@ -98,8 +98,7 @@ export const updateUserCertificate = adminAction(
       if (!profile.id) {
         throw new Error("Couldnt update Permissions");
       }
-      revalidateTag(userId);
-      revalidateTag("users");
+      revalidatePath("/", "layout");
 
       return `Der Benutzer ${profile.firstName} ${profile.lastName} wurde aktualisiert.`;
     } catch (error) {

@@ -3,7 +3,7 @@ import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userProfileSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateUserProfile = adminAction(
   userProfileSchema,
@@ -100,8 +100,7 @@ export const updateUserProfile = adminAction(
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }
 
-    revalidateTag(userId);
-    revalidateTag("users");
+    revalidatePath("/", "layout");
 
     return `Der Benutzer ${firstName} ${lastName} wurde aktualisiert.`;
   }

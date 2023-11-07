@@ -8,6 +8,7 @@ import { capitalizeFirstLetter, convertDate } from "@utils/index";
 import Image from "next/image";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteTower } from "@server/actions/delete-tower";
+import { Tower } from "@prisma/client";
 
 export type TowerProps = {
   id: string;
@@ -24,7 +25,7 @@ const statusColors = {
   active: "green",
 };
 
-export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
+export const TowerTableRow = ({ tower }: { tower: Tower }) => {
   return (
     <Table.Tr key={tower.id}>
       <Table.Td>
@@ -100,7 +101,7 @@ export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
   );
 };
 
-export function TowerTable({ towers }: { towers: TowerProps[] }) {
+export function TowerTable({ towers }: { towers: Tower[] }) {
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>

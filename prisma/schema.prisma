@@ -36,28 +36,35 @@ model Tower {
   location       String
   number         String
   towerdays      TowerDay[]
+  dutyplans      DutyPlan[]
 
   @@index(organizationId)
 }
 
 model TowerDay {
-  id            String         @id @default(uuid())
-  createdAt     DateTime
-  updatedAt     DateTime       @updatedAt
-  startedAt     DateTime       @db.Time(4)
-  status        TowerDayStatus @default(open)
-  guardLeaderId String
-  guardLeader   Profile        @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
-  towerLeaderId String
-  towerLeader   Profile        @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
-  watchman      Json?
-  todo          Json?
-  incident      String?
-  weather       Json?
-  material      Json?
-  towerId       String
-  tower         Tower          @relation(fields: [towerId], references: [id], onDelete: Cascade)
-  dutyplans     DutyPlan[]
+  id             String             @id @default(uuid())
+  createdAt      DateTime
+  updatedAt      DateTime           @updatedAt
+  startedAt      DateTime           @db.Time(4)
+  status         TowerDayStatus     @default(open)
+  guardLeaderId  String
+  guardLeader    Profile            @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
+  towerLeaderId  String
+  towerLeader    Profile            @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
+  watchman       Json?
+  watchmanStatus TowerDayFormStatus @default(open)
+  todo           Json?
+  todoStatus     TowerDayFormStatus @default(open)
+  incident       String?
+  incidentStatus TowerDayFormStatus @default(open)
+  weather        Json?
+  weatherStatus  TowerDayFormStatus @default(open)
+  material       Json?
+  materialStatus TowerDayFormStatus @default(open)
+  towerId        String
+  tower          Tower              @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  dutyplans      DutyPlan[]
+  dutyplanStatus TowerDayFormStatus @default(open)
 
   @@index([towerId])
 }
@@ -69,6 +76,8 @@ model DutyPlan {
   towerDay   TowerDay? @relation(fields: [towerDayId], references: [id])
   towerDayId String?
   shifts     Shift[]
+  Tower      Tower?    @relation(fields: [towerId], references: [id])
+  towerId    String?
 }
 
 model Shift {
@@ -184,6 +193,13 @@ enum TowerDayStatus {
   open
   ongoing
   completed
+}
+
+enum TowerDayFormStatus {
+  open
+  ongoing
+  completed
+  incomplete
 }
 
 enum TowerType {

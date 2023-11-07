@@ -53,7 +53,7 @@ export const createOrg = authAction(
           if (!profile.role.includes("admin")) {
             throw new Error("Missing admin role");
           }
-          revalidatePath("/dashboard");
+          revalidatePath("/", "layout");
         },
         {
           maxWait: 15000, // default: 2000

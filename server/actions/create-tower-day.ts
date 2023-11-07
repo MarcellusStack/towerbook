@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { createTowerDaySchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type TowerType } from "@prisma/client";
 
 export const createTowerDay = adminAction(
@@ -36,7 +36,7 @@ export const createTowerDay = adminAction(
       throw new Error("Fehler beim Erstellen des Turm Tag");
     }
 
-    revalidateTag("towerdays");
+    revalidatePath("/", "layout");
 
     return `Der Turm Tag wurde erstellt.`;
   }

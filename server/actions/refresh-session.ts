@@ -10,8 +10,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import * as z from "zod";
 
 export const refreshSession = action(z.object({}), async () => {
-  revalidateTag("users");
-  revalidateTag("towers");
+  revalidatePath("/", "layout");
 
   return "Sitzung aktualisiert";
 });

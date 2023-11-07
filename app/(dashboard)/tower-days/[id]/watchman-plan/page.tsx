@@ -14,6 +14,9 @@ import {
   Anchor,
   Center,
   Loader,
+  Tabs,
+  Badge,
+  SimpleGrid,
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
@@ -23,33 +26,19 @@ import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
 import { getUsers } from "@server/queries/get-users";
 import { CreateUserForm } from "@components/forms/create-user-form";
-import { getTowers } from "@/server/queries/get-towers";
-import { CreateTowerForm } from "@/components/forms/create-tower-form";
-import { TowerTable } from "@/components/tables/tower-table";
-import { Tower } from "@prisma/client";
+import { SecondaryAppHeading } from "@components/typography/secondary-app-heading";
+import { getUser } from "@server/queries/get-user";
+import type { Profile } from "@prisma/client";
+import { roles } from "@/constants/roles";
+import RoleBadge from "@/components/role-badge";
+import UserDashboard from "@components/user-dashboard";
+import { getUserOverview } from "@/server/queries/get-user-overview";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
-export const fetchCache = "force-no-store";
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams: { search: string };
-}) {
-  const { search } = searchParams;
-  const towers = (await getTowers(search, [])) as Tower[];
+export default async function Page({ params }: { params: { id: string } }) {
+  const { id } = params;
+  /* const towerday = await getTowerDay(id, ["admin"]); */
 
-  return (
-    <>
-      <PrimaryAppHeading title="Türme" />
-
-      <QuickSearchAdd
-        modalTitle="Turm anlegen"
-        modalDescription="Erstellen Sie hier einen Turm für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<CreateTowerForm />}
-      />
-      <TowerTable towers={towers ?? []} />
-    </>
-  );
+  return <h1>Watchman Form</h1>;
 }

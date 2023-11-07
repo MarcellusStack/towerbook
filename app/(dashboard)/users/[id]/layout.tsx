@@ -22,7 +22,6 @@ export const links = [
     icon: <IconLayoutDashboard size={16} stroke={1.5} />,
     label: "Übersicht",
   },
-
   {
     value: "account",
     icon: <IconUser size={16} stroke={1.5} />,

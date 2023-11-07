@@ -2,7 +2,15 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@server/lib/auth-options";
 import { prisma } from "@/server/db";
 
-export const getUser = async () => {
+export type GetUserProps = {
+  id: string;
+  profileId: string;
+  email: string;
+  role: string[];
+  organizationId: string | null;
+};
+
+export const getUser: () => Promise<GetUserProps | null> = async () => {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -20,11 +28,15 @@ export const getUser = async () => {
     },
   });
 
+  if (!user) {
+    return null;
+  }
+
   return {
-    id: user?.userId,
-    profileId: user?.id,
-    email: user?.email,
-    role: user?.role,
-    organizationId: user?.organizationId,
+    id: user.userId,
+    profileId: user.id,
+    email: user.email,
+    role: user.role,
+    organizationId: user.organizationId,
   };
 };

@@ -8,17 +8,9 @@ import Link from "next/link";
 import { convertDate } from "@utils/index";
 import { DeleteModalAction } from "../delete-modal-action";
 import { deleteUser } from "@/server/actions/delete-user";
+import { type UserTableProps } from "@/server/queries/get-users";
 
-export type UsersTableProps = {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string[];
-  birthDate: string;
-};
-
-export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
+export const UserTableRow = ({ user }: { user: UserTableProps }) => {
   return (
     <Table.Tr key={user.userId}>
       <Table.Td>
@@ -83,7 +75,7 @@ export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
   );
 };
 
-export function UsersTable({ users }: { users: UsersTableProps[] }) {
+export function UsersTable({ users }: { users: UserTableProps[] }) {
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>

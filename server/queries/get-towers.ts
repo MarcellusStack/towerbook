@@ -1,6 +1,10 @@
+"use server";
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { unstable_cache } from "next/cache";
+import { type Tower } from "@prisma/client";
+
+
 
 export const getTowers = authFilterQuery(async (search, user) => {
   const towers = await unstable_cache(
@@ -32,5 +36,5 @@ export const getTowers = authFilterQuery(async (search, user) => {
       revalidate: 1,
     }
   )(search);
-  return towers;
+  return towers as Tower[];
 });

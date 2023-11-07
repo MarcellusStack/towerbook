@@ -5,11 +5,11 @@ import { Button, Stack, Select } from "@mantine/core";
 import { createTowerDaySchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
-import { type Profile } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { createTowerDay } from "@/server/actions/create-tower-day";
+import { UserTasksProps } from "@/server/queries/get-users-for-tasks";
 
-export const CreateTowerDayForm = ({ users }: { users: Profile[] }) => {
+export const CreateTowerDayForm = ({ users }: { users: UserTasksProps[] }) => {
   const { id } = useParams();
   const form = useForm({
     validate: zodResolver(createTowerDaySchema),

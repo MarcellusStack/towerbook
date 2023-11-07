@@ -3,7 +3,7 @@ import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { deleteUserSchema, deleteSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const deleteTower = adminAction(
   deleteSchema,
@@ -23,11 +23,10 @@ export const deleteTower = adminAction(
         throw new Error("Couldnt delete tower");
       }
     } catch (error) {
-      console.log(error);
       throw new Error("Fehler beim löschen des Turm");
     }
 
-    revalidateTag("towers");
+    revalidatePath("/", "layout");
 
     return `Der Turm wurde gelöscht.`;
   }

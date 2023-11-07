@@ -3,7 +3,7 @@
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { uploadFileSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { decode } from "base64-arraybuffer";
 
 export const uploadFile = adminAction(
@@ -31,8 +31,7 @@ export const uploadFile = adminAction(
         throw new Error("Datei konnte nicht hochgeladen werden");
       }
 
-      revalidateTag(userId);
-      revalidateTag("users");
+      revalidatePath("/", "layout");
 
       return `Datei hochgeladen`;
     } catch (error) {

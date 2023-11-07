@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { createTowerSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type TowerType } from "@prisma/client";
 
 export const createTower = adminAction(
@@ -33,7 +33,8 @@ export const createTower = adminAction(
       throw new Error("Fehler beim Erstellen des Turms");
     }
 
-    revalidateTag("towers");
+    revalidatePath("/", "layout");
+    
 
     return `Der Turm wurde erstellt.`;
   }

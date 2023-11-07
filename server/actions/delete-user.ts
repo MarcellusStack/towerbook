@@ -3,7 +3,7 @@ import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { deleteSchema, deleteUserSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const deleteUser = adminAction(
   deleteSchema,
@@ -27,8 +27,6 @@ export const deleteUser = adminAction(
             },
           });
 
-          
-
           if (!profile.id) {
             throw new Error("Couldnt delete profile");
           }
@@ -49,7 +47,7 @@ export const deleteUser = adminAction(
       throw new Error("Fehler beim löschen des Benutzer");
     }
 
-    revalidateTag("users");
+    revalidatePath("/", "layout");
 
     return `Der Benutzer wurde gelöscht.`;
   }

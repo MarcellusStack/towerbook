@@ -6,6 +6,7 @@ import { Text } from "@mantine/core";
 import { getTower } from "@/server/queries/get-tower";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
+  IconBroadcast,
   IconCalendarPin,
   IconCheckupList,
   IconClipboardPlus,
@@ -22,7 +23,7 @@ export const links = [
   },
   {
     value: "tower-day",
-    icon: <IconCheckupList size={16} stroke={1.5} />,
+    icon: <IconBroadcast size={16} stroke={1.5} />,
     label: "Turm Tag",
   },
   {

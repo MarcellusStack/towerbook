@@ -3,7 +3,8 @@ import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userPermissionsSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { type Role } from "@prisma/client";
 
 export const updateUserPermissions = adminAction(
   userPermissionsSchema,
@@ -36,7 +37,7 @@ export const updateUserPermissions = adminAction(
           userId: userId,
         },
         data: {
-          role: role,
+          role: role as Role[],
           towers: {
             disconnect: towersToDisconnect.map((id) => ({ id })),
             connect: towersToConnect.map((id) => ({ id })),
@@ -48,8 +49,7 @@ export const updateUserPermissions = adminAction(
       if (!profile.id) {
         throw new Error("Couldnt update Permissions");
       }
-      revalidateTag(userId);
-      revalidateTag("users");
+      revalidatePath("/", "layout");
 
       return `Der Benutzer ${profile.firstName} ${profile.lastName} wurde aktualisiert.`;
     } catch (error) {

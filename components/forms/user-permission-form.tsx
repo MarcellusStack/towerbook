@@ -33,12 +33,13 @@ import { roles } from "@/constants/roles";
 import { updateUserPermissions } from "@/server/actions/update-user-permission";
 import { type Tower } from "@prisma/client";
 import { capitalizeFirstLetter } from "@/utils";
+import { UserPermissionProps } from "@/server/queries/get-user-permission";
 
 export const UserPermissionForm = ({
   user,
   towers,
 }: {
-  user: Profile;
+  user: UserPermissionProps;
   towers: Tower[];
 }) => {
   const form = useForm({

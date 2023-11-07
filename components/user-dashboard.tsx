@@ -25,8 +25,9 @@ import deLocale from "@fullcalendar/core/locales/de";
 import { IconAlertCircle } from "@tabler/icons-react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { type Profile } from "@prisma/client";
+import { UserOverviewProps } from "@/server/queries/get-user-overview";
 
-const UserDashboard = ({ user }: { user: Profile }) => {
+const UserDashboard = ({ user }: { user: UserOverviewProps }) => {
   return (
     <>
       <SimpleGrid cols={4} spacing="sm" verticalSpacing="sm">
