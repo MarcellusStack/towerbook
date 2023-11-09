@@ -53,7 +53,11 @@ export default async function Layout({
               >
                 Übersicht
               </Button>
-              <Button color="red" leftSection={<IconUserExclamation />}>
+              <Button
+                disabled
+                color="red"
+                leftSection={<IconUserExclamation />}
+              >
                 Revision anfragen
               </Button>
               <Button color="green" leftSection={<IconChecklist />}>

@@ -7,10 +7,7 @@ import {
   Stack,
   Fieldset,
   SimpleGrid,
-  FileInput,
-  Select,
   Text,
-  NumberInput,
   Checkbox,
   Group,
   Card,
@@ -18,7 +15,7 @@ import {
   ActionIcon,
   Box,
 } from "@mantine/core";
-import { towerDayWatchmanPlanSchema } from "@/schemas";
+import { towerDayTodoSchema, towerDayWatchmanPlanSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
@@ -30,25 +27,25 @@ import { UserSelect } from "@components/user-select";
 import { updateTowerDayWatchmanPlan } from "@/server/actions/update-tower-day-watchman-plan";
 import { completeTowerDayFormStatus } from "@/server/actions/complete-tower-day-form-status";
 import { TowerDayFormAction } from "@/components/tower-day-form-action";
+import { updateTowerDayTodo } from "@/server/actions/update-tower-day-todo";
+import { TowerDayTodoProps } from "@/server/queries/get-tower-day-todo";
 
-export const TowerDayWatchmanPlanForm = ({
+export const TowerDayTodoForm = ({
   towerday,
 }: {
-  towerday: TowerDay;
+  towerday: TowerDayTodoProps;
 }) => {
   const form = useForm({
-    name: "tower-day-watchman-plan-form",
-    validate: zodResolver(towerDayWatchmanPlanSchema),
+    name: "tower-day-todo-form",
+    validate: zodResolver(towerDayTodoSchema),
     initialValues: {
       id: towerday.id,
-      guardLeader: towerday.guardLeader.id,
-      towerLeader: towerday.towerLeader.id,
-      watchman: towerday.watchman === null ? new Array() : towerday.watchman,
+      todo: towerday.todo === null ? new Array() : towerday.todo,
     },
   });
 
   const update = useActionNotification({
-    action: updateTowerDayWatchmanPlan,
+    action: updateTowerDayTodo,
     executeNotification: `Turm Tag wird aktualisiert`,
   });
 
@@ -58,43 +55,42 @@ export const TowerDayWatchmanPlanForm = ({
         <Fieldset
           legend={
             <Text fw={700} size="xl">
-              Wachplan
+              Todo
             </Text>
           }
         >
           <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-            <UserSelect
-              formActionId="tower-day-watchman-plan-form"
-              formField="guardLeader"
-              label="Wachleiter"
-              initialValue={`${towerday.guardLeader.firstName} ${towerday.guardLeader.lastName}`}
-            />
-            <UserSelect
-              formActionId="tower-day-watchman-plan-form"
-              formField="towerLeader"
-              label="Turmleiter"
-              initialValue={`${towerday.towerLeader.firstName} ${towerday.towerLeader.lastName}`}
-            />
+            <Button
+              variant="outline"
+              onClick={() => {
+                form.insertListItem("todo", {
+                  id: `${Math.floor(Math.random() * 1000000)}`,
+                  todo: "",
+                  checked: false,
+                });
+              }}
+            >
+              Todo hinzufügen
+            </Button>
             <Box />
-            <Stack>
-              <UserComboboxButton
-                label="Wachgänger"
-                formActionId="tower-day-watchman-plan-form"
-              />
-              {form.values.watchman.map((watchman, index) => (
-                <Card
-                  key={`${watchman.id}-${index}`}
-                  padding={rem(4)}
-                  withBorder
-                >
+            <Box />
+            {form.values.todo &&
+              form.values.todo.map((todo, index) => (
+                <Card key={`${todo.id}-${index}`} padding={rem(4)} withBorder>
                   <Group justify="space-between">
-                    <Group gap={rem(4)}>
-                      <Text>{watchman.firstName}</Text>
-                      <Text>{watchman.lastName}</Text>
-                    </Group>
+                    <Checkbox
+                      label="Erledigt"
+                      {...form.getInputProps(`todo.${index}.checked`, {
+                        type: "checkbox",
+                      })}
+                    />
+                    <TextInput
+                      placeholder="Todo"
+                      {...form.getInputProps(`todo.${index}.todo`)}
+                    />
                     <ActionIcon
                       onClick={() => {
-                        form.removeListItem("watchman", index);
+                        form.removeListItem("todo", index);
                       }}
                       variant="subtle"
                       color="red"
@@ -107,11 +103,10 @@ export const TowerDayWatchmanPlanForm = ({
                   </Group>
                 </Card>
               ))}
-            </Stack>
           </SimpleGrid>
           <TowerDayFormAction
             updateStatus={update.status === "executing"}
-            form="watchmanStatus"
+            form="todoStatus"
           />
         </Fieldset>
       </Stack>

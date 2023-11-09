@@ -43,6 +43,13 @@ export const towerDayWatchmanPlanSchema = z.object({
   ),
 });
 
+export const towerDayTodoSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  todo: z.array(
+    z.object({ id: z.string(), todo: z.string(), checked: z.boolean() })
+  ),
+});
+
 export const towerDayFormStatusSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   form: z.string().min(1, { message: "Formular wird benötigt" }),
