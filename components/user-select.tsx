@@ -82,7 +82,7 @@ export const UserSelect = ({
           <Combobox.Search
             value={search}
             onChange={(event) => setSearch(event.currentTarget.value)}
-            placeholder="Search groceries"
+            placeholder="Benutzer suchen"
           />
           <Combobox.Options>
             {result.data && result.data.users.length > 0 ? (

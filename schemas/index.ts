@@ -50,6 +50,11 @@ export const towerDayTodoSchema = z.object({
   ),
 });
 
+export const towerDayIncidentSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  incident: z.string(),
+});
+
 export const towerDayFormStatusSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   form: z.string().min(1, { message: "Formular wird benötigt" }),
