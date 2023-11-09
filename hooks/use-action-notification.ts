@@ -46,7 +46,7 @@ export const useActionNotification = ({
         withBorder: true,
         autoClose: 5000,
         title: "Erfolgreich",
-        message: data as string,
+        message: data.message as string,
         color: "green",
       });
 
@@ -57,6 +57,8 @@ export const useActionNotification = ({
       if (redirectUrl) {
         router.push(redirectUrl);
       }
+
+      return data;
     },
     onError(error, input, reset) {
       if (!error) {

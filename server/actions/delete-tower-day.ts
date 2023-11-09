@@ -43,6 +43,6 @@ export const deleteTowerDay = adminAction(
 
     revalidatePath("/", "layout");
 
-    return `Der Turm Tag wurde gelöscht.`;
+    return { message: `Der Turm Tag wurde gelöscht.` };
   }
 );

@@ -34,8 +34,7 @@ export const createTower = adminAction(
     }
 
     revalidatePath("/", "layout");
-    
 
-    return `Der Turm wurde erstellt.`;
+    return { message: `Der Turm wurde erstellt.` };
   }
 );

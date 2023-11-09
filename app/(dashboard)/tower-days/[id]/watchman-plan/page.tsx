@@ -33,12 +33,15 @@ import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
 import { getUserOverview } from "@/server/queries/get-user-overview";
+import { getTowerDayOverview } from "@/server/queries/get-tower-day-overview";
+import { TowerDayWatchmanPlanForm } from "@/components/forms/tower-day-watchman-plan-form";
+import { getTowerDayWatchmanPlan } from "@/server/queries/get-tower-day-watchman-plan";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  /* const towerday = await getTowerDay(id, ["admin"]); */
+  const towerday = await getTowerDayWatchmanPlan(id, ["admin"]);
 
-  return <h1>Watchman Form</h1>;
+  return <TowerDayWatchmanPlanForm towerday={towerday} />;
 }

@@ -63,6 +63,8 @@ export const createOrg = authAction(
     } catch (error) {
       throw new Error("Fehler beim Erstellen der Organisation");
     }
-    return "Sie haben eine Organisation erstellt und können nun loslegen!";
+    return {
+      message: "Sie haben eine Organisation erstellt und können nun loslegen!",
+    };
   }
 );

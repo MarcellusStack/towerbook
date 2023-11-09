@@ -56,6 +56,8 @@ export const createUser = adminAction(
 
     revalidatePath("/", "layout");
 
-    return `Der Benutzer wurde erstellt, ${firstName} ${lastName} kann sich jetzt mit ${email} und seinem Passwort anmelden.`;
+    return {
+      message: `Der Benutzer wurde erstellt, ${firstName} ${lastName} kann sich jetzt mit ${email} und seinem Passwort anmelden.`,
+    };
   }
 );

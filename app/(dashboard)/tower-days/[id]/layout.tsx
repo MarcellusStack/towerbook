@@ -42,8 +42,9 @@ export default async function Layout({
       <Grid>
         <GridCol span={8}>{children}</GridCol>
         <GridCol span={4}>
-          <Stack>
-            <Group pt="sm">
+          <Stack pt="sm">
+            <TowerDayOverview towerday={towerday} />
+            <Group>
               <Button
                 leftSection={<IconLayoutDashboard />}
                 component={Link}
@@ -59,7 +60,6 @@ export default async function Layout({
                 Turmtag abschließen
               </Button>
             </Group>
-            <TowerDayOverview towerday={towerday} />
           </Stack>
         </GridCol>
       </Grid>

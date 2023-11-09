@@ -12,5 +12,5 @@ import * as z from "zod";
 export const refreshSession = action(z.object({}), async () => {
   revalidatePath("/", "layout");
 
-  return "Sitzung aktualisiert";
+  return { message: "Sitzung aktualisiert" };
 });

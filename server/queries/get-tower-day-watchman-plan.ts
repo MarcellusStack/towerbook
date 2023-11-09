@@ -8,16 +8,13 @@ export type TowerDayOverviewProps = Pick<
   "id" | "createdAt" | "startedAt" | "status"
 >;
 
-export const getTowerDayOverview = authFilterQuery(async (search, user) => {
+export const getTowerDayWatchmanPlan = authFilterQuery(async (search, user) => {
   const towerday = await prisma.towerDay.findFirst({
     where: {
       id: search,
     },
     select: {
       id: true,
-      createdAt: true,
-      startedAt: true,
-      status: true,
       guardLeader: {
         select: {
           id: true,
@@ -26,13 +23,7 @@ export const getTowerDayOverview = authFilterQuery(async (search, user) => {
         },
       },
       towerLeader: { select: { id: true, firstName: true, lastName: true } },
-      watchmanStatus: true,
-      todoStatus: true,
-      incidentStatus: true,
-      weatherStatus: true,
-      materialStatus: true,
-      dutyplanStatus: true,
-      tower: { select: { name: true, location: true, number: true } },
+      watchman: true,
       towerId: true,
     },
   });

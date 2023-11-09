@@ -102,6 +102,8 @@ export const updateUserProfile = adminAction(
 
     revalidatePath("/", "layout");
 
-    return `Der Benutzer ${firstName} ${lastName} wurde aktualisiert.`;
+    return {
+      message: `Der Benutzer ${firstName} ${lastName} wurde aktualisiert.`,
+    };
   }
 );

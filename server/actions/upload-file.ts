@@ -33,7 +33,7 @@ export const uploadFile = adminAction(
 
       revalidatePath("/", "layout");
 
-      return `Datei hochgeladen`;
+      return { message: `Datei hochgeladen` };
     } catch (error) {
       throw new Error("Fehler beim hochladen der Datei");
     }

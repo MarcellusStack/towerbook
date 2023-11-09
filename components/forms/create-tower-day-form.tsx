@@ -8,10 +8,12 @@ import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { useParams } from "next/navigation";
 import { createTowerDay } from "@/server/actions/create-tower-day";
 import { UserTasksProps } from "@/server/queries/get-users-for-tasks";
+import { UserSelect } from "@components/user-select";
 
-export const CreateTowerDayForm = ({ users }: { users: UserTasksProps[] }) => {
+export const CreateTowerDayForm = () => {
   const { id } = useParams();
   const form = useForm({
+    name: "create-tower-day-form",
     validate: zodResolver(createTowerDaySchema),
     initialValues: {
       createdAt: new Date(),
@@ -43,21 +45,17 @@ export const CreateTowerDayForm = ({ users }: { users: UserTasksProps[] }) => {
           {...form.getInputProps("createdAt")}
         />
         <TimeInput label="Uhrzeit" {...form.getInputProps("startedAt")} />
-        <Select
+        <UserSelect
+          formActionId="create-tower-day-form"
+          formField="guardLeader"
           label="Wachleiter"
-          data={users.map((user) => ({
-            value: user.id,
-            label: `${user.firstName} ${user.lastName}`,
-          }))}
-          {...form.getInputProps("guardLeader")}
+          initialValue={null}
         />
-        <Select
+        <UserSelect
+          formActionId="create-tower-day-form"
+          formField="towerLeader"
           label="Turmleiter"
-          data={users.map((user) => ({
-            value: user.id,
-            label: `${user.firstName} ${user.lastName}`,
-          }))}
-          {...form.getInputProps("towerLeader")}
+          initialValue={null}
         />
         <Button loading={status === "executing"} type="submit">
           Hinzufügen

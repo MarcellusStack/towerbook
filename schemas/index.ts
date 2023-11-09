@@ -34,6 +34,20 @@ export const signUpSchema = z.intersection(
   })
 );
 
+export const towerDayWatchmanPlanSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  guardLeader: z.string().min(1, { message: "Wachleiter wird benötigt" }),
+  towerLeader: z.string().min(1, { message: "Turmleiter wird benötigt" }),
+  watchman: z.array(
+    z.object({ id: z.string(), firstName: z.string(), lastName: z.string() })
+  ),
+});
+
+export const towerDayFormStatusSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  form: z.string().min(1, { message: "Formular wird benötigt" }),
+});
+
 export const userProfileSchema = z.intersection(
   baseUserSchema,
   z.object({

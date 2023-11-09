@@ -28,6 +28,6 @@ export const deleteTower = adminAction(
 
     revalidatePath("/", "layout");
 
-    return `Der Turm wurde gelöscht.`;
+    return { message: `Der Turm wurde gelöscht.` };
   }
 );

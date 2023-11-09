@@ -36,20 +36,19 @@ import { getUserOverview } from "@/server/queries/get-user-overview";
 import { getTowerDays } from "@/server/queries/get-tower-days";
 import { TowerDayTable } from "@/components/tables/tower-day-table";
 import { CreateTowerDayForm } from "@/components/forms/create-tower-day-form";
-import { getUsersForTasks } from "@/server/queries/get-users-for-tasks";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const { towerdays } = await getTowerDays(id, ["admin"]);
-  const users = await getUsersForTasks("", ["admin"]);
+
   return (
     <>
       <QuickSearchAdd
         modalTitle="Turm Tag anlegen"
         modalDescription="Erstellen Sie hier Tage für Ihren Turm. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<CreateTowerDayForm users={users} />}
+        modalContent={<CreateTowerDayForm />}
       />
       <TowerDayTable towerdays={towerdays ?? []} />
     </>

@@ -34,6 +34,8 @@ export const signUp = action(
       throw new Error("Fehler beim Erstellen des Profils");
     }
 
-    return "Sie haben sich registriert und können sich nun Anmelden.";
+    return {
+      message: "Sie haben sich registriert und können sich nun Anmelden.",
+    };
   }
 );

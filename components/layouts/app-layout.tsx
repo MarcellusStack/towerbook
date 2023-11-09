@@ -61,7 +61,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         withBorder: true,
         autoClose: 5000,
         title: "Erfolgreich",
-        message: data as string,
+        message: data.message as string,
         color: "green",
       });
 

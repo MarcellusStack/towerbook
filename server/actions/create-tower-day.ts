@@ -38,6 +38,6 @@ export const createTowerDay = adminAction(
 
     revalidatePath("/", "layout");
 
-    return `Der Turm Tag wurde erstellt.`;
+    return { message: `Der Turm Tag wurde erstellt.` };
   }
 );

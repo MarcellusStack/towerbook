@@ -100,7 +100,9 @@ export const updateUserCertificate = adminAction(
       }
       revalidatePath("/", "layout");
 
-      return `Der Benutzer ${profile.firstName} ${profile.lastName} wurde aktualisiert.`;
+      return {
+        message: `Der Benutzer ${profile.firstName} ${profile.lastName} wurde aktualisiert.`,
+      };
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }

@@ -49,6 +49,6 @@ export const deleteUser = adminAction(
 
     revalidatePath("/", "layout");
 
-    return `Der Benutzer wurde gelöscht.`;
+    return { message: `Der Benutzer wurde gelöscht.` };
   }
 );
