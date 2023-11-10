@@ -82,7 +82,6 @@ export const TowerDayWeatherForm = ({
           >
             Wetter hinzufügen
           </Button>
-
           <Table verticalSpacing="sm" striped withTableBorder>
             <Table.Thead>
               <Table.Tr>
