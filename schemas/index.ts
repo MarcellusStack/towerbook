@@ -55,6 +55,19 @@ export const towerDayIncidentSchema = z.object({
   incident: z.string(),
 });
 
+export const towerDayWeatherSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  weather: z.array(
+    z.object({
+      id: z.string(),
+      time: z.string(),
+      air_in_celsius: z.string(),
+      water_in_celsius: z.string(),
+      wind_in_bft: z.string(),
+    })
+  ),
+});
+
 export const towerDayFormStatusSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   form: z.string().min(1, { message: "Formular wird benötigt" }),

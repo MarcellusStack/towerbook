@@ -13,6 +13,13 @@ export const convertTime = (date: Date) => {
   return `${hours}:${minutes}`;
 };
 
+export const extractTimeFromDate = (time: Date) => {
+  const [hours, minutes] = String(time).split(":");
+  const startTime = new Date();
+  startTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+  return startTime;
+};
+
 export const convertBase64 = (file: File) => {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader();

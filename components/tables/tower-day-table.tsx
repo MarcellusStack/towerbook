@@ -26,7 +26,6 @@ const statusColors = {
 };
 
 export const TowerDayTableRow = ({ towerday }: { towerday: TowerDayProps }) => {
-  console.log(towerday);
   return (
     <Table.Tr key={towerday.id}>
       <Table.Td>
