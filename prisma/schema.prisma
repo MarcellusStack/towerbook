@@ -63,7 +63,7 @@ model TowerDay {
   materialStatus TowerDayFormStatus @default(open)
   towerId        String
   tower          Tower              @relation(fields: [towerId], references: [id], onDelete: Cascade)
-  dutyplans      DutyPlan[]
+  dutyplans      DutyPlan?
   dutyplanStatus TowerDayFormStatus @default(open)
 
   @@index([towerId])
@@ -74,7 +74,7 @@ model DutyPlan {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   towerDay   TowerDay? @relation(fields: [towerDayId], references: [id])
-  towerDayId String?
+  towerDayId String?   @unique
   shifts     Shift[]
   Tower      Tower?    @relation(fields: [towerId], references: [id])
   towerId    String?

@@ -33,14 +33,20 @@ import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
 import { getUserOverview } from "@/server/queries/get-user-overview";
-import { TowerDayWeatherForm } from "@/components/forms/tower-day-weather-form";
-import { getTowerDayWeather } from "@/server/queries/get-tower-day-weather";
+import { getTowerDayOverview } from "@/server/queries/get-tower-day-overview";
+import { TowerDayWatchmanPlanForm } from "@/components/forms/tower-day-watchman-plan-form";
+import { getTowerDayWatchmanPlan } from "@/server/queries/get-tower-day-watchman-plan";
+import { getTowerDayTodo } from "@/server/queries/get-tower-day-todo";
+import { TowerDayTodoForm } from "@/components/forms/tower-day-todo-form";
+import { getTowerDayIncident } from "@/server/queries/get-tower-day-incident";
+import { TowerDayIncidentForm } from "@/components/forms/tower-day-incident-form";
+import { TowerDayDutyPlanForm } from "@/components/forms/tower-day-duty-plan-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  /*  const towerday = await getTowerDayWeather(id, ["admin"]); */
+  /* const towerday = await getTowerDayIncident(id, ["admin"]); */
 
-  return "Overview";
+  return <TowerDayDutyPlanForm />;
 }
