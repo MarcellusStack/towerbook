@@ -17,6 +17,7 @@ import {
   rem,
   ActionIcon,
   Box,
+  Avatar,
 } from "@mantine/core";
 import { towerDayWatchmanPlanSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
@@ -76,38 +77,39 @@ export const TowerDayWatchmanPlanForm = ({
               initialValue={`${towerday.towerLeader.firstName} ${towerday.towerLeader.lastName}`}
             />
             <Box />
-            <Stack>
-              <UserComboboxButton
-                label="Wachgänger"
-                formActionId="tower-day-watchman-plan-form"
-              />
-              {form.values.watchman.map((watchman, index) => (
-                <Card
-                  key={`${watchman.id}-${index}`}
-                  padding={rem(4)}
-                  withBorder
-                >
-                  <Group justify="space-between">
-                    <Group gap={rem(4)}>
-                      <Text>{watchman.firstName}</Text>
-                      <Text>{watchman.lastName}</Text>
-                    </Group>
-                    <ActionIcon
-                      onClick={() => {
-                        form.removeListItem("watchman", index);
-                      }}
-                      variant="subtle"
-                      color="red"
-                    >
-                      <IconTrash
-                        style={{ width: rem(16), height: rem(16) }}
-                        stroke={1.5}
-                      />
-                    </ActionIcon>
+            <UserComboboxButton
+              label="Wachgänger"
+              formActionId="tower-day-watchman-plan-form"
+            />
+            <Box />
+            <Box />
+
+            {form.values.watchman.map((watchman, index) => (
+              <Card key={`${watchman.id}-${index}`} padding="xs" withBorder>
+                <Group justify="space-between">
+                  <Avatar color="blue" radius="xl">
+                    {watchman.firstName?.charAt(0)}
+                    {watchman.lastName?.charAt(0)}
+                  </Avatar>
+                  <Group gap={rem(4)}>
+                    <Text>{watchman.firstName}</Text>
+                    <Text>{watchman.lastName}</Text>
                   </Group>
-                </Card>
-              ))}
-            </Stack>
+                  <ActionIcon
+                    onClick={() => {
+                      form.removeListItem("watchman", index);
+                    }}
+                    variant="subtle"
+                    color="red"
+                  >
+                    <IconTrash
+                      style={{ width: rem(16), height: rem(16) }}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                </Group>
+              </Card>
+            ))}
           </SimpleGrid>
           <TowerDayFormAction
             updateStatus={update.status === "executing"}

@@ -76,17 +76,18 @@ export const TowerDayTodoForm = ({
             <Box />
             {form.values.todo &&
               form.values.todo.map((todo, index) => (
-                <Card key={`${todo.id}-${index}`} padding={rem(4)} withBorder>
+                <Card key={`${todo.id}-${index}`} padding="sm" withBorder>
                   <Group justify="space-between">
+                    <TextInput
+                      placeholder="Todo"
+                      {...form.getInputProps(`todo.${index}.todo`)}
+                    />
                     <Checkbox
+                      color="green"
                       label="Erledigt"
                       {...form.getInputProps(`todo.${index}.checked`, {
                         type: "checkbox",
                       })}
-                    />
-                    <TextInput
-                      placeholder="Todo"
-                      {...form.getInputProps(`todo.${index}.todo`)}
                     />
                     <ActionIcon
                       onClick={() => {

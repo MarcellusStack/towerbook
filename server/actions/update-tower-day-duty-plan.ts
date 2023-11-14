@@ -77,13 +77,27 @@ export const updateTowerDayDutyPlan = adminAction(
         throw new Error("Couldnt update dutyplan");
       }
 
+      const towerday = await prisma.towerDay.update({
+        where: {
+          id: towerDayId,
+        },
+        data: {
+          status: "ongoing",
+          dutyplanStatus: "ongoing",
+        },
+        select: { id: true },
+      });
+
+      if (!towerday.id) {
+        throw new Error("Couldnt update tower day");
+      }
+
       revalidatePath("/", "layout");
 
       return {
         message: `Der Dienstplan wurde aktualisiert.`,
       };
     } catch (error) {
-      console.log(error);
       throw new Error("Fehler beim aktualisieren des Dienstplan");
     }
   }

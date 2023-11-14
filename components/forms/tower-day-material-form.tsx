@@ -15,6 +15,7 @@ import {
   Textarea,
   Grid,
   SegmentedControl,
+  Table,
 } from "@mantine/core";
 import { v4 as uuidv4 } from "uuid";
 import { towerDayMaterialSchema } from "@/schemas";
@@ -53,7 +54,7 @@ export const TowerDayMaterialForm = ({
             </Text>
           }
         >
-          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+          <Stack align="flex-start">
             <Button
               variant="outline"
               onClick={() => {
@@ -67,54 +68,63 @@ export const TowerDayMaterialForm = ({
             >
               Material hinzufügen
             </Button>
-            <Box />
-            <Box />
-            {form.values.material &&
-              form.values.material.map((material, index) => (
-                <Card p="sm" withBorder>
-                  <Grid gutter="sm">
-                    <Grid.Col span={6}>
-                      <TextInput
-                        placeholder="Material"
-                        {...form.getInputProps(`material.${index}.material`)}
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={6}>
-                      <Text fw={500} mb={rem(2)}>
-                        Einsatzbereit
-                      </Text>
-                      <SegmentedControl
-                        {...form.getInputProps(`material.${index}.checked`)}
-                        fullWidth
-                        color="blue"
-                        data={[
-                          { value: "checked", label: "Ja" },
-                          { value: "unchecked", label: "Nein" },
-                        ]}
-                      />
-                    </Grid.Col>
-                    <Grid.Col span={12}>
-                      <Textarea
-                        placeholder="Bemerkungen"
-                        {...form.getInputProps(`material.${index}.comment`)}
-                      />
-                      <ActionIcon
-                        onClick={() => {
-                          form.removeListItem("material", index);
-                        }}
-                        variant="subtle"
-                        color="red"
-                      >
-                        <IconTrash
-                          style={{ width: rem(16), height: rem(16) }}
-                          stroke={1.5}
+
+            <Table verticalSpacing="sm" striped withTableBorder>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>Material</Table.Th>
+                  <Table.Th>Bemerkung</Table.Th>
+                  <Table.Th>Einsatzbereit</Table.Th>
+                  <Table.Th />
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {form.values.material &&
+                  form.values.material.map((material, index) => (
+                    <Table.Tr key={`${material.id}-${index}`}>
+                      <Table.Td>
+                        <TextInput
+                          placeholder="Material"
+                          {...form.getInputProps(`material.${index}.material`)}
                         />
-                      </ActionIcon>
-                    </Grid.Col>
-                  </Grid>
-                </Card>
-              ))}
-          </SimpleGrid>
+                      </Table.Td>
+                      <Table.Td>
+                        <Textarea
+                          placeholder="Bemerkungen"
+                          {...form.getInputProps(`material.${index}.comment`)}
+                        />
+                      </Table.Td>
+                      <Table.Td>
+                        <SegmentedControl
+                          {...form.getInputProps(`material.${index}.checked`)}
+                          fullWidth
+                          color="blue"
+                          data={[
+                            { value: "checked", label: "Ja" },
+                            { value: "unchecked", label: "Nein" },
+                          ]}
+                        />
+                      </Table.Td>
+                      <Table.Td>
+                        <ActionIcon
+                          onClick={() => {
+                            form.removeListItem("material", index);
+                          }}
+                          variant="subtle"
+                          color="red"
+                          size="lg"
+                        >
+                          <IconTrash
+                            style={{ width: rem(16), height: rem(16) }}
+                            stroke={1.5}
+                          />
+                        </ActionIcon>
+                      </Table.Td>
+                    </Table.Tr>
+                  ))}
+              </Table.Tbody>
+            </Table>
+          </Stack>
           <TowerDayFormAction
             updateStatus={update.status === "executing"}
             form="materialStatus"
