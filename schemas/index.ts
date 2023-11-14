@@ -15,6 +15,19 @@ export const organizationSchema = z.object({
     .min(3, { message: "Name muss mindestens 3 Zeichen lang sein." }),
 });
 
+export const shiftSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  startTime: z.date(),
+  endTime: z.date(),
+  type: z.string().min(1, { message: "Schicht Typ wird benötigt" }),
+  user: z.object({
+    id: z.string(),
+    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+    firstName: z.string().min(1, { message: "Vorname wird benötigt" }),
+    lastName: z.string().min(1, { message: "Nachname wird benötigt" }),
+  }),
+});
+
 export const baseUserSchema = z.object({
   firstName: z
     .string()
@@ -65,6 +78,19 @@ export const towerDayMaterialSchema = z.object({
 export const towerDayIncidentSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   incident: z.string(),
+});
+
+export const towerDayDutyPlanSchema = z.object({
+  towerDayId: z.string().min(1, { message: "Id wird benötigt" }),
+  towerId: z.string().min(1, { message: "Id wird benötigt" }),
+  dutyPlanId: z.string().min(1, { message: "Id wird benötigt" }),
+  shifts: z.array(shiftSchema),
+});
+
+export const dutyPlanSchema = z.object({
+  towerId: z.string().min(1, { message: "Id wird benötigt" }),
+  towerDayId: z.string().min(1, { message: "Id wird benötigt" }),
+  date: z.date(),
 });
 
 export const towerDayWeatherSchema = z.object({
@@ -153,12 +179,26 @@ export const createTowerSchema = z.object({
 export const createTowerDaySchema = z.object({
   createdAt: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
   startedAt: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
-  guardLeader: z
-    .string()
-    .min(1, { message: "Bitte fügen sie einen Wachleiter hinzu." }),
-  towerLeader: z
-    .string()
-    .min(1, { message: "Bitte fügen sie einen Turmleiter hinzu." }),
+  guardLeader: z.object({
+    id: z.string().min(1, { message: "Id wird benötigt" }),
+    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+    firstName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
+    lastName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+  }),
+  towerLeader: z.object({
+    id: z.string().min(1, { message: "Id wird benötigt" }),
+    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+    firstName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
+    lastName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+  }),
   towerId: z.string().min(1),
 });
 

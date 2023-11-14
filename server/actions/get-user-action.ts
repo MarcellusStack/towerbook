@@ -11,6 +11,7 @@ export const getUserAction = adminAction(z.object({}), async ({}, { user }) => {
       },
       select: {
         id: true,
+        userId: true,
         firstName: true,
         lastName: true,
       },

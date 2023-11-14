@@ -18,8 +18,8 @@ export const CreateTowerDayForm = () => {
     initialValues: {
       createdAt: new Date(),
       startedAt: "",
-      guardLeader: "",
-      towerLeader: "",
+      guardLeader: { id: "", userId: "", firstName: "", lastName: "" },
+      towerLeader: { id: "", userId: "", firstName: "", lastName: "" },
       towerId: id,
     },
   });

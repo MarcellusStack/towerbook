@@ -61,7 +61,7 @@ export const UserSelect = ({
           const filteredUser =
             result.data && result.data.users.filter((user) => user.id === val);
           setValue(`${filteredUser[0].firstName} ${filteredUser[0].lastName}`);
-          formAction.setFieldValue(formField, val);
+          formAction.setFieldValue(formField, filteredUser[0]);
           combobox.closeDropdown();
         }}
       >

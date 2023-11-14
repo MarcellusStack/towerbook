@@ -13,17 +13,13 @@ export const createTowerDay = adminAction(
     { user }
   ) => {
     try {
-      const [hours, minutes] = startedAt.split(":");
-      const startTime = new Date();
-      startTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-
       const towerday = await prisma.towerDay.create({
         data: {
           createdAt: new Date(createdAt as Date),
-          startedAt: extractTimeFromDate(startTime),
+          startedAt: extractTimeFromDate(startedAt),
           tower: { connect: { id: towerId } },
-          guardLeader: { connect: { id: guardLeader } },
-          towerLeader: { connect: { id: towerLeader } },
+          guardLeader: { connect: { id: guardLeader.id } },
+          towerLeader: { connect: { id: towerLeader.id } },
         },
         select: {
           id: true,

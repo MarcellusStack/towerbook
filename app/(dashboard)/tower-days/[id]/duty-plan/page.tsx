@@ -41,12 +41,13 @@ import { TowerDayTodoForm } from "@/components/forms/tower-day-todo-form";
 import { getTowerDayIncident } from "@/server/queries/get-tower-day-incident";
 import { TowerDayIncidentForm } from "@/components/forms/tower-day-incident-form";
 import { TowerDayDutyPlanForm } from "@/components/forms/tower-day-duty-plan-form";
+import { getTowerDayDutyPlan } from "@/server/queries/get-tower-day-duty-plan";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  /* const towerday = await getTowerDayIncident(id, ["admin"]); */
+  const towerday = await getTowerDayDutyPlan(id, ["admin"]);
 
-  return <TowerDayDutyPlanForm />;
+  return <TowerDayDutyPlanForm towerday={towerday} />;
 }
