@@ -15,6 +15,7 @@ import { convertDate } from "@/utils";
 import { TowerDayProcess } from "@/components/process";
 import TowerDayOverview from "@/components/tower-day-overview";
 import Link from "next/link";
+import TowerDayAction from "@/components/tower-day-action";
 
 export default async function Layout({
   children,
@@ -44,26 +45,7 @@ export default async function Layout({
         <GridCol span={4}>
           <Stack pt="sm">
             <TowerDayOverview towerday={towerday} />
-            <Group>
-              <Button
-                leftSection={<IconLayoutDashboard />}
-                component={Link}
-                href={`/tower-days/${towerday.id}/`}
-                variant="outline"
-              >
-                Übersicht
-              </Button>
-              <Button
-                disabled
-                color="red"
-                leftSection={<IconUserExclamation />}
-              >
-                Revision anfragen
-              </Button>
-              <Button color="green" leftSection={<IconChecklist />}>
-                Turmtag abschließen
-              </Button>
-            </Group>
+            <TowerDayAction />
           </Stack>
         </GridCol>
       </Grid>
