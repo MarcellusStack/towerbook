@@ -203,8 +203,6 @@ export const TowerDayDutyPlanForm = ({
                       </>
                     ),
                   });
-
-                  console.log();
                 }}
                 selectable={true}
                 slotDuration={"01:00"}

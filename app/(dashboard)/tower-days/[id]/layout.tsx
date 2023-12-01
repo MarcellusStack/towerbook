@@ -2,10 +2,20 @@ import RoleBadge from "@components/role-badge";
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
 import { getUser } from "@server/queries/get-user";
 import { UserTabs } from "@components/user-tabs";
-import { Button, Grid, GridCol, Group, Stack, Text } from "@mantine/core";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  GridCol,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { getTower } from "@/server/queries/get-tower";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
+  IconCheck,
   IconChecklist,
   IconLayoutDashboard,
   IconUserExclamation,
@@ -39,9 +49,24 @@ export default async function Layout({
           </Text>
         }
       />
+
       <TowerDayProcess towerday={towerday} />
+
       <Grid>
-        <GridCol span={8}>{children}</GridCol>
+        <GridCol span={8}>
+          {towerday.status === "completed" ? (
+            <Alert
+              variant="light"
+              color="green"
+              title="Turm-Tag abgeschlossen"
+              icon={<IconCheck />}
+            >
+              Alle wichtigen Formulare wurden bearbeitet. Gut gemacht!
+            </Alert>
+          ) : (
+            children
+          )}
+        </GridCol>
         <GridCol span={4}>
           <Stack pt="sm">
             <TowerDayOverview towerday={towerday} />

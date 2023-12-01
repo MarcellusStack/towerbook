@@ -88,7 +88,7 @@ export const TowerDayProcess = ({
   towerday: TowerDayProcessProps;
 }) => {
   return (
-    <Box>
+    <Box style={{ position: "sticky", top: 0, left: 0, overflow: "auto" }}>
       <Group gap="sm" grow wrap="nowrap">
         <Process
           process={towerday.watchmanStatus}

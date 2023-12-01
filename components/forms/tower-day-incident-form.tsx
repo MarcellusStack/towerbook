@@ -47,8 +47,6 @@ export const TowerDayIncidentForm = ({
     },
   });
 
-  console.log(towerday);
-
   const update = useActionNotification({
     action: updateTowerDayIncident,
     executeNotification: `Turm Tag wird aktualisiert`,

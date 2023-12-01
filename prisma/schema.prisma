@@ -37,6 +37,7 @@ model Tower {
   number         String
   towerdays      TowerDay[]
   dutyplans      DutyPlan[]
+  searchlists    SearchList[]
 
   @@index(organizationId)
 }
@@ -74,10 +75,10 @@ model DutyPlan {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   date       DateTime
-  towerDay   TowerDay? @relation(fields: [towerDayId], references: [id])
+  towerDay   TowerDay? @relation(fields: [towerDayId], references: [id], onDelete: Cascade)
   towerDayId String?   @unique
   shifts     Shift[]
-  tower      Tower?    @relation(fields: [towerId], references: [id])
+  tower      Tower?    @relation(fields: [towerId], references: [id], onDelete: Cascade)
   towerId    String?
 }
 
@@ -88,9 +89,9 @@ model Shift {
   type       ShiftType @default(duty)
   startTime  DateTime
   endTime    DateTime
-  user       Profile   @relation(fields: [userId], references: [id])
+  user       Profile   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  dutyPlan   DutyPlan  @relation(fields: [dutyPlanId], references: [id])
+  dutyPlan   DutyPlan  @relation(fields: [dutyPlanId], references: [id], onDelete: Cascade)
   dutyPlanId String
 }
 
@@ -173,6 +174,21 @@ model Profile {
   towerLeaders                TowerDay[]    @relation(name: "towerLeader")
 
   @@index([userId, organizationId])
+}
+
+model SearchList {
+  id           String    @id @default(uuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  date         DateTime
+  timeSearched DateTime  @db.Time(4)
+  firstName    String
+  lastName     String
+  description  String?
+  timeFound    DateTime? @db.Time(4)
+  handOverTo   String?
+  tower        Tower?    @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  towerId      String?
 }
 
 enum Role {

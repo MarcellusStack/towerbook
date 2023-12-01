@@ -101,24 +101,14 @@ const UserDashboard = ({ user }: { user: UserOverviewProps }) => {
               locales={[deLocale]}
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
-              events={[
-                {
-                  title: "Rettungsschwimmer",
-                  date: new Date("2023-10-17T09:00:00"),
-                },
-                {
-                  title: "Rettungsschwimmer",
-                  date: new Date("2023-10-18T10:00:00"),
-                },
-                {
-                  title: "Rettungsschwimmer",
-                  date: new Date("2023-10-19T11:00:00"),
-                },
-                {
-                  title: "Wachleiter",
-                  date: new Date("2023-10-20T11:00:00"),
-                },
-              ]}
+              events={user.shifts.map((shift, index) => ({
+                index: index,
+                id: shift.id,
+                /* title: `${shift.user.firstName} ${shift.user.lastName}`, */
+                start: shift.startTime,
+                end: shift.endTime,
+                color: shift.type === "duty" ? "green" : "gray",
+              }))}
             />
           </Stack>
         </Card>

@@ -28,7 +28,15 @@ export const getUserOverview = authFilterQuery(async (search, user) => {
       email: true,
       phone: true,
       towers: true,
-      //add dutyplan when its available
+      shifts: {
+        select: {
+          id: true,
+          
+          type: true,
+          startTime: true,
+          endTime: true,
+        },
+      },
     },
   });
 }) as unknown as (
