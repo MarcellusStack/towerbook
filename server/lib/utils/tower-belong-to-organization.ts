@@ -12,5 +12,5 @@ export const towerBelongsToOrganization = async (
   });
 
   if (!check || !check.id)
-    throw new Error("Towerday does not belong to your organization");
+    throw new Error("Tower does not belong to your organization");
 };

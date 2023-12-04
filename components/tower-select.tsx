@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { getUserAction } from "@/server/actions/get-user-action";
+import { getTowerAction } from "@server/actions/get-tower-action";
 import {
   Combobox,
   InputBase,
@@ -15,7 +15,7 @@ import {
 import { createFormActions } from "@mantine/form";
 import { useState } from "react";
 
-export const UserSelect = ({
+export const TowerSelect = ({
   formActionId,
   formField,
   label,
@@ -24,15 +24,15 @@ export const UserSelect = ({
   formActionId: string;
   formField: string;
   label: string;
-  initialValue: string | null;
+  initialValue?: string | null;
 }) => {
   const formAction = createFormActions(formActionId);
   const [firstOpen, setFirstOpen] = useState(false);
   const [value, setValue] = useState<string | null>(initialValue || null);
   const [search, setSearch] = useState("");
   const { execute, result, status } = useActionNotification({
-    action: getUserAction,
-    executeNotification: `Benutzer werden geladen`,
+    action: getTowerAction,
+    executeNotification: `Türme werden geladen`,
   });
   const combobox = useCombobox({
     onDropdownClose: () => {
@@ -58,10 +58,11 @@ export const UserSelect = ({
         store={combobox}
         withinPortal={false}
         onOptionSubmit={(val) => {
-          const filteredUser =
-            result.data && result.data.users.filter((user) => user.id === val);
-          setValue(`${filteredUser[0].firstName} ${filteredUser[0].lastName}`);
-          formAction.setFieldValue(formField, filteredUser[0]);
+          const filteredTower =
+            result.data &&
+            result.data.towers.filter((tower) => tower.id === val);
+          setValue(`${filteredTower[0].name} ${filteredTower[0].number}`);
+          formAction.setFieldValue(formField, filteredTower[0].id);
           combobox.closeDropdown();
         }}
       >
@@ -74,7 +75,7 @@ export const UserSelect = ({
             onClick={() => combobox.toggleDropdown()}
             rightSectionPointerEvents="none"
           >
-            {value || <Input.Placeholder>Benutzer auswählen</Input.Placeholder>}
+            {value || <Input.Placeholder>Turm auswählen</Input.Placeholder>}
           </InputBase>
         </Combobox.Target>
 
@@ -85,27 +86,27 @@ export const UserSelect = ({
             placeholder="Benutzer suchen"
           />
           <Combobox.Options>
-            {result.data && result.data.users.length > 0 ? (
-              result.data.users
+            {result.data && result.data.towers.length > 0 ? (
+              result.data.towers
                 .filter(
                   (item) =>
-                    item.firstName
+                    item.number
                       .toLowerCase()
                       .includes(search.toLowerCase().trim()) ||
-                    item.lastName
+                    item.name
                       .toLowerCase()
                       .includes(search.toLowerCase().trim())
                 )
                 .map((item) => (
                   <Combobox.Option value={item.id} key={item.id}>
-                    {item.firstName} {item.lastName}
+                    {item.name} {item.number}
                   </Combobox.Option>
                 ))
             ) : (
               <Combobox.Empty>
                 {result.data &&
-                  result.data.users.length === 0 &&
-                  "Keine Benutzer gefunden"}
+                  result.data.towers.length === 0 &&
+                  "Keine Türme gefunden"}
                 {status === "executing" && <Loader />}
               </Combobox.Empty>
             )}

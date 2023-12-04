@@ -187,8 +187,8 @@ model SearchList {
   description  String?
   timeFound    DateTime? @db.Time(4)
   handOverTo   String?
-  tower        Tower?    @relation(fields: [towerId], references: [id], onDelete: Cascade)
-  towerId      String?
+  tower        Tower     @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  towerId      String
 }
 
 enum Role {

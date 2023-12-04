@@ -1,37 +1,98 @@
-"use server";
-import { roles } from "@/constants/roles";
+"use client";
+
 import {
-  Badge,
   Table,
   Group,
   Text,
   ActionIcon,
-  rem,
   TableThead,
   TableTr,
   TableTh,
   TableTbody,
   TableTd,
-  Skeleton,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
-import { capitalizeFirstLetter, convertDate, convertTime } from "@utils/index";
-import Image from "next/image";
+import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { deleteTower } from "@server/actions/delete-tower";
-import {
-  SearchListProps,
-  SearchlistTableRow,
-} from "@components/search-list-table-row";
-import { getSearchLists } from "@/server/queries/get-search-lists";
-import { unstable_noStore } from "next/cache";
+import { SearchList } from "@prisma/client";
+import { deleteSearchList } from "@server/actions/delete-search-list";
 
-export const SearchListTable = async () => {
-  unstable_noStore();
-  const searchlists = await getSearchLists("", []);
+export type SearchListProps = Pick<
+  SearchList,
+  | "id"
+  | "date"
+  | "timeSearched"
+  | "firstName"
+  | "lastName"
+  | "timeFound"
+  | "handOverTo"
+  | "towerId"
+>;
 
+export const SearchlistTableRow = ({
+  searchlist,
+}: {
+  searchlist: SearchListProps;
+}) => {
+  return (
+    <TableTr key={searchlist.id}>
+      <TableTd>{convertDate(searchlist.date)}</TableTd>
+      <TableTd>{convertTime(searchlist.timeSearched)}</TableTd>
+      <TableTd>
+        <Text size="sm">
+          {searchlist.firstName} {searchlist.lastName}
+        </Text>
+      </TableTd>
+      <TableTd>
+        <Text size="sm">{convertTime(searchlist.timeSearched)}</Text>
+      </TableTd>
+      <TableTd>
+        <Text size="sm">{searchlist.handOverTo}</Text>
+      </TableTd>
+      <TableTd>
+        <Group gap={0} justify="flex-end">
+          <ActionIcon
+            size="sm"
+            component={Link}
+            href={`/protocols/search-list/${searchlist.id}`}
+            variant="subtle"
+          >
+            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          </ActionIcon>
+          <ActionIcon
+            onClick={() => {
+              modals.open({
+                title: "Sucheintrag löschen",
+                children: (
+                  <>
+                    <DeleteModalAction
+                      id={searchlist.id}
+                      action={deleteSearchList}
+                      model="Sucheintrag"
+                    />
+                  </>
+                ),
+              });
+            }}
+            size="sm"
+            variant="subtle"
+            color="red"
+          >
+            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          </ActionIcon>
+        </Group>
+      </TableTd>
+    </TableTr>
+  );
+};
+
+export const SearchListTable = ({
+  searchlists,
+}: {
+  searchlists: SearchListProps[];
+}) => {
   return (
     <>
       <Table verticalSpacing="sm" striped withTableBorder>
@@ -41,7 +102,7 @@ export const SearchListTable = async () => {
             <TableTh>Uhrzeit gesucht</TableTh>
             <TableTh>Name</TableTh>
             <TableTh>Turm</TableTh>
-            <TableTh>Status</TableTh>
+            <TableTh>Übergeben</TableTh>
             <TableTh />
           </TableTr>
         </TableThead>
@@ -51,7 +112,6 @@ export const SearchListTable = async () => {
           ))}
         </TableTbody>
       </Table>
-      
     </>
   );
 };

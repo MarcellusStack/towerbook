@@ -38,12 +38,12 @@ export const SearchlistTableRow = ({
           {searchlist.firstName} {searchlist.lastName}
         </Text>
       </TableTd>
-      <Table.Td>
+      <TableTd>
         <Text size="sm">{convertTime(searchlist.timeFound)}</Text>
-      </Table.Td>
-      <Table.Td>
+      </TableTd>
+      <TableTd>
         <Text size="sm">{searchlist.handOverTo}</Text>
-      </Table.Td>
+      </TableTd>
       <TableTd>
         <Group gap={0} justify="flex-end">
           <ActionIcon

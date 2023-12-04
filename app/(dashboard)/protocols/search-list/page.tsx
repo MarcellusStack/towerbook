@@ -41,22 +41,22 @@ import { Protocols } from "@/components/protocols";
 import { protocolLinks } from "@constants/protocol-links";
 import { Suspense } from "react";
 import { SearchListTable } from "@components/tables/search-list-table";
+import { CreateSearchListForm } from "@components/forms/create-search-list-form";
 import { getSearchLists } from "@/server/queries/get-search-lists";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
+  const searchlists = await getSearchLists("", ["admin"]);
   return (
     <>
       <PrimaryAppHeading title="Suchliste" />
       <QuickSearchAdd
         modalTitle="Suche anlegen"
         modalDescription="Erstellen Sie hier einen Sucheintrag. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<h1>HelloWorld</h1>}
+        modalContent={<CreateSearchListForm />}
       />
-      <Suspense
-        fallback={<Skeleton className="w-full" style={{ height: 500 }} />}
-      >
-        <SearchListTable />
-      </Suspense>
+      <SearchListTable searchlists={searchlists} />
     </>
   );
 }

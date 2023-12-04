@@ -2,10 +2,12 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { PasswordInput, TextInput, Button, Stack, Select } from "@mantine/core";
-import { createUserSchema } from "@/schemas";
+import { createSearchListSchema, createUserSchema } from "@/schemas";
 import { roles } from "@constants/roles";
+import { TowerSelect } from "@components/tower-select";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
+import { createSearchList } from "@/server/actions/create-search-list";
 
 export const CreateSearchListForm = () => {
   const form = useForm({
@@ -44,6 +46,11 @@ export const CreateSearchListForm = () => {
         <TimeInput label="Uhrzeit" {...form.getInputProps("timeSearched")} />
         <TextInput label="Vorname" {...form.getInputProps("firstName")} />
         <TextInput label="Nachname" {...form.getInputProps("lastName")} />
+        <TowerSelect
+          formActionId="create-search-list-form"
+          formField="towerId"
+          label="Turm"
+        />
         <Button loading={status === "executing"} type="submit">
           Hinzufügen
         </Button>

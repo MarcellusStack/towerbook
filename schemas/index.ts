@@ -202,6 +202,20 @@ export const createTowerDaySchema = z.object({
   towerId: z.string().min(1),
 });
 
+export const createSearchListSchema = z.object({
+  date: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
+  timeSearched: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
+  firstName: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
+  lastName: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+  towerId: z.string().min(1),
+});
+
 export const deleteUserSchema = z.object({
   userId: z.string().min(1, { message: "User Id wird benötigt" }),
 });
