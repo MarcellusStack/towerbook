@@ -62,7 +62,7 @@ export const TowerDayWeatherTableRow = ({
           variant="subtle"
           color="red"
         >
-          <IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
+          <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
         </ActionIcon>
       </Table.Td>
     </Table.Tr>

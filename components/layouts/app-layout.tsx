@@ -32,6 +32,7 @@ import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
 import { refreshSession } from "@server/actions/refresh-session";
 import { useAction } from "next-safe-action/hook";
+import { Breadcrumb } from "@components/breadcrumb";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -228,7 +229,10 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         </Stack>
       </AppShell.Navbar>
       <AppShell.Main>
-        <Stack gap="sm">{children}</Stack>
+        <Stack gap="sm">
+          <Breadcrumb />
+          {children}
+        </Stack>
       </AppShell.Main>
       <AppShell.Aside p="sm">
         <Stack justify="space-between" className="h-full">

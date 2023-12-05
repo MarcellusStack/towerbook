@@ -6,7 +6,6 @@ import { type Profile, Role } from "@prisma/client";
 export type UserAccountProps = Pick<
   Profile,
   | "userId"
-  | "picture"
   | "gender"
   | "firstName"
   | "lastName"
@@ -30,7 +29,6 @@ export type UserAccountProps = Pick<
   | "iban"
   | "bic"
   | "differentBankholder"
-  | "userId"
 >;
 
 export const getUserAccount = authFilterQuery(async (search, user) => {
@@ -40,7 +38,6 @@ export const getUserAccount = authFilterQuery(async (search, user) => {
       userId: search,
     },
     select: {
-      picture: true,
       gender: true,
       firstName: true,
       lastName: true,

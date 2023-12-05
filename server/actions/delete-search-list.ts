@@ -9,24 +9,11 @@ import { towerBelongsToOrganization } from "@server/lib/utils/tower-belong-to-or
 export const deleteSearchList = adminAction(
   deleteSchema,
   async ({ id }, { user }) => {
-    const searchlist = await prisma.searchList.findUnique({
-      where: { id },
-      select: {
-        id: true,
-        towerId: true,
-      },
-    });
-
-    if (!searchlist) {
-      throw new Error("Der Sucheintrag existiert nicht");
-    }
-
-    await towerBelongsToOrganization(searchlist.towerId, user?.organizationId);
-
     try {
       const searchlist = await prisma.searchList.delete({
         where: {
           id: id,
+          organizationId: user.organizationId as string,
         },
         select: {
           id: true,

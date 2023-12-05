@@ -23,7 +23,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
   const form = useForm({
     validate: zodResolver(userProfileSchema),
     initialValues: {
-      picture: user.picture,
+      
       gender: user.gender,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -71,11 +71,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           }
         >
           <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-            <FileInput
-              label="Profil Bild"
-              placeholder="Datei auswählen"
-              {...form.getInputProps("picture")}
-            />
+            
             <Select
               label="Geschlecht"
               placeholder="Geschlecht"

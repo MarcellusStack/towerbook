@@ -11,16 +11,17 @@ datasource db {
 }
 
 model Organization {
-  id             String    @id @default(uuid())
+  id             String       @id @default(uuid())
   name           String
   members        Profile[]
   towers         Tower[]
+  searchlists    SearchList[]
   material       Json?
   weather        Json?
   todo           Json?
   towerLocations Json?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model Tower {
@@ -103,7 +104,6 @@ enum ShiftType {
 model Profile {
   id                          String        @id @default(uuid())
   userId                      String        @unique
-  picture                     String?
   gender                      String?
   firstName                   String
   lastName                    String
@@ -177,18 +177,21 @@ model Profile {
 }
 
 model SearchList {
-  id           String    @id @default(uuid())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  date         DateTime
-  timeSearched DateTime  @db.Time(4)
-  firstName    String
-  lastName     String
-  description  String?
-  timeFound    DateTime? @db.Time(4)
-  handOverTo   String?
-  tower        Tower     @relation(fields: [towerId], references: [id], onDelete: Cascade)
-  towerId      String
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  date           DateTime
+  timeSearched   DateTime     @db.Time(4)
+  firstName      String
+  lastName       String
+  description    String?
+  timeFound      DateTime?    @db.Time(4)
+  handOver       Boolean      @default(false)
+  handOverTo     String?
+  tower          Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  towerId        String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
 }
 
 enum Role {

@@ -114,7 +114,6 @@ export const towerDayFormStatusSchema = z.object({
 export const userProfileSchema = z.intersection(
   baseUserSchema,
   z.object({
-    picture: z.string().nullable(),
     gender: z.string().nullable(),
     salutation: z.string().nullable(),
     title: z.string().nullable(),
@@ -262,4 +261,11 @@ export const userCertificateSchema = z.object({
   car: z.string().nullable(),
   rwc: z.string().nullable(),
   guardLeaderInstruction: z.string().nullable(),
+});
+
+export const searchListSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  description: z.string().nullable(),
+  timeFound: z.string().nullable(),
+  handOverTo: z.string().nullable(),
 });

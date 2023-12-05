@@ -26,6 +26,11 @@ import { TowerDayProcess } from "@/components/process";
 import TowerDayOverview from "@/components/tower-day-overview";
 import Link from "next/link";
 import TowerDayAction from "@/components/tower-day-action";
+import { getSearchList } from "@server/queries/get-search-list";
+import { SearchListOverview } from "@/components/search-list-overview";
+import { Suspense } from "react";
+import { CompleteAction } from "@components/complete-action";
+import { completeSearchList } from "@server/actions/complete-search-list";
 
 export default async function Layout({
   children,
@@ -35,32 +40,29 @@ export default async function Layout({
   params: { id: string };
 }) {
   const { id } = params;
-  const towerday = await getTowerDayOverview(id, ["admin"]);
+  const searchlist = await getSearchList(id, ["admin"]);
 
   return (
     <>
       <SecondaryAppHeading
-        title="Turm Tag"
+        title="Suchliste"
         extraInfo={
           <Text size="lg" c="dimmed">
-            Turm {towerday.tower.number} {towerday.tower.location}{" "}
-            {convertDate(new Date(towerday.createdAt))}
+            {searchlist.firstName} {searchlist.lastName}{" "}
+            {convertDate(new Date(searchlist.date))}
           </Text>
         }
       />
-
-      <TowerDayProcess towerday={towerday} />
-
       <Grid>
         <GridCol span={8}>
-          {towerday.status === "completed" ? (
+          {searchlist.handOver ? (
             <Alert
               variant="light"
               color="green"
-              title="Turm-Tag abgeschlossen"
+              title="Suche abgeschlossen"
               icon={<IconCheck />}
             >
-              Alle wichtigen Formulare wurden bearbeitet. Gut gemacht!
+              Die Suche wurde übergeben. Gut gemacht!
             </Alert>
           ) : (
             children
@@ -68,8 +70,8 @@ export default async function Layout({
         </GridCol>
         <GridCol span={4}>
           <Stack pt="sm">
-            <TowerDayOverview towerday={towerday} />
-            <TowerDayAction />
+            <SearchListOverview searchlist={searchlist} />
+            <CompleteAction label="Sucheintrag" action={completeSearchList} />
           </Stack>
         </GridCol>
       </Grid>

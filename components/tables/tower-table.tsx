@@ -67,10 +67,7 @@ export const TowerTableRow = ({ tower }: { tower: Tower }) => {
             href={`/towers/${tower.id}`}
             variant="subtle"
           >
-            <IconPencil
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
+            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
           <ActionIcon
             onClick={() => {
@@ -90,10 +87,7 @@ export const TowerTableRow = ({ tower }: { tower: Tower }) => {
             variant="subtle"
             color="red"
           >
-            <IconTrash
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
+            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Table.Td>

@@ -25,7 +25,6 @@ import { getUsers } from "@server/queries/get-users";
 import { CreateUserForm } from "@components/forms/create-user-form";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 1;
 
 export default async function Page({
   searchParams,

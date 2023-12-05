@@ -2,7 +2,7 @@ import RoleBadge from "@components/role-badge";
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
 import { getUser } from "@server/queries/get-user";
 import { UserTabs } from "@components/user-tabs";
-import { Text } from "@mantine/core";
+import { Group, Text } from "@mantine/core";
 import { getTower } from "@/server/queries/get-tower";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
@@ -60,12 +60,16 @@ export default async function Layout({
   return (
     <>
       <SecondaryAppHeading
-        title="Turm"
-        childName={`${tower.number} ${tower.name}`}
+        title={`Turm ${tower.number}`}
         extraInfo={
-          <Text size="lg" c="dimmed">
-            {tower.location}
-          </Text>
+          <Group>
+            <Text size="lg" c="dimmed">
+              {tower.name}
+            </Text>
+            <Text size="lg" c="dimmed">
+              {tower.location}
+            </Text>
+          </Group>
         }
       />
       <SecondaryPageTabs page="towers" links={links} />

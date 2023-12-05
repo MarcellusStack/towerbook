@@ -22,11 +22,10 @@ import {
 import Link from "next/link";
 import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { SearchList } from "@prisma/client";
 import { deleteSearchList } from "@server/actions/delete-search-list";
 import { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
 
-export const SearchListTableRow = ({
+export const TowerSearchListTableRow = ({
   searchlist,
 }: {
   searchlist: ExtendSearchListWithTowerProps;
@@ -38,11 +37,6 @@ export const SearchListTableRow = ({
       <TableTd>
         <Text size="sm">
           {searchlist.firstName} {searchlist.lastName}
-        </Text>
-      </TableTd>
-      <TableTd>
-        <Text size="sm">
-          {searchlist.tower.name} {searchlist.tower.number}
         </Text>
       </TableTd>
       <TableTd>
@@ -96,7 +90,7 @@ export const SearchListTableRow = ({
   );
 };
 
-export const SearchListTable = ({
+export const TowerSearchListTable = ({
   searchlists,
 }: {
   searchlists: ExtendSearchListWithTowerProps[];
@@ -109,14 +103,13 @@ export const SearchListTable = ({
             <TableTh>Datum</TableTh>
             <TableTh>Uhrzeit gesucht</TableTh>
             <TableTh>Name</TableTh>
-            <TableTh>Turm</TableTh>
             <TableTh>Übergeben</TableTh>
             <TableTh />
           </TableTr>
         </TableThead>
         <TableTbody>
           {searchlists.map((searchlist) => (
-            <SearchListTableRow searchlist={searchlist} />
+            <TowerSearchListTableRow searchlist={searchlist} />
           ))}
         </TableTbody>
       </Table>

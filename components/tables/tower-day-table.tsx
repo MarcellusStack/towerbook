@@ -54,10 +54,7 @@ export const TowerDayTableRow = ({ towerday }: { towerday: TowerDayProps }) => {
             href={`/tower-days/${towerday.id}`}
             variant="subtle"
           >
-            <IconPencil
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
+            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
           <ActionIcon
             onClick={() => {
@@ -77,10 +74,7 @@ export const TowerDayTableRow = ({ towerday }: { towerday: TowerDayProps }) => {
             variant="subtle"
             color="red"
           >
-            <IconTrash
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
+            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Table.Td>

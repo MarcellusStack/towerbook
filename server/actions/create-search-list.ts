@@ -3,7 +3,6 @@ import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { createSearchListSchema } from "@schemas/index";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { type TowerType } from "@prisma/client";
 import { extractTimeFromDate } from "@/utils";
 
 export const createSearchList = adminAction(
@@ -17,6 +16,7 @@ export const createSearchList = adminAction(
           firstName: firstName,
           lastName: lastName,
           tower: { connect: { id: towerId } },
+          organization: { connect: { id: user.organizationId as string } },
         },
         select: {
           id: true,

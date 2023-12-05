@@ -33,24 +33,16 @@ import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
 import { getUserOverview } from "@/server/queries/get-user-overview";
-import { getTowerSearchLists } from "@server/queries/get-tower-search-list";
-import { TowerSearchListTable } from "@components/tables/tower-search-list-table";
-import { CreateTowerSearchListForm } from "@components/forms/create-tower-search-list-form";
+import { TowerDayWeatherForm } from "@/components/forms/tower-day-weather-form";
+import { getTowerDayWeather } from "@/server/queries/get-tower-day-weather";
+import { getSearchList } from "@server/queries/get-search-list";
+import { SearchListForm } from "@components/forms/search-list-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const searchlists = await getTowerSearchLists(id, ["admin"]);
+  const searchlist = await getSearchList(id, ["admin"]);
 
-  return (
-    <>
-      <QuickSearchAdd
-        modalTitle="Suche anlegen"
-        modalDescription="Erstellen Sie hier einen Sucheintrag. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<CreateTowerSearchListForm />}
-      />
-      <TowerSearchListTable searchlists={searchlists} />
-    </>
-  );
+  return <SearchListForm searchlist={searchlist} />;
 }

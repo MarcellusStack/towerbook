@@ -10,6 +10,7 @@ import {
   IconLayoutDashboard,
   IconUser,
 } from "@tabler/icons-react";
+import { Group, Text } from "@mantine/core";
 
 export const metadata = {
   title: "My Mantine app",
@@ -57,8 +58,17 @@ export default async function Layout({
     <>
       <SecondaryAppHeading
         title={`Benutzer`}
-        childName={`${user.firstName} ${user.lastName}`}
-        extraInfo={<RoleBadge user={user} />}
+        extraInfo={
+          <Group>
+            <Text size="lg" c="dimmed">
+              {user.firstName}
+            </Text>
+            <Text size="lg" c="dimmed">
+              {user.lastName}
+            </Text>
+            <RoleBadge user={user} />
+          </Group>
+        }
       />
       <SecondaryPageTabs page="users" links={links} />
       {/* <UserTabs /> */}

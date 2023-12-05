@@ -1,12 +1,11 @@
 import { useActionNotification } from "@hooks/use-action-notification";
 import { Button, Group, Stack, Text } from "@mantine/core";
+import { useParams } from "next/navigation";
 
 export const UpdateModalAction = ({
-  id,
   action,
   model,
 }: {
-  id: string;
   action: any;
   model: string;
 }) => {
@@ -15,6 +14,7 @@ export const UpdateModalAction = ({
     executeNotification: `${model} wird aktualisiert`,
     hideModals: true,
   });
+  const { id } = useParams();
   return (
     <Stack gap="md">
       <Text size="sm">

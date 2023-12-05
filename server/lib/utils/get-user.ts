@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@server/lib/auth-options";
 import { prisma } from "@/server/db";
+import { cache } from "react";
 
 export type GetUserProps = {
   id: string;
@@ -10,7 +11,7 @@ export type GetUserProps = {
   organizationId: string | null;
 };
 
-export const getUser: () => Promise<GetUserProps | null> = async () => {
+export const getUser: () => Promise<GetUserProps | null> = cache(async () => {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -39,4 +40,4 @@ export const getUser: () => Promise<GetUserProps | null> = async () => {
     role: user.role,
     organizationId: user.organizationId,
   };
-};
+});

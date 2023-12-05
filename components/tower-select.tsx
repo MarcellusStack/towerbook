@@ -83,7 +83,7 @@ export const TowerSelect = ({
           <Combobox.Search
             value={search}
             onChange={(event) => setSearch(event.currentTarget.value)}
-            placeholder="Benutzer suchen"
+            placeholder="Turm suchen"
           />
           <Combobox.Options>
             {result.data && result.data.towers.length > 0 ? (
