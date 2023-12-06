@@ -33,12 +33,24 @@ import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
 import { getUserOverview } from "@/server/queries/get-user-overview";
+import { CreateTowerGroupRegistrationForm } from "@components/forms/create-tower-group-registration-form copy";
+import { getTowerGroupRegistrations } from "@server/queries/get-tower-group-registrations";
+import { TowerGroupRegistrationTable } from "@components/tables/tower-group-registration-table";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  /* const user = await getUserOverview(userId, ["admin"]); */
+  const groups = await getTowerGroupRegistrations(id, ["admin"]);
 
-  return "Tower Group Registration";
+  return (
+    <>
+      <QuickSearchAdd
+        modalTitle="Gruppe anlegen"
+        modalDescription="Erstellen Sie hier eine Gruppe. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
+        modalContent={<CreateTowerGroupRegistrationForm />}
+      />
+      <TowerGroupRegistrationTable groups={groups} />
+    </>
+  );
 }

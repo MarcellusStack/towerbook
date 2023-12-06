@@ -11,34 +11,36 @@ datasource db {
 }
 
 model Organization {
-  id             String       @id @default(uuid())
-  name           String
-  members        Profile[]
-  towers         Tower[]
-  searchlists    SearchList[]
-  material       Json?
-  weather        Json?
-  todo           Json?
-  towerLocations Json?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id                 String              @id @default(uuid())
+  name               String
+  members            Profile[]
+  towers             Tower[]
+  searchlists        SearchList[]
+  material           Json?
+  weather            Json?
+  todo               Json?
+  towerLocations     Json?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  groupregistrations GroupRegistration[]
 }
 
 model Tower {
-  id             String        @id @default(uuid())
-  name           String
-  members        Profile[]
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId String?
-  status         TowerStatus   @default(lifeguard_on_duty)
-  type           TowerType     @default(tower)
-  location       String
-  number         String
-  towerdays      TowerDay[]
-  dutyplans      DutyPlan[]
-  searchlists    SearchList[]
+  id                 String              @id @default(uuid())
+  name               String
+  members            Profile[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  organization       Organization?       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId     String?
+  status             TowerStatus         @default(lifeguard_on_duty)
+  type               TowerType           @default(tower)
+  location           String
+  number             String
+  towerdays          TowerDay[]
+  dutyplans          DutyPlan[]
+  searchlists        SearchList[]
+  groupregistrations GroupRegistration[]
 
   @@index(organizationId)
 }
@@ -192,6 +194,22 @@ model SearchList {
   towerId        String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
+}
+
+model GroupRegistration {
+  id                  String       @id @default(uuid())
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+  date                DateTime
+  time                DateTime     @db.Time(4)
+  name                String
+  count               Int
+  supervisorFirstName String
+  supervisorLastName  String
+  tower               Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  towerId             String
+  organization        Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId      String
 }
 
 enum Role {

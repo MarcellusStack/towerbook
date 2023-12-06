@@ -215,6 +215,24 @@ export const createSearchListSchema = z.object({
   towerId: z.string().min(1),
 });
 
+export const createGroupRegistrationSchema = z.object({
+  date: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
+  time: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
+  name: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Gruppennamen hinzu." }),
+  count: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Gruppenanzahl hinzu." }),
+  supervisorFirstName: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
+  supervisorLastName: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+  towerId: z.string().min(1),
+});
+
 export const deleteUserSchema = z.object({
   userId: z.string().min(1, { message: "User Id wird benötigt" }),
 });
