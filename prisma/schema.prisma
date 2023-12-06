@@ -23,6 +23,7 @@ model Organization {
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   groupregistrations GroupRegistration[]
+  firstAidOperations FirstAidOperation[]
 }
 
 model Tower {
@@ -41,6 +42,7 @@ model Tower {
   dutyplans          DutyPlan[]
   searchlists        SearchList[]
   groupregistrations GroupRegistration[]
+  firstAidOperations FirstAidOperation[]
 
   @@index(organizationId)
 }
@@ -104,23 +106,23 @@ enum ShiftType {
 }
 
 model Profile {
-  id                          String        @id @default(uuid())
-  userId                      String        @unique
+  id                          String              @id @default(uuid())
+  userId                      String              @unique
   gender                      String?
   firstName                   String
   lastName                    String
   salutation                  String?
   title                       String?
   birthName                   String?
-  birthDate                   DateTime?     @db.Date
+  birthDate                   DateTime?           @db.Date
   birthPlace                  String?
   street                      String?
   houseNumber                 String?
   zipCode                     String?
   location                    String?
-  email                       String        @unique
+  email                       String              @unique
   phone                       String?
-  drkMember                   Boolean?      @default(false)
+  drkMember                   Boolean?            @default(false)
   drkMemberLocation           String?
   emergencyContactLastName    String?
   emergencyContactFirstName   String?
@@ -165,15 +167,16 @@ model Profile {
   car                         String?
   rwc                         String?
   guardLeaderInstruction      String?
-  role                        Role[]        @default([intern])
-  createdAt                   DateTime      @default(now())
-  updatedAt                   DateTime      @updatedAt
-  organization                Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  role                        Role[]              @default([intern])
+  createdAt                   DateTime            @default(now())
+  updatedAt                   DateTime            @updatedAt
+  organization                Organization?       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId              String?
   towers                      Tower[]
   shifts                      Shift[]
-  guardLeaders                TowerDay[]    @relation(name: "guardLeader")
-  towerLeaders                TowerDay[]    @relation(name: "towerLeader")
+  guardLeaders                TowerDay[]          @relation(name: "guardLeader")
+  towerLeaders                TowerDay[]          @relation(name: "towerLeader")
+  firstAidOperations          FirstAidOperation[]
 
   @@index([userId, organizationId])
 }
@@ -210,6 +213,157 @@ model GroupRegistration {
   towerId             String
   organization        Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId      String
+}
+
+model FirstAidOperation {
+  id                           String                 @id @default(uuid())
+  createdAt                    DateTime               @default(now())
+  updatedAt                    DateTime               @updatedAt
+  type                         FirstAidOperationType  @default(small)
+  date                         DateTime
+  startTime                    DateTime               @db.Time(4)
+  endTime                      DateTime?              @db.Time(4)
+  healthInsurance              String?
+  firstName                    String?
+  lastName                     String?
+  address                      String?
+  birthDate                    DateTime?
+  cashRegisterNumber           String?
+  insuranceNumber              String?
+  operationNumberControlCenter String?
+  operationNumberWRD           String?
+  operationLocation            String?
+  guardLeaderId                String
+  guardLeader                  Profile                @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade)
+  helper                       Json?
+  commissionedControlCenter    Boolean                @default(false)
+  emergencyMedicalIntervention Boolean                @default(false)
+  transportAmbulance           Boolean                @default(false)
+  alertBathers                 Boolean                @default(false)
+  alertPolice                  Boolean                @default(false)
+  alertOwnObservation          Boolean                @default(false)
+  alertLeader                  Boolean                @default(false)
+  usedGuardLeader              Boolean                @default(false)
+  usedLifeguard                Boolean                @default(false)
+  usedBoatman                  Boolean                @default(false)
+  usedRescueAssistant          Boolean                @default(false)
+  countForces                  Int                    @default(0)
+  usedBoat                     Boolean                @default(false)
+  usedQuad                     Boolean                @default(false)
+  usedVehicle                  Boolean                @default(false)
+  usedJetSki                   Boolean                @default(false)
+  usedOtherResources           Boolean                @default(false)
+  usedFireDepartment           Boolean                @default(false)
+  usedRescueService            Boolean                @default(false)
+  usedAirRescue                Boolean                @default(false)
+  usedNeighboringWRD           Boolean                @default(false)
+  usedPolice                   Boolean                @default(false)
+  usedDGzRS                    Boolean                @default(false)
+  usedDiver                    Boolean                @default(false)
+  usedOther                    Json?
+  swimmingAccident             Boolean                @default(false)
+  internalEmergency            Boolean                @default(false)
+  surgicalEmergency            Boolean                @default(false)
+  neurologicalEmergency        Boolean                @default(false)
+  firstResponderOperation      Boolean                @default(false)
+  otherAccident                Json?
+  asthma                       Boolean                @default(false)
+  aspiration                   Boolean                @default(false)
+  hyperventilation             Boolean                @default(false)
+  heartAttack                  Boolean                @default(false)
+  rhythmDisorder               Boolean                @default(false)
+  hypertensiveCrisis           Boolean                @default(false)
+  shock                        Boolean                @default(false)
+  bloodSugarImbalance          Boolean                @default(false)
+  drownAlmostDrown             Boolean                @default(false)
+  allergicReaction             Boolean                @default(false)
+  hypothermia                  Boolean                @default(false)
+  poisoning                    Boolean                @default(false)
+  seizure                      Boolean                @default(false)
+  acuteAbdomen                 Boolean                @default(false)
+  otherIllness                 Json?
+  emergencyEvent               String?
+  injurySkullBrainFace         Boolean                @default(false)
+  injurySpine                  Boolean                @default(false)
+  injuryChest                  Boolean                @default(false)
+  injuryAbdomen                Boolean                @default(false)
+  injuryPelvis                 Boolean                @default(false)
+  injuryExtremities            Boolean                @default(false)
+  measurementsTaken            Boolean                @default(false)
+  sysBloodPressure             Int?
+  diaBloodPressure             Int?
+  oxygenSaturation             Int?
+  pulse                        Int?
+  breahtingFrequency           Int?
+  bloodSugar                   Int?
+  temperature                  Int?
+  skinColor                    FirstAidOperationSkin?
+  consciousnessOriented        Boolean                @default(false)
+  consciousnessClouded         Boolean                @default(false)
+  consciousnessUnconscious     Boolean                @default(false)
+  breathingSpontaneouslyFreely Boolean                @default(false)
+  breathingShortnessOfBreath   Boolean                @default(false)
+  breathingRespiratoryArrest   Boolean                @default(false)
+  circulationPulseRegularly    Boolean                @default(false)
+  circulationPulseIrregularly  Boolean                @default(false)
+  circulationCirculatoryArrest Boolean                @default(false)
+  hurtSlightly                 Boolean                @default(false)
+  hurtModerately               Boolean                @default(false)
+  hurtSeverely                 Boolean                @default(false)
+  circulationIVAccess          Boolean                @default(false)
+  circulationMedication        Boolean                @default(false)
+  circulationResuscitation     Boolean                @default(false)
+  circulationAED               Boolean                @default(false)
+  circulationDefibrillation    Boolean                @default(false)
+  breathingProvideOxygen       Boolean                @default(false)
+  breathingMedication          Boolean                @default(false)
+  breathingSuction             Boolean                @default(false)
+  breathingVentilation         Boolean                @default(false)
+  positionHigh                 Boolean                @default(false)
+  positionShock                Boolean                @default(false)
+  positionStable               Boolean                @default(false)
+  positionFlat                 Boolean                @default(false)
+  positionVacuumMattress       Boolean                @default(false)
+  woundCare                    Boolean                @default(false)
+  sedation                     Boolean                @default(false)
+  cervicalCollar               Boolean                @default(false)
+  cooling                      Boolean                @default(false)
+  heatPreservation             Boolean                @default(false)
+  woundBandaged                Boolean                @default(false)
+  splinterRemoved              Boolean                @default(false)
+  tickPulled                   Boolean                @default(false)
+  plasterGlued                 Boolean                @default(false)
+  woundEducation               Boolean                @default(false)
+  vaccinationStatus            Boolean                @default(false)
+  rinseWoundWithWater          Boolean                @default(false)
+  otherMeasure                 Json?
+  resultConditionImproved      Boolean                @default(false)
+  resultConditionUnchanged     Boolean                @default(false)
+  resultConditionDeteriorated  Boolean                @default(false)
+  resultDeathAtLocation        Boolean                @default(false)
+  handOverRTW                  Boolean                @default(false)
+  handOverNEF                  Boolean                @default(false)
+  handOverKTW                  Boolean                @default(false)
+  handOverRTH                  Boolean                @default(false)
+  firstResponderFirstName      String?
+  firstResponderLastName       String?
+  firstResponderAddress        String?
+  tower                        Tower                  @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  towerId                      String
+  organization                 Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId               String
+}
+
+enum FirstAidOperationSkin {
+  rosy
+  pale
+  blue
+  red
+}
+
+enum FirstAidOperationType {
+  small
+  big
 }
 
 enum Role {
