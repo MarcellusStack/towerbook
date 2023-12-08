@@ -24,7 +24,7 @@ export const UserSelect = ({
   formActionId: string;
   formField: string;
   label: string;
-  initialValue: string | null;
+  initialValue?: string | null;
 }) => {
   const formAction = createFormActions(formActionId);
   const [firstOpen, setFirstOpen] = useState(false);

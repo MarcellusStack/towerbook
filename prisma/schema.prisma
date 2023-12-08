@@ -219,10 +219,12 @@ model FirstAidOperation {
   id                           String                 @id @default(uuid())
   createdAt                    DateTime               @default(now())
   updatedAt                    DateTime               @updatedAt
+  status                       Status                 @default(open)
   type                         FirstAidOperationType  @default(small)
   date                         DateTime
   startTime                    DateTime               @db.Time(4)
   endTime                      DateTime?              @db.Time(4)
+  accidentTime                 DateTime?              @db.Time(4)
   healthInsurance              String?
   firstName                    String?
   lastName                     String?
@@ -382,6 +384,12 @@ enum TowerStatus {
 }
 
 enum TowerDayStatus {
+  open
+  ongoing
+  completed
+}
+
+enum Status {
   open
   ongoing
   completed

@@ -21,14 +21,11 @@ export const QuickSearchAdd = ({
 }: QuickSearchAddProps) => {
   const router = useRouter();
   const pathName = usePathname();
-  
 
   const [text, setText] = useState("");
   const [query] = useDebouncedValue(text, 750);
 
   useEffect(() => {
-    
-
     if (!query) {
       router.push(`${pathName}`);
     } else {
@@ -45,6 +42,7 @@ export const QuickSearchAdd = ({
           className="w-full"
         />
         <Button
+          className="shrink-0"
           leftSection={<IconPlus size={14} />}
           onClick={() => {
             modals.open({
