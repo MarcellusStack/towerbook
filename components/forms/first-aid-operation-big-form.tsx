@@ -19,7 +19,7 @@ import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
 import { type Profile } from "@prisma/client";
 import { type ExtendFirstAidOperationWithRelationProps } from "@/server/queries/get-first-aid-operation";
-import { extractTimeFromDate } from "@/utils";
+import { convertTime, extractTimeFromDate } from "@/utils";
 import { UserSelect } from "@components/user-select";
 
 export const FirstAidOperationBigForm = ({
@@ -40,8 +40,8 @@ export const FirstAidOperationBigForm = ({
       insuranceNumber: operation.insuranceNumber,
       operationNumberControlCenter: operation.operationNumberControlCenter,
       operationNumberWRD: operation.operationNumberWRD,
-      startTime: extractTimeFromDate(new Date(operation.startTime)),
-      endTime: extractTimeFromDate(new Date(operation.endTime)),
+      startTime: convertTime(new Date(operation.startTime)),
+      endTime: convertTime(new Date(operation.endTime)),
       operationLocation: operation.operationLocation,
     },
   });
