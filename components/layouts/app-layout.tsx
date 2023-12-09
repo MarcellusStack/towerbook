@@ -166,7 +166,6 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>
-
             <Burger
               opened={opened}
               onClick={toggle}

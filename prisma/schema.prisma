@@ -48,29 +48,29 @@ model Tower {
 }
 
 model TowerDay {
-  id             String             @id @default(uuid())
+  id             String    @id @default(uuid())
   createdAt      DateTime
-  updatedAt      DateTime           @updatedAt
-  startedAt      DateTime           @db.Time(4)
-  status         TowerDayStatus     @default(open)
+  updatedAt      DateTime  @updatedAt
+  startedAt      DateTime  @db.Time(4)
+  status         Status    @default(open)
   guardLeaderId  String
-  guardLeader    Profile            @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
+  guardLeader    Profile   @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
   towerLeaderId  String
-  towerLeader    Profile            @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
+  towerLeader    Profile   @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
   watchman       Json?
-  watchmanStatus TowerDayFormStatus @default(open)
+  watchmanStatus Status    @default(open)
   todo           Json?
-  todoStatus     TowerDayFormStatus @default(open)
+  todoStatus     Status    @default(open)
   incident       String?
-  incidentStatus TowerDayFormStatus @default(open)
+  incidentStatus Status    @default(open)
   weather        Json?
-  weatherStatus  TowerDayFormStatus @default(open)
+  weatherStatus  Status    @default(open)
   material       Json?
-  materialStatus TowerDayFormStatus @default(open)
+  materialStatus Status    @default(open)
   towerId        String
-  tower          Tower              @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  tower          Tower     @relation(fields: [towerId], references: [id], onDelete: Cascade)
   dutyplan       DutyPlan?
-  dutyplanStatus TowerDayFormStatus @default(open)
+  dutyplanStatus Status    @default(open)
 
   @@index([towerId])
 }
@@ -107,6 +107,8 @@ enum ShiftType {
 
 model Profile {
   id                          String              @id @default(uuid())
+  lastLogin                   DateTime?
+  lastLogout                  DateTime?
   userId                      String              @unique
   gender                      String?
   firstName                   String
@@ -393,6 +395,7 @@ enum Status {
   open
   ongoing
   completed
+  incomplete
 }
 
 enum TowerDayFormStatus {

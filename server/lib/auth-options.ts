@@ -12,6 +12,10 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        if (!credentials) {
+          throw new Error("Keine Anmeldedaten gefunden");
+        }
+
         const { email, password } = credentials;
 
         const parseCredentials = authSchema.safeParse(credentials);
@@ -46,7 +50,25 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  events: {
+    async signOut(token, session) {
+      await prisma.profile.update({
+        where: { userId: token.token.id },
+        data: { lastLogout: new Date() },
+        select: { id: true },
+      });
+    },
+  },
   callbacks: {
+    async signIn(user) {
+      await prisma.profile.update({
+        where: { userId: user.user.id },
+        data: { lastLogin: new Date() },
+        select: { id: true },
+      });
+      return true;
+    },
+
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
