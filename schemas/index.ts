@@ -164,6 +164,13 @@ export const createUserSchema = z.intersection(
   })
 );
 
+export const inviteUserSchema = z.object({
+  email: z.string().email({
+    message: "Keine gültige E-Mail.",
+  }),
+  role: z.string().min(1, { message: "Bitte fügen Sie eine Rolle hinzu." }),
+});
+
 export const createTowerSchema = z.object({
   name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
   type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu." }),

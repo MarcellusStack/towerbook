@@ -49,7 +49,7 @@ export const QuickSearchAdd = ({
               title: modalTitle,
               children: (
                 <>
-                  <Text c="dimmed" size="sm">
+                  <Text c="dimmed" size="sm" mb="sm">
                     {modalDescription}
                   </Text>
                   {modalContent}

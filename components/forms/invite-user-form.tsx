@@ -2,26 +2,23 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { PasswordInput, TextInput, Button, Stack, Select } from "@mantine/core";
-import { createUserSchema } from "@/schemas";
+import { inviteUserSchema } from "@/schemas";
 import { roles } from "@constants/roles";
 import { useActionNotification } from "@hooks/use-action-notification";
-import { createUser } from "@server/actions/create-user";
+import { inviteUser } from "@/server/actions/invite-user";
 
-export const CreateUserForm = () => {
+export const InviteUserForm = () => {
   const form = useForm({
-    validate: zodResolver(createUserSchema),
+    validate: zodResolver(inviteUserSchema),
     initialValues: {
-      firstName: "",
-      lastName: "",
       email: "",
-      password: "",
       role: "",
     },
   });
 
   const { execute, result, status } = useActionNotification({
-    action: createUser,
-    executeNotification: "Benutzer wird erstellt",
+    action: inviteUser,
+    executeNotification: "Benutzer wird eingeladen",
     hideModals: true,
   });
 
@@ -33,21 +30,10 @@ export const CreateUserForm = () => {
     >
       <Stack gap="md">
         <TextInput
-          label="Vorname"
-          type="firstName"
-          {...form.getInputProps("firstName")}
-        />
-        <TextInput
-          label="Name"
-          type="lastName"
-          {...form.getInputProps("lastName")}
-        />
-        <TextInput
           label="E-Mail"
           type="email"
           {...form.getInputProps("email")}
         />
-        <PasswordInput label="Password" {...form.getInputProps("password")} />
         <Select
           label="Rolle"
           placeholder="Rolle auswählen"

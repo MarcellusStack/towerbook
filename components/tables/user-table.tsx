@@ -9,6 +9,7 @@ import { convertDate } from "@utils/index";
 import { DeleteModalAction } from "../delete-modal-action";
 import { deleteUser } from "@/server/actions/delete-user";
 import { type UserTableProps } from "@/server/queries/get-users";
+import { removeUserFromCompany } from "@/server/actions/remove-user-from-company";
 
 export const UserTableRow = ({ user }: { user: UserTableProps }) => {
   return (
@@ -51,7 +52,7 @@ export const UserTableRow = ({ user }: { user: UserTableProps }) => {
                   <>
                     <DeleteModalAction
                       id={user.userId}
-                      action={deleteUser}
+                      action={removeUserFromCompany}
                       model="Benutzer"
                     />
                   </>

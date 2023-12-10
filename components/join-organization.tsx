@@ -17,9 +17,10 @@ import { useActionNotification } from "@hooks/use-action-notification";
 import { createOrg } from "@/server/actions/create-organization";
 import { CreateOrganizationForm } from "@components/forms/create-organization-form";
 import { IconHome, IconHomeMove, IconHomePlus } from "@tabler/icons-react";
+import { Invitations } from "@components/invitations";
 
 export const JoinOrganization = () => {
-  const [value, setValue] = useState("react");
+  const [value, setValue] = useState("");
   return (
     <Modal opened={true} size="md" title="Organisation beitreten">
       <SegmentedControl
@@ -49,7 +50,7 @@ export const JoinOrganization = () => {
         ]}
       />
       {value === "create" && <CreateOrganizationForm />}
-      {value === "invite" && <h1>Invite</h1>}
+      {value === "invite" && <Invitations />}
     </Modal>
   );
 };

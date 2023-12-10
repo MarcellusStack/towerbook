@@ -14,6 +14,7 @@ import {
   Anchor,
   Center,
   Loader,
+  Divider,
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
@@ -22,7 +23,10 @@ import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
 import { getUsers } from "@server/queries/get-users";
-import { CreateUserForm } from "@components/forms/create-user-form";
+import { InviteUserForm } from "@/components/forms/invite-user-form";
+import { QuickSearch } from "@components/quick-search";
+import { UserInvitationsTable } from "@components/tables/user-invitation-table";
+import { getInvitations } from "@server/queries/get-invitations";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +36,13 @@ export default async function Page({
   searchParams: { search: string };
 }) {
   const { search } = searchParams;
-  const users = await getUsers(search, ["admin"]);
+  const usersPromise = getUsers(search, ["admin"]);
+  const invitationsPromise = getInvitations([]);
+
+  const [users, invitations] = await Promise.all([
+    usersPromise,
+    invitationsPromise,
+  ]);
 
   return (
     <>
@@ -40,9 +50,14 @@ export default async function Page({
       <QuickSearchAdd
         modalTitle="Benutzer anlegen"
         modalDescription="Erstellen Sie hier Benutzer für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<CreateUserForm />}
+        modalContent={<InviteUserForm />}
       />
       <UsersTable users={users ?? []} />
+      <Title order={2} size="h2" fw={700}>
+        Einladungen
+      </Title>
+      <Divider />
+      <UserInvitationsTable invitations={invitations} />
     </>
   );
 }
