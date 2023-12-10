@@ -80,6 +80,7 @@ export const TowerDayWatchmanPlanForm = ({
             <UserComboboxButton
               label="Wachgänger"
               formActionId="tower-day-watchman-plan-form"
+              formField="watchman"
             />
             <Box />
             <Box />
