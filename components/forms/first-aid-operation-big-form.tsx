@@ -12,6 +12,7 @@ import {
   Text,
   NumberInput,
   Checkbox,
+  Box,
 } from "@mantine/core";
 import { userProfileSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
@@ -21,6 +22,8 @@ import { type Profile } from "@prisma/client";
 import { type ExtendFirstAidOperationWithRelationProps } from "@/server/queries/get-first-aid-operation";
 import { convertTime, extractTimeFromDate } from "@/utils";
 import { UserSelect } from "@components/user-select";
+import { UserComboboxButton } from "@components/user-combobox-button";
+import { UserFormCard } from "../user-form-card";
 
 export const FirstAidOperationBigForm = ({
   operation,
@@ -43,8 +46,17 @@ export const FirstAidOperationBigForm = ({
       startTime: convertTime(new Date(operation.startTime)),
       endTime: convertTime(new Date(operation.endTime)),
       operationLocation: operation.operationLocation,
+      guardLeader: operation.guardLeader,
+      helper: operation.helper === null ? new Array() : operation.helper,
+      commissionedControlCenter: operation.commissionedControlCenter,
+      emergencyMedicalIntervention: operation.emergencyMedicalIntervention,
+      transportAmbulance: operation.transportAmbulance,
+      alertBathers: operation.alertBathers,
+      alertPolice: operation.alertPolice,
     },
   });
+
+  console.log(form.values);
 
   const { execute, result, status } = useActionNotification({
     action: updateUserProfile,
@@ -114,20 +126,72 @@ export const FirstAidOperationBigForm = ({
               label="Wachleiter"
               initialValue={`${operation.guardLeader.firstName} ${operation.guardLeader.lastName}`}
             />
-            <TextInput label="Anschrift" {...form.getInputProps("address")} />
-            <DatePickerInput
-              locale="de"
-              label="Geburtsdatum"
-              valueFormat="DD.MM.YYYY"
-              {...form.getInputProps("birthDate")}
+            <UserComboboxButton
+              label="Helfer"
+              formActionId="first-aid-operation-big-form"
+              formField="helper"
             />
-            <TextInput
-              label="Kassennummer"
-              {...form.getInputProps("cashRegisterNumber")}
+            <Box />
+            <Box />
+            {form.values.helper.map((helper, index) => (
+              <UserFormCard
+                props={helper}
+                index={index}
+                formField="helper"
+                formActionId="first-aid-operation-big-form"
+              />
+            ))}
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset
+          id="insert-your-title-here"
+          legend={
+            <Text fw={700} size="xl">
+              [Insert your title here]
+            </Text>
+          }
+        >
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            <Checkbox
+              label="Beauftragung durch Leitstelle"
+              {...form.getInputProps("commissionedControlCenter", {
+                type: "checkbox",
+              })}
             />
-            <TextInput
-              label="Versichertennummer"
-              {...form.getInputProps("insuranceNumber")}
+            <Checkbox
+              label="Notarzteinsatz"
+              {...form.getInputProps("emergencyMedicalIntervention", {
+                type: "checkbox",
+              })}
+            />
+            <Checkbox
+              label="Abtransport durch Rettungsdienst"
+              {...form.getInputProps("transportAmbulance", {
+                type: "checkbox",
+              })}
+            />
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset
+          id="alarm"
+          legend={
+            <Text fw={700} size="xl">
+              Alarmierung durch
+            </Text>
+          }
+        >
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            <Checkbox
+              label="Badegäste"
+              {...form.getInputProps("alertBathers", {
+                type: "checkbox",
+              })}
+            />
+            <Checkbox
+              label="Polizei / Wasserschutzzpolizei"
+              {...form.getInputProps("alertPolice", {
+                type: "checkbox",
+              })}
             />
           </SimpleGrid>
         </Fieldset>
