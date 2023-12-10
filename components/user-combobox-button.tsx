@@ -15,9 +15,11 @@ import { getUserAction } from "@/server/actions/get-user-action";
 
 export const UserComboboxButton = ({
   formActionId,
+  formField,
   label,
 }: {
   formActionId: string;
+  formField: string;
   label: string;
 }) => {
   const formAction = createFormActions(formActionId);
@@ -59,7 +61,7 @@ export const UserComboboxButton = ({
           const filteredUser =
             result.data && result.data.users.filter((user) => user.id === val);
 
-          formAction.insertListItem("watchman", {
+          formAction.insertListItem(formField, {
             id: filteredUser[0].id,
             firstName: filteredUser[0].firstName,
             lastName: filteredUser[0].lastName,
