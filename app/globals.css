@@ -34,3 +34,8 @@ html {
 .fc-toolbar-title {
   font-size: 1.25rem !important;
 }
+
+.mantine-Checkbox-root {
+  display: flex;
+  align-items: center;
+}
