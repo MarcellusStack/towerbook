@@ -59,7 +59,7 @@ export const TowerDayWatchmanPlanForm = ({
         <Fieldset
           legend={
             <Text fw={700} size="xl">
-              Wachplan
+              Team
             </Text>
           }
         >

@@ -114,7 +114,7 @@ export const TowerDayDutyPlanForm = ({
             <Fieldset
               legend={
                 <Text fw={700} size="xl">
-                  Dienstplan
+                  Wachplan
                 </Text>
               }
             >
@@ -204,6 +204,8 @@ export const TowerDayDutyPlanForm = ({
                     ),
                   });
                 }}
+                slotMinTime={"08:00:00"}
+                slotMaxTime={"19:00:00"}
                 selectable={true}
                 slotDuration={"01:00"}
                 initialView="timeGridDay"

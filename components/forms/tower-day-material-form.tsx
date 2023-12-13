@@ -50,7 +50,7 @@ export const TowerDayMaterialForm = ({
         <Fieldset
           legend={
             <Text fw={700} size="xl">
-              Materialien
+              Material Prüfung
             </Text>
           }
         >
