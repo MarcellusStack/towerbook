@@ -23,6 +23,7 @@ import {
   IconAmbulance,
   IconFirstAidKit,
   IconChartArcs,
+  IconShieldChevron,
 } from "@tabler/icons-react";
 import React from "react";
 import type { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
@@ -77,17 +78,31 @@ export const FirstAidOperationOverview = async ({
             }
           >
             {convertTime(new Date(operation.startTime))} -{" "}
-            {convertTime(new Date(operation.endTime))}
+            {operation.endTime && convertTime(new Date(operation.endTime))}
           </ListItem>
-          <ListItem
-            icon={
-              <ThemeIcon variant="light">
-                <IconUser style={{ width: "70%", height: "70%" }} />
-              </ThemeIcon>
-            }
-          >
-            {operation.firstName} {operation.lastName}
-          </ListItem>
+          {operation.firstName && operation.lastName && (
+            <ListItem
+              icon={
+                <ThemeIcon variant="light">
+                  <IconUser style={{ width: "70%", height: "70%" }} />
+                </ThemeIcon>
+              }
+            >
+              {operation.firstName} {operation.lastName}
+            </ListItem>
+          )}
+          {operation.operationLocation && (
+            <ListItem
+              icon={
+                <ThemeIcon size="md" variant="light">
+                  <IconMapPin style={{ width: "70%", height: "70%" }} />
+                </ThemeIcon>
+              }
+            >
+              {operation.operationLocation}
+            </ListItem>
+          )}
+
           <ListItem
             icon={
               <ThemeIcon variant="light">
@@ -97,8 +112,16 @@ export const FirstAidOperationOverview = async ({
               </ThemeIcon>
             }
           >
-            Turm {operation.tower.number}{" "}
-            {operation.tower.location}
+            Turm {operation.tower.number} {operation.tower.location}
+          </ListItem>
+          <ListItem
+            icon={
+              <ThemeIcon size="md" variant="light">
+                <IconShieldChevron style={{ width: "70%", height: "70%" }} />
+              </ThemeIcon>
+            }
+          >
+            {operation.guardLeader.firstName} {operation.guardLeader.lastName}
           </ListItem>
         </List>
       </Stack>
