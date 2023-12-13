@@ -35,6 +35,7 @@ import { completeSearchList } from "@server/actions/complete-search-list";
 import { status } from "@/constants";
 import { FirstAidOperationOverview } from "@components/first-aid-operation-overview";
 import { getFirstAidOperation } from "@server/queries/get-first-aid-operation";
+import { completeFirstAidOperation } from "@server/actions/complete-first-aid-operation";
 
 export default async function Layout({
   children,
@@ -79,7 +80,10 @@ export default async function Layout({
         <GridCol span={4}>
           <Stack pt="sm">
             <FirstAidOperationOverview operation={operation} />
-            <CompleteAction label="Einsatz" action={completeSearchList} />
+            <CompleteAction
+              label="Einsatz"
+              action={completeFirstAidOperation}
+            />
           </Stack>
         </GridCol>
       </Grid>
