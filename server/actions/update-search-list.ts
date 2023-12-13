@@ -23,7 +23,7 @@ export const updateSearchList = adminAction(
         },
         select: { id: true },
       });
-      console.log("After update");
+      
 
       if (!searchlist.id) {
         throw new Error("Couldnt update searchlist");
@@ -35,7 +35,7 @@ export const updateSearchList = adminAction(
         message: `Der Sucheintrag wurde aktualisiert.`,
       };
     } catch (error) {
-      console.log(error);
+      
       throw new Error("Fehler beim aktualisieren des Sucheintrag");
     }
   }
