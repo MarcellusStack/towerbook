@@ -27,7 +27,6 @@ import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
 import { getUsers } from "@server/queries/get-users";
-import { CreateUserForm } from "@/components/forms/invite-user-form";
 import { getTowers } from "@/server/queries/get-towers";
 import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { TowerTable } from "@/components/tables/tower-table";
