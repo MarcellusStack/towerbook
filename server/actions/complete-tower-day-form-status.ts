@@ -11,6 +11,7 @@ export const completeTowerDayFormStatus = adminAction(
       const towerday = await prisma.towerDay.update({
         where: {
           id: id,
+          [form]: { not: "completed" },
         },
         data: {
           [form]: "completed",

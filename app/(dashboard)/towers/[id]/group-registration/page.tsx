@@ -33,7 +33,7 @@ import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
 import { getUserOverview } from "@/server/queries/get-user-overview";
-import { CreateTowerGroupRegistrationForm } from "@components/forms/create-tower-group-registration-form copy";
+import { CreateTowerGroupRegistrationForm } from "@/components/forms/create-tower-group-registration-form";
 import { getTowerGroupRegistrations } from "@server/queries/get-tower-group-registrations";
 import { TowerGroupRegistrationTable } from "@components/tables/tower-group-registration-table";
 

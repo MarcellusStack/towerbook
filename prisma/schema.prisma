@@ -192,26 +192,39 @@ model Profile {
   guardLeaders                TowerDay[]          @relation(name: "guardLeader")
   towerLeaders                TowerDay[]          @relation(name: "towerLeader")
   firstAidOperations          FirstAidOperation[]
+  searchlists                 SearchList[]
 
   @@index([userId, organizationId])
 }
 
 model SearchList {
-  id             String       @id @default(uuid())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  date           DateTime
-  timeSearched   DateTime     @db.Time(4)
-  firstName      String
-  lastName       String
-  description    String?
-  timeFound      DateTime?    @db.Time(4)
-  handOver       Boolean      @default(false)
-  handOverTo     String?
-  tower          Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
-  towerId        String
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId String
+  id                       String       @id @default(uuid())
+  createdAt                DateTime     @default(now())
+  updatedAt                DateTime     @updatedAt
+  date                     DateTime
+  timeSearched             DateTime     @db.Time(4)
+  firstName                String
+  lastName                 String
+  age                      Int?
+  stature                  String?
+  height                   Int?
+  clothing                 String?
+  previousIllness          Boolean      @default(false)
+  firstNameReportingPerson String?
+  lastNameReportingPerson  String?
+  phoneReportingPerson     String?
+  description              String?
+  lastSeen                 DateTime?    @db.Time(4)
+  lastLocation             String?
+  timeFound                DateTime?    @db.Time(4)
+  handOver                 Boolean      @default(false)
+  handOverTo               String?
+  lifeguardId              String
+  lifeguard                Profile      @relation(fields: [lifeguardId], references: [id], onDelete: Cascade)
+  tower                    Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  towerId                  String
+  organization             Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId           String
 }
 
 model GroupRegistration {
@@ -405,6 +418,7 @@ enum Status {
   open
   ongoing
   completed
+  revision
   incomplete
 }
 

@@ -15,6 +15,7 @@ import {
   ActionIcon,
   Box,
   Textarea,
+  MultiSelect,
 } from "@mantine/core";
 import {
   searchListSchema,
@@ -75,7 +76,104 @@ export const SearchListForm = ({
         <Fieldset
           legend={
             <Text fw={700} size="xl">
-              Sucheintrag
+              Gesuchte Person
+            </Text>
+          }
+        >
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            <TextInput label="Vorname" {...form.getInputProps("firstName")} />
+            <TextInput label="Nachname" {...form.getInputProps("lastName")} />
+            <TextInput
+              label="Alter"
+              {...form.getInputProps("age")}
+              type="number"
+            />
+            <TextInput label="Statur" {...form.getInputProps("stature")} />
+            <TextInput
+              label="Größe"
+              {...form.getInputProps("height")}
+              type="number"
+            />
+            <TextInput label="Kleidung" {...form.getInputProps("clothing")} />
+            <Checkbox
+              label="Vorerkrankung"
+              {...form.getInputProps("previousIllness", {
+                type: "checkbox",
+              })}
+            />
+            <Textarea
+              rows={6}
+              label="Sonstige"
+              {...form.getInputProps("description")}
+            />
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset
+          legend={
+            <Text fw={700} size="xl">
+              Meldende Person
+            </Text>
+          }
+        >
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            <TextInput
+              label="Vorname"
+              {...form.getInputProps("firstNameReportingPerson")}
+            />
+            <TextInput
+              label="Nachname"
+              {...form.getInputProps("lastNameReportingPerson")}
+            />
+            <TextInput
+              label="Alter"
+              {...form.getInputProps("phoneReportingPerson")}
+            />
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset
+          legend={
+            <Text fw={700} size="xl">
+              Zuletzt gesehen
+            </Text>
+          }
+        >
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            <TimeInput label="Wann" {...form.getInputProps("lastSeen")} />
+            <TextInput label="Wo" {...form.getInputProps("lastLocation")} />
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset
+          legend={
+            <Text fw={700} size="xl">
+              Maßnahmen
+            </Text>
+          }
+        >
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            <MultiSelect
+              label="Mitteilung Türme"
+              data={["Turm 1", "Turm 2", "Turm 3"]}
+            />
+            <MultiSelect
+              label="Badeverbot"
+              data={["Turm 1", "Turm 2", "Turm 3"]}
+            />
+            <TextInput label="Information Polizei" />
+            <TextInput label="Information Feuerwehr" />
+            <TextInput label="Information Strandvogt" />
+            <TextInput label="Kettentauchen" />
+            <TextInput label="Suche Quad" />
+            <TextInput label="Strandstreife" />
+            <TextInput label="Suche mit Boot" />
+            <TextInput label="Suche mit Drohne" />
+            <TextInput label="Suche RWC" />
+            <TextInput label="Unterstützung anderer Strandabschnitt" />
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset
+          legend={
+            <Text fw={700} size="xl">
+              Ergebnis
             </Text>
           }
         >
@@ -89,25 +187,17 @@ export const SearchListForm = ({
               {...form.getInputProps("handOverTo")}
             />
             <Box />
-            <Textarea
-              rows={6}
-              
-              label="Beschreibung"
-              {...form.getInputProps("description")}
-            />
           </SimpleGrid>
-
-          <Group justify="flex-end" mt="xs">
-            <Button
-              variant="filled"
-              type="submit"
-              loading={update.status === "executing"}
-            >
-              Speichern
-            </Button>
-            
-          </Group>
         </Fieldset>
+        <Group justify="flex-end" mt="xs">
+          <Button
+            variant="filled"
+            type="submit"
+            loading={update.status === "executing"}
+          >
+            Speichern
+          </Button>
+        </Group>
       </Stack>
     </form>
   );
