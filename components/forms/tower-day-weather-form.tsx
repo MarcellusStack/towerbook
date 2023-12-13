@@ -16,6 +16,7 @@ import {
   Box,
   Table,
   NumberInput,
+  Select,
 } from "@mantine/core";
 import {
   towerDayTodoSchema,
@@ -77,6 +78,7 @@ export const TowerDayWeatherForm = ({
                 air_in_celsius: "",
                 water_in_celsius: "",
                 wind_in_bft: "",
+                wind_direction: "",
               });
             }}
           >
@@ -89,6 +91,7 @@ export const TowerDayWeatherForm = ({
                 <Table.Th>Luft (in °C)</Table.Th>
                 <Table.Th>Wasser (in °C)</Table.Th>
                 <Table.Th>Wind (in Bft/°)</Table.Th>
+                <Table.Th>Windrichtung</Table.Th>
                 <Table.Th />
               </Table.Tr>
             </Table.Thead>
@@ -121,6 +124,23 @@ export const TowerDayWeatherForm = ({
                       <TextInput
                         type="number"
                         {...form.getInputProps(`weather.${index}.wind_in_bft`)}
+                      />
+                    </Table.Td>
+                    <Table.Td>
+                      <Select
+                        data={[
+                          { value: "n", label: "Norden" },
+                          { value: "ne", label: "Nordost" },
+                          { value: "e", label: "Osten" },
+                          { value: "se", label: "Südost" },
+                          { value: "s", label: "Süden" },
+                          { value: "sw", label: "Südwest" },
+                          { value: "w", label: "Westen" },
+                          { value: "nw", label: "Nordwest" },
+                        ]}
+                        {...form.getInputProps(
+                          `weather.${index}.wind_direction`
+                        )}
                       />
                     </Table.Td>
                     <Table.Td>
