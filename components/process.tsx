@@ -93,7 +93,7 @@ export const TowerDayProcess = ({
         <Process
           process={towerday.watchmanStatus}
           href={`/tower-days/${towerday.id}/watchman-plan`}
-          title="Wachplan"
+          title="Team"
         />
         <Process
           process={towerday.todoStatus}
@@ -113,12 +113,12 @@ export const TowerDayProcess = ({
         <Process
           process={towerday.materialStatus}
           href={`/tower-days/${towerday.id}/material`}
-          title="Materialien"
+          title="Material Prüfung"
         />
         <Process
           process={towerday.dutyplanStatus}
           href={`/tower-days/${towerday.id}/duty-plan`}
-          title="Dienstplan"
+          title="Wachplan"
         />
       </Group>
     </Box>
