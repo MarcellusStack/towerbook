@@ -25,7 +25,7 @@ export const getFirstAidOperation = cache(
         organizationId: user.organizationId as string,
       },
       include: {
-        guardLeader: { select: { firstName: true, lastName: true } },
+        guardLeader: { select: { firstName: true, lastName: true, id: true } },
         tower: {
           select: { name: true, location: true, number: true },
         },
