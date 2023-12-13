@@ -7,6 +7,7 @@ import {
   Affix,
   Menu,
   ActionIcon,
+  ScrollArea,
 } from "@mantine/core";
 import { IconArrowUp, IconListSearch } from "@tabler/icons-react";
 import { useWindowScroll } from "@mantine/hooks";
@@ -33,19 +34,21 @@ export function TableOfContents({ links }: { links: TableOfContentsProps[] }) {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Label>Inhaltsverzeichnis</Menu.Label>
-              {links.map((item) => (
-                <Menu.Item
-                  component="a"
-                  color={item.link === active ? "blue" : "gray"}
-                  onClick={() => {
-                    setActive(item.link);
-                  }}
-                  href={item.link}
-                  key={item.label}
-                >
-                  {item.label}
-                </Menu.Item>
-              ))}
+              <ScrollArea h={200}>
+                {links.map((item) => (
+                  <Menu.Item
+                    component="a"
+                    color={item.link === active ? "blue" : "gray"}
+                    onClick={() => {
+                      setActive(item.link);
+                    }}
+                    href={item.link}
+                    key={item.label}
+                  >
+                    {item.label}
+                  </Menu.Item>
+                ))}
+              </ScrollArea>
               <Menu.Divider />
               <Menu.Item
                 leftSection={
