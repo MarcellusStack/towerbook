@@ -13,6 +13,9 @@ export const updateTowerDayIncident = adminAction(
       const towerday = await prisma.towerDay.update({
         where: {
           id: id,
+          incidentStatus: {
+            not: "completed",
+          },
         },
         data: {
           status: "ongoing",

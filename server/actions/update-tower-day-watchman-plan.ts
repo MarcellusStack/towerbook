@@ -8,11 +8,13 @@ export const updateTowerDayWatchmanPlan = adminAction(
   towerDayWatchmanPlanSchema,
   async ({ id, guardLeader, towerLeader, watchman }, { user }) => {
     try {
-      // check if form is already on status completed based on that
-      // dont allow to update the form?
+      
       const towerday = await prisma.towerDay.update({
         where: {
           id: id,
+          watchmanStatus: {
+            not: "completed",
+          },
         },
         data: {
           status: "ongoing",
