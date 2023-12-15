@@ -31,8 +31,6 @@ import { getSearchList } from "@server/queries/get-search-list";
 import { SearchListOverview } from "@/components/search-list-overview";
 import { Suspense } from "react";
 import { CompleteAction } from "@components/complete-action";
-import { completeSearchList } from "@server/actions/complete-search-list";
-import { status } from "@/constants";
 import { FirstAidOperationOverview } from "@components/first-aid-operation-overview";
 import { getFirstAidOperation } from "@server/queries/get-first-aid-operation";
 import { completeFirstAidOperation } from "@server/actions/complete-first-aid-operation";
@@ -62,7 +60,7 @@ export default async function Layout({
           </Group>
         }
       />
-      <Grid>
+      <Grid style={{ position: "relative", overflow: "visible" }}>
         <GridCol span={8}>
           {operation.status === "completed" ? (
             <Alert
@@ -78,7 +76,7 @@ export default async function Layout({
           )}
         </GridCol>
         <GridCol span={4}>
-          <Stack pt="sm">
+          <Stack pt="sm" style={{ position: "sticky", top: 0 }}>
             <FirstAidOperationOverview operation={operation} />
             <CompleteAction
               label="Einsatz"
