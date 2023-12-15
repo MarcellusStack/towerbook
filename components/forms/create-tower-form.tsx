@@ -7,6 +7,7 @@ import {
   Stack,
   SegmentedControl,
   Text,
+  Checkbox,
 } from "@mantine/core";
 import { createTowerSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
@@ -18,6 +19,7 @@ export const CreateTowerForm = () => {
     validate: zodResolver(createTowerSchema),
     initialValues: {
       name: "",
+      main: false,
       type: "",
       number: "",
       location: "",
@@ -64,6 +66,12 @@ export const CreateTowerForm = () => {
           ]}
         />
         <TextInput label="Name" {...form.getInputProps("name")} />
+        <Checkbox
+          label="Hauptturm"
+          {...form.getInputProps("main", {
+            type: "checkbox",
+          })}
+        />
         <TextInput
           type="number"
           label="Turmnummer"

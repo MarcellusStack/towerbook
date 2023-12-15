@@ -41,6 +41,7 @@ model Invitation {
 
 model Tower {
   id                 String              @id @default(uuid())
+  main               Boolean             @default(false)
   name               String
   members            Profile[]
   createdAt          DateTime            @default(now())

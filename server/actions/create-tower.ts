@@ -7,11 +7,12 @@ import { type TowerType } from "@prisma/client";
 
 export const createTower = adminAction(
   createTowerSchema,
-  async ({ name, type, number, location }, { user }) => {
+  async ({ name, main, type, number, location }, { user }) => {
     try {
       const tower = await prisma.tower.create({
         data: {
           name: name,
+          main: main,
           type: type as TowerType,
           number: number,
           location: location,
@@ -35,6 +36,6 @@ export const createTower = adminAction(
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Turm wurde erstellt.` };
+    return { message: `Der Turm wurde erstellt` };
   }
 );

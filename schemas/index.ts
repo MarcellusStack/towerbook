@@ -174,6 +174,7 @@ export const inviteUserSchema = z.object({
 
 export const createTowerSchema = z.object({
   name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
+  main: z.boolean(),
   type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu." }),
   number: z
     .string()

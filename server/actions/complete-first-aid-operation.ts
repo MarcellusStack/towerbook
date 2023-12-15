@@ -24,8 +24,6 @@ export const completeFirstAidOperation = adminAction(
         throw new Error("Einsatz konnte nicht gefunden werden");
       }
 
-      
-
       if (
         (operation.type === "small" && operation.helper === null) ||
         operation.helper.length === 0
