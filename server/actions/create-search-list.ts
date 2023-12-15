@@ -15,6 +15,7 @@ export const createSearchList = adminAction(
           timeSearched: extractTimeFromDate(timeSearched),
           firstName: firstName,
           lastName: lastName,
+          lifeguard: { connect: { id: user.profileId } },
           tower: { connect: { id: towerId } },
           organization: { connect: { id: user.organizationId as string } },
         },
