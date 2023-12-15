@@ -69,12 +69,14 @@ export const TowerDayIncidentForm = ({
               minRows={10}
               {...form.getInputProps("incident")}
             />
-            <TowerDayFormAction
-              updateStatus={update.status === "executing"}
-              form="incidentStatus"
-            />
           </Stack>
         </Fieldset>
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
+          <TowerDayFormAction
+            updateStatus={update.status === "executing"}
+            form="incidentStatus"
+          />
+        </Card>
       </Stack>
     </form>
   );

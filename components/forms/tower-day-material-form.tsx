@@ -125,11 +125,13 @@ export const TowerDayMaterialForm = ({
               </Table.Tbody>
             </Table>
           </Stack>
+        </Fieldset>
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <TowerDayFormAction
             updateStatus={update.status === "executing"}
             form="materialStatus"
           />
-        </Fieldset>
+        </Card>
       </Stack>
     </form>
   );

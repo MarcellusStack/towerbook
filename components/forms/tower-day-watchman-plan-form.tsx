@@ -112,11 +112,13 @@ export const TowerDayWatchmanPlanForm = ({
               </Card>
             ))}
           </SimpleGrid>
+        </Fieldset>
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <TowerDayFormAction
             updateStatus={update.status === "executing"}
             form="watchmanStatus"
           />
-        </Fieldset>
+        </Card>
       </Stack>
     </form>
   );

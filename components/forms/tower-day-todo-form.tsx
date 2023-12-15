@@ -105,11 +105,13 @@ export const TowerDayTodoForm = ({
                 </Card>
               ))}
           </SimpleGrid>
+        </Fieldset>
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <TowerDayFormAction
             updateStatus={update.status === "executing"}
             form="todoStatus"
           />
-        </Fieldset>
+        </Card>
       </Stack>
     </form>
   );

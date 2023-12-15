@@ -161,11 +161,14 @@ export const TowerDayWeatherForm = ({
                 ))}
             </Table.Tbody>
           </Table>
+        </Fieldset>
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
+          {" "}
           <TowerDayFormAction
             updateStatus={update.status === "executing"}
             form="weatherStatus"
           />
-        </Fieldset>
+        </Card>
       </Stack>
     </form>
   );

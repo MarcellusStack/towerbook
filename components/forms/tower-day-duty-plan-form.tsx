@@ -218,12 +218,13 @@ export const TowerDayDutyPlanForm = ({
                   color: shift.type === "duty" ? "green" : "gray",
                 }))}
               />
-
+            </Fieldset>
+            <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
               <TowerDayFormAction
                 updateStatus={update.status === "executing"}
                 form="dutyplanStatus"
               />
-            </Fieldset>
+            </Card>
           </Stack>
         </form>
       )}
