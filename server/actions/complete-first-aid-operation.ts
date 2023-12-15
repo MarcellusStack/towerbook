@@ -10,7 +10,30 @@ export const completeFirstAidOperation = adminAction(
   }),
   async ({ id }, { user }) => {
     try {
-      const operation = await prisma.firstAidOperation.update({
+      const operation = await prisma.firstAidOperation.findFirst({
+        where: { id: id, organizationId: user.organizationId as string },
+        select: {
+          status: true,
+          id: true,
+          helper: true,
+          type: true,
+        },
+      });
+
+      if (!operation) {
+        throw new Error("Einsatz konnte nicht gefunden werden");
+      }
+
+      
+
+      if (
+        (operation.type === "small" && operation.helper === null) ||
+        operation.helper.length === 0
+      ) {
+        throw new Error("Es muss ein Helfer zugewiesen werden");
+      }
+
+      await prisma.firstAidOperation.update({
         where: {
           id: id,
           organizationId: user.organizationId as string,
@@ -23,10 +46,6 @@ export const completeFirstAidOperation = adminAction(
           id: true,
         },
       });
-
-      if (!operation) {
-        throw new Error("Einsatz konnte nicht gefunden werden");
-      }
 
       revalidatePath("/", "layout");
 
