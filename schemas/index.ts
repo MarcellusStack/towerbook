@@ -308,7 +308,39 @@ export const userCertificateSchema = z.object({
 
 export const searchListSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
+  lifeguard: z.object({
+    id: z.string().min(1, { message: "Id wird benötigt" }),
+    firstName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
+    lastName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+  }),
+
+  firstName: z.string().nullable(),
+  lastName: z.string().nullable(),
+  age: z.string().nullable(),
+  stature: z.string().nullable(),
+  height: z.string().nullable(),
+  clothing: z.string().nullable(),
+  previousIllness: z.boolean(),
+  firstNameReportingPerson: z.string().nullable(),
+  lastNameReportingPerson: z.string().nullable(),
+  phoneReportingPerson: z.string().nullable(),
   description: z.string().nullable(),
+  lastSeen: z.string().nullable(),
+  lastLocation: z.string().nullable(),
+  informationPolice: z.string().nullable(),
+  informationFireDepartment: z.string().nullable(),
+  informationBeachVogt: z.string().nullable(),
+  chainDiving: z.string().nullable(),
+  searchQuad: z.string().nullable(),
+  beachPatrol: z.string().nullable(),
+  searchByBoat: z.string().nullable(),
+  searchByDrone: z.string().nullable(),
+  searchRWC: z.string().nullable(),
+  supportOtherBeachArea: z.string().nullable(),
   timeFound: z.string().nullable(),
   handOverTo: z.string().nullable(),
 });
@@ -472,7 +504,6 @@ export const firstAidOperationSmallSchema = z.object({
     z.object({ id: z.string(), firstName: z.string(), lastName: z.string() })
   ),
   emergencyEvent: z.string().nullable(),
-
   sysBloodPressure: z.string().nullable(),
   diaBloodPressure: z.string().nullable(),
   oxygenSaturation: z.string().nullable(),

@@ -198,33 +198,43 @@ model Profile {
 }
 
 model SearchList {
-  id                       String       @id @default(uuid())
-  createdAt                DateTime     @default(now())
-  updatedAt                DateTime     @updatedAt
-  date                     DateTime
-  timeSearched             DateTime     @db.Time(4)
-  firstName                String
-  lastName                 String
-  age                      Int?
-  stature                  String?
-  height                   Int?
-  clothing                 String?
-  previousIllness          Boolean      @default(false)
-  firstNameReportingPerson String?
-  lastNameReportingPerson  String?
-  phoneReportingPerson     String?
-  description              String?
-  lastSeen                 DateTime?    @db.Time(4)
-  lastLocation             String?
-  timeFound                DateTime?    @db.Time(4)
-  handOver                 Boolean      @default(false)
-  handOverTo               String?
-  lifeguardId              String
-  lifeguard                Profile      @relation(fields: [lifeguardId], references: [id], onDelete: Cascade)
-  tower                    Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
-  towerId                  String
-  organization             Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId           String
+  id                        String       @id @default(uuid())
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+  status                    Status       @default(open)
+  date                      DateTime
+  timeSearched              DateTime     @db.Time(4)
+  firstName                 String
+  lastName                  String
+  age                       Int?
+  stature                   String?
+  height                    Int?
+  clothing                  String?
+  previousIllness           Boolean      @default(false)
+  firstNameReportingPerson  String?
+  lastNameReportingPerson   String?
+  phoneReportingPerson      String?
+  description               String?
+  lastSeen                  DateTime?    @db.Time(4)
+  lastLocation              String?
+  informationPolice         String?
+  informationFireDepartment String?
+  informationBeachVogt      String?
+  chainDiving               String?
+  searchQuad                String?
+  beachPatrol               String?
+  searchByBoat              String?
+  searchByDrone             String?
+  searchRWC                 String?
+  supportOtherBeachArea     String?
+  timeFound                 DateTime?    @db.Time(4)
+  handOverTo                String?
+  lifeguardId               String
+  lifeguard                 Profile      @relation(fields: [lifeguardId], references: [id], onDelete: Cascade)
+  tower                     Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  towerId                   String
+  organization              Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId            String
 }
 
 model GroupRegistration {
