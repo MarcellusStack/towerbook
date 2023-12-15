@@ -10,6 +10,7 @@ import {
   ListItem,
   ThemeIcon,
   Divider,
+  Badge,
 } from "@mantine/core";
 import {
   IconBroadcast,
@@ -18,9 +19,11 @@ import {
   IconCalendarEvent,
   IconClockSearch,
   IconUserSearch,
+  IconChartArcs,
 } from "@tabler/icons-react";
 import React from "react";
 import type { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
+import { status } from "@/constants";
 
 export const SearchListOverview = async ({
   searchlist,
@@ -38,6 +41,17 @@ export const SearchListOverview = async ({
         </Group>
         <Divider />
         <List center spacing="sm">
+          <ListItem
+            icon={
+              <ThemeIcon variant="light">
+                <IconChartArcs style={{ width: "70%", height: "70%" }} />
+              </ThemeIcon>
+            }
+          >
+            <Badge color={status[searchlist.status].color}>
+              {status[searchlist.status].label}
+            </Badge>
+          </ListItem>
           <ListItem
             icon={
               <ThemeIcon variant="light">
@@ -74,15 +88,7 @@ export const SearchListOverview = async ({
               </ThemeIcon>
             }
           >
-            {searchlist.tower.name} {searchlist.tower.number}
-          </ListItem>
-          <ListItem
-            icon={
-              <ThemeIcon variant="light">
-                <IconMapPin style={{ width: "70%", height: "70%" }} />
-              </ThemeIcon>
-            }
-          >
+            {searchlist.tower.name} {searchlist.tower.number}{" "}
             {searchlist.tower.location}
           </ListItem>
         </List>
