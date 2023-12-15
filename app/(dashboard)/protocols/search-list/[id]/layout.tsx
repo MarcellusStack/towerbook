@@ -53,9 +53,9 @@ export default async function Layout({
           </Text>
         }
       />
-      <Grid>
+      <Grid style={{ position: "relative", overflow: "visible" }}>
         <GridCol span={8}>
-          {searchlist.handOver ? (
+          {searchlist.status === "completed" ? (
             <Alert
               variant="light"
               color="green"
@@ -69,7 +69,7 @@ export default async function Layout({
           )}
         </GridCol>
         <GridCol span={4}>
-          <Stack pt="sm">
+          <Stack pt="sm" style={{ position: "sticky", top: 0 }}>
             <SearchListOverview searchlist={searchlist} />
             <CompleteAction label="Sucheintrag" action={completeSearchList} />
           </Stack>

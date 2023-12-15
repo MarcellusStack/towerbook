@@ -11,12 +11,12 @@ export const getTowerSearchLists = authFilterQuery(async (search, user) => {
     },
     select: {
       id: true,
+      status: true,
       date: true,
       timeSearched: true,
       firstName: true,
       lastName: true,
       timeFound: true,
-      handOver: true,
       handOverTo: true,
     },
   });

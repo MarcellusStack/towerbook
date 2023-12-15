@@ -12,11 +12,14 @@ export const completeSearchList = adminAction(
   async ({ id }, { user }) => {
     try {
       const searchlist = await prisma.searchList.findUnique({
-        where: { id: id },
+        where: {
+          id: id,
+          /* organizationId: user.organizationId as string,
+          status: { not: "completed" }, */
+        },
         select: {
           id: true,
           timeFound: true,
-          handOver: true,
           handOverTo: true,
         },
       });
@@ -26,13 +29,20 @@ export const completeSearchList = adminAction(
       }
 
       if (!searchlist.handOverTo) {
+        await prisma.searchList.update({
+          where: { id: id },
+          data: {
+            status: "incomplete",
+          },
+        });
+        revalidatePath("/", "layout");
         throw new Error("Handover to is missing");
       }
 
       await prisma.searchList.update({
         where: { id: id },
         data: {
-          handOver: true,
+          status: "completed",
         },
       });
 

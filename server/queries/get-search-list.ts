@@ -3,17 +3,19 @@ import { authFilterQuery } from "@server/lib/utils/query-clients";
 
 import { type Tower, Role, TowerDay, SearchList } from "@prisma/client";
 import { cache } from "react";
+import { TRACE_OUTPUT_VERSION } from "next/dist/shared/lib/constants";
 
 export type SearchListProps = Pick<
   SearchList,
   | "id"
+  | "status"
   | "date"
   | "timeSearched"
   | "firstName"
   | "lastName"
+  | "age"
   | "description"
   | "timeFound"
-  | "handOver"
   | "handOverTo"
 >;
 
@@ -30,14 +32,36 @@ export const getSearchList = cache(
       },
       select: {
         id: true,
+        status: true,
         date: true,
         timeSearched: true,
         firstName: true,
         lastName: true,
+        age: true,
+        stature: true,
+        height: true,
+        clothing: true,
+        previousIllness: true,
+        firstNameReportingPerson: true,
+        lastNameReportingPerson: true,
+        phoneReportingPerson: true,
         description: true,
+
+        lastSeen: true,
+        lastLocation: true,
+        informationPolice: true,
+        informationFireDepartment: true,
+        informationBeachVogt: true,
+        chainDiving: true,
+        searchQuad: true,
+        beachPatrol: true,
+        searchByBoat: true,
+        searchByDrone: true,
+        searchRWC: true,
+        supportOtherBeachArea: true,
         timeFound: true,
-        handOver: true,
         handOverTo: true,
+        lifeguard: { select: { id: true, firstName: true, lastName: true } },
         tower: { select: { name: true, location: true, number: true } },
       },
     });
