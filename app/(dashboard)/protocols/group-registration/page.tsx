@@ -53,7 +53,7 @@ export default async function Page() {
   const groups = await getGroupRegistrations("", ["admin"]);
   return (
     <>
-      <PrimaryAppHeading title="Gruppenanmeldung" />
+      <PrimaryAppHeading title="Dokumentation Kinder Gruppen" />
       <QuickSearchAdd
         modalTitle="Gruppe anlegen"
         modalDescription="Erstellen Sie hier eine Gruppe. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
