@@ -7,22 +7,17 @@ import Link from "next/link";
 import { capitalizeFirstLetter, convertDate, convertTime } from "@utils/index";
 import Image from "next/image";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { type TowerDayStatus } from "@prisma/client";
+import { type Status } from "@prisma/client";
 import { deleteTowerDay } from "@/server/actions/delete-tower-day";
+import { status } from "@/constants";
 
 export type TowerDayProps = {
   id: string;
   createdAt: Date;
   startedAt: Date;
-  status: TowerDayStatus;
+  status: Status;
   guardLeader: { firstName: string; lastName: string };
   towerLeader: { firstName: string; lastName: string };
-};
-
-const statusColors = {
-  open: "red",
-  ongoing: "yellow",
-  completed: "green",
 };
 
 export const TowerDayTableRow = ({ towerday }: { towerday: TowerDayProps }) => {
@@ -35,7 +30,9 @@ export const TowerDayTableRow = ({ towerday }: { towerday: TowerDayProps }) => {
         <Text size="sm">{convertTime(new Date(towerday.startedAt))}</Text>
       </Table.Td>
       <Table.Td>
-        <Badge color={statusColors[towerday.status]}>{towerday.status}</Badge>
+        <Badge color={status[towerday.status].color}>
+          {status[towerday.status].label}
+        </Badge>
       </Table.Td>
       <Table.Td>
         <Text size="sm">
