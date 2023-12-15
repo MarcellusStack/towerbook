@@ -50,7 +50,7 @@ export default async function Page() {
   const searchlists = await getSearchLists("", ["admin"]);
   return (
     <>
-      <PrimaryAppHeading title="Suchliste" />
+      <PrimaryAppHeading title="Personen Suchliste" />
       <QuickSearchAdd
         modalTitle="Suche anlegen"
         modalDescription="Erstellen Sie hier einen Sucheintrag. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."

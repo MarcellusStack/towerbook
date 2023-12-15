@@ -45,7 +45,7 @@ export default async function Layout({
   return (
     <>
       <SecondaryAppHeading
-        title="Suchliste"
+        title="Personen Suchliste"
         extraInfo={
           <Text size="lg" c="dimmed">
             {searchlist.firstName} {searchlist.lastName}{" "}
