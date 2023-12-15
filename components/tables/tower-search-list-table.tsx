@@ -11,6 +11,7 @@ import {
   TableTbody,
   TableTd,
   ThemeIcon,
+  Badge,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -24,6 +25,7 @@ import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteSearchList } from "@server/actions/delete-search-list";
 import { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
+import { status } from "@/constants";
 
 export const TowerSearchListTableRow = ({
   searchlist,
@@ -35,12 +37,17 @@ export const TowerSearchListTableRow = ({
       <TableTd>{convertDate(searchlist.date)}</TableTd>
       <TableTd>{convertTime(searchlist.timeSearched)}</TableTd>
       <TableTd>
+        <Badge color={status[searchlist.status].color}>
+          {status[searchlist.status].label}
+        </Badge>
+      </TableTd>
+      <TableTd>
         <Text size="sm">
           {searchlist.firstName} {searchlist.lastName}
         </Text>
       </TableTd>
       <TableTd>
-        {searchlist.handOver ? (
+        {searchlist.handOverTo ? (
           <ThemeIcon color="green" variant="light">
             <IconUserCheck
               style={{ width: "70%", height: "70%" }}
@@ -102,6 +109,7 @@ export const TowerSearchListTable = ({
           <TableTr>
             <TableTh>Datum</TableTh>
             <TableTh>Uhrzeit gesucht</TableTh>
+            <TableTh>Status</TableTh>
             <TableTh>Name</TableTh>
             <TableTh>Übergeben</TableTh>
             <TableTh />

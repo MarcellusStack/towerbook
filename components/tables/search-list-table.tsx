@@ -11,6 +11,7 @@ import {
   TableTbody,
   TableTd,
   ThemeIcon,
+  Badge,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
@@ -25,6 +26,7 @@ import { DeleteModalAction } from "@components/delete-modal-action";
 import { SearchList } from "@prisma/client";
 import { deleteSearchList } from "@server/actions/delete-search-list";
 import { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
+import { status } from "@/constants";
 
 export const SearchListTableRow = ({
   searchlist,
@@ -36,6 +38,11 @@ export const SearchListTableRow = ({
       <TableTd>{convertDate(searchlist.date)}</TableTd>
       <TableTd>{convertTime(searchlist.timeSearched)}</TableTd>
       <TableTd>
+        <Badge color={status[searchlist.status].color}>
+          {status[searchlist.status].label}
+        </Badge>
+      </TableTd>
+      <TableTd>
         <Text size="sm">
           {searchlist.firstName} {searchlist.lastName}
         </Text>
@@ -46,7 +53,7 @@ export const SearchListTableRow = ({
         </Text>
       </TableTd>
       <TableTd>
-        {searchlist.handOver ? (
+        {searchlist.handOverTo ? (
           <ThemeIcon color="green" variant="light">
             <IconUserCheck
               style={{ width: "70%", height: "70%" }}
@@ -108,6 +115,7 @@ export const SearchListTable = ({
           <TableTr>
             <TableTh>Datum</TableTh>
             <TableTh>Uhrzeit gesucht</TableTh>
+            <TableTh>Status</TableTh>
             <TableTh>Name</TableTh>
             <TableTh>Turm</TableTh>
             <TableTh>Übergeben</TableTh>
