@@ -48,7 +48,7 @@ export default async function Layout({
   return (
     <>
       <SecondaryAppHeading
-        title="Einsatz"
+        title={operation.type === "big" ? "Großeinsatz" : "Einsatz"}
         extraInfo={
           <Group>
             <Text size="lg" c="dimmed">

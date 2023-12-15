@@ -40,7 +40,7 @@ export const FirstAidOperationOverview = async ({
       <Stack gap="sm">
         <Group justify="space-between">
           <Text fw={700} size="xl">
-            Einsatz
+            {operation.type === "big" ? "Großeinsatz" : "Einsatz"}
           </Text>
           {operation.type === "big" ? (
             <IconAmbulance size={28} stroke={1.5} />
