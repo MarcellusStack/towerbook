@@ -50,11 +50,32 @@ export const SearchListForm = ({
     validate: zodResolver(searchListSchema),
     initialValues: {
       id: searchlist.id,
+      lifeguard: searchlist.lifeguard,
+      tower: searchlist.tower,
+      firstName: searchlist.firstName,
+      lastName: searchlist.lastName,
+      age: searchlist.age,
+      stature: searchlist.stature,
+      height: searchlist.height,
+      clothing: searchlist.clothing,
+      previousIllness: searchlist.previousIllness,
+      firstNameReportingPerson: searchlist.firstNameReportingPerson,
+      lastNameReportingPerson: searchlist.lastNameReportingPerson,
+      phoneReportingPerson: searchlist.phoneReportingPerson,
       description: searchlist.description,
-      timeFound:
-        searchlist.timeFound === null
-          ? searchlist.timeFound
-          : convertTime(searchlist.timeFound),
+      lastSeen: convertTime(new Date(searchlist.lastSeen)),
+      lastLocation: searchlist.lastLocation,
+      informationPolice: searchlist.informationPolice,
+      informationFireDepartment: searchlist.informationFireDepartment,
+      informationBeachVogt: searchlist.informationBeachVogt,
+      chainDiving: searchlist.chainDiving,
+      searchQuad: searchlist.searchQuad,
+      beachPatrol: searchlist.beachPatrol,
+      searchByBoat: searchlist.searchByBoat,
+      searchByDrone: searchlist.searchByDrone,
+      searchRWC: searchlist.searchRWC,
+      supportOtherBeachArea: searchlist.supportOtherBeachArea,
+      timeFound: convertTime(new Date(searchlist.timeFound)),
 
       handOverTo: searchlist.handOverTo,
     },
@@ -74,6 +95,24 @@ export const SearchListForm = ({
     <form onSubmit={form.onSubmit((values) => update.execute(values))}>
       <Stack gap="md">
         <Fieldset
+          id="wanted-person"
+          legend={
+            <Text fw={700} size="xl">
+              [Insert your Title]
+            </Text>
+          }
+        >
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            <UserSelect
+              formActionId="search-list-form"
+              formField="lifeguard"
+              label="Rettungsschwimmer"
+              initialValue={`${searchlist.lifeguard.firstName} ${searchlist.lifeguard.lastName}`}
+            />
+          </SimpleGrid>
+        </Fieldset>
+        <Fieldset
+          id="wanted-person"
           legend={
             <Text fw={700} size="xl">
               Gesuchte Person
@@ -95,20 +134,21 @@ export const SearchListForm = ({
               type="number"
             />
             <TextInput label="Kleidung" {...form.getInputProps("clothing")} />
+            <Textarea
+              rows={6}
+              label="Sonstige"
+              {...form.getInputProps("description")}
+            />
             <Checkbox
               label="Vorerkrankung"
               {...form.getInputProps("previousIllness", {
                 type: "checkbox",
               })}
             />
-            <Textarea
-              rows={6}
-              label="Sonstige"
-              {...form.getInputProps("description")}
-            />
           </SimpleGrid>
         </Fieldset>
         <Fieldset
+          id="reporting-person"
           legend={
             <Text fw={700} size="xl">
               Meldende Person
@@ -125,12 +165,14 @@ export const SearchListForm = ({
               {...form.getInputProps("lastNameReportingPerson")}
             />
             <TextInput
+              type="number"
               label="Alter"
               {...form.getInputProps("phoneReportingPerson")}
             />
           </SimpleGrid>
         </Fieldset>
         <Fieldset
+          id="last-seen"
           legend={
             <Text fw={700} size="xl">
               Zuletzt gesehen
@@ -158,19 +200,47 @@ export const SearchListForm = ({
               label="Badeverbot"
               data={["Turm 1", "Turm 2", "Turm 3"]}
             />
-            <TextInput label="Information Polizei" />
-            <TextInput label="Information Feuerwehr" />
-            <TextInput label="Information Strandvogt" />
-            <TextInput label="Kettentauchen" />
-            <TextInput label="Suche Quad" />
-            <TextInput label="Strandstreife" />
-            <TextInput label="Suche mit Boot" />
-            <TextInput label="Suche mit Drohne" />
-            <TextInput label="Suche RWC" />
-            <TextInput label="Unterstützung anderer Strandabschnitt" />
+            <TextInput
+              label="Information Polizei"
+              {...form.getInputProps("informationPolice")}
+            />
+            <TextInput
+              label="Information Feuerwehr"
+              {...form.getInputProps("informationFireDepartment")}
+            />
+            <TextInput
+              label="Information Strandvogt"
+              {...form.getInputProps("informationBeachVogt")}
+            />
+            <TextInput
+              label="Kettentauchen"
+              {...form.getInputProps("chainDiving")}
+            />
+            <TextInput
+              label="Suche Quad"
+              {...form.getInputProps("searchQuad")}
+            />
+            <TextInput
+              label="Strandstreife"
+              {...form.getInputProps("beachPatrol")}
+            />
+            <TextInput
+              label="Suche mit Boot"
+              {...form.getInputProps("searchByBoat")}
+            />
+            <TextInput
+              label="Suche mit Drohne"
+              {...form.getInputProps("searchByDrone")}
+            />
+            <TextInput label="Suche RWC" {...form.getInputProps("searchRWC")} />
+            <TextInput
+              label="Unterstützung anderer Strandabschnitt"
+              {...form.getInputProps("supportOtherBeachArea")}
+            />
           </SimpleGrid>
         </Fieldset>
         <Fieldset
+          id="result"
           legend={
             <Text fw={700} size="xl">
               Ergebnis
@@ -189,15 +259,16 @@ export const SearchListForm = ({
             <Box />
           </SimpleGrid>
         </Fieldset>
-        <Group justify="flex-end" mt="xs">
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <Button
             variant="filled"
             type="submit"
             loading={update.status === "executing"}
+            className="self-start"
           >
             Speichern
           </Button>
-        </Group>
+        </Card>
       </Stack>
     </form>
   );

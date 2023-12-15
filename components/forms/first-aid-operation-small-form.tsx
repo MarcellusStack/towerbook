@@ -37,6 +37,7 @@ import { IconTrash } from "@tabler/icons-react";
 import { v4 as uuidv4 } from "uuid";
 import { InputCheck } from "@components/inputs/input-check";
 import { updateFirstAidOperationBig } from "@server/actions/update-first-aid-operation-big";
+import { updateFirstAidOperationSmall } from "@server/actions/update-first-aid-operation-small";
 
 export const FirstAidOperationSmallForm = ({
   operation,
@@ -95,7 +96,7 @@ export const FirstAidOperationSmallForm = ({
   });
 
   const { execute, result, status } = useActionNotification({
-    action: updateFirstAidOperationBig,
+    action: updateFirstAidOperationSmall,
     executeNotification: `Einsatz wird aktualisiert`,
   });
   return (
@@ -135,19 +136,22 @@ export const FirstAidOperationSmallForm = ({
               label="Wachleiter"
               initialValue={`${operation.guardLeader.firstName} ${operation.guardLeader.lastName}`}
             />
+            <Box />
+            <Box />
             <UserComboboxButton
               label="Helfer"
-              formActionId="first-aid-operation-big-form"
+              formActionId="first-aid-operation-small-form"
               formField="helper"
             />
             <Box />
             <Box />
+
             {form.values.helper.map((helper, index) => (
               <UserFormCard
                 props={helper}
                 index={index}
                 formField="helper"
-                formActionId="first-aid-operation-big-form"
+                formActionId="first-aid-operation-small-form"
               />
             ))}
           </SimpleGrid>
@@ -274,13 +278,16 @@ export const FirstAidOperationSmallForm = ({
             />
           </SimpleGrid>
         </Fieldset>
-        <Button
-          loading={status === "executing"}
-          type="submit"
-          className="self-start"
-        >
-          Speichern
-        </Button>
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
+          <Button
+            variant="filled"
+            loading={status === "executing"}
+            type="submit"
+            className="self-start"
+          >
+            Speichern
+          </Button>
+        </Card>
       </Stack>
     </form>
   );

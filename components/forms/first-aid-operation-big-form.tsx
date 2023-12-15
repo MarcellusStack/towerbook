@@ -1125,13 +1125,16 @@ export const FirstAidOperationBigForm = ({
             />
           </SimpleGrid>
         </Fieldset>
-        <Button
-          loading={status === "executing"}
-          type="submit"
-          className="self-start"
-        >
-          Speichern
-        </Button>
+        <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
+          <Button
+            variant="filled"
+            loading={status === "executing"}
+            type="submit"
+            className="self-start"
+          >
+            Speichern
+          </Button>
+        </Card>
       </Stack>
     </form>
   );
