@@ -200,27 +200,27 @@ export const SearchListForm = ({
               label="Badeverbot"
               data={["Turm 1", "Turm 2", "Turm 3"]}
             />
-            <TextInput
+            <Textarea
               label="Information Polizei"
               {...form.getInputProps("informationPolice")}
             />
-            <TextInput
+            <Textarea
               label="Information Feuerwehr"
               {...form.getInputProps("informationFireDepartment")}
             />
-            <TextInput
+            <Textarea
               label="Information Strandvogt"
               {...form.getInputProps("informationBeachVogt")}
             />
-            <TextInput
+            <Textarea
               label="Kettentauchen"
               {...form.getInputProps("chainDiving")}
             />
-            <TextInput
+            <Textarea
               label="Suche Quad"
               {...form.getInputProps("searchQuad")}
             />
-            <TextInput
+            <Textarea
               label="Strandstreife"
               {...form.getInputProps("beachPatrol")}
             />
@@ -228,12 +228,12 @@ export const SearchListForm = ({
               label="Suche mit Boot"
               {...form.getInputProps("searchByBoat")}
             />
-            <TextInput
+            <Textarea
               label="Suche mit Drohne"
               {...form.getInputProps("searchByDrone")}
             />
-            <TextInput label="Suche RWC" {...form.getInputProps("searchRWC")} />
-            <TextInput
+            <Textarea label="Suche RWC" {...form.getInputProps("searchRWC")} />
+            <Textarea
               label="Unterstützung anderer Strandabschnitt"
               {...form.getInputProps("supportOtherBeachArea")}
             />
