@@ -52,7 +52,7 @@ export const completeTowerDay = adminAction(
       };
 
       await prisma.towerDay.update({
-        where: { id: id },
+        where: { id: id, status: "ongoing" },
         data: {
           ...updatedStatuses,
           status: allCompleted ? "completed" : "ongoing",
