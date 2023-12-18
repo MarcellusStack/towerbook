@@ -9,6 +9,7 @@ import {
   ListItem,
   ThemeIcon,
   Divider,
+  Badge,
 } from "@mantine/core";
 import {
   IconBroadcast,
@@ -20,6 +21,7 @@ import {
   IconBadge,
 } from "@tabler/icons-react";
 import React from "react";
+import { status } from "@/constants";
 
 const TowerDayOverview = ({ towerday }) => {
   return (
@@ -35,6 +37,17 @@ const TowerDayOverview = ({ towerday }) => {
         <List center spacing="sm">
           <ListItem
             icon={
+              <ThemeIcon variant="light">
+                <IconChartArcs style={{ width: "70%", height: "70%" }} />
+              </ThemeIcon>
+            }
+          >
+            <Badge color={status[towerday.status].color}>
+              {status[towerday.status].label}
+            </Badge>
+          </ListItem>
+          <ListItem
+            icon={
               <ThemeIcon size="md" variant="light">
                 <IconBuildingBroadcastTower
                   style={{ width: "70%", height: "70%" }}
@@ -43,15 +56,6 @@ const TowerDayOverview = ({ towerday }) => {
             }
           >
             Turm {towerday.tower.name} {towerday.tower.number}
-          </ListItem>
-          <ListItem
-            icon={
-              <ThemeIcon size="md" variant="light">
-                <IconChartArcs style={{ width: "70%", height: "70%" }} />
-              </ThemeIcon>
-            }
-          >
-            {towerday.status}
           </ListItem>
           <ListItem
             icon={
