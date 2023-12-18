@@ -8,16 +8,15 @@ export const updateTowerDayWatchmanPlan = adminAction(
   towerDayWatchmanPlanSchema,
   async ({ id, guardLeader, towerLeader, watchman }, { user }) => {
     try {
-      
       const towerday = await prisma.towerDay.update({
         where: {
           id: id,
+          status: { equals: "ongoing" },
           watchmanStatus: {
             not: "completed",
           },
         },
         data: {
-          status: "ongoing",
           watchmanStatus: "ongoing",
           guardLeader: { connect: { id: guardLeader } },
           towerLeader: { connect: { id: towerLeader } },

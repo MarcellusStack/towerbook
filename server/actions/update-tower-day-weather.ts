@@ -13,12 +13,12 @@ export const updateTowerDayWeather = adminAction(
       const towerday = await prisma.towerDay.update({
         where: {
           id: id,
+          status: { equals: "ongoing" },
           weatherStatus: {
             not: "completed",
           },
         },
         data: {
-          status: "ongoing",
           weatherStatus: "ongoing",
           weather: weather,
         },
