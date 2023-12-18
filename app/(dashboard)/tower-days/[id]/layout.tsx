@@ -6,11 +6,13 @@ import {
   Alert,
   Box,
   Button,
+  Card,
   Grid,
   GridCol,
   Group,
   Stack,
   Text,
+  ThemeIcon,
 } from "@mantine/core";
 import { getTower } from "@/server/queries/get-tower";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
@@ -19,6 +21,7 @@ import {
   IconChecklist,
   IconLayoutDashboard,
   IconUserExclamation,
+  IconDoorEnter,
 } from "@tabler/icons-react";
 import { getTowerDayOverview } from "@/server/queries/get-tower-day-overview";
 import { convertDate } from "@/utils";
@@ -26,6 +29,7 @@ import { TowerDayProcess } from "@/components/process";
 import TowerDayOverview from "@/components/tower-day-overview";
 import Link from "next/link";
 import TowerDayAction from "@/components/tower-day-action";
+import { OpenTowerDayAction } from "@/components/open-tower-day-action";
 
 export default async function Layout({
   children,
@@ -53,7 +57,7 @@ export default async function Layout({
 
       <Grid>
         <GridCol span={8}>
-          {towerday.status === "completed" ? (
+          {towerday.status === "completed" && (
             <Alert
               variant="light"
               color="green"
@@ -62,9 +66,9 @@ export default async function Layout({
             >
               Alle wichtigen Formulare wurden bearbeitet. Gut gemacht!
             </Alert>
-          ) : (
-            children
           )}
+          {towerday.status === "open" && <OpenTowerDayAction />}
+          {towerday.status === "ongoing" && children}
         </GridCol>
         <GridCol span={4}>
           <Stack pt="sm">
