@@ -28,7 +28,6 @@ import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { TowerTable } from "@/components/tables/tower-table";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 1;
 
 export default async function Page({
   searchParams,
