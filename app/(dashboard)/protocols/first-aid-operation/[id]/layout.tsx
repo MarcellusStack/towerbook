@@ -34,6 +34,9 @@ import { CompleteAction } from "@components/complete-action";
 import { FirstAidOperationOverview } from "@components/first-aid-operation-overview";
 import { getFirstAidOperation } from "@server/queries/get-first-aid-operation";
 import { completeFirstAidOperation } from "@server/actions/complete-first-aid-operation";
+import { ModalAction } from "@/components/modal-action";
+import { RevisionAction } from "@/components/revision-action";
+import { notFound } from "next/navigation";
 
 export default async function Layout({
   children,
@@ -44,6 +47,10 @@ export default async function Layout({
 }) {
   const { id } = params;
   const operation = await getFirstAidOperation(id, ["admin"]);
+
+  if (!operation) {
+    notFound();
+  }
 
   return (
     <>
@@ -78,10 +85,37 @@ export default async function Layout({
         <GridCol span={4}>
           <Stack pt="sm" style={{ position: "sticky", top: 0 }}>
             <FirstAidOperationOverview operation={operation} />
-            <CompleteAction
-              label="Einsatz"
-              action={completeFirstAidOperation}
-            />
+            <Group>
+              {operation.status === "revision" ? (
+                <ModalAction
+                  color="orange"
+                  icon={<IconUserExclamation />}
+                  label="Revision aufheben"
+                  content={
+                    <RevisionAction
+                      modelType="firstaidoperation"
+                      type="complete"
+                    />
+                  }
+                />
+              ) : (
+                <ModalAction
+                  color="orange"
+                  icon={<IconUserExclamation />}
+                  label="Revision anfragen"
+                  content={
+                    <RevisionAction
+                      modelType="firstaidoperation"
+                      type="request"
+                    />
+                  }
+                />
+              )}
+              <CompleteAction
+                label="Einsatz"
+                action={completeFirstAidOperation}
+              />
+            </Group>
           </Stack>
         </GridCol>
       </Grid>

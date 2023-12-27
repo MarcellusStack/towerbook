@@ -31,6 +31,9 @@ import { SearchListOverview } from "@/components/search-list-overview";
 import { Suspense } from "react";
 import { CompleteAction } from "@components/complete-action";
 import { completeSearchList } from "@server/actions/complete-search-list";
+import { RevisionAction } from "@/components/revision-action";
+import { ModalAction } from "@/components/modal-action";
+import { notFound } from "next/navigation";
 
 export default async function Layout({
   children,
@@ -41,6 +44,10 @@ export default async function Layout({
 }) {
   const { id } = params;
   const searchlist = await getSearchList(id, ["admin"]);
+
+  if (!searchlist) {
+    notFound();
+  }
 
   return (
     <>
@@ -71,7 +78,29 @@ export default async function Layout({
         <GridCol span={4}>
           <Stack pt="sm" style={{ position: "sticky", top: 0 }}>
             <SearchListOverview searchlist={searchlist} />
-            <CompleteAction label="Sucheintrag" action={completeSearchList} />
+            <Group>
+              {searchlist.status === "revision" ? (
+                <ModalAction
+                  color="orange"
+                  icon={<IconUserExclamation />}
+                  label="Revision aufheben"
+                  content={
+                    <RevisionAction modelType="searchlist" type="complete" />
+                  }
+                />
+              ) : (
+                <ModalAction
+                  color="orange"
+                  icon={<IconUserExclamation />}
+                  label="Revision anfragen"
+                  content={
+                    <RevisionAction modelType="searchlist" type="request" />
+                  }
+                />
+              )}
+
+              <CompleteAction label="Sucheintrag" action={completeSearchList} />
+            </Group>
           </Stack>
         </GridCol>
       </Grid>

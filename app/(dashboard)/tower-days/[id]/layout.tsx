@@ -30,6 +30,11 @@ import TowerDayOverview from "@/components/tower-day-overview";
 import Link from "next/link";
 import TowerDayAction from "@/components/tower-day-action";
 import { OpenTowerDayAction } from "@/components/open-tower-day-action";
+import { completeTowerDay } from "@/server/actions/complete-tower-day";
+import { CompleteAction } from "@/components/complete-action";
+import { ModalAction } from "@/components/modal-action";
+import { RevisionAction } from "@/components/revision-action";
+import { notFound } from "next/navigation";
 
 export default async function Layout({
   children,
@@ -40,6 +45,10 @@ export default async function Layout({
 }) {
   const { id } = params;
   const towerday = await getTowerDayOverview(id, ["admin"]);
+
+  if (!towerday) {
+    notFound();
+  }
 
   return (
     <>
@@ -68,12 +77,42 @@ export default async function Layout({
             </Alert>
           )}
           {towerday.status === "open" && <OpenTowerDayAction />}
-          {towerday.status === "ongoing" && children}
+          {(towerday.status === "ongoing" || towerday.status === "revision") &&
+            children}
         </GridCol>
         <GridCol span={4}>
           <Stack pt="sm">
             <TowerDayOverview towerday={towerday} />
-            <TowerDayAction />
+            <Group>
+              <Button
+                leftSection={<IconLayoutDashboard />}
+                component={Link}
+                href={`/tower-days/${id}/`}
+                variant="outline"
+              >
+                Übersicht
+              </Button>
+              {towerday.status === "revision" ? (
+                <ModalAction
+                  color="orange"
+                  icon={<IconUserExclamation />}
+                  label="Revision aufheben"
+                  content={
+                    <RevisionAction modelType="towerday" type="complete" />
+                  }
+                />
+              ) : (
+                <ModalAction
+                  color="orange"
+                  icon={<IconUserExclamation />}
+                  label="Revision anfragen"
+                  content={
+                    <RevisionAction modelType="towerday" type="request" />
+                  }
+                />
+              )}
+              <CompleteAction label="Turmtag" action={completeTowerDay} />
+            </Group>
           </Stack>
         </GridCol>
       </Grid>

@@ -2,6 +2,7 @@ import { getFirstAidOperation } from "@server/queries/get-first-aid-operation";
 import { FirstAidOperationBigForm } from "@/components/forms/first-aid-operation-big-form";
 import { TableOfContents } from "@components/table-of-contents";
 import { FirstAidOperationSmallForm } from "@components/forms/first-aid-operation-small-form";
+import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,10 @@ const smallLinks = [
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const operation = await getFirstAidOperation(id, ["admin"]);
+
+  if (!operation) {
+    notFound();
+  }
 
   return (
     <>

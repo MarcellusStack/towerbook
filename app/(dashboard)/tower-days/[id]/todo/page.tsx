@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
@@ -44,7 +44,10 @@ export const dynamic = "force-dynamic";
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const towerday = await getTowerDayTodo(id, ["admin"]);
-  console.log(towerday);
+
+  if (!towerday) {
+    notFound();
+  }
 
   return <TowerDayTodoForm towerday={towerday} />;
 }

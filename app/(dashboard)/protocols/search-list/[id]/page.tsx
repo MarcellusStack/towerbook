@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
@@ -53,6 +53,9 @@ export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
   const searchlist = await getSearchList(id, ["admin"]);
 
+  if (!searchlist) {
+    notFound();
+  }
   return (
     <>
       <SearchListForm searchlist={searchlist} />
