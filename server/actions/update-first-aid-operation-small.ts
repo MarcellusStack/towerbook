@@ -41,9 +41,7 @@ export const updateFirstAidOperationSmall = adminAction(
         where: {
           organizationId: user.organizationId as string,
           id: id,
-          status: {
-            not: "completed",
-          },
+          status: { notIn: ["revision", "completed"] },
         },
         data: {
           status: "ongoing",

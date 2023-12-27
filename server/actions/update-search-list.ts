@@ -44,6 +44,7 @@ export const updateSearchList = adminAction(
         where: {
           organizationId: user.organizationId as string,
           id: id,
+          status: { notIn: ["revision", "completed"] },
         },
         data: {
           status: "ongoing",
