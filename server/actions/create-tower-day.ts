@@ -20,6 +20,7 @@ export const createTowerDay = adminAction(
           tower: { connect: { id: towerId } },
           guardLeader: { connect: { id: guardLeader.id } },
           towerLeader: { connect: { id: towerLeader.id } },
+          organization: { connect: { id: user.organizationId as string } },
         },
         select: {
           id: true,

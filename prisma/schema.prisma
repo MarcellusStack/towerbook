@@ -26,6 +26,7 @@ model Organization {
   firstAidOperations FirstAidOperation[]
   invitations        Invitation[]
   revisions          Revision[]
+  towerdays          TowerDay[]
 }
 
 model Invitation {
@@ -64,29 +65,31 @@ model Tower {
 }
 
 model TowerDay {
-  id             String    @id @default(uuid())
+  id             String       @id @default(uuid())
   createdAt      DateTime
-  updatedAt      DateTime  @updatedAt
-  startedAt      DateTime  @db.Time(4)
-  status         Status    @default(open)
+  updatedAt      DateTime     @updatedAt
+  startedAt      DateTime     @db.Time(4)
+  status         Status       @default(open)
   guardLeaderId  String
-  guardLeader    Profile   @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
+  guardLeader    Profile      @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
   towerLeaderId  String
-  towerLeader    Profile   @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
+  towerLeader    Profile      @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
   watchman       Json?
-  watchmanStatus Status    @default(open)
+  watchmanStatus Status       @default(open)
   todo           Json?
-  todoStatus     Status    @default(open)
+  todoStatus     Status       @default(open)
   incident       String?
-  incidentStatus Status    @default(open)
+  incidentStatus Status       @default(open)
   weather        Json?
-  weatherStatus  Status    @default(open)
+  weatherStatus  Status       @default(open)
   material       Json?
-  materialStatus Status    @default(open)
+  materialStatus Status       @default(open)
   towerId        String
-  tower          Tower     @relation(fields: [towerId], references: [id], onDelete: Cascade)
+  tower          Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
   dutyplan       DutyPlan?
-  dutyplanStatus Status    @default(open)
+  dutyplanStatus Status       @default(open)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String
 
   @@index([towerId])
 }
@@ -403,6 +406,7 @@ model FirstAidOperation {
 
 model Revision {
   id             String       @id @default(uuid())
+  modelId        String       @unique
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   date           DateTime
