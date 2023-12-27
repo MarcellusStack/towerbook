@@ -10,8 +10,12 @@ export const completeFirstAidOperation = adminAction(
   }),
   async ({ id }, { user }) => {
     try {
-      const operation = await prisma.firstAidOperation.findFirst({
-        where: { id: id, organizationId: user.organizationId as string },
+      const operation = await prisma.firstAidOperation.findUnique({
+        where: {
+          id: id,
+          organizationId: user.organizationId as string,
+          status: { not: "completed" },
+        },
         select: {
           status: true,
           id: true,
@@ -42,6 +46,12 @@ export const completeFirstAidOperation = adminAction(
         },
         select: {
           id: true,
+        },
+      });
+
+      await prisma.revision.deleteMany({
+        where: {
+          modelId: operation.id,
         },
       });
 
