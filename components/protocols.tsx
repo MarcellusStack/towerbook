@@ -26,7 +26,7 @@ export const Protocol = ({ props }: { props: Protocol }) => {
         <ThemeIcon size="xl" variant="light">
           {props.icon}
         </ThemeIcon>
-        <Text fw={700} size="xl">
+        <Text fw={700} size="xl" ta="center">
           {props.name}
         </Text>
       </Stack>
