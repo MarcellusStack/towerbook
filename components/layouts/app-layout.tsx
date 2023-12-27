@@ -6,14 +6,13 @@ import {
   Avatar,
   Burger,
   Group,
-  Skeleton,
-  Popover,
   Menu,
   rem,
   List,
   Divider,
   Stack,
 } from "@mantine/core";
+import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { Branding } from "@/components/branding";
 import {
   IconSearch,
@@ -23,11 +22,19 @@ import {
   IconRefresh,
   IconFileInfo,
   IconFileExport,
+  IconLayoutDashboard,
+  IconBuildingBroadcastTower,
+  IconBroadcast,
+  IconClipboard,
+  IconUsers,
+  IconCalendarPin,
+  IconFirstAidKit,
+  IconWriting,
+  IconUserSearch,
 } from "@tabler/icons-react";
 import { navLinks } from "@constants/nav-links";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { Router } from "next/router";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
 import { refreshSession } from "@server/actions/refresh-session";
@@ -36,6 +43,68 @@ import { Breadcrumb } from "@components/breadcrumb";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const actions: SpotlightActionData[] = [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      onClick: () => router.push("/dashboard"),
+      leftSection: <IconLayoutDashboard stroke={1.5} />,
+    },
+    {
+      id: "towers",
+      label: "Türme",
+      onClick: () => router.push("/towers"),
+      leftSection: <IconBuildingBroadcastTower stroke={1.5} />,
+    },
+    {
+      id: "tower-days",
+      label: "Turm Tage",
+      onClick: () => router.push("/tower-days"),
+      leftSection: <IconBroadcast stroke={1.5} />,
+    },
+    {
+      id: "protocols",
+      label: "Protokolle",
+      onClick: () => router.push("/protocols"),
+      leftSection: <IconClipboard stroke={1.5} />,
+    },
+    {
+      id: "first-aid-operation",
+      label: "Erste-Hilfe-Einsätze",
+      onClick: () => router.push("/protocols/first-aid-operation"),
+      leftSection: <IconFirstAidKit />,
+    },
+    {
+      id: "group-registration",
+      label: "Dokumentation Kinder Gruppen",
+      onClick: () => router.push("/protocols/group-registration"),
+      leftSection: <IconWriting />,
+    },
+    {
+      id: "search-list",
+      label: "Personen Suchliste",
+      onClick: () => router.push("/protocols/search-list"),
+      leftSection: <IconUserSearch />,
+    },
+    {
+      id: "users",
+      label: "Benutzer",
+      onClick: () => router.push("/users"),
+      leftSection: <IconUsers stroke={1.5} />,
+    },
+    {
+      id: "duty-plans",
+      label: "Dienstpläne",
+      onClick: () => router.push("/duty-plans"),
+      leftSection: <IconCalendarPin stroke={1.5} />,
+    },
+    {
+      id: "settings",
+      label: "Einstellungen",
+      onClick: () => router.push("/settings"),
+      leftSection: <IconSettings stroke={1.5} />,
+    },
+  ];
   const [opened, { toggle }] = useDisclosure();
   const refresh = useAction(refreshSession, {
     onExecute() {
@@ -106,6 +175,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
           <Branding />
           <Group gap="sm">
             <ActionIcon
+              onClick={spotlight.open}
               variant="light"
               size="lg"
               aria-label="Search"
@@ -116,6 +186,20 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 stroke={1.5}
               />
             </ActionIcon>
+            <Spotlight
+              actions={actions}
+              nothingFound="Nothing found..."
+              highlightQuery
+              searchProps={{
+                leftSection: (
+                  <IconSearch
+                    style={{ width: rem(20), height: rem(20) }}
+                    stroke={1.5}
+                  />
+                ),
+                placeholder: "Search...",
+              }}
+            />
             <ActionIcon
               variant="light"
               size="lg"
