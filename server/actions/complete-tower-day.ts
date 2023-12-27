@@ -1,7 +1,6 @@
 "use server";
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
-import { towerDayFormStatusSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -28,6 +27,12 @@ export const completeTowerDay = adminAction(
         throw new Error("Couldnt find tower day");
       }
 
+      await prisma.revision.deleteMany({
+        where: {
+          modelId: towerday.id,
+        },
+      });
+
       const allCompleted =
         towerday.watchmanStatus === "completed" &&
         towerday.todoStatus === "completed" &&
@@ -52,7 +57,7 @@ export const completeTowerDay = adminAction(
       };
 
       await prisma.towerDay.update({
-        where: { id: id, status: "ongoing" },
+        where: { id: id, status: { notIn: ["open", "completed"] } },
         data: {
           ...updatedStatuses,
           status: allCompleted ? "completed" : "ongoing",
