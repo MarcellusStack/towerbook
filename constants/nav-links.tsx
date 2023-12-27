@@ -8,6 +8,7 @@ import {
   IconUsers,
   IconClipboard,
   IconCalendarPin,
+  IconBroadcast,
 } from "@tabler/icons-react";
 
 export type NavLinkProps = {
@@ -41,6 +42,15 @@ export const navLinks: NavLinkProps[] = [
     name: "Türme",
   },
   {
+    id: "nav-2TABHEZ5AS",
+    href: "/tower-days",
+    icon: (
+      <IconBroadcast style={{ width: "70%", height: "70%" }} stroke={1.5} />
+    ),
+    name: "Turmtage",
+  },
+
+  {
     id: "nav-KCA6IGWBSW",
     href: "/protocols",
     icon: (
@@ -56,7 +66,7 @@ export const navLinks: NavLinkProps[] = [
   },
   {
     id: "nav-ZCQ3ZSEKLJ",
-    href: "/duty-plan",
+    href: "/duty-plans",
     icon: (
       <IconCalendarPin style={{ width: "70%", height: "70%" }} stroke={1.5} />
     ),
