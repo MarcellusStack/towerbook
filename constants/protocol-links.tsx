@@ -14,13 +14,13 @@ export const protocolLinks = [
   {
     id: "group-registration-protocol",
     link: "/protocols/group-registration",
-    name: "Gruppenanmeldung",
+    name: "Dokumentation Kinder Gruppen",
     icon: <IconWriting />,
   },
   {
     id: "search-list-protocol",
     link: "/protocols/search-list",
-    name: "Suchliste",
+    name: "Personen Suchliste",
     icon: <IconUserSearch />,
   },
 ];
