@@ -14,8 +14,8 @@ export const completeSearchList = adminAction(
       const searchlist = await prisma.searchList.findUnique({
         where: {
           id: id,
-          /* organizationId: user.organizationId as string,
-          status: { not: "completed" }, */
+          organizationId: user.organizationId as string,
+          status: { not: "completed" },
         },
         select: {
           id: true,
@@ -28,6 +28,12 @@ export const completeSearchList = adminAction(
         throw new Error("Couldnt find searchlist");
       }
 
+      await prisma.revision.deleteMany({
+        where: {
+          modelId: searchlist.id,
+        },
+      });
+
       if (!searchlist.handOverTo) {
         await prisma.searchList.update({
           where: { id: id },
@@ -36,7 +42,9 @@ export const completeSearchList = adminAction(
           },
         });
         revalidatePath("/", "layout");
-        throw new Error("Handover to is missing");
+        return {
+          message: `Der Sucheintrag wurde aktualisiert`,
+        };
       }
 
       await prisma.searchList.update({
