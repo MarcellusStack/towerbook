@@ -11,7 +11,7 @@ export const updateTowerDayWatchmanPlan = adminAction(
       const towerday = await prisma.towerDay.update({
         where: {
           id: id,
-          status: { equals: "ongoing" },
+          status: { notIn: ["revision", "completed"] },
           watchmanStatus: {
             not: "completed",
           },

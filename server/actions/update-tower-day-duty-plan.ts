@@ -80,7 +80,7 @@ export const updateTowerDayDutyPlan = adminAction(
       const towerday = await prisma.towerDay.update({
         where: {
           id: towerDayId,
-          status: { equals: "ongoing" },
+          status: { notIn: ["revision", "completed"] },
         },
         data: {
           dutyplanStatus: "ongoing",
