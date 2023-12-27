@@ -1,4 +1,15 @@
-import { Box, Divider, Group, ThemeIcon, Text, Anchor } from "@mantine/core";
+"use client";
+
+import {
+  Box,
+  Divider,
+  Group,
+  Text,
+  Anchor,
+  ActionIcon,
+  Stack,
+  Button,
+} from "@mantine/core";
 
 import {
   IconCircleCheck,
@@ -6,16 +17,27 @@ import {
   IconCircleDashed,
   IconCircleX,
 } from "@tabler/icons-react";
-import { type TowerDay, TowerDayFormStatus } from "@prisma/client";
+import { type TowerDay, type Status } from "@prisma/client";
 import Link from "next/link";
+import { modals } from "@mantine/modals";
+import { useActionNotification } from "@/hooks/use-action-notification";
+import { useParams } from "next/navigation";
+import { resetTowerDayFormStatus } from "@server/actions/reset-tower-day-form-status";
 
 export type ProcessProps = {
-  process: TowerDayFormStatus;
+  process: Status;
   title: string;
   href: string;
+  form:
+    | "watchmanStatus"
+    | "todoStatus"
+    | "incidentStatus"
+    | "weatherStatus"
+    | "materialStatus"
+    | "dutyplanStatus";
 };
 
-const handleProcessColor = (process: TowerDayFormStatus) => {
+const handleProcessColor = (process: Status) => {
   switch (process) {
     case "open":
       return "gray";
@@ -30,44 +52,70 @@ const handleProcessColor = (process: TowerDayFormStatus) => {
   }
 };
 
-export const Process = ({ process, title, href }: ProcessProps) => {
+export const Process = ({ process, title, href, form }: ProcessProps) => {
+  const { execute, status } = useActionNotification({
+    action: resetTowerDayFormStatus,
+    executeNotification: `Revision wird abgeschlossen`,
+    hideModals: true,
+  });
+
+  const { id } = useParams();
   return (
-    <Anchor component={Link} href={href}>
-      <Group gap="sm" wrap="nowrap" className="w-full">
-        <Group wrap="nowrap">
-          <ThemeIcon size="xl" color={handleProcessColor(process)}>
-            {process === "open" && (
-              <IconCircle
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            )}
-            {process === "ongoing" && (
-              <IconCircleDashed
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            )}
-            {process === "completed" && (
-              <IconCircleCheck
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            )}
-            {process === "incomplete" && (
-              <IconCircleX
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
-            )}
-          </ThemeIcon>
-
+    <Group gap="sm" wrap="nowrap" className="w-full">
+      <Group wrap="nowrap" gap="sm">
+        <ActionIcon
+          loading={status === "executing"}
+          size="xl"
+          color={handleProcessColor(process)}
+          onClick={() => {
+            modals.open({
+              title: `${title} in Bearbeitung setzen`,
+              children: (
+                <>
+                  <Stack gap="md">
+                    <Text size="sm">
+                      Sind sie sicher, dass Sie diesen Prozess in Bearbeitung
+                      setzen wollen? Diese Aktion ist unwiderruflich.
+                    </Text>
+                    <Button
+                      variant="filled"
+                      onClick={() => {
+                        execute({ id: id, form: form });
+                      }}
+                    >
+                      Prozess zurücksetzen
+                    </Button>
+                  </Stack>
+                </>
+              ),
+            });
+          }}
+        >
+          {process === "open" && (
+            <IconCircle style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          )}
+          {process === "ongoing" && (
+            <IconCircleDashed
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          )}
+          {process === "completed" && (
+            <IconCircleCheck
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          )}
+          {process === "incomplete" && (
+            <IconCircleX style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          )}
+        </ActionIcon>
+        <Anchor component={Link} href={href}>
           <Text size="md">{title}</Text>
-        </Group>
-
-        <Divider color="gray.3" size="sm" className="w-full" />
+        </Anchor>
       </Group>
-    </Anchor>
+      <Divider color="gray.3" size="sm" className="w-full" />
+    </Group>
   );
 };
 
@@ -94,31 +142,37 @@ export const TowerDayProcess = ({
           process={towerday.watchmanStatus}
           href={`/tower-days/${towerday.id}/watchman-plan`}
           title="Team"
+          form="watchmanStatus"
         />
         <Process
           process={towerday.todoStatus}
           href={`/tower-days/${towerday.id}/todo`}
           title="Todo"
+          form="todoStatus"
         />
         <Process
           process={towerday.incidentStatus}
           href={`/tower-days/${towerday.id}/incident`}
           title="Vorkommnisse"
+          form="incidentStatus"
         />
         <Process
           process={towerday.weatherStatus}
           href={`/tower-days/${towerday.id}/weather`}
           title="Wetter"
+          form="weatherStatus"
         />
         <Process
           process={towerday.materialStatus}
           href={`/tower-days/${towerday.id}/material`}
           title="Material Prüfung"
+          form="materialStatus"
         />
         <Process
           process={towerday.dutyplanStatus}
           href={`/tower-days/${towerday.id}/duty-plan`}
           title="Wachplan"
+          form="dutyplanStatus"
         />
       </Group>
     </Box>
