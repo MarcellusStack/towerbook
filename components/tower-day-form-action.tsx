@@ -18,7 +18,7 @@ export const TowerDayFormAction = ({
   });
   const { id } = useParams();
   return (
-    <Group mt="xs">
+    <Group mt="xs" justify="flex-end">
       <Button variant="outline" type="submit" loading={updateStatus}>
         Speichern
       </Button>
@@ -34,3 +34,5 @@ export const TowerDayFormAction = ({
     </Group>
   );
 };
+
+
