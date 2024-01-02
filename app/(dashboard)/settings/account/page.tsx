@@ -33,9 +33,12 @@ import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
 import { getUserOverview } from "@/server/queries/get-user-overview";
+import { UserSettingsForm } from "@/components/forms/user-settings-form";
+import { getUserSettings } from "@/server/queries/user";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  return "Account";
+  const user = await getUserSettings([]);
+  return <UserSettingsForm user={user} />;
 }
