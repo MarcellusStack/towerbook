@@ -68,6 +68,7 @@ export const useActionNotification = ({
       if (executeNotification) {
         notifications.hide(executeNotification);
       }
+
       notifications.show({
         id: "error-action-notification",
         withBorder: true,
@@ -76,7 +77,6 @@ export const useActionNotification = ({
         message: "Aktion fehlgeschlagen, versuchen sie es später erneut",
         color: "red",
       });
-      
     },
   });
   return { execute, result, status };
