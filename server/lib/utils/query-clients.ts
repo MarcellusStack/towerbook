@@ -39,3 +39,19 @@ export const authQuery =
 
     return queryFunction(user);
   };
+
+export const authAdminQuery =
+  <T>(queryFunction: (user: GetUserProps) => Promise<T>) =>
+  async (): Promise<T> => {
+    const user = await getUser();
+
+    if (!user) {
+      throw new Error("Sie haben keine Berechtigung für diese Aktion");
+    }
+
+    if (!user.role.includes("admin")) {
+      throw new Error("Sie haben keine Berechtigung für diese Aktion");
+    }
+
+    return queryFunction(user);
+  };
