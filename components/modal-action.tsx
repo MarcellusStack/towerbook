@@ -5,16 +5,18 @@ import React from "react";
 
 export type ModalAction = {
   color: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   label: string;
   content: React.ReactNode;
+  loading?:boolean;
 };
 
-export const ModalAction = ({ color, icon, label, content }: ModalAction) => {
+export const ModalAction = ({ color, icon, label, content, loading }: ModalAction) => {
   return (
     <Button
       color={color}
       leftSection={icon}
+      loading={loading}
       onClick={() => {
         modals.open({
           title: `${label}`,
