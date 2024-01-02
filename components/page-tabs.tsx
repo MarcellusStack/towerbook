@@ -19,7 +19,7 @@ export const PageTabs = ({ page, links }: PageTabsProps) => {
   return (
     <Tabs
       variant="pills"
-      value={pathname.split("/")[3] ?? "/"}
+      value={pathname.split("/")[2] ?? "/"}
       onChange={(value) => router.push(`/${page}/${value}`)}
     >
       <Tabs.List>
