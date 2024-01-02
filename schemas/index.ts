@@ -523,3 +523,43 @@ export const firstAidOperationSmallSchema = z.object({
     z.object({ id: z.string(), resource: z.string(), checked: z.boolean() })
   ),
 });
+
+export const towerDayAdministrationSchema = z.object({
+  todo: z.array(
+    z.object({
+      id: z.string(),
+      todo: z.string(),
+      type: z.enum(["daily", "weekly", "monthly"], {
+        errorMap: () => ({
+          message: "Zeitraum wird benötigt",
+        }),
+      }),
+      day: z.string(),
+      date: z.union([z.string(), z.date()]),
+    })
+  ),
+  weather: z.array(
+    z.object({
+      id: z.string(),
+      time: z.string(),
+    })
+  ),
+  material: z.array(
+    z.object({
+      id: z.string(),
+      material: z.string(),
+    })
+  ),
+});
+
+export const beachSectionsSchema = z.object({
+  beachSections: z.array(
+    z.object({
+      id: z.string(),
+      sections: z.array(
+        z.object({ id: z.string(), number: z.string(), symbol: z.string() })
+      ),
+      location: z.string(),
+    })
+  ),
+});
