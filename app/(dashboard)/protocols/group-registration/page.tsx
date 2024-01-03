@@ -51,6 +51,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const groups = await getGroupRegistrations("", ["admin"]);
+
   return (
     <>
       <PrimaryAppHeading title="Dokumentation Kinder Gruppen" />
