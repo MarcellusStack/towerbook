@@ -22,6 +22,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import deLocale from "@fullcalendar/core/locales/de";
 import { towerDayDutyPlanSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
@@ -47,11 +48,12 @@ import { updateTowerDayTodo } from "@/server/actions/update-tower-day-todo";
 import { TowerDayTodoProps } from "@/server/queries/get-tower-day-todo";
 import { TowerDayWeatherProps } from "@/server/queries/get-tower-day-weather";
 import { updateTowerDayWeather } from "@/server/actions/update-tower-day-weather";
-import deLocale from "@fullcalendar/core/locales/de";
+
 import { createDutyPlan } from "@/server/actions/create-duty-plan";
 import { deleteDutyPlan } from "@/server/actions/delete-duty-plan";
 import { CreateShiftForm } from "@components/forms/create-shift-form";
 import { updateTowerDayDutyPlan } from "@/server/actions/update-tower-day-duty-plan";
+import { TowerDayDutyPlan } from "@components/tower-day-duty-plan";
 
 export const TowerDayDutyPlanForm = ({
   towerday,
@@ -160,64 +162,16 @@ export const TowerDayDutyPlanForm = ({
                   />
                 </ActionIcon>
               </Group>
-              <FullCalendar
-                height={720}
-                locales={[deLocale]}
-                plugins={[timeGridPlugin, interactionPlugin]}
-                dateClick={(event) => {
-                  modals.open({
-                    title: "Schicht hinzufügen",
-                    children: (
-                      <>
-                        <CreateShiftForm date={new Date(event.date)} />
-                      </>
-                    ),
-                  });
-                }}
-                eventClick={(event) => {
-                  modals.open({
-                    title: "Schicht löschen",
-                    children: (
-                      <>
-                        <Stack gap="md">
-                          <Text size="sm">
-                            Sind sie sicher, dass Sie diese Schicht löschen
-                            wollen? Diese Aktion ist unwiderruflich.
-                          </Text>
-                          <Group gap="sm">
-                            <Button
-                              fullWidth
-                              color="red"
-                              onClick={() => {
-                                form.removeListItem(
-                                  "shifts",
-                                  event.event.extendedProps.index
-                                );
-                                modals.closeAll();
-                              }}
-                            >
-                              Schicht löschen
-                            </Button>
-                          </Group>
-                        </Stack>
-                      </>
-                    ),
-                  });
-                }}
-                slotMinTime={"08:00:00"}
-                slotMaxTime={"19:00:00"}
-                selectable={true}
-                slotDuration={"01:00"}
-                initialView="timeGridDay"
-                events={form.values.shifts.map((shift, index) => ({
-                  index: index,
-                  id: shift.id,
-                  title: `${shift.user.firstName} ${shift.user.lastName}`,
-                  start: shift.startTime,
-                  end: shift.endTime,
-                  color: shift.type === "duty" ? "green" : "gray",
-                }))}
-              />
+              <SimpleGrid cols={2} spacing="md">
+                <TowerDayDutyPlan
+                  shifts={form.values.shifts}
+                  shiftType="duty"
+                />
+                <TowerDayDutyPlan
+                  shifts={form.values.shifts}
+                  shiftType="prepared"
+                />
+              </SimpleGrid>
             </Fieldset>
             <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
               <TowerDayFormAction
