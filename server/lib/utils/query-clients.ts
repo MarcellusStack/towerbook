@@ -1,8 +1,14 @@
+import { Role } from "@prisma/client";
 import { GetUserProps, getUser } from "@server/lib/utils/get-user";
 
 export const authFilterQuery =
-  (queryFunction: (search: string | undefined, user: GetUserProps) => void) =>
-  async (search: string, requiredRoles: string[] = []) => {
+  <T>(
+    queryFunction: (
+      search: string | undefined,
+      user: GetUserProps
+    ) => Promise<T | null>
+  ) =>
+  async (search: string, requiredRoles: Role[] = []): Promise<T | null> => {
     const user = await getUser();
 
     if (!user) {
@@ -14,7 +20,7 @@ export const authFilterQuery =
     }
 
     if (!requiredRoles.some((role) => user.role.includes(role))) {
-      return [];
+      return null;
     }
 
     return queryFunction(search, user);
