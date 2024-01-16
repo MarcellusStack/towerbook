@@ -59,19 +59,15 @@ export default async function Layout({
       <SecondaryAppHeading
         title={`Benutzer`}
         extraInfo={
-          <Group>
+          <Group gap="sm">
             <Text size="lg" c="dimmed">
-              {user.firstName}
-            </Text>
-            <Text size="lg" c="dimmed">
-              {user.lastName}
+              {user.firstName} {user.lastName}
             </Text>
             <RoleBadge user={user} />
           </Group>
         }
       />
       <SecondaryPageTabs page="users" links={links} />
-      {/* <UserTabs /> */}
       {children}
     </>
   );
