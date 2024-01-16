@@ -2,6 +2,7 @@ import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
 import { type Profile, Role } from "@prisma/client";
+import { decrypt } from "@/utils";
 
 export type UserAccountProps = Pick<
   Profile,
@@ -31,8 +32,21 @@ export type UserAccountProps = Pick<
   | "differentBankholder"
 >;
 
+export const decryptUserAccount = async (
+  userAccount: UserAccountProps
+): Promise<UserAccountProps> => {
+  const decryptedIban = decrypt(userAccount.iban || "");
+  const decryptedBic = decrypt(userAccount.bic || "");
+
+  return {
+    ...userAccount,
+    iban: decryptedIban,
+    bic: decryptedBic,
+  };
+};
+
 export const getUserAccount = authFilterQuery(async (search, user) => {
-  return await prisma.profile.findFirst({
+  const userAccount = await prisma.profile.findFirst({
     where: {
       organizationId: user.organizationId,
       userId: search,
@@ -64,6 +78,14 @@ export const getUserAccount = authFilterQuery(async (search, user) => {
       userId: true,
     },
   });
+
+  if (!userAccount) {
+    throw new Error("Benutzer nicht gefunden");
+  }
+
+  const decryptedUserAccount = await decryptUserAccount(userAccount);
+
+  return decryptedUserAccount;
 }) as unknown as (
   search: string,
   requiredRoles: Role[]
