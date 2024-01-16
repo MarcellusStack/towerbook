@@ -32,6 +32,7 @@ import { updateTowerDayTodo } from "@/server/actions/update-tower-day-todo";
 import { TowerDayTodoProps } from "@/server/queries/get-tower-day-todo";
 import { TowerDayIncidentProps } from "@/server/queries/get-tower-day-incident";
 import { updateTowerDayIncident } from "@/server/actions/update-tower-day-incident";
+import { v4 as uuidv4 } from "uuid";
 
 export const TowerDayIncidentForm = ({
   towerday,
@@ -43,7 +44,7 @@ export const TowerDayIncidentForm = ({
     validate: zodResolver(towerDayIncidentSchema),
     initialValues: {
       id: towerday.id,
-      incident: towerday.incident,
+      incident: towerday.incident === null ? new Array() : towerday.incident,
     },
   });
 
@@ -62,14 +63,38 @@ export const TowerDayIncidentForm = ({
             </Text>
           }
         >
-          <Stack gap="md">
-            <Textarea
-              placeholder="Vorkommnisse"
-              autosize
-              minRows={10}
-              {...form.getInputProps("incident")}
-            />
-          </Stack>
+          <Button
+            variant="outline"
+            mb="md"
+            onClick={() => {
+              form.insertListItem("incident", {
+                id: uuidv4(),
+                event: "",
+                description: "",
+              });
+            }}
+          >
+            Hinzufügen
+          </Button>
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+            {form.values.incident &&
+              form.values.incident.map((incident, index) => (
+                <Card key={incident.id} withBorder p="sm">
+                  <Stack gap="md">
+                    <TextInput
+                      placeholder="Ereignis"
+                      {...form.getInputProps(`incident.${index}.event`)}
+                    />
+                    <Textarea
+                      placeholder="Beschreibung"
+                      autosize
+                      minRows={10}
+                      {...form.getInputProps(`incident.${index}.description`)}
+                    />
+                  </Stack>
+                </Card>
+              ))}
+          </SimpleGrid>
         </Fieldset>
         <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <TowerDayFormAction
