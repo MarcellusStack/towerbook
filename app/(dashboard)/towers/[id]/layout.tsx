@@ -34,12 +34,12 @@ export const links = [
   {
     value: "search-list",
     icon: <IconUserSearch size={16} stroke={1.5} />,
-    label: "Suchliste",
+    label: "Personen Suchliste",
   },
   {
     value: "group-registration",
     icon: <IconUsersGroup size={16} stroke={1.5} />,
-    label: "Gruppen Anmeldung",
+    label: "Dokumentation Kinder Gruppen",
   },
   {
     value: "duty-plan",
