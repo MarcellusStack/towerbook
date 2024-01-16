@@ -1,5 +1,5 @@
 "use client";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import {
   ActionIcon,
   AppShell,
@@ -11,6 +11,7 @@ import {
   List,
   Divider,
   Stack,
+  Box,
 } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { Branding } from "@/components/branding";
@@ -31,18 +32,24 @@ import {
   IconFirstAidKit,
   IconWriting,
   IconUserSearch,
+  IconBed,
 } from "@tabler/icons-react";
 import { navLinks } from "@constants/nav-links";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
 import { refreshSession } from "@server/actions/refresh-session";
 import { useAction } from "next-safe-action/hook";
 import { Breadcrumb } from "@components/breadcrumb";
+import Image from "next/image";
+import { logout } from "@/services/auth/actions";
+import { useActionNotification } from "@/hooks/use-action-notification";
+import { useSession } from "next-auth/react";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const { data: session, update, status: sessionStatus } = useSession();
+
   const actions: SpotlightActionData[] = [
     {
       id: "dashboard",
@@ -104,6 +111,12 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       onClick: () => router.push("/settings"),
       leftSection: <IconSettings stroke={1.5} />,
     },
+    {
+      id: "accomodations",
+      label: "Unterkünfte",
+      onClick: () => router.push("/accomodations"),
+      leftSection: <IconBed stroke={1.5} />,
+    },
   ];
   const [opened, { toggle }] = useDisclosure();
   const refresh = useAction(refreshSession, {
@@ -155,6 +168,14 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
     },
   });
 
+  const [scroll] = useWindowScroll();
+
+  const { execute, result, status } = useActionNotification({
+    action: logout,
+    executeNotification: "Sie werden abgemeldet",
+    redirectUrl: "/sign-in",
+  });
+
   return (
     <AppShell
       header={{ height: 73 }}
@@ -172,7 +193,20 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
     >
       <AppShell.Header>
         <Group h="100%" px="sm" justify="space-between">
-          <Branding />
+          {scroll.y <= 100 && <Branding />}
+          {scroll.y > 100 && (
+            <Box className="flex flex-row items-center gap-3">
+              <Box className="p-3 rounded-sm bg-gray-100 grid place-items-center">
+                <Image
+                  src="/branding.png"
+                  width={32}
+                  height={32}
+                  alt="branding"
+                />
+              </Box>
+              <Breadcrumb />
+            </Box>
+          )}
           <Group gap="sm">
             <ActionIcon
               onClick={spotlight.open}
@@ -211,13 +245,19 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <Menu shadow="md" width={200}>
               <Menu.Target>
                 <ActionIcon
+                  loading={sessionStatus === "loading"}
                   variant="light"
                   size="lg"
                   aria-label="Search"
                   radius="xl"
                 >
                   <Avatar color="blue" radius="xl">
-                    MP
+                    {sessionStatus === "authenticated" && (
+                      <>
+                        {session.user.firstName?.charAt(0)}
+                        {session.user.lastName?.charAt(0)}
+                      </>
+                    )}
                   </Avatar>
                 </ActionIcon>
               </Menu.Target>
@@ -231,6 +271,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                   Sitzung Aktualisieren
                 </Menu.Item>
                 <Menu.Item
+                  onClick={() => router.push("/settings")}
                   leftSection={
                     <IconSettings style={{ width: rem(14), height: rem(14) }} />
                   }
@@ -240,7 +281,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 <Menu.Divider />
                 <Menu.Item
                   onClick={() => {
-                    signOut();
+                    execute({});
                   }}
                   leftSection={
                     <IconLogout style={{ width: rem(14), height: rem(14) }} />
@@ -295,8 +336,9 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
             </List.Item>
             <List.Item className="grid place-items-center">
               <ActionIcon
+                loading={status === "executing"}
                 onClick={() => {
-                  signOut();
+                  execute({});
                 }}
                 variant="subtle"
                 size="lg"

@@ -1,9 +1,9 @@
-import { getServerSession } from "next-auth/next";
+import { auth } from "@server/lib/auth";
 import { authOptions } from "@server/lib/auth-options";
 import { prisma } from "@/server/db";
 
 export const getAdminUser = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!session) {
     return null;

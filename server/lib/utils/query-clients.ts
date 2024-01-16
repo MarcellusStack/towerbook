@@ -1,5 +1,6 @@
 import { Role } from "@prisma/client";
-import { GetUserProps, getUser } from "@server/lib/utils/get-user";
+import { GetUserProps } from "@server/lib/utils/get-user";
+import { auth } from "@server/lib/auth";
 
 export const authFilterQuery =
   <T>(
@@ -9,55 +10,55 @@ export const authFilterQuery =
     ) => Promise<T | null>
   ) =>
   async (search: string, requiredRoles: Role[] = []): Promise<T | null> => {
-    const user = await getUser();
+    const session = await auth();
 
-    if (!user) {
+    if (!session) {
       throw new Error("Sie haben keine Berechtigung für diese Aktion");
     }
 
     if (requiredRoles.length === 0) {
-      return queryFunction(search, user);
+      return queryFunction(search, session.user);
     }
 
-    if (!requiredRoles.some((role) => user.role.includes(role))) {
+    if (!requiredRoles.some((role) => session.user.role.includes(role))) {
       return null;
     }
 
-    return queryFunction(search, user);
+    return queryFunction(search, session.user);
   };
 
 export const authQuery =
-  (queryFunction: (user: GetUserProps) => void) =>
-  async (requiredRoles: string[] = []) => {
-    const user = await getUser();
+  <T>(queryFunction: (user: GetUserProps) => Promise<T | null>) =>
+  async (requiredRoles: string[] = []): Promise<T | null> => {
+    const session = await auth();
 
-    if (!user) {
+    if (!session) {
       throw new Error("Sie haben keine Berechtigung für diese Aktion");
     }
 
     if (requiredRoles.length === 0) {
-      return queryFunction(user);
+      return queryFunction(session.user);
     }
 
-    if (!requiredRoles.some((role) => user.role.includes(role))) {
-      return [];
+    if (!requiredRoles.some((role) => session.user.role.includes(role))) {
+      return null;
     }
 
-    return queryFunction(user);
+    return queryFunction(session.user);
   };
 
 export const authAdminQuery =
   <T>(queryFunction: (user: GetUserProps) => Promise<T>) =>
   async (): Promise<T> => {
-    const user = await getUser();
+    const session = await auth();
 
-    if (!user) {
+    if (!session || !session.user) {
       throw new Error("Sie haben keine Berechtigung für diese Aktion");
     }
 
-    if (!user.role.includes("admin")) {
+    if (!session.user.role.includes("admin")) {
       throw new Error("Sie haben keine Berechtigung für diese Aktion");
     }
 
-    return queryFunction(user);
+    return queryFunction(session.user);
   };

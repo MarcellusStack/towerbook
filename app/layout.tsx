@@ -9,27 +9,34 @@ import "dayjs/locale/de";
 import { Notifications } from "@mantine/notifications";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
+import { ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/server/lib/auth";
 
 export const metadata = {
   title: "My Mantine app",
   description: "I have followed setup instructions carefully",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <head>
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider>
-          <Notifications />
-          <ModalsProvider>{children}</ModalsProvider>
-        </MantineProvider>
+        <SessionProvider session={session}>
+          <MantineProvider>
+            <Notifications />
+            <ModalsProvider>{children}</ModalsProvider>
+          </MantineProvider>
+        </SessionProvider>
       </body>
     </html>
   );
