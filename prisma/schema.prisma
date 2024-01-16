@@ -438,6 +438,8 @@ model Accomodation {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id])
   bookings       Booking[]
+
+  @@unique(number)
 }
 
 model Booking {
