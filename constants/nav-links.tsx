@@ -1,14 +1,11 @@
 import {
   IconLayoutDashboard,
-  IconCheckupList,
   IconBuildingBroadcastTower,
-  IconClipboardPlus,
-  IconUserSearch,
-  IconUsersGroup,
   IconUsers,
   IconClipboard,
   IconCalendarPin,
   IconBroadcast,
+  IconBed,
 } from "@tabler/icons-react";
 
 export type NavLinkProps = {
@@ -71,5 +68,11 @@ export const navLinks: NavLinkProps[] = [
       <IconCalendarPin style={{ width: "70%", height: "70%" }} stroke={1.5} />
     ),
     name: "Dienstplan",
+  },
+  {
+    id: "nav-HEGSGR52GS",
+    href: "/accomodations",
+    icon: <IconBed style={{ width: "70%", height: "70%" }} stroke={1.5} />,
+    name: "Unterkünfte",
   },
 ];
