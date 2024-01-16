@@ -8,24 +8,9 @@ import { capitalizeFirstLetter, convertDate } from "@utils/index";
 import Image from "next/image";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteTower } from "@server/actions/delete-tower";
-import { Tower } from "@prisma/client";
+import { TowerProps, TowersProps } from "@/server/queries/get-towers";
 
-export type TowerProps = {
-  id: string;
-  type: "tower" | "quad";
-  status: "operation" | "inactive" | "active";
-  name: string;
-  number: string;
-  location: string;
-};
-
-const statusColors = {
-  operation: "blue",
-  inactive: "red",
-  active: "green",
-};
-
-export const TowerTableRow = ({ tower }: { tower: Tower }) => {
+export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
   return (
     <Table.Tr key={tower.id}>
       <Table.Td>
@@ -49,7 +34,12 @@ export const TowerTableRow = ({ tower }: { tower: Tower }) => {
         )}
       </Table.Td>
       <Table.Td>
-        <Badge color={statusColors[tower.status]}>{tower.status}</Badge>
+        <Image
+          src={`/${tower.status}.jpg`}
+          alt="status"
+          width={32}
+          height={32}
+        />
       </Table.Td>
       <Table.Td>
         <Text size="sm">{tower.name}</Text>
@@ -95,7 +85,7 @@ export const TowerTableRow = ({ tower }: { tower: Tower }) => {
   );
 };
 
-export function TowerTable({ towers }: { towers: Tower[] }) {
+export function TowerTable({ towers }: { towers: TowersProps }) {
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>
