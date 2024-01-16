@@ -15,7 +15,7 @@ export const createFirstAidOperation = adminAction(
           type: type as FirstAidOperationType,
           date: new Date(date as Date),
           startTime: extractTimeFromDate(startTime),
-          guardLeader: { connect: { id: guardLeader.id } },
+          guardLeader: { connect: { userId: guardLeader.userId } },
           tower: { connect: { id: towerId } },
           organization: { connect: { id: user.organizationId as string } },
         },
