@@ -18,6 +18,10 @@ import SignUpForm from "@/components/forms/sign-up-form";
 import { redirect } from "next/navigation";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 
+import { Suspense } from "react";
+import { unstable_noStore } from "next/cache";
+import { auth } from "@/server/lib/auth";
+
 export const dynamic = "force-dynamic";
 
 /* export const getProfiles = async () => {

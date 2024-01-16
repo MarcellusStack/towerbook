@@ -1,9 +1,8 @@
 import { AppLayout } from "@/components/layouts/app-layout";
-import { prisma } from "@/server/db";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@server/lib/auth-options";
+
 import { getUser } from "@server/lib/utils/get-user";
-import {  JoinOrganization } from "@components/join-organization";
+import { JoinOrganization } from "@components/join-organization";
+import { auth } from "@/server/lib/auth";
 
 export const metadata = {
   title: "My Mantine app",
@@ -15,11 +14,15 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUser();
+  const session = await auth();
 
   return (
     <AppLayout>
-      {user && !user.organizationId ? <JoinOrganization /> : children}
+      {session && !session.user?.organizationId ? (
+        <JoinOrganization />
+      ) : (
+        children
+      )}
     </AppLayout>
   );
 }
