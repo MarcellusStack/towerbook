@@ -1,9 +1,7 @@
 "use server";
 import { prisma } from "@server/db";
-import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
-import { deleteSchema, deleteUserSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const removeUserFromCompany = adminAction(
