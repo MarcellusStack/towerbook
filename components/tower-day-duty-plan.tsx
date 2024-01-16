@@ -37,6 +37,7 @@ export const TowerDayDutyPlan = ({
       titleFormat={(info) =>
         `${shiftTypes.filter((type) => type.value === shiftType)[0].label}`
       }
+      
       dateClick={(event) => {
         modals.open({
           title: "Schicht hinzufügen",
