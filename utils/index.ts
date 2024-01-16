@@ -1,3 +1,6 @@
+import translations from "@/utils/translations.json";
+import CryptoJS from "crypto-js";
+
 export const convertDate = (date: Date) => {
   return new Date(date).toLocaleDateString("de-DE", {
     weekday: "long",
@@ -37,4 +40,46 @@ export const convertBase64 = (file: File) => {
 
 export const capitalizeFirstLetter = (input: string) => {
   return input.charAt(0).toUpperCase() + input.slice(1);
+};
+
+export const toLowercaseAndTrim = (word: string) => {
+  return word.toLowerCase().trim();
+};
+
+export const translate = (item: string) => translations[item] || item;
+
+export const baseUrl =
+  process.env.NODE_ENV === "production"
+    ? `https://towerbook.vercel.app`
+    : "http://localhost:3000";
+
+const checkAlreadyEncrypted = (text: string | null) => {
+  const passphrase = process.env.PASSPHRASE;
+  const bytes = CryptoJS.AES.decrypt(text, passphrase);
+  try {
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+    return !!decrypted;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const encrypt = (text: string | null) => {
+  const passphrase = process.env.PASSPHRASE;
+  const alreadyEncryptedText = checkAlreadyEncrypted(text);
+  if (alreadyEncryptedText) {
+    return text;
+  }
+  return CryptoJS.AES.encrypt(text, passphrase).toString();
+};
+
+export const decrypt = (text: string | null) => {
+  const passphrase = process.env.PASSPHRASE;
+  try {
+    const bytes = CryptoJS.AES.decrypt(text, passphrase);
+    const originalText = bytes.toString(CryptoJS.enc.Utf8);
+    return originalText;
+  } catch (error) {
+    return text;
+  }
 };
