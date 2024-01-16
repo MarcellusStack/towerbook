@@ -24,3 +24,31 @@ export const revisionModels = [
   },
   { type: "searchlist", model: "searchList", url: "/protocols/search-list/" },
 ];
+
+export const towerStatus = [
+  { value: "lifeguard_on_duty", label: "Wasserrettung im Dienst" },
+  {
+    value: "use_caution_when_swimming",
+    label: "Baden und Schwimmen gefährlich",
+  },
+  { value: "beach_closed", label: "Baden und Schwimmen verboten" },
+];
+
+export const authRoutes = [
+  "sign-in",
+  "sign-up",
+  "sign-out",
+  "verify",
+  "forgot-password",
+  "reset-password",
+];
+
+export const protectedRoutes = [
+  "/accomodations",
+  "/dashboard",
+  "/protocols",
+  "/settings",
+  "/tower-days",
+  "/towers",
+  "/users",
+];
