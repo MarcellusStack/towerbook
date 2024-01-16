@@ -1,9 +1,6 @@
 "use server";
-import {
-  beachSectionsSchema,
-  towerDayAdministrationSchema,
-  weatherSchema,
-} from "@/schemas";
+
+import { beachSectionsSchema, towerDayAdministrationSchema } from "@/schemas";
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { revalidatePath } from "next/cache";
@@ -101,7 +98,7 @@ export const updateTowerDayAdministration = adminAction(
         data: {
           todo: todo,
           weather: weather,
-          material:material,
+          material: material,
         },
       });
     } catch (error) {
