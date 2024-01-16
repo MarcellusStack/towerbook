@@ -28,6 +28,7 @@ model Organization {
   invitations        Invitation[]
   revisions          Revision[]
   towerdays          TowerDay[]
+  accomodations      Accomodation[]
 }
 
 model Invitation {
@@ -79,7 +80,7 @@ model TowerDay {
   watchmanStatus Status       @default(open)
   todo           Json?
   todoStatus     Status       @default(open)
-  incident       String?
+  incident       Json?
   incidentStatus Status       @default(open)
   weather        Json?
   weatherStatus  Status       @default(open)
@@ -127,6 +128,10 @@ enum ShiftType {
 
 model Profile {
   id                          String              @id @default(uuid())
+  emailVerified               Boolean             @default(false)
+  verificationToken           String?
+  passwordResetToken          String?
+  passwordResetTokenExpires   DateTime?
   lastLogin                   DateTime?
   lastLogout                  DateTime?
   userId                      String              @unique
@@ -200,6 +205,7 @@ model Profile {
   towerLeaders                TowerDay[]          @relation(name: "towerLeader")
   firstAidOperations          FirstAidOperation[]
   searchlists                 SearchList[]
+  bookings                    Booking[]
 
   @@index([userId, organizationId])
 }
@@ -418,6 +424,31 @@ model Revision {
   towerId        String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
+}
+
+model Accomodation {
+  id             String       @id @default(uuid())
+  number         Int
+  name           String
+  street         String?
+  zipCode        String?
+  location       String?
+  availableBeds  Int
+  reservable     Boolean      @default(true)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  bookings       Booking[]
+}
+
+model Booking {
+  id             String       @id @default(uuid())
+  date           DateTime     @db.Date
+  accomodationId String
+  userId         String
+  accomodation   Accomodation @relation(fields: [accomodationId], references: [id], onDelete: Cascade)
+  user           Profile      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([date, accomodationId, userId])
 }
 
 enum RevisionType {
