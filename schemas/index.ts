@@ -77,7 +77,13 @@ export const towerDayMaterialSchema = z.object({
 
 export const towerDayIncidentSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
-  incident: z.string(),
+  incident: z.array(
+    z.object({
+      id: z.string(),
+      event: z.string(),
+      description: z.string(),
+    })
+  ),
 });
 
 export const towerDayDutyPlanSchema = z.object({
@@ -172,6 +178,23 @@ export const inviteUserSchema = z.object({
   role: z.string().min(1, { message: "Bitte fügen Sie eine Rolle hinzu." }),
 });
 
+export const createAccomodationSchema = z.object({
+  number: z.coerce
+    .number()
+    .min(1, { message: "Bitte fügen sie eine Nummer hinzu." }),
+  name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
+  street: z.string().min(1, { message: "Bitte fügen sie eine Straße hinzu." }),
+  zipCode: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Postleitzahl hinzu." }),
+  location: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
+  availableBeds: z.coerce
+    .number()
+    .min(1, { message: "Bitte fügen sie Betten hinzu." }),
+});
+
 export const createTowerSchema = z.object({
   name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
   main: z.boolean(),
@@ -182,6 +205,18 @@ export const createTowerSchema = z.object({
   location: z
     .string()
     .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
+});
+
+export const towerStatusSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  status: z.enum(
+    ["lifeguard_on_duty", "use_caution_when_swimming", "beach_closed"],
+    {
+      errorMap: () => ({
+        message: "Status wird benötigt",
+      }),
+    }
+  ),
 });
 
 export const createTowerDaySchema = z.object({
@@ -562,4 +597,12 @@ export const beachSectionsSchema = z.object({
       location: z.string(),
     })
   ),
+});
+
+export const resetPasswordSchema = z.object({
+  userId: z.string().min(1, { message: "User Id wird benötigt" }),
+  token: z.string().min(1, { message: "Token wird benötigt" }),
+  password: z.string().min(6, {
+    message: "Passwort muss mindestens 6 Zeichen lang sein",
+  }),
 });
