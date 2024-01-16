@@ -4,12 +4,12 @@ import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userProfileSchema } from "@schemas/index";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { encrypt } from "@/utils";
 
 export const updateUserProfile = adminAction(
   userProfileSchema,
   async (
     {
-      picture,
       gender,
       firstName,
       lastName,
@@ -38,6 +38,7 @@ export const updateUserProfile = adminAction(
     { user }
   ) => {
     try {
+      const formattedEmail = email.toLowerCase().trim();
       await prisma.$transaction(
         async (tx) => {
           const profile = await tx.profile.update({
@@ -46,7 +47,6 @@ export const updateUserProfile = adminAction(
               userId: userId,
             },
             data: {
-              picture: picture,
               gender: gender,
               firstName: firstName,
               lastName: lastName,
@@ -59,7 +59,7 @@ export const updateUserProfile = adminAction(
               houseNumber: houseNumber,
               zipCode: zipCode,
               location: location,
-              email: email,
+              email: formattedEmail,
               phone: phone,
               drkMember: drkMember,
               drkMemberLocation: drkMemberLocation,
@@ -67,8 +67,8 @@ export const updateUserProfile = adminAction(
               emergencyContactFirstName: emergencyContactFirstName,
               emergencyContactPhone: emergencyContactPhone,
               bankName: bankName,
-              iban: iban,
-              bic: bic,
+              iban: encrypt(iban),
+              bic: encrypt(bic),
               differentBankholder: differentBankholder,
             },
             select: { id: true },
@@ -82,7 +82,7 @@ export const updateUserProfile = adminAction(
             userId,
 
             {
-              email: email,
+              email: formattedEmail,
             }
           );
 
@@ -97,13 +97,14 @@ export const updateUserProfile = adminAction(
         }
       );
     } catch (error) {
+      console.log(error);
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }
 
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Benutzer ${firstName} ${lastName} wurde aktualisiert.`,
+      message: `Der Benutzer ${firstName} ${lastName} wurde aktualisiert`,
     };
   }
 );
