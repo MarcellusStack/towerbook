@@ -21,11 +21,6 @@ import { getUser } from "@server/lib/utils/get-user";
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const user = await getUser();
-
-  if (user) {
-    redirect("/dashboard");
-  }
   return (
     <>
       <Title order={1} size="h2">

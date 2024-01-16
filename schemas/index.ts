@@ -28,6 +28,11 @@ export const shiftSchema = z.object({
   }),
 });
 
+export const bookSchema = z.object({
+  date: z.date(),
+  accomodationId: z.string().min(1, { message: "Unterkunft Id wird benötigt" }),
+});
+
 export const baseUserSchema = z.object({
   firstName: z
     .string()

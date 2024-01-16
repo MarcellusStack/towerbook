@@ -22,11 +22,6 @@ import { ResetPasswordForm } from "@/components/forms/reset-password-form";
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const user = await getUser();
-
-  if (user) {
-    redirect("/dashboard");
-  }
   return (
     <>
       <Title order={1} size="h2">
