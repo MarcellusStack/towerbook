@@ -27,8 +27,7 @@ export const CreateOrganizationForm = () => {
           verwalten. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind.
         </Text>
         <TextInput
-          label="Name"
-          placeholder="name"
+          label="Name der Organisation"
           {...form.getInputProps("name")}
         />
 
