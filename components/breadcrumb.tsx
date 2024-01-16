@@ -3,7 +3,7 @@ import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Breadcrumbs, Anchor, ActionIcon } from "@mantine/core";
-import { capitalizeFirstLetter } from "@/utils/index";
+import { capitalizeFirstLetter, translate } from "@/utils/index";
 import { IconHome, IconLayoutDashboard } from "@tabler/icons-react";
 
 export const Breadcrumb = () => {
@@ -40,7 +40,7 @@ export const Breadcrumb = () => {
             c={index === slug.length - 1 ? "blue" : "gray"}
             fw={500}
           >
-            {capitalizeFirstLetter(item)}
+            {capitalizeFirstLetter(translate(item))}
           </Anchor>
         </Link>
       ))}
