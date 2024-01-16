@@ -13,7 +13,7 @@ import { removeUserFromCompany } from "@/server/actions/remove-user-from-company
 
 export const UserTableRow = ({ user }: { user: UserTableProps }) => {
   return (
-    <Table.Tr key={user.userId}>
+    <Table.Tr>
       <Table.Td>
         <Text size="sm">{user.firstName}</Text>
       </Table.Td>
@@ -26,7 +26,10 @@ export const UserTableRow = ({ user }: { user: UserTableProps }) => {
       <Table.Td>
         <Group gap="xs">
           {user.role.map((role) => (
-            <Badge color={roles.filter((r) => r.value === role)[0].color}>
+            <Badge
+              key={role}
+              color={roles.filter((r) => r.value === role)[0].color}
+            >
               {roles.filter((r) => r.value === role)[0].label}
             </Badge>
           ))}
@@ -85,7 +88,7 @@ export function UsersTable({ users }: { users: UserTableProps[] }) {
       </Table.Thead>
       <Table.Tbody>
         {users.map((user) => (
-          <UserTableRow user={user} />
+          <UserTableRow key={user.userId} user={user} />
         ))}
       </Table.Tbody>
     </Table>
