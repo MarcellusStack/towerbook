@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { prisma } from "@/server/db";
 import SignUpForm from "@/components/forms/sign-up-form";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { UsersTable } from "@/components/tables/user-table";
@@ -33,6 +33,8 @@ import { roles } from "@/constants/roles";
 import RoleBadge from "@/components/role-badge";
 import UserDashboard from "@components/user-dashboard";
 import { getUserOverview } from "@/server/queries/get-user-overview";
+import { TowerDashboard } from "@/components/tower-dashboard";
+import { getTowerOverview } from "@/server/queries/get-tower-overview";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +44,11 @@ export default async function Page({
   params: { towerId: string };
 }) {
   const { towerId } = params;
-  /* const user = await getUserOverview(userId, ["admin"]); */
+  const tower = await getTowerOverview(towerId, ["admin"]);
 
-  return "Tower Overview";
+  if (!tower) {
+    return notFound();
+  }
+
+  return <TowerDashboard tower={tower} />;
 }
