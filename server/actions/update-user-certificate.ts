@@ -49,7 +49,7 @@ export const updateUserCertificate = adminAction(
     { user }
   ) => {
     try {
-      const profile = await prisma.profile.update({
+      await prisma.profile.update({
         where: {
           organizationId: user.organizationId,
           userId: userId,
@@ -92,19 +92,14 @@ export const updateUserCertificate = adminAction(
           rwc: rwc,
           guardLeaderInstruction: guardLeaderInstruction,
         },
-        select: { id: true, firstName: true, lastName: true },
       });
-
-      if (!profile.id) {
-        throw new Error("Couldnt update Permissions");
-      }
-      revalidatePath("/", "layout");
-
-      return {
-        message: `Der Benutzer ${profile.firstName} ${profile.lastName} wurde aktualisiert.`,
-      };
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }
+
+    revalidatePath("/", "layout");
+    return {
+      message: `Der Benutzer wurde aktualisiert`,
+    };
   }
 );

@@ -22,20 +22,15 @@ export const updateTowerDayWeather = adminAction(
           weatherStatus: "ongoing",
           weather: weather,
         },
-        select: { id: true },
       });
-
-      if (!towerday.id) {
-        throw new Error("Couldnt update tower day");
-      }
-
-      revalidatePath("/", "layout");
-
-      return {
-        message: `Der Turm Tag wurde aktualisiert.`,
-      };
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Turm Tag");
     }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Der Turm Tag wurde aktualisiert.`,
+    };
   }
 );

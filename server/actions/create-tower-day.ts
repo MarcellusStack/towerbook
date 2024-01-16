@@ -18,8 +18,8 @@ export const createTowerDay = adminAction(
           createdAt: new Date(createdAt as Date),
           startedAt: extractTimeFromDate(startedAt),
           tower: { connect: { id: towerId } },
-          guardLeader: { connect: { id: guardLeader.id } },
-          towerLeader: { connect: { id: towerLeader.id } },
+          guardLeader: { connect: { userId: guardLeader.userId } },
+          towerLeader: { connect: { userId: towerLeader.userId } },
           organization: { connect: { id: user.organizationId as string } },
         },
         select: {

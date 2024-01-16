@@ -40,7 +40,7 @@ export const updateSearchList = adminAction(
     { user }
   ) => {
     try {
-      const searchlist = await prisma.searchList.update({
+      await prisma.searchList.update({
         where: {
           organizationId: user.organizationId as string,
           id: id,
@@ -77,18 +77,14 @@ export const updateSearchList = adminAction(
         },
         select: { id: true },
       });
-
-      if (!searchlist.id) {
-        throw new Error("Couldnt update searchlist");
-      }
-
-      revalidatePath("/", "layout");
-
-      return {
-        message: `Der Sucheintrag wurde aktualisiert.`,
-      };
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Sucheintrag");
     }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Der Sucheintrag wurde aktualisiert.`,
+    };
   }
 );

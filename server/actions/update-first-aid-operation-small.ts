@@ -37,7 +37,7 @@ export const updateFirstAidOperationSmall = adminAction(
     { user }
   ) => {
     try {
-      const operation = await prisma.firstAidOperation.update({
+      await prisma.firstAidOperation.update({
         where: {
           organizationId: user.organizationId as string,
           id: id,
@@ -71,18 +71,14 @@ export const updateFirstAidOperationSmall = adminAction(
         },
         select: { id: true },
       });
-
-      if (!operation.id) {
-        throw new Error("Der Einsatz konnte nicht aktualisiert werden");
-      }
-
-      revalidatePath("/", "layout");
-
-      return {
-        message: `Der Einsatz wurde aktualisiert`,
-      };
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Einsatzes");
     }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Der Einsatz wurde aktualisiert`,
+    };
   }
 );
