@@ -22,7 +22,15 @@ import { Invitations } from "@components/invitations";
 export const JoinOrganization = () => {
   const [value, setValue] = useState("");
   return (
-    <Modal opened={true} size="md" title="Organisation beitreten">
+    <Modal
+      onClose={() => {
+        return;
+      }}
+      withCloseButton={false}
+      opened={true}
+      size="md"
+      title="Organisation beitreten"
+    >
       <SegmentedControl
         fullWidth
         color="blue"
