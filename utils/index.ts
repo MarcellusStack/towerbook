@@ -10,6 +10,20 @@ export const convertDate = (date: Date) => {
   });
 };
 
+//used for prisma due to saving dates in the wrong format
+export const formatDateTimeZone = (date: Date) => {
+  const dateString = date.toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+  const [day, month, year] = dateString.split(".");
+  const isoDateString = `${year}-${month}-${day}`;
+
+  const localDate = new Date(isoDateString);
+  return localDate;
+};
+
 export const convertTime = (date: Date) => {
   const hours = String(date.getHours()).padStart(2, "0");
   const minutes = String(date.getMinutes()).padStart(2, "0");

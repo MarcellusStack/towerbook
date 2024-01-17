@@ -1,10 +1,9 @@
 "use server";
 import { authAction } from "@server/lib/utils/action-clients";
-import { z } from "zod";
 import { prisma } from "@server/db";
 import { revalidatePath } from "next/cache";
 import { bookSchema } from "@/schemas";
-import { convertDate } from "@/utils";
+import { convertDate, formatDateTimeZone } from "@/utils";
 
 export const book = authAction(
   bookSchema,
@@ -34,9 +33,9 @@ export const book = authAction(
 
           await tx.booking.create({
             data: {
-              date,
-              accomodationId,
-              userId: user.id,
+              date: formatDateTimeZone(new Date(date)),
+              accomodation: { connect: { id: accomodationId } },
+              user: { connect: { userId: user.id } },
             },
           });
         },
@@ -46,6 +45,7 @@ export const book = authAction(
         }
       );
     } catch (error) {
+      console.log(error);
       throw new Error("Fehler beim Buchen");
     }
 

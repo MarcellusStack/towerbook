@@ -40,6 +40,12 @@ export const getAccomodation = cache(
           select: {
             id: true,
             date: true,
+
+            user: {
+              select: {
+                userId: true,
+              },
+            },
           },
         },
       },
