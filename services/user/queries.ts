@@ -1,5 +1,5 @@
+"use server";
 import { prisma } from "@/server/db";
-import { cache } from "react";
 
 export const getUserById = async (id: string) => {
   return await prisma.profile.findUnique({

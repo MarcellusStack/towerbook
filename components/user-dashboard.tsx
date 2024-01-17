@@ -104,6 +104,7 @@ const UserDashboard = ({ user }: { user: UserOverviewProps }) => {
               events={user.shifts.map((shift, index) => ({
                 index: index,
                 id: shift.id,
+
                 /* title: `${shift.user.firstName} ${shift.user.lastName}`, */
                 start: shift.startTime,
                 end: shift.endTime,
