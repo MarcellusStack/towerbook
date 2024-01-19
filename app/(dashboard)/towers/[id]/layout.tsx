@@ -1,14 +1,10 @@
-import RoleBadge from "@components/role-badge";
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
-import { getUser } from "@server/queries/get-user";
-import { UserTabs } from "@components/user-tabs";
 import { Group, Text } from "@mantine/core";
 import { getTower } from "@/server/queries/get-tower";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
   IconBroadcast,
   IconCalendarPin,
-  IconCheckupList,
   IconClipboardPlus,
   IconLayoutDashboard,
   IconUserSearch,

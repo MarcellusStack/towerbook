@@ -6,7 +6,7 @@ export const authFilterQuery =
   <T>(
     queryFunction: (
       search: string | undefined,
-      user: GetUserProps
+      session: GetUserProps
     ) => Promise<T | null>
   ) =>
   async (search: string, requiredRoles: Role[] = []): Promise<T | null> => {
@@ -28,7 +28,7 @@ export const authFilterQuery =
   };
 
 export const authQuery =
-  <T>(queryFunction: (user: GetUserProps) => Promise<T | null>) =>
+  <T>(queryFunction: (session: GetUserProps) => Promise<T | null>) =>
   async (requiredRoles: string[] = []): Promise<T | null> => {
     const session = await auth();
 
@@ -48,7 +48,7 @@ export const authQuery =
   };
 
 export const authAdminQuery =
-  <T>(queryFunction: (user: GetUserProps) => Promise<T>) =>
+  <T>(queryFunction: (session: GetUserProps) => Promise<T>) =>
   async (): Promise<T> => {
     const session = await auth();
 

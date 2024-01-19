@@ -12,7 +12,7 @@ export const completeRevision = adminAction(
     id: z.string().min(1, { message: "Id wird benötigt" }),
     modelType: z.string().min(1, { message: "Model wird benötigt" }),
   }),
-  async ({ id, modelType }, { user }) => {
+  async ({ id, modelType }, { session }) => {
     const filteredModel = revisionModels.filter(
       (model) => model.type === modelType
     )[0];
@@ -20,7 +20,7 @@ export const completeRevision = adminAction(
       const selectedModel = await prisma[filteredModel.model].findUnique({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           status: "revision",
         },
         select: {
@@ -29,10 +29,6 @@ export const completeRevision = adminAction(
           towerId: true,
         },
       });
-
-      if (!selectedModel) {
-        throw new Error("Model wurde nicht gefunden");
-      }
 
       const revision = await prisma.revision.delete({
         where: {
@@ -43,18 +39,10 @@ export const completeRevision = adminAction(
         },
       });
 
-      if (!revision) {
-        throw new Error("Revision konnte nicht gelöscht werden");
-      }
-
       const updateSelectedModel = await prisma[filteredModel.model].update({
         where: { id: id },
         data: { status: "ongoing" },
       });
-
-      if (!updateSelectedModel) {
-        throw new Error("Model konnte nicht aktualisiert werden");
-      }
 
       revalidatePath("/", "layout");
 

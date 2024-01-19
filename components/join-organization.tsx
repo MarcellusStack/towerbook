@@ -1,22 +1,8 @@
 "use client";
-
-import { useForm, zodResolver } from "@mantine/form";
-import {
-  Modal,
-  Button,
-  TextInput,
-  Text,
-  Stack,
-  SegmentedControl,
-  rem,
-} from "@mantine/core";
 import React, { useState } from "react";
-import * as z from "zod";
-import { organizationSchema } from "@schemas/index";
-import { useActionNotification } from "@hooks/use-action-notification";
-import { createOrg } from "@/server/actions/create-organization";
+import { Modal, Text, Stack, SegmentedControl, rem } from "@mantine/core";
 import { CreateOrganizationForm } from "@components/forms/create-organization-form";
-import { IconHome, IconHomeMove, IconHomePlus } from "@tabler/icons-react";
+import { IconHomeMove, IconHomePlus } from "@tabler/icons-react";
 import { Invitations } from "@components/invitations";
 
 export const JoinOrganization = () => {

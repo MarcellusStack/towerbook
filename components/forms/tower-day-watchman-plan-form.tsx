@@ -2,16 +2,10 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import {
-  TextInput,
-  Button,
   Stack,
   Fieldset,
   SimpleGrid,
-  FileInput,
-  Select,
   Text,
-  NumberInput,
-  Checkbox,
   Group,
   Card,
   rem,
@@ -21,15 +15,11 @@ import {
 } from "@mantine/core";
 import { towerDayWatchmanPlanSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { DatePickerInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
 import { type TowerDay } from "@prisma/client";
-import { IconShieldLock, IconTrash } from "@tabler/icons-react";
+import { IconTrash } from "@tabler/icons-react";
 import { UserComboboxButton } from "@components/user-combobox-button";
-import { modals } from "@mantine/modals";
 import { UserSelect } from "@components/user-select";
 import { updateTowerDayWatchmanPlan } from "@/server/actions/update-tower-day-watchman-plan";
-import { completeTowerDayFormStatus } from "@/server/actions/complete-tower-day-form-status";
 import { TowerDayFormAction } from "@/components/tower-day-form-action";
 
 export const TowerDayWatchmanPlanForm = ({

@@ -1,4 +1,5 @@
 "use server";
+import { toLowercaseAndTrim } from "@/utils";
 import { Role } from "@prisma/client";
 import { prisma } from "@server/db";
 import { authAction } from "@server/lib/utils/action-clients";
@@ -9,7 +10,7 @@ export const acceptInvite = authAction(
   z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
       await prisma.$transaction(
         async (tx) => {
@@ -26,9 +27,9 @@ export const acceptInvite = authAction(
             throw new Error("Einladung nicht gefunden");
           }
 
-          const profile = await tx.profile.update({
+          const user = await tx.user.update({
             where: {
-              userId: user.id,
+              id: session.id,
             },
             data: {
               organization: {
@@ -39,23 +40,23 @@ export const acceptInvite = authAction(
               role: new Array(invitation.role) as Role[],
             },
             select: {
-              id: true,
+              email: true,
             },
           });
 
-          if (!profile.id) {
-            throw new Error("Couldnt delete profile");
+          if (!user) {
+            throw new Error("User nicht gefunden");
           }
 
           await tx.invitation.deleteMany({
             where: {
-              email: { equals: user.email, mode: "insensitive" },
+              email: toLowercaseAndTrim(user.email),
             },
           });
         },
         {
-          maxWait: 15000, // default: 2000
-          timeout: 15000, // default: 5000
+          maxWait: 15000,
+          timeout: 15000,
         }
       );
     } catch (error) {
@@ -64,6 +65,6 @@ export const acceptInvite = authAction(
 
     revalidatePath("/", "layout");
 
-    return { message: `Einladung angenommen Sie können jetzt beginnen.` };
+    return { message: `Einladung angenommen Sie können jetzt beginnen` };
   }
 );

@@ -2,8 +2,7 @@
 
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import { Modal, Button, TextInput, Text, Stack } from "@mantine/core";
-import * as z from "zod";
+import { Button, TextInput, Text, Stack } from "@mantine/core";
 import { organizationSchema } from "@schemas/index";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { createOrg } from "@/server/actions/create-organization";

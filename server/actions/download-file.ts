@@ -8,10 +8,10 @@ import { decode } from "base64-arraybuffer";
 
 export const downloadFile = adminAction(
   downloadFileSchema,
-  async ({ fileName }, { user }) => {
+  async ({ fileName }, { session }) => {
     try {
       const { data, error } = await supabase.storage
-        .from(user.organizationId as string)
+        .from(session.organizationId as string)
         .createSignedUrl(`${fileName}`, 30, {
           download: true,
         });

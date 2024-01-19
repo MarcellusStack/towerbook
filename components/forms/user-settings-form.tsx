@@ -7,11 +7,7 @@ import {
   Stack,
   Fieldset,
   SimpleGrid,
-  FileInput,
-  Select,
   Text,
-  NumberInput,
-  Checkbox,
   Box,
 } from "@mantine/core";
 import { useActionNotification } from "@/hooks/use-action-notification";

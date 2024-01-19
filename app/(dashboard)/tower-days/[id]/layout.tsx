@@ -1,34 +1,23 @@
-import RoleBadge from "@components/role-badge";
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
-import { getUser } from "@server/queries/get-user";
-import { UserTabs } from "@components/user-tabs";
 import {
   Alert,
-  Box,
   Button,
-  Card,
   Grid,
   GridCol,
   Group,
   Stack,
   Text,
-  ThemeIcon,
 } from "@mantine/core";
-import { getTower } from "@/server/queries/get-tower";
-import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
   IconCheck,
-  IconChecklist,
   IconLayoutDashboard,
   IconUserExclamation,
-  IconDoorEnter,
 } from "@tabler/icons-react";
 import { getTowerDayOverview } from "@/server/queries/get-tower-day-overview";
 import { convertDate } from "@/utils";
 import { TowerDayProcess } from "@/components/process";
 import TowerDayOverview from "@/components/tower-day-overview";
 import Link from "next/link";
-import TowerDayAction from "@/components/tower-day-action";
 import { OpenTowerDayAction } from "@/components/open-tower-day-action";
 import { completeTowerDay } from "@/server/actions/complete-tower-day";
 import { CompleteAction } from "@/components/complete-action";
@@ -61,9 +50,7 @@ export default async function Layout({
           </Text>
         }
       />
-
       <TowerDayProcess towerday={towerday} />
-
       <Grid>
         <GridCol span={8}>
           {towerday.status === "completed" && (

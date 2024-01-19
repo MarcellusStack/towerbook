@@ -9,29 +9,51 @@ import {
   ThemeIcon,
   Text,
   List,
+  Badge,
+  Menu,
+  ActionIcon,
 } from "@mantine/core";
-import { IconBed, IconMapPin } from "@tabler/icons-react";
-import React from "react";
 import {
-  type AccomodationProps,
-  type AccomodationsProps,
-} from "@services/accomodation/queries";
+  IconBed,
+  IconBedOff,
+  IconBookmark,
+  IconDots,
+  IconMapPin,
+  IconTrash,
+} from "@tabler/icons-react";
+import React from "react";
+import { type AccomodationsProps } from "@services/accomodation/queries";
 import Link from "next/link";
+import {
+  deleteAccomodation,
+  disableAccomodation,
+  enableAccomodation,
+} from "@/server/actions/accomodation";
+import { useActionNotification } from "@/hooks/use-action-notification";
 
 const Accomodation = ({ props }: { props: AccomodationsProps[0] }) => {
+  const enable = useActionNotification({
+    action: enableAccomodation,
+    executeNotification: "Unterkunft wird freigegeben",
+    hideModals: true,
+  });
+  const disable = useActionNotification({
+    action: disableAccomodation,
+    executeNotification: "Unterkunft wird gesperrt",
+    hideModals: true,
+  });
+
+  const remove = useActionNotification({
+    action: deleteAccomodation,
+    executeNotification: "Unterkunft wird gelöscht",
+    hideModals: true,
+  });
+
   return (
     <Card withBorder>
       <Stack gap="sm">
         <Group>
-          <ThemeIcon
-            variant="light"
-            size="xl"
-            pos="relative"
-            className="flex flex-col items-center"
-          >
-            <Text size="xs" fw={700} c="blue">
-              {props.availableBeds}
-            </Text>
+          <ThemeIcon variant="light" size="xl">
             <IconBed style={{ width: "70%", height: "70%" }} />
           </ThemeIcon>
           <Text fw={700} size="xl">
@@ -39,6 +61,18 @@ const Accomodation = ({ props }: { props: AccomodationsProps[0] }) => {
           </Text>
         </Group>
         <List center spacing="sm">
+          <List.Item
+            icon={
+              <ThemeIcon size="md" variant="light">
+                <IconBookmark style={{ width: "70%", height: "70%" }} />
+              </ThemeIcon>
+            }
+          >
+            <Badge color={props.reservable ? "green" : "red"}>
+              {props.reservable ? "Reservierbar" : "Nicht reservierbar"}
+            </Badge>
+          </List.Item>
+
           <List.Item
             icon={
               <ThemeIcon size="md" variant="light">
@@ -53,14 +87,71 @@ const Accomodation = ({ props }: { props: AccomodationsProps[0] }) => {
       <Card.Section>
         <Divider my="sm" />
       </Card.Section>
-      <Button
-        href={`/accomodations/${props.id}`}
-        component={Link}
-        variant="light"
-        fullWidth
-      >
-        Buchen
-      </Button>
+      <Group wrap="nowrap">
+        <Button
+          href={`/accomodations/${props.id}`}
+          component={Link}
+          variant="filled"
+          fullWidth
+        >
+          Buchen
+        </Button>
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <ActionIcon variant="light" size="lg" aria-label="Settings">
+              <IconDots style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Label>Optionen</Menu.Label>
+            {props.reservable ? (
+              <Menu.Item
+                disabled={disable.status === "executing"}
+                onClick={() => {
+                  disable.execute({ id: props.id });
+                }}
+                color="red"
+                leftSection={
+                  <ThemeIcon variant="white" bg="inherit" color="red">
+                    <IconBedOff style={{ width: "70%", height: "70%" }} />
+                  </ThemeIcon>
+                }
+              >
+                Sperren
+              </Menu.Item>
+            ) : (
+              <Menu.Item
+                disabled={enable.status === "executing"}
+                onClick={() => {
+                  enable.execute({ id: props.id });
+                }}
+                color="green"
+                leftSection={
+                  <ThemeIcon variant="white" bg="inherit" color="green">
+                    <IconBed style={{ width: "70%", height: "70%" }} />
+                  </ThemeIcon>
+                }
+              >
+                Freigeben
+              </Menu.Item>
+            )}
+            <Menu.Item
+              disabled={remove.status === "executing"}
+              onClick={() => {
+                remove.execute({ id: props.id });
+              }}
+              color="red"
+              leftSection={
+                <ThemeIcon variant="white" bg="inherit" color="red">
+                  <IconTrash style={{ width: "70%", height: "70%" }} />
+                </ThemeIcon>
+              }
+            >
+              Löschen
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+      </Group>
     </Card>
   );
 };

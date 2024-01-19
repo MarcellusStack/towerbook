@@ -8,7 +8,7 @@ export const completeTowerDay = adminAction(
   z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),
-  async ({ id }, { user }) => {
+  async ({ id }) => {
     try {
       const towerday = await prisma.towerDay.findUnique({
         where: { id: id },

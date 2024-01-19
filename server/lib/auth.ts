@@ -32,8 +32,7 @@ export const {
 
       token.firstName = user.firstName;
       token.lastName = user.lastName;
-      token.id = user.userId;
-      token.profileId = user.id;
+      token.id = user.id;
       token.email = user.email;
       token.role = user.role;
       token.organizationId = user.organizationId;
@@ -46,7 +45,6 @@ export const {
         session.user.firstName = token.firstName;
         session.user.lastName = token.lastName;
         session.user.id = token.id;
-        session.user.profileId = token.profileId;
         session.user.email = token.email;
         session.user.role = token.role;
         session.user.organizationId = token.organizationId;

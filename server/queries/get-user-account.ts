@@ -1,12 +1,12 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-import { type Profile, Role } from "@prisma/client";
+import { type User, Role } from "@prisma/client";
 import { decrypt } from "@/utils";
 
 export type UserAccountProps = Pick<
-  Profile,
-  | "userId"
+  User,
+  | "id"
   | "gender"
   | "firstName"
   | "lastName"
@@ -45,11 +45,11 @@ export const decryptUserAccount = async (
   };
 };
 
-export const getUserAccount = authFilterQuery(async (search, user) => {
-  const userAccount = await prisma.profile.findFirst({
+export const getUserAccount = authFilterQuery(async (search, session) => {
+  const userAccount = await prisma.user.findFirst({
     where: {
-      organizationId: user.organizationId,
-      userId: search,
+      organizationId: session.organizationId,
+      id: search,
     },
     select: {
       gender: true,
@@ -75,7 +75,7 @@ export const getUserAccount = authFilterQuery(async (search, user) => {
       iban: true,
       bic: true,
       differentBankholder: true,
-      userId: true,
+      id: true,
     },
   });
 

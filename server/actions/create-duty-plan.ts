@@ -6,32 +6,25 @@ import { revalidatePath } from "next/cache";
 
 export const createDutyPlan = adminAction(
   dutyPlanSchema,
-  async ({ towerId, towerDayId, date }, { user }) => {
+  async ({ towerId, towerDayId, date }) => {
     try {
       // check if form is already on status completed based on that
       // dont allow to update the form?
-      const dutyplan = await prisma.dutyPlan.create({
+      await prisma.dutyPlan.create({
         data: {
           tower: { connect: { id: towerId } },
           towerDay: { connect: { id: towerDayId } },
           date: new Date(date as Date),
         },
-
-        select: { id: true },
       });
-
-      if (!dutyplan.id) {
-        throw new Error("Couldnt create dutyplan");
-      }
 
       revalidatePath("/", "layout");
 
       return {
-        message: `Der Dienstplan wurde erstellt.`,
+        message: `Der Dienstplan wurde erstellt`,
       };
     } catch (error) {
-      console.log(error);
-      throw new Error("Fehler beim erstellen des Dienstplan.");
+      throw new Error("Fehler beim erstellen des Dienstplan");
     }
   }
 );

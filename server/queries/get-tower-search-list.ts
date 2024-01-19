@@ -3,10 +3,10 @@ import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { type Role } from "@prisma/client";
 import { SearchListProps } from "@server/queries/get-search-list";
 
-export const getTowerSearchLists = authFilterQuery(async (search, user) => {
+export const getTowerSearchLists = authFilterQuery(async (search, session) => {
   return await prisma.searchList.findMany({
     where: {
-      organizationId: user.organizationId as string,
+      organizationId: session.organizationId as string,
       towerId: search,
     },
     select: {

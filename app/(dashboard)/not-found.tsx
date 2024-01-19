@@ -1,6 +1,5 @@
 "use client";
 import { Button, Card, Stack, Text, ThemeIcon } from "@mantine/core";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IconError404 } from "@tabler/icons-react";
 

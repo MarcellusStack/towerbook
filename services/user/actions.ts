@@ -3,11 +3,11 @@ import { Prisma } from "@prisma/client";
 
 export const updateUserById = async (
   id: string,
-  data: Prisma.ProfileUpdateInput
+  data: Prisma.UserUpdateInput
 ) => {
   try {
-    return await prisma.profile.update({
-      where: { userId: id },
+    return await prisma.user.update({
+      where: { id: id },
       data: data,
     });
   } catch (error) {

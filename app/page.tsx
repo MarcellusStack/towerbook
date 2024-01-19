@@ -1,12 +1,6 @@
 import { AuthLayout } from "@/components/layouts/auth-layout";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { Title, Text, Button } from "@mantine/core";
-import LogoutButton from "@/components/LogoutButton";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@server/lib/auth-options";
-import { redirect } from "next/navigation";
 
 export default async function Index() {
   return (

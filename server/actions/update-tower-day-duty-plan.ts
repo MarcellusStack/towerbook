@@ -10,7 +10,7 @@ import { z } from "zod";
 
 export const updateTowerDayDutyPlan = adminAction(
   towerDayDutyPlanSchema,
-  async ({ towerDayId, towerId, dutyPlanId, shifts }, { user }) => {
+  async ({ towerDayId, towerId, dutyPlanId, shifts }, { session }) => {
     try {
       const filteredTowerDay = await prisma.towerDay.findUnique({
         where: { id: towerDayId, towerId: towerId },
@@ -33,7 +33,7 @@ export const updateTowerDayDutyPlan = adminAction(
         throw new Error("Couldnt tower day");
       }
 
-      await towerBelongsToOrganization(towerId, user.organizationId);
+      await towerBelongsToOrganization(towerId, session.organizationId);
 
       const currentShiftIds = filteredTowerDay.dutyplan.shifts.map(
         (shift) => shift
@@ -77,7 +77,7 @@ export const updateTowerDayDutyPlan = adminAction(
         throw new Error("Couldnt update dutyplan");
       }
 
-      const towerday = await prisma.towerDay.update({
+      await prisma.towerDay.update({
         where: {
           id: towerDayId,
           status: { notIn: ["revision", "completed"] },
@@ -87,18 +87,13 @@ export const updateTowerDayDutyPlan = adminAction(
         },
         select: { id: true },
       });
-
-      if (!towerday.id) {
-        throw new Error("Couldnt update tower day");
-      }
-
-      revalidatePath("/", "layout");
-
-      return {
-        message: `Der Dienstplan wurde aktualisiert.`,
-      };
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Dienstplan");
     }
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Der Dienstplan wurde aktualisiert.`,
+    };
   }
 );

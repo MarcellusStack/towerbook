@@ -8,10 +8,11 @@ export type TowerDayMaterialProps = Pick<
   "id" | "towerId" | "material"
 >;
 
-export const getTowerDayMaterial = authFilterQuery(async (search, user) => {
+export const getTowerDayMaterial = authFilterQuery(async (search, session) => {
   const towerday = await prisma.towerDay.findFirst({
     where: {
       id: search,
+      organizationId: session.organizationId,
     },
     select: {
       id: true,
@@ -19,18 +20,6 @@ export const getTowerDayMaterial = authFilterQuery(async (search, user) => {
       towerId: true,
     },
   });
-
-  if (!towerday) throw new Error("Towerday does not exist");
-
-  const checkTowerBelongsToOrganization = await prisma.tower.findFirst({
-    where: { id: towerday.towerId, organizationId: user.organizationId },
-    select: {
-      id: true,
-    },
-  });
-
-  if (!checkTowerBelongsToOrganization)
-    throw new Error("Towerday does not belong to your organization");
 
   return towerday;
 }) as unknown as (

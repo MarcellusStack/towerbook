@@ -1,13 +1,10 @@
 "use client";
-import { roles } from "@/constants/roles";
-import { Badge, Table, Group, Text, ActionIcon, rem } from "@mantine/core";
+import { Badge, Table, Group, Text, ActionIcon } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
-import { capitalizeFirstLetter, convertDate, convertTime } from "@utils/index";
-import Image from "next/image";
+import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { type Status } from "@prisma/client";
 import { deleteTowerDay } from "@/server/actions/delete-tower-day";
 import { status } from "@/constants";
 

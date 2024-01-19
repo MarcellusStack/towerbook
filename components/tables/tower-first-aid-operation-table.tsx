@@ -11,7 +11,6 @@ import {
   TableTbody,
   TableTd,
   ThemeIcon,
-  rem,
   Badge,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -22,9 +21,8 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { convertDate, convertTime } from "@utils/index";
+import { convertDate } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { ExtendFirstAidOperationsWithRelationProps } from "@server/queries/get-first-aid-operations";
 import { deleteFirstAidOperation } from "@server/actions/delete-first-aid-operation";
 import { status } from "@/constants";
 import { ExtendFirstAidOperationsWithGuardLeaderProps } from "@server/queries/get-tower-first-aid-operations";

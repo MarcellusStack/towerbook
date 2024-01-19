@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userCertificateSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export const updateUserCertificate = adminAction(
   userCertificateSchema,
@@ -46,13 +46,13 @@ export const updateUserCertificate = adminAction(
       rwc,
       guardLeaderInstruction,
     },
-    { user }
+    { session }
   ) => {
     try {
-      await prisma.profile.update({
+      await prisma.user.update({
         where: {
-          organizationId: user.organizationId,
-          userId: userId,
+          organizationId: session.organizationId,
+          id: userId,
         },
         data: {
           lifeguardLicense: lifeguardLicense,

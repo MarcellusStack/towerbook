@@ -1,11 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { PasswordInput, TextInput, Button, Stack, Anchor } from "@mantine/core";
 import { authSchema } from "@/schemas";
-import { signIn } from "@/server/lib/auth";
-import { useRouter } from "next/navigation";
-import { notifications } from "@mantine/notifications";
 import Link from "next/link";
 import { login } from "@/services/auth/actions";
 import { useActionNotification } from "@/hooks/use-action-notification";

@@ -6,38 +6,21 @@ import {
   Button,
   Stack,
   Fieldset,
-  SimpleGrid,
   Text,
-  Checkbox,
-  Group,
   Card,
   rem,
   ActionIcon,
-  Box,
   Table,
-  NumberInput,
   Select,
 } from "@mantine/core";
-import {
-  towerDayTodoSchema,
-  towerDayWatchmanPlanSchema,
-  towerDayWeatherSchema,
-} from "@/schemas";
+import { towerDayWeatherSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { DatePickerInput, TimeInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
-import { type TowerDay } from "@prisma/client";
-import { IconShieldLock, IconTrash } from "@tabler/icons-react";
-import { UserComboboxButton } from "@components/user-combobox-button";
-import { modals } from "@mantine/modals";
-import { UserSelect } from "@components/user-select";
-import { updateTowerDayWatchmanPlan } from "@/server/actions/update-tower-day-watchman-plan";
-import { completeTowerDayFormStatus } from "@/server/actions/complete-tower-day-form-status";
+import { TimeInput } from "@mantine/dates";
+import { IconTrash } from "@tabler/icons-react";
 import { TowerDayFormAction } from "@/components/tower-day-form-action";
-import { updateTowerDayTodo } from "@/server/actions/update-tower-day-todo";
-import { TowerDayTodoProps } from "@/server/queries/get-tower-day-todo";
 import { TowerDayWeatherProps } from "@/server/queries/get-tower-day-weather";
 import { updateTowerDayWeather } from "@/server/actions/update-tower-day-weather";
+import { v4 as uuidv4 } from "uuid";
 
 export const TowerDayWeatherForm = ({
   towerday,
@@ -73,7 +56,7 @@ export const TowerDayWeatherForm = ({
             variant="outline"
             onClick={() => {
               form.insertListItem("weather", {
-                id: `${Math.floor(Math.random() * 1000000)}`,
+                id: uuidv4(),
                 time: "",
                 air_in_celsius: "",
                 water_in_celsius: "",

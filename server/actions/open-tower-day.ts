@@ -6,12 +6,12 @@ import { z } from "zod";
 
 export const openTowerDay = adminAction(
   z.object({ id: z.string().min(1, { message: "Id wird benötigt" }) }),
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
       await prisma.towerDay.update({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
         },
         data: {
           status: "ongoing",

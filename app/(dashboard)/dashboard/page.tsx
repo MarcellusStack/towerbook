@@ -1,36 +1,6 @@
-import { useDisclosure } from "@mantine/hooks";
-import { AuthLayout } from "@/components/layouts/auth-layout";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import Link from "next/link";
-import {
-  Title,
-  Text,
-  Button,
-  AppShell,
-  Burger,
-  Group,
-  Skeleton,
-  Anchor,
-} from "@mantine/core";
-import { prisma } from "@/server/db";
-import SignUpForm from "@/components/forms/sign-up-form";
-import { redirect } from "next/navigation";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 
-import { Suspense } from "react";
-import { unstable_noStore } from "next/cache";
-import { auth } from "@/server/lib/auth";
-
 export const dynamic = "force-dynamic";
-
-/* export const getProfiles = async () => {
-  "use server";
-
-  const profiles = await prisma.organization.findMany({});
-  console.log(profiles);
-  return profiles;
-}; */
 
 export default async function Page() {
   return (

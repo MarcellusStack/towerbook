@@ -9,7 +9,7 @@ export const createAccomodation = adminAction(
   createAccomodationSchema,
   async (
     { number, name, street, zipCode, location, availableBeds },
-    { user }
+    { session }
   ) => {
     try {
       await prisma.accomodation.create({
@@ -22,7 +22,7 @@ export const createAccomodation = adminAction(
           availableBeds: availableBeds,
           organization: {
             connect: {
-              id: user.organizationId as string,
+              id: session.organizationId as string,
             },
           },
         },

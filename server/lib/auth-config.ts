@@ -41,10 +41,9 @@ export default {
         if (!user.emailVerified) {
           throw new Error("Bitte bestätige deine E-Mail-Adresse");
         }
-  
+
         return {
-          id: user.userId,
-          profileId: user.id,
+          id: user.id,
           email: user.email,
           role: user.role,
           organizationId: user.organizationId ?? null,

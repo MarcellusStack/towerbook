@@ -1,6 +1,4 @@
 import { AppLayout } from "@/components/layouts/app-layout";
-
-import { getUser } from "@server/lib/utils/get-user";
 import { JoinOrganization } from "@components/join-organization";
 import { auth } from "@/server/lib/auth";
 

@@ -3,7 +3,6 @@ import "@mantine/notifications/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/core/styles.css";
 import "@mantine/spotlight/styles.css";
-/* import "mantine-react-table/styles.css"; */
 import "dayjs/locale/de";
 
 import { Notifications } from "@mantine/notifications";

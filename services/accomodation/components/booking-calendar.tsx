@@ -10,8 +10,15 @@ import React from "react";
 import { modals } from "@mantine/modals";
 import { CreateBookingForm } from "@/components/booking/create-booking-form";
 import { useSession } from "next-auth/react";
+import { DeleteModalAction } from "@/components/delete-modal-action";
+import { AccomodationProps } from "@services/accomodation/queries";
+import { deleteBooking } from "@/server/actions/booking";
 
-export const BookingCalendar = ({ bookings }) => {
+export const BookingCalendar = ({
+  bookings,
+}: {
+  bookings: AccomodationProps["bookings"];
+}) => {
   const { data: session, status: sessionStatus } = useSession();
 
   return (
@@ -33,8 +40,8 @@ export const BookingCalendar = ({ bookings }) => {
             id: book.id,
             allDay: true,
             start: book.date,
-            end: book.endTime,
-            color: book.user.userId === session?.user?.id ? "green" : "gray",
+            end: book.date,
+            color: book.user.id === session?.user?.id ? "green" : "gray",
           }))}
           dateClick={(event) => {
             modals.open({
@@ -46,24 +53,20 @@ export const BookingCalendar = ({ bookings }) => {
               ),
             });
           }}
-          /* eventClick={(event) => {
+          eventClick={(event) => {
             modals.open({
               title: "Reservierung löschen",
               children: (
                 <>
-                  <Stack gap="md">
-                    <Text size="sm">
-                      Sind sie sicher, dass Sie diese Reservierung löschen wollen?
-                      Diese Aktion ist unwiderruflich.
-                    </Text>
-                    <Group gap="sm">
-                      
-                    </Group>
-                  </Stack>
+                  <DeleteModalAction
+                    id={event.event.id}
+                    model="Buchung"
+                    action={deleteBooking}
+                  />
                 </>
               ),
             });
-          }} */
+          }}
         />
       </Stack>
     </Card>

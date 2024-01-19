@@ -3,8 +3,8 @@ import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userProfileSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
-import { encrypt } from "@/utils";
+import { revalidatePath } from "next/cache";
+import { encrypt, toLowercaseAndTrim } from "@/utils";
 
 export const updateUserProfile = adminAction(
   userProfileSchema,
@@ -35,16 +35,15 @@ export const updateUserProfile = adminAction(
       differentBankholder,
       userId,
     },
-    { user }
+    { session }
   ) => {
     try {
-      const formattedEmail = email.toLowerCase().trim();
       await prisma.$transaction(
         async (tx) => {
-          const profile = await tx.profile.update({
+          const user = await tx.user.update({
             where: {
-              organizationId: user.organizationId,
-              userId: userId,
+              organizationId: session.organizationId,
+              id: userId,
             },
             data: {
               gender: gender,
@@ -59,7 +58,7 @@ export const updateUserProfile = adminAction(
               houseNumber: houseNumber,
               zipCode: zipCode,
               location: location,
-              email: formattedEmail,
+              email: toLowercaseAndTrim(email),
               phone: phone,
               drkMember: drkMember,
               drkMemberLocation: drkMemberLocation,
@@ -74,30 +73,28 @@ export const updateUserProfile = adminAction(
             select: { id: true },
           });
 
-          if (!profile.id) {
-            throw new Error("Couldnt update profile");
+          if (!user) {
+            throw new Error("User konnte nicht aktualisiert werden");
           }
 
           const { error } = await supabase.auth.admin.updateUserById(
-            userId,
+            user.id,
 
             {
-              email: formattedEmail,
+              email: toLowercaseAndTrim(email),
             }
           );
 
           if (error) {
             throw new Error("Couldnt update user");
           }
-          return profile;
         },
         {
-          maxWait: 15000, // default: 2000
-          timeout: 15000, // default: 5000
+          maxWait: 15000,
+          timeout: 15000,
         }
       );
     } catch (error) {
-      console.log(error);
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }
 

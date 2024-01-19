@@ -1,7 +1,6 @@
 import RoleBadge from "@components/role-badge";
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
 import { getUser } from "@server/queries/get-user";
-import { UserTabs } from "@components/user-tabs";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
   IconCalendar,

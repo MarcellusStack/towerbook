@@ -19,11 +19,11 @@ export const getUser: () => Promise<GetUserProps | null> = cache(async () => {
     return null;
   }
 
-  const user = await prisma.profile.findFirst({
-    where: { userId: session.user?.id },
+  const user = await prisma.user.findFirst({
+    where: { id: session.user?.id },
     select: {
-      userId: true,
       id: true,
+
       email: true,
       role: true,
       organizationId: true,
@@ -40,8 +40,7 @@ export const getUser: () => Promise<GetUserProps | null> = cache(async () => {
   }
 
   return {
-    id: user.userId,
-    profileId: user.id,
+    id: user.id,
     email: user.email,
     role: user.role,
     organizationId: user.organizationId,

@@ -7,23 +7,21 @@ import {
   Stack,
   Fieldset,
   SimpleGrid,
-  FileInput,
   Select,
   Text,
   NumberInput,
   Checkbox,
 } from "@mantine/core";
-import {  userProfileSchema } from "@/schemas";
+import { userProfileSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
-import { type Profile } from "@prisma/client";
+import { type User } from "@prisma/client";
 
-export const UserAccountForm = ({ user }: { user: Profile }) => {
+export const UserAccountForm = ({ user }: { user: User }) => {
   const form = useForm({
     validate: zodResolver(userProfileSchema),
     initialValues: {
-      
       gender: user.gender,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -47,7 +45,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
       iban: user.iban,
       bic: user.bic,
       differentBankholder: user.differentBankholder,
-      userId: user.userId,
+      userId: user.id,
     },
   });
 
@@ -56,11 +54,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
     executeNotification: `Benutzer ${user.firstName} ${user.lastName}wird aktualisiert`,
   });
   return (
-    <form
-      onSubmit={form.onSubmit((values) =>
-        execute({ ...values, userId: user.userId })
-      )}
-    >
+    <form onSubmit={form.onSubmit((values) => execute(values))}>
       <Stack gap="md">
         <Fieldset
           id="base-data"
@@ -71,7 +65,6 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           }
         >
           <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-            
             <Select
               label="Geschlecht"
               placeholder="Geschlecht"
@@ -199,7 +192,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           </SimpleGrid>
         </Fieldset>
         <Fieldset
-        id="bank-details"
+          id="bank-details"
           legend={
             <Text fw={700} size="xl">
               Bankverbindung

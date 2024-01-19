@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 
 export const updateTowerDayMaterial = adminAction(
   towerDayMaterialSchema,
-  async ({ id, material }, { user }) => {
+  async ({ id, material }) => {
     try {
       await prisma.towerDay.update({
         where: {
@@ -29,7 +29,7 @@ export const updateTowerDayMaterial = adminAction(
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Turm Tag wurde aktualisiert.`,
+      message: `Der Turm Tag wurde aktualisiert`,
     };
   }
 );

@@ -1,7 +1,6 @@
-import { getSearchList } from "@/server/queries/get-search-list";
+
 import { convertDate, convertTime } from "@/utils";
 import {
-  Avatar,
   Card,
   Group,
   Stack,
@@ -13,12 +12,10 @@ import {
   Badge,
 } from "@mantine/core";
 import {
-  IconBroadcast,
   IconBuildingBroadcastTower,
   IconMapPin,
   IconCalendarEvent,
   IconClockSearch,
-  IconUserSearch,
   IconUser,
   IconAmbulance,
   IconFirstAidKit,
@@ -26,14 +23,13 @@ import {
   IconShieldChevron,
 } from "@tabler/icons-react";
 import React from "react";
-import type { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
 import { status } from "@constants/index";
-import { ExtendFirstAidOperationWithRelationProps } from "@server/queries/get-first-aid-operation";
+
 
 export const FirstAidOperationOverview = async ({
   operation,
 }: {
-  operation: ExtendFirstAidOperationWithRelationProps;
+  operation
 }) => {
   return (
     <Card withBorder>

@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   Avatar,
@@ -11,7 +10,6 @@ import {
   Text,
   ThemeIcon,
 } from "@mantine/core";
-import { Calendar } from "@mantine/dates";
 import {
   IconBuildingBroadcastTower,
   IconCalendar,
@@ -22,9 +20,7 @@ import {
 } from "@tabler/icons-react";
 import FullCalendar from "@fullcalendar/react";
 import deLocale from "@fullcalendar/core/locales/de";
-import { IconAlertCircle } from "@tabler/icons-react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import { type Profile } from "@prisma/client";
 import { UserOverviewProps } from "@/server/queries/get-user-overview";
 
 const UserDashboard = ({ user }: { user: UserOverviewProps }) => {

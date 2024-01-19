@@ -6,7 +6,7 @@ import { Button, Stack, Text } from "@mantine/core";
 import { bookSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { convertDate } from "@/utils";
-import { book } from "@/server/actions/booking";
+import { createBooking } from "@/server/actions/booking";
 import { useParams } from "next/navigation";
 
 export const CreateBookingForm = ({ date }: { date: Date }) => {
@@ -20,7 +20,7 @@ export const CreateBookingForm = ({ date }: { date: Date }) => {
   });
 
   const { execute, result, status } = useActionNotification({
-    action: book,
+    action: createBooking,
     executeNotification: "Buchung wird erstellt",
     hideModals: true,
   });

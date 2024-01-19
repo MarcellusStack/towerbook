@@ -15,6 +15,7 @@ import {
   IconBed,
   IconHotelService,
   IconBookmark,
+  IconBedFilled,
 } from "@tabler/icons-react";
 import React from "react";
 import { type AccomodationProps } from "@services/accomodation/queries";
@@ -38,6 +39,26 @@ export const AccomodationOverview = ({
           <List.Item
             icon={
               <ThemeIcon size="md" variant="light">
+                <IconBookmark style={{ width: "70%", height: "70%" }} />
+              </ThemeIcon>
+            }
+          >
+            <Badge color={accomodation.reservable ? "green" : "yellow"}>
+              {accomodation.reservable ? "Reservierbar" : "Nicht reservierbar"}
+            </Badge>
+          </List.Item>
+          <List.Item
+            icon={
+              <ThemeIcon size="md" variant="light">
+                <IconBedFilled style={{ width: "70%", height: "70%" }} />
+              </ThemeIcon>
+            }
+          >
+            {accomodation.availableBeds}
+          </List.Item>
+          <List.Item
+            icon={
+              <ThemeIcon size="md" variant="light">
                 <IconHotelService style={{ width: "70%", height: "70%" }} />
               </ThemeIcon>
             }
@@ -52,17 +73,6 @@ export const AccomodationOverview = ({
             }
           >
             {accomodation.street} {accomodation.zipCode} {accomodation.location}
-          </List.Item>
-          <List.Item
-            icon={
-              <ThemeIcon size="md" variant="light">
-                <IconBookmark style={{ width: "70%", height: "70%" }} />
-              </ThemeIcon>
-            }
-          >
-            <Badge color={accomodation.reservable ? "green" : "yellow"}>
-              {accomodation.reservable ? "Reservierbar" : "Nicht reservierbar"}
-            </Badge>
           </List.Item>
         </List>
       </Stack>

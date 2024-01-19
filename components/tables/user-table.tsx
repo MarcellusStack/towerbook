@@ -1,13 +1,12 @@
 "use client";
 
 import { roles } from "@/constants/roles";
-import { Badge, Table, Group, Text, ActionIcon, rem } from "@mantine/core";
+import { Badge, Table, Group, Text, ActionIcon } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
 import { convertDate } from "@utils/index";
-import { DeleteModalAction } from "../delete-modal-action";
-import { deleteUser } from "@/server/actions/delete-user";
+import { DeleteModalAction } from "@components/delete-modal-action";
 import { type UserTableProps } from "@/server/queries/get-users";
 import { removeUserFromCompany } from "@/server/actions/remove-user-from-company";
 
@@ -42,7 +41,7 @@ export const UserTableRow = ({ user }: { user: UserTableProps }) => {
         <Group gap={0} justify="flex-end">
           <ActionIcon
             component={Link}
-            href={`/users/${user.userId}`}
+            href={`/users/${user.id}`}
             variant="subtle"
           >
             <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
@@ -54,7 +53,7 @@ export const UserTableRow = ({ user }: { user: UserTableProps }) => {
                 children: (
                   <>
                     <DeleteModalAction
-                      id={user.userId}
+                      id={user.id}
                       action={removeUserFromCompany}
                       model="Benutzer"
                     />
@@ -88,7 +87,7 @@ export function UsersTable({ users }: { users: UserTableProps[] }) {
       </Table.Thead>
       <Table.Tbody>
         {users.map((user) => (
-          <UserTableRow key={user.userId} user={user} />
+          <UserTableRow key={user.id} user={user} />
         ))}
       </Table.Tbody>
     </Table>

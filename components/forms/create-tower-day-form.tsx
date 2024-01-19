@@ -1,13 +1,12 @@
 "use client";
 
 import { useForm, zodResolver } from "@mantine/form";
-import { Button, Stack, Select } from "@mantine/core";
+import { Button, Stack } from "@mantine/core";
 import { createTowerDaySchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { useParams } from "next/navigation";
 import { createTowerDay } from "@/server/actions/create-tower-day";
-import { UserTasksProps } from "@/server/queries/get-users-for-tasks";
 import { UserSelect } from "@components/user-select";
 
 export const CreateTowerDayForm = () => {
@@ -18,8 +17,8 @@ export const CreateTowerDayForm = () => {
     initialValues: {
       createdAt: new Date(),
       startedAt: "",
-      guardLeader: { id: "", userId: "", firstName: "", lastName: "" },
-      towerLeader: { id: "", userId: "", firstName: "", lastName: "" },
+      guardLeader: { id: "", firstName: "", lastName: "" },
+      towerLeader: { id: "", firstName: "", lastName: "" },
       towerId: id,
     },
   });

@@ -1,48 +1,25 @@
 "use server";
 import { prisma } from "@server/db";
-import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
-import { deleteUserSchema, deleteSchema } from "@schemas/index";
+import { deleteSchema } from "@schemas/index";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export const deleteTowerDay = adminAction(
   deleteSchema,
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
-      //find related tower to delete tower day
-      const tower = await prisma.tower.findFirst({
-        where: {
-          organizationId: user.organizationId,
-          towerdays: {
-            some: {
-              id: id,
-            },
-          },
-        },
-      });
-
-      if (!tower) {
-        throw new Error("Couldnt find related tower");
-      }
-
       const towerday = await prisma.towerDay.delete({
         where: {
           id: id,
-        },
-        select: {
-          id: true,
+          organizationId: session.organizationId as string,
         },
       });
-
-      if (!towerday.id) {
-        throw new Error("Couldnt delete tower day");
-      }
     } catch (error) {
       throw new Error("Fehler beim löschen des Turm Tag");
     }
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Turm Tag wurde gelöscht.` };
+    return { message: `Der Turm Tag wurde gelöscht` };
   }
 );

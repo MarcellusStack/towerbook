@@ -9,10 +9,11 @@ export type TowerDayIncidentProps = Pick<
   "id" | "towerId" | "incident"
 >;
 
-export const getTowerDayIncident = authFilterQuery(async (search, user) => {
+export const getTowerDayIncident = authFilterQuery(async (search, session) => {
   const towerday = await prisma.towerDay.findFirst({
     where: {
       id: search,
+      organizationId: session.organizationId as string,
     },
     select: {
       id: true,
@@ -20,10 +21,6 @@ export const getTowerDayIncident = authFilterQuery(async (search, user) => {
       towerId: true,
     },
   });
-
-  if (!towerday) throw new Error("Towerday does not exist");
-
-  await towerBelongsToOrganization(towerday.towerId, user.organizationId);
 
   return towerday;
 }) as unknown as (

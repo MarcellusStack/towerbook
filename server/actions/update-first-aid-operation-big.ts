@@ -3,7 +3,7 @@ import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { firstAidOperationBigSchema, searchListSchema } from "@schemas/index";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { extractTimeFromDate } from "@/utils";
+import { extractTimeFromDate, formatDateTimeZone } from "@/utils";
 
 export const updateFirstAidOperationBig = adminAction(
   firstAidOperationBigSchema,
@@ -128,12 +128,12 @@ export const updateFirstAidOperationBig = adminAction(
       firstResponderLastName,
       firstResponderAddress,
     },
-    { user }
+    { session }
   ) => {
     try {
       await prisma.firstAidOperation.update({
         where: {
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           id: id,
           status: { notIn: ["revision", "completed"] },
         },
@@ -143,13 +143,13 @@ export const updateFirstAidOperationBig = adminAction(
           lastName: lastName,
           firstName: firstName,
           address: address,
-          birthDate: new Date(birthDate),
+          birthDate: formatDateTimeZone(new Date(birthDate)),
           cashRegisterNumber: cashRegisterNumber,
           insuranceNumber: insuranceNumber,
           operationNumberControlCenter: operationNumberControlCenter,
           operationNumberWRD: operationNumberWRD,
           startTime: extractTimeFromDate(startTime as string),
-          endTime: extractTimeFromDate(endTime),
+          endTime: extractTimeFromDate(endTime as string),
           operationLocation: operationLocation,
           guardLeader: { connect: { id: guardLeader.id } },
           helper: helper,
@@ -257,7 +257,6 @@ export const updateFirstAidOperationBig = adminAction(
           firstResponderLastName: firstResponderLastName,
           firstResponderAddress: firstResponderAddress,
         },
-        select: { id: true },
       });
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Einsatzes");

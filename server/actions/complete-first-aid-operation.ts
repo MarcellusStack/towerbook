@@ -8,12 +8,12 @@ export const completeFirstAidOperation = adminAction(
   z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
       const operation = await prisma.firstAidOperation.findUnique({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           status: { not: "completed" },
         },
         select: {
@@ -38,7 +38,7 @@ export const completeFirstAidOperation = adminAction(
       await prisma.firstAidOperation.update({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           status: { not: "completed" },
         },
         data: {

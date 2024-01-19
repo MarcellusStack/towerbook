@@ -3,10 +3,10 @@ import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { cache } from "react";
 
-export const getAccomodations = authFilterQuery(async (search, user) => {
+export const getAccomodations = authFilterQuery(async (search, session) => {
   return await prisma.accomodation.findMany({
     where: {
-      organizationId: user.organizationId as string,
+      organizationId: session.organizationId as string,
     },
     select: {
       id: true,
@@ -16,15 +16,16 @@ export const getAccomodations = authFilterQuery(async (search, user) => {
       zipCode: true,
       location: true,
       availableBeds: true,
+      reservable: true,
     },
   });
 });
 
 export const getAccomodation = cache(
-  authFilterQuery(async (search, user) => {
+  authFilterQuery(async (search, session) => {
     return await prisma.accomodation.findFirst({
       where: {
-        organizationId: user.organizationId as string,
+        organizationId: session.organizationId as string,
         id: search,
       },
       select: {
@@ -40,10 +41,9 @@ export const getAccomodation = cache(
           select: {
             id: true,
             date: true,
-
             user: {
               select: {
-                userId: true,
+                id: true,
               },
             },
           },

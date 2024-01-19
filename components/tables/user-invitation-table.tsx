@@ -1,15 +1,10 @@
 "use client";
 
 import { roles } from "@/constants/roles";
-import { Badge, Table, Group, Text, ActionIcon, rem } from "@mantine/core";
+import { Badge, Table, Group, Text, ActionIcon } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import Link from "next/link";
-import { convertDate } from "@utils/index";
+import { IconTrash } from "@tabler/icons-react";
 import { DeleteModalAction } from "../delete-modal-action";
-import { deleteUser } from "@server/actions/delete-user";
-import { type UserTableProps } from "@/server/queries/get-users";
-import { removeUserFromCompany } from "@server/actions/remove-user-from-company";
 import { InvitationProps } from "@server/queries/get-invitations";
 import { deleteInvitation } from "@/server/actions/delete-invitation";
 

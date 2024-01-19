@@ -1,6 +1,6 @@
 "use client";
 
-import { Divider, Tabs, rem } from "@mantine/core";
+import { Divider, Tabs } from "@mantine/core";
 import React from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import {

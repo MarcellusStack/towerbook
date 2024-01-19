@@ -7,12 +7,12 @@ import { revalidatePath } from "next/cache";
 
 export const deleteDutyPlan = adminAction(
   deleteSchema,
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
       //check for related tower that belongs to org to delete dutyplan
       const tower = await prisma.tower.findFirst({
         where: {
-          organizationId: user.organizationId,
+          organizationId: session.organizationId,
           dutyplans: {
             some: {
               id: id,
@@ -43,6 +43,6 @@ export const deleteDutyPlan = adminAction(
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Dienstplan wurde gelöscht.` };
+    return { message: `Der Dienstplan wurde gelöscht` };
   }
 );

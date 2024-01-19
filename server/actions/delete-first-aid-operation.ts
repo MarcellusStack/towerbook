@@ -8,27 +8,23 @@ import { towerBelongsToOrganization } from "@server/lib/utils/tower-belong-to-or
 
 export const deleteFirstAidOperation = adminAction(
   deleteSchema,
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
-      const operation = await prisma.firstAidOperation.delete({
+      await prisma.firstAidOperation.delete({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
         },
         select: {
           id: true,
         },
       });
-
-      if (!operation.id) {
-        throw new Error("Couldnt delete operation");
-      }
     } catch (error) {
       throw new Error("Fehler beim löschen des Einsatzes");
     }
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Einsatz wurde gelöscht.` };
+    return { message: `Der Einsatz wurde gelöscht` };
   }
 );

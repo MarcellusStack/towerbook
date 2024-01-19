@@ -1,4 +1,3 @@
-import { Grid, GridCol, Box } from "@mantine/core";
 import { UserCertificateForm } from "@components/forms/user-certificate-form";
 import { getUserCertificate } from "@server/queries/get-user-certificate";
 import { TableOfContents } from "@/components/table-of-contents";

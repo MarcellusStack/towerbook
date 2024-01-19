@@ -8,27 +8,23 @@ import { towerBelongsToOrganization } from "@server/lib/utils/tower-belong-to-or
 
 export const deleteSearchList = adminAction(
   deleteSchema,
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
-      const searchlist = await prisma.searchList.delete({
+      await prisma.searchList.delete({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
         },
         select: {
           id: true,
         },
       });
-
-      if (!searchlist.id) {
-        throw new Error("Couldnt delete searchlist");
-      }
     } catch (error) {
       throw new Error("Fehler beim löschen des Sucheintrag");
     }
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Sucheintrag wurde gelöscht.` };
+    return { message: `Der Sucheintrag wurde gelöscht` };
   }
 );

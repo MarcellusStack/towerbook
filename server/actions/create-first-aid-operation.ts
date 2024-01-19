@@ -8,31 +8,27 @@ import { type FirstAidOperationType } from "@prisma/client";
 
 export const createFirstAidOperation = adminAction(
   createFirstAidOperationSchema,
-  async ({ type, date, startTime, guardLeader, towerId }, { user }) => {
+  async ({ type, date, startTime, guardLeader, towerId }, { session }) => {
     try {
-      const operation = await prisma.firstAidOperation.create({
+      await prisma.firstAidOperation.create({
         data: {
           type: type as FirstAidOperationType,
           date: new Date(date as Date),
           startTime: extractTimeFromDate(startTime),
-          guardLeader: { connect: { userId: guardLeader.userId } },
+          guardLeader: { connect: { id: guardLeader.id } },
           tower: { connect: { id: towerId } },
-          organization: { connect: { id: user.organizationId as string } },
+          organization: { connect: { id: session.organizationId as string } },
         },
         select: {
           id: true,
         },
       });
-
-      if (!operation.id) {
-        throw new Error("Couldnt create first aid operation");
-      }
     } catch (error) {
-      throw new Error("Fehler beim Erstellen der Gruppe");
+      throw new Error("Fehler beim Erstellen des Erste Hilfe Einsatzes");
     }
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Einsatz wurde erstellt.` };
+    return { message: `Der Einsatz wurde erstellt` };
   }
 );

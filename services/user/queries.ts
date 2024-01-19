@@ -2,12 +2,11 @@
 import { prisma } from "@/server/db";
 
 export const getUserById = async (id: string) => {
-  return await prisma.profile.findUnique({
-    where: { userId: id },
+  return await prisma.user.findUnique({
+    where: { id: id },
     select: {
       firstName: true,
       lastName: true,
-      userId: true,
       id: true,
       email: true,
       role: true,

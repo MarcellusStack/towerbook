@@ -9,36 +9,19 @@ import {
   SimpleGrid,
   Text,
   Checkbox,
-  Group,
   Card,
-  rem,
-  ActionIcon,
   Box,
   Textarea,
   MultiSelect,
 } from "@mantine/core";
-import {
-  searchListSchema,
-  towerDayTodoSchema,
-  towerDayWatchmanPlanSchema,
-} from "@/schemas";
+import { searchListSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { DatePickerInput, TimeInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
-import { type TowerDay } from "@prisma/client";
-import { IconShieldLock, IconTrash, IconUserCheck } from "@tabler/icons-react";
-import { UserComboboxButton } from "@components/user-combobox-button";
-import { modals } from "@mantine/modals";
+import { TimeInput } from "@mantine/dates";
 import { UserSelect } from "@components/user-select";
-import { updateTowerDayWatchmanPlan } from "@/server/actions/update-tower-day-watchman-plan";
-import { completeTowerDayFormStatus } from "@/server/actions/complete-tower-day-form-status";
-import { TowerDayFormAction } from "@/components/tower-day-form-action";
-import { updateTowerDayTodo } from "@/server/actions/update-tower-day-todo";
-import { TowerDayTodoProps } from "@/server/queries/get-tower-day-todo";
 import type { ExtendSearchListWithTowerProps } from "@/server/queries/get-search-list";
 import { updateSearchList } from "@server/actions/update-search-list";
 import { completeSearchList } from "@/server/actions/complete-search-list";
-import { convertTime, extractTimeFromDate } from "@/utils";
+import { convertTime } from "@/utils";
 
 export const SearchListForm = ({
   searchlist,

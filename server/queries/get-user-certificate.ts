@@ -1,11 +1,11 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-import { type Profile, Role } from "@prisma/client";
+import { type User, Role } from "@prisma/client";
 
 export type UserCertificateProps = Pick<
-  Profile,
-  | "userId"
+  User,
+  | "id"
   | "lifeguardLicense"
   | "snorkelLicense"
   | "lifeguardWaterRescueService"
@@ -44,14 +44,14 @@ export type UserCertificateProps = Pick<
   | "guardLeaderInstruction"
 >;
 
-export const getUserCertificate = authFilterQuery(async (search, user) => {
-  return await prisma.profile.findFirst({
+export const getUserCertificate = authFilterQuery(async (search, session) => {
+  return await prisma.user.findFirst({
     where: {
-      organizationId: user.organizationId,
-      userId: search,
+      organizationId: session.organizationId,
+      id: search,
     },
     select: {
-      userId: true,
+      id: true,
       lifeguardLicense: true,
       snorkelLicense: true,
       lifeguardWaterRescueService: true,

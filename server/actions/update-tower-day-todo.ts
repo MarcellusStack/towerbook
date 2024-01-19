@@ -6,7 +6,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateTowerDayTodo = adminAction(
   towerDayTodoSchema,
-  async ({ id, todo }, { user }) => {
+  async ({ id, todo }) => {
     try {
       // check if form is already on status completed based on that
       // dont allow to update the form?
@@ -31,7 +31,7 @@ export const updateTowerDayTodo = adminAction(
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Turm Tag wurde aktualisiert.`,
+      message: `Der Turm Tag wurde aktualisiert`,
     };
   }
 );

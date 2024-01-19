@@ -9,10 +9,10 @@ export type OrganizationSettingsProps = Pick<
 >;
 
 export const getOrganizationSettings =
-  authAdminQuery<OrganizationSettingsProps>(async (user) => {
+  authAdminQuery<OrganizationSettingsProps>(async (session) => {
     const organization = await prisma.organization.findFirst({
       where: {
-        id: user.organizationId as string,
+        id: session.organizationId as string,
       },
       select: {
         name: true,

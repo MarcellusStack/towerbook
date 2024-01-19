@@ -1,9 +1,7 @@
 "use client";
 import {
   rem,
-  Burger,
   Transition,
-  Button,
   Affix,
   Menu,
   ActionIcon,

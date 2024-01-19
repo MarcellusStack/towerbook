@@ -2,11 +2,11 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { towerDayIncidentSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export const updateTowerDayIncident = adminAction(
   towerDayIncidentSchema,
-  async ({ id, incident }, { user }) => {
+  async ({ id, incident }) => {
     try {
       await prisma.towerDay.update({
         where: {
@@ -29,7 +29,7 @@ export const updateTowerDayIncident = adminAction(
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Turm Tag wurde aktualisiert.`,
+      message: `Der Turm Tag wurde aktualisiert`,
     };
   }
 );

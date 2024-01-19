@@ -34,7 +34,6 @@ export const ResetPasswordForm = () => {
     >
       <Stack gap="md">
         <PasswordInput label="Passwort" {...form.getInputProps("password")} />
-
         <Button loading={status === "executing"} type="submit">
           Passwort zurücksetzen
         </Button>

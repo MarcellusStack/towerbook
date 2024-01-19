@@ -12,7 +12,7 @@ export const createRevision = adminAction(
     id: z.string().min(1, { message: "Id wird benötigt" }),
     modelType: z.string().min(1, { message: "Model wird benötigt" }),
   }),
-  async ({ id, modelType }, { user }) => {
+  async ({ id, modelType }, { session }) => {
     const filteredModel = revisionModels.filter(
       (model) => model.type === modelType
     )[0];
@@ -20,7 +20,7 @@ export const createRevision = adminAction(
       const selectedModel = await prisma[filteredModel.model].findFirst({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           status: "ongoing",
         },
         select: {
@@ -42,7 +42,7 @@ export const createRevision = adminAction(
           url: `${filteredModel.url}${selectedModel.id}`,
           type: filteredModel.type as RevisionType,
           tower: { connect: { id: selectedModel.towerId } },
-          organization: { connect: { id: user.organizationId as string } },
+          organization: { connect: { id: session.organizationId as string } },
         },
         select: {
           id: true,

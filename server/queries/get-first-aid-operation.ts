@@ -3,11 +3,11 @@ import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { cache } from "react";
 
 export const getFirstAidOperation = cache(
-  authFilterQuery(async (search, user) => {
+  authFilterQuery(async (search, session) => {
     return await prisma.firstAidOperation.findFirst({
       where: {
         id: search,
-        organizationId: user.organizationId as string,
+        organizationId: session.organizationId as string,
       },
       include: {
         guardLeader: { select: { firstName: true, lastName: true, id: true } },

@@ -9,12 +9,12 @@ export const completeSearchList = adminAction(
   z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),
-  async ({ id }, { user }) => {
+  async ({ id }, { session }) => {
     try {
       const searchlist = await prisma.searchList.findUnique({
         where: {
           id: id,
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           status: { not: "completed" },
         },
         select: {

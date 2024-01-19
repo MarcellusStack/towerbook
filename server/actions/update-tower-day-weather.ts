@@ -6,11 +6,11 @@ import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateTowerDayWeather = adminAction(
   towerDayWeatherSchema,
-  async ({ id, weather }, { user }) => {
+  async ({ id, weather }) => {
     try {
       // check if form is already on status completed based on that
       // dont allow to update the form?
-      const towerday = await prisma.towerDay.update({
+      await prisma.towerDay.update({
         where: {
           id: id,
           status: { notIn: ["revision", "completed"] },
@@ -30,7 +30,7 @@ export const updateTowerDayWeather = adminAction(
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Turm Tag wurde aktualisiert.`,
+      message: `Der Turm Tag wurde aktualisiert`,
     };
   }
 );

@@ -6,7 +6,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 
 export const updateTowerDayWatchmanPlan = adminAction(
   towerDayWatchmanPlanSchema,
-  async ({ id, guardLeader, towerLeader, watchman }, { user }) => {
+  async ({ id, guardLeader, towerLeader, watchman }) => {
     try {
       await prisma.towerDay.update({
         where: {
@@ -22,7 +22,6 @@ export const updateTowerDayWatchmanPlan = adminAction(
           towerLeader: { connect: { id: towerLeader } },
           watchman: watchman,
         },
-        select: { id: true },
       });
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Turm Tag");
@@ -31,7 +30,7 @@ export const updateTowerDayWatchmanPlan = adminAction(
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Turm Tag wurde aktualisiert.`,
+      message: `Der Turm Tag wurde aktualisiert`,
     };
   }
 );

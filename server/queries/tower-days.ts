@@ -1,10 +1,10 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-export const getTowerDays = authFilterQuery(async (search, user) => {
+export const getTowerDays = authFilterQuery(async (search, session) => {
   return await prisma.towerDay.findMany({
     where: {
-      organizationId: user.organizationId as string,
+      organizationId: session.organizationId as string,
       id: search,
     },
     select: {

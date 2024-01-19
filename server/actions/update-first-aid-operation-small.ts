@@ -34,12 +34,12 @@ export const updateFirstAidOperationSmall = adminAction(
       rinseWoundWithWater,
       otherMeasure,
     },
-    { user }
+    { session }
   ) => {
     try {
       await prisma.firstAidOperation.update({
         where: {
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           id: id,
           status: { notIn: ["revision", "completed"] },
         },
@@ -48,7 +48,7 @@ export const updateFirstAidOperationSmall = adminAction(
           lastName: lastName,
           firstName: firstName,
           startTime: extractTimeFromDate(startTime as string),
-          endTime: extractTimeFromDate(endTime),
+          endTime: extractTimeFromDate(endTime as string),
           operationLocation: operationLocation,
           guardLeader: { connect: { id: guardLeader.id } },
           helper: helper,
@@ -69,7 +69,6 @@ export const updateFirstAidOperationSmall = adminAction(
           rinseWoundWithWater: rinseWoundWithWater,
           otherMeasure: otherMeasure,
         },
-        select: { id: true },
       });
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Einsatzes");

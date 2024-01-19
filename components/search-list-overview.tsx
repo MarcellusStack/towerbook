@@ -1,7 +1,5 @@
-import { getSearchList } from "@/server/queries/get-search-list";
 import { convertDate, convertTime } from "@/utils";
 import {
-  Avatar,
   Card,
   Group,
   Stack,
@@ -13,9 +11,7 @@ import {
   Badge,
 } from "@mantine/core";
 import {
-  IconBroadcast,
   IconBuildingBroadcastTower,
-  IconMapPin,
   IconCalendarEvent,
   IconClockSearch,
   IconUserSearch,

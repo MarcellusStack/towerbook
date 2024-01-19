@@ -13,84 +13,85 @@ import { ResetPasswordEmail } from "@/components/emails/reset-password-email";
 import { resetPasswordSchema } from "@/schemas";
 import { toLowercaseAndTrim } from "@/utils";
 
-export const deleteAccount = authAction(z.object({}), async ({}, { user }) => {
-  try {
-    await prisma.$transaction(
-      async (tx) => {
-        const profile = await tx.profile.findUnique({
-          where: { userId: user.id, organizationId: user.organizationId },
-          select: {
-            id: true,
-            userId: true,
-            organizationId: true,
-            role: true,
-          },
-        });
-
-        if (!profile) {
-          throw new Error("User nicht gefunden");
-        }
-
-        if (profile.role.includes("admin")) {
-          throw new Error("Sie können als Admin den Account nicht löschen");
-        }
-
-        await tx.profile.delete({
-          where: {
-            id: profile.id,
-          },
-        });
-
-        const { error } = await supabase.auth.admin.deleteUser(profile.userId);
-
-        if (error) {
-          throw new Error("Fehler beim löschen des Accounts");
-        }
-      },
-      {
-        maxWait: 15000,
-        timeout: 15000,
-      }
-    );
-  } catch (error) {
-    throw new Error("Fehler beim löschen des Accounts");
-  }
-
-  revalidatePath("/", "layout");
-
-  redirect("/login");
-});
-
-export const leaveOrganization = authAction(
+export const deleteAccount = authAction(
   z.object({}),
-  async ({}, { user }) => {
+  async ({}, { session }) => {
     try {
       await prisma.$transaction(
         async (tx) => {
-          const profile = await tx.profile.findUnique({
-            where: { userId: user.id, organizationId: user.organizationId },
+          const user = await tx.user.findUnique({
+            where: { id: session.id, organizationId: session.organizationId },
             select: {
               id: true,
-              userId: true,
               organizationId: true,
               role: true,
             },
           });
 
-          if (!profile || !profile.organizationId) {
+          if (!user) {
+            throw new Error("User nicht gefunden");
+          }
+
+          if (user.role.includes("admin")) {
+            throw new Error("Sie können als Admin den Account nicht löschen");
+          }
+
+          await tx.user.delete({
+            where: {
+              id: user.id,
+            },
+          });
+
+          const { error } = await supabase.auth.admin.deleteUser(user.id);
+
+          if (error) {
+            throw new Error("Fehler beim löschen des Accounts");
+          }
+        },
+        {
+          maxWait: 15000,
+          timeout: 15000,
+        }
+      );
+    } catch (error) {
+      throw new Error("Fehler beim löschen des Accounts");
+    }
+
+    revalidatePath("/", "layout");
+
+    redirect("/login");
+  }
+);
+
+export const leaveOrganization = authAction(
+  z.object({}),
+  async ({}, { session }) => {
+    try {
+      await prisma.$transaction(
+        async (tx) => {
+          const user = await tx.user.findUnique({
+            where: { id: session.id, organizationId: session.organizationId },
+            select: {
+              id: true,
+              organizationId: true,
+              role: true,
+            },
+          });
+
+          if (!user || !user.organizationId) {
             throw new Error(
               "User nicht gefunden oder gehört keiner Organisation an"
             );
           }
 
-          if (profile.role.includes("admin") && profile.organizationId) {
+          if (user.role.includes("admin") && user.organizationId) {
             throw new Error(
               "Sie können als Admin die Organisation nicht verlassen"
             );
           }
 
-          await tx.profile.update({
-            where: { userId: profile.userId },
+          await tx.user.update({
+            where: { id: user.id },
             data: {
               organization: {
                 disconnect: {
@@ -123,20 +124,23 @@ export const updateEmail = authAction(
       message: "Keine gültige E-Mail",
     }),
   }),
-  async ({ email }, { user }) => {
+  async ({ email }, { session }) => {
     try {
       await prisma.$transaction(
         async (tx) => {
-          await tx.profile.update({
-            where: { userId: user.id },
+          await tx.user.update({
+            where: { id: session.id },
             data: {
               email: toLowercaseAndTrim(email),
             },
           });
 
-          const { error } = await supabase.auth.admin.updateUserById(user.id, {
-            email: toLowercaseAndTrim(email),
-          });
+          const { error } = await supabase.auth.admin.updateUserById(
+            session.id,
+            {
+              email: toLowercaseAndTrim(email),
+            }
+          );
 
           if (error) {
             throw new Error("Fehler beim aktualisieren der E-Mail Adresse");
@@ -166,9 +170,9 @@ export const verifyEmail = action(
   }),
   async ({ userId, token }) => {
     try {
-      await prisma.profile.update({
+      await prisma.user.update({
         where: {
-          userId: userId,
+          id: userId,
           verificationToken: token,
           emailVerified: false,
         },
@@ -196,7 +200,7 @@ export const forgotPassword = action(
   }),
   async ({ email }) => {
     try {
-      const user = await prisma.profile.update({
+      const user = await prisma.user.update({
         where: { email: toLowercaseAndTrim(email) },
         data: {
           passwordResetToken: uuidv4(),
@@ -205,7 +209,7 @@ export const forgotPassword = action(
           ),
         },
         select: {
-          userId: true,
+          id: true,
           firstName: true,
           lastName: true,
           passwordResetToken: true,
@@ -217,7 +221,7 @@ export const forgotPassword = action(
         "Digitales Turmbuch - Passwort zurücksetzen",
         ResetPasswordEmail({
           receiver: `${user.firstName} ${user.lastName}`,
-          userId: user.userId,
+          userId: user.id,
           token: user.passwordResetToken as string,
         })
       );
@@ -241,9 +245,9 @@ export const resetPassword = action(
         async (tx) => {
           const currentDate = new Date();
 
-          await tx.profile.update({
+          await tx.user.update({
             where: {
-              userId: userId,
+              id: userId,
               passwordResetToken: token,
               passwordResetTokenExpires: { gte: currentDate },
             },

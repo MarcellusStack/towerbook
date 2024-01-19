@@ -2,53 +2,25 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import {
-  TextInput,
   Button,
   Stack,
   Fieldset,
   SimpleGrid,
   Text,
-  Checkbox,
   Group,
   Card,
-  rem,
   ActionIcon,
-  Box,
-  Table,
-  NumberInput,
-  ThemeIcon,
 } from "@mantine/core";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import deLocale from "@fullcalendar/core/locales/de";
 import { towerDayDutyPlanSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { DatePickerInput, TimeInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
-import { type TowerDay } from "@prisma/client";
 import {
-  IconShieldLock,
   IconTrash,
-  IconCalendarOff,
-  IconCalendarX,
-  IconCalendarPlus,
   IconCalendarEvent,
 } from "@tabler/icons-react";
-
-import { UserComboboxButton } from "@components/user-combobox-button";
 import { modals } from "@mantine/modals";
-import { UserSelect } from "@components/user-select";
-import { updateTowerDayWatchmanPlan } from "@/server/actions/update-tower-day-watchman-plan";
-import { completeTowerDayFormStatus } from "@/server/actions/complete-tower-day-form-status";
 import { TowerDayFormAction } from "@/components/tower-day-form-action";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { updateTowerDayTodo } from "@/server/actions/update-tower-day-todo";
-import { TowerDayTodoProps } from "@/server/queries/get-tower-day-todo";
 import { TowerDayWeatherProps } from "@/server/queries/get-tower-day-weather";
-import { updateTowerDayWeather } from "@/server/actions/update-tower-day-weather";
-
 import { createDutyPlan } from "@/server/actions/create-duty-plan";
 import { deleteDutyPlan } from "@/server/actions/delete-duty-plan";
 import { CreateShiftForm } from "@components/forms/create-shift-form";

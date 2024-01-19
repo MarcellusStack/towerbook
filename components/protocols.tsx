@@ -1,6 +1,5 @@
 "use client";
 import { Box, Card, SimpleGrid, Stack, ThemeIcon, Text } from "@mantine/core";
-import { IconWriting } from "@tabler/icons-react";
 import Link from "next/link";
 import React from "react";
 

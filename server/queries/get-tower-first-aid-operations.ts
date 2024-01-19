@@ -1,18 +1,18 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { type Role, FirstAidOperation, Tower, Profile } from "@prisma/client";
+import { type Role, FirstAidOperation, Tower, User } from "@prisma/client";
 import { type FirstAidOperationProps } from "@server/queries/get-first-aid-operations";
 
 export type ExtendFirstAidOperationsWithGuardLeaderProps =
   FirstAidOperationProps & {
-    guardLeader: Pick<Profile, "firstName" | "lastName">;
+    guardLeader: Pick<User, "firstName" | "lastName">;
   };
 
 export const getTowerFirstAidOperations = authFilterQuery(
-  async (search, user) => {
+  async (search, session) => {
     return await prisma.firstAidOperation.findMany({
       where: {
-        organizationId: user.organizationId as string,
+        organizationId: session.organizationId as string,
         towerId: search,
       },
       select: {

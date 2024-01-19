@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { searchListSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { extractTimeFromDate } from "@/utils";
 
 export const updateSearchList = adminAction(
@@ -37,12 +37,12 @@ export const updateSearchList = adminAction(
       timeFound,
       handOverTo,
     },
-    { user }
+    { session }
   ) => {
     try {
       await prisma.searchList.update({
         where: {
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
           id: id,
           status: { notIn: ["revision", "completed"] },
         },
@@ -84,7 +84,7 @@ export const updateSearchList = adminAction(
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Sucheintrag wurde aktualisiert.`,
+      message: `Der Sucheintrag wurde aktualisiert`,
     };
   }
 );

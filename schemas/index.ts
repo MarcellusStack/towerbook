@@ -21,8 +21,7 @@ export const shiftSchema = z.object({
   endTime: z.date(),
   type: z.string().min(1, { message: "Schicht Typ wird benötigt" }),
   user: z.object({
-    id: z.string(),
-    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+    id: z.string().min(1, { message: "User Id wird benötigt" }),
     firstName: z.string().min(1, { message: "Vorname wird benötigt" }),
     lastName: z.string().min(1, { message: "Nachname wird benötigt" }),
   }),
@@ -229,7 +228,7 @@ export const createTowerDaySchema = z.object({
   startedAt: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
   guardLeader: z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
-    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+
     firstName: z
       .string()
       .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
@@ -239,7 +238,7 @@ export const createTowerDaySchema = z.object({
   }),
   towerLeader: z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
-    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+
     firstName: z
       .string()
       .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
@@ -270,7 +269,7 @@ export const createFirstAidOperationSchema = z.object({
   startTime: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
   guardLeader: z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
-    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+
     firstName: z
       .string()
       .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),

@@ -1,17 +1,17 @@
 import { prisma } from "@server/db";
 import { authQuery } from "@server/lib/utils/query-clients";
 
-import { type Profile, Role } from "@prisma/client";
+import { type User, Role } from "@prisma/client";
 
-export type UserSettingsProps = Pick<Profile, "email">;
+export type UserSettingsProps = Pick<User, "email">;
 
-export const getUserSettings = authQuery(async (user) => {
-  return await prisma.profile.findFirst({
+export const getUserSettings = authQuery(async (session) => {
+  return await prisma.user.findFirst({
     where: {
-      userId: user.id,
+      id: session.id,
     },
     select: {
       email: true,
     },
   });
-}) as (user: Role[]) => Promise<UserSettingsProps[]>;
+});

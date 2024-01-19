@@ -2,11 +2,11 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-export const getTowerOverview = authFilterQuery(async (search, user) => {
-  if (user.role.includes("admin")) {
+export const getTowerOverview = authFilterQuery(async (search, session) => {
+  if (session.role.includes("admin")) {
     return await prisma.tower.findFirst({
       where: {
-        organizationId: user.organizationId,
+        organizationId: session.organizationId,
         id: search,
       },
       select: {
@@ -18,11 +18,11 @@ export const getTowerOverview = authFilterQuery(async (search, user) => {
 
   return await prisma.tower.findFirst({
     where: {
-      organizationId: user.organizationId,
+      organizationId: session.organizationId,
       id: search,
       members: {
         some: {
-          id: user.profileId,
+          id: session.id,
         },
       },
     },

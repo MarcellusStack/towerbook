@@ -1,22 +1,22 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { type Profile, Role } from "@prisma/client";
+import { type User, Role } from "@prisma/client";
 
 export type UserTableProps = Pick<
-  Profile,
-  "userId" | "firstName" | "lastName" | "email" | "role" | "birthDate"
+  User,
+  "id" | "firstName" | "lastName" | "email" | "role" | "birthDate"
 >;
 
-export const getUsers = authFilterQuery(async (search, user) => {
-  return await prisma.profile.findMany({
+export const getUsers = authFilterQuery(async (search, session) => {
+  return await prisma.user.findMany({
     where: {
-      organizationId: user.organizationId,
+      organizationId: session.organizationId,
       email: {
         contains: search ?? undefined,
       },
     },
     select: {
-      userId: true,
+      id: true,
       firstName: true,
       lastName: true,
       email: true,

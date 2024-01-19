@@ -17,29 +17,31 @@ export type ExtendGroupRegistrationWithTowerProps = GroupRegistrationProps & {
   tower: Pick<Tower, "name" | "number">;
 };
 
-export const getGroupRegistrations = authFilterQuery(async (search, user) => {
-  return await prisma.groupRegistration.findMany({
-    where: {
-      organizationId: user.organizationId as string,
-    },
-    select: {
-      id: true,
-      date: true,
-      time: true,
-      name: true,
-      count: true,
-      supervisorFirstName: true,
-      supervisorLastName: true,
-      tower: {
-        select: {
-          id: true,
-          name: true,
-          number: true,
+export const getGroupRegistrations = authFilterQuery(
+  async (search, session) => {
+    return await prisma.groupRegistration.findMany({
+      where: {
+        organizationId: session.organizationId as string,
+      },
+      select: {
+        id: true,
+        date: true,
+        time: true,
+        name: true,
+        count: true,
+        supervisorFirstName: true,
+        supervisorLastName: true,
+        tower: {
+          select: {
+            id: true,
+            name: true,
+            number: true,
+          },
         },
       },
-    },
-  });
-}) as (
+    });
+  }
+) as (
   search: string,
   requiredRoles: Role[]
 ) => Promise<ExtendGroupRegistrationWithTowerProps[]>;

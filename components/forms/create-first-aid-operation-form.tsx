@@ -1,28 +1,19 @@
 "use client";
 import React from "react";
-
 import { useForm, zodResolver } from "@mantine/form";
 import {
-  PasswordInput,
-  TextInput,
   Button,
   Stack,
-  Select,
   SegmentedControl,
   Text,
-  ThemeIcon,
   rem,
 } from "@mantine/core";
 import {
   createFirstAidOperationSchema,
-  createSearchListSchema,
-  createUserSchema,
 } from "@/schemas";
-import { roles } from "@constants/roles";
 import { TowerSelect } from "@components/tower-select";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
-import { createSearchList } from "@/server/actions/create-search-list";
 import { convertTime } from "@/utils";
 import { UserSelect } from "@components/user-select";
 import { IconAmbulance, IconFirstAidKit } from "@tabler/icons-react";

@@ -22,7 +22,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import { convertDate, convertTime } from "@utils/index";
+import { convertDate } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { ExtendFirstAidOperationsWithRelationProps } from "@server/queries/get-first-aid-operations";
 import { deleteFirstAidOperation } from "@server/actions/delete-first-aid-operation";

@@ -6,14 +6,14 @@ import { revalidatePath } from "next/cache";
 
 export const completeTowerDayFormStatus = adminAction(
   towerDayFormStatusSchema,
-  async ({ id, form }, { user }) => {
+  async ({ id, form }, { session }) => {
     try {
       const towerday = await prisma.towerDay.update({
         where: {
           id: id,
           status: { notIn: ["revision", "completed"] },
           [form]: { not: "completed" },
-          organizationId: user.organizationId as string,
+          organizationId: session.organizationId as string,
         },
         data: {
           [form]: "completed",

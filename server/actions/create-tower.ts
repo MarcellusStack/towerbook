@@ -7,9 +7,9 @@ import { type TowerType } from "@prisma/client";
 
 export const createTower = adminAction(
   createTowerSchema,
-  async ({ name, main, type, number, location }, { user }) => {
+  async ({ name, main, type, number, location }, { session }) => {
     try {
-      const tower = await prisma.tower.create({
+      await prisma.tower.create({
         data: {
           name: name,
           main: main,
@@ -18,18 +18,11 @@ export const createTower = adminAction(
           location: location,
           organization: {
             connect: {
-              id: user.organizationId as string,
+              id: session.organizationId as string,
             },
           },
         },
-        select: {
-          id: true,
-        },
       });
-
-      if (!tower.id) {
-        throw new Error("Couldnt create tower");
-      }
     } catch (error) {
       throw new Error("Fehler beim Erstellen des Turms");
     }

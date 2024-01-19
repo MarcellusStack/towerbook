@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { createGroupRegistrationSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { extractTimeFromDate } from "@/utils";
 
 export const createGroupRegistration = adminAction(
@@ -17,10 +17,10 @@ export const createGroupRegistration = adminAction(
       supervisorLastName,
       towerId,
     },
-    { user }
+    { session }
   ) => {
     try {
-      const group = await prisma.groupRegistration.create({
+      await prisma.groupRegistration.create({
         data: {
           date: new Date(date as Date),
           time: extractTimeFromDate(time),
@@ -29,22 +29,15 @@ export const createGroupRegistration = adminAction(
           supervisorFirstName: supervisorFirstName,
           supervisorLastName: supervisorLastName,
           tower: { connect: { id: towerId } },
-          organization: { connect: { id: user.organizationId as string } },
-        },
-        select: {
-          id: true,
+          organization: { connect: { id: session.organizationId as string } },
         },
       });
-
-      if (!group.id) {
-        throw new Error("Couldnt create groupregistration");
-      }
     } catch (error) {
       throw new Error("Fehler beim Erstellen der Gruppe");
     }
 
     revalidatePath("/", "layout");
 
-    return { message: `Die Gruppe wurde erstellt.` };
+    return { message: `Die Gruppe wurde erstellt` };
   }
 );

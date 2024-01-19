@@ -106,16 +106,16 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       leftSection: <IconCalendarPin stroke={1.5} />,
     },
     {
-      id: "settings",
-      label: "Einstellungen",
-      onClick: () => router.push("/settings"),
-      leftSection: <IconSettings stroke={1.5} />,
-    },
-    {
       id: "accomodations",
       label: "Unterkünfte",
       onClick: () => router.push("/accomodations"),
       leftSection: <IconBed stroke={1.5} />,
+    },
+    {
+      id: "settings",
+      label: "Einstellungen",
+      onClick: () => router.push("/settings"),
+      leftSection: <IconSettings stroke={1.5} />,
     },
   ];
   const [opened, { toggle }] = useDisclosure();

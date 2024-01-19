@@ -24,11 +24,11 @@ export type ExtendSearchListWithTowerProps = SearchListProps & {
 };
 
 export const getSearchList = cache(
-  authFilterQuery(async (search, user) => {
+  authFilterQuery(async (search, session) => {
     return await prisma.searchList.findFirst({
       where: {
         id: search,
-        organizationId: user.organizationId as string,
+        organizationId: session.organizationId as string,
       },
       select: {
         id: true,

@@ -6,21 +6,21 @@ import { type Role } from "@prisma/client";
 
 export type UserPermissionProps = Pick<
   ExtendProfileWithTowerProps,
-  "firstName" | "lastName" | "role" | "userId" | "towers"
+  "firstName" | "lastName" | "role" | "id" | "towers"
 >;
 
-export const getUserPermission = authFilterQuery(async (search, user) => {
-  return await prisma.profile.findFirst({
+export const getUserPermission = authFilterQuery(async (search, session) => {
+  return await prisma.user.findFirst({
     where: {
-      organizationId: user.organizationId,
-      userId: search,
+      organizationId: session.organizationId,
+      id: search,
     },
     select: {
       firstName: true,
       lastName: true,
       role: true,
       towers: true,
-      userId: true,
+      id: true,
     },
   });
 }) as unknown as (

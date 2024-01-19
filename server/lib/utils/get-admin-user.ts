@@ -1,5 +1,5 @@
 import { auth } from "@server/lib/auth";
-import { authOptions } from "@server/lib/auth-options";
+
 import { prisma } from "@/server/db";
 
 export const getAdminUser = async () => {
@@ -9,13 +9,13 @@ export const getAdminUser = async () => {
     return null;
   }
 
-  const user = await prisma.profile.findFirst({
-    where: { userId: session.user.id },
-    select: { userId: true, email: true, role: true, organizationId: true },
+  const user = await prisma.user.findFirst({
+    where: { id: session.user.id },
+    select: { id: true, email: true, role: true, organizationId: true },
   });
 
   return {
-    id: user?.userId,
+    id: user?.id,
     email: user?.email,
     role: user?.role,
     organizationId: user?.organizationId,

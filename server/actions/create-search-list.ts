@@ -2,37 +2,30 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { createSearchListSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { extractTimeFromDate } from "@/utils";
 
 export const createSearchList = adminAction(
   createSearchListSchema,
-  async ({ date, timeSearched, firstName, lastName, towerId }, { user }) => {
+  async ({ date, timeSearched, firstName, lastName, towerId }, { session }) => {
     try {
-      const searchlist = await prisma.searchList.create({
+      await prisma.searchList.create({
         data: {
           date: new Date(date as Date),
           timeSearched: extractTimeFromDate(timeSearched),
           firstName: firstName,
           lastName: lastName,
-          lifeguard: { connect: { userId: user.id } },
+          lifeguard: { connect: { id: session.id } },
           tower: { connect: { id: towerId } },
-          organization: { connect: { id: user.organizationId as string } },
-        },
-        select: {
-          id: true,
+          organization: { connect: { id: session.organizationId as string } },
         },
       });
-
-      if (!searchlist.id) {
-        throw new Error("Couldnt create searchlist");
-      }
     } catch (error) {
       throw new Error("Fehler beim Erstellen des Sucheintrag");
     }
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Sucheintrag wurde erstellt.` };
+    return { message: `Der Sucheintrag wurde erstellt` };
   }
 );

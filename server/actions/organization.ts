@@ -9,11 +9,11 @@ import { v4 as uuidv4 } from "uuid";
 
 export const updateName = adminAction(
   z.object({ name: z.string() }),
-  async ({ name }, { user }) => {
+  async ({ name }, { session }) => {
     try {
       await prisma.organization.update({
         where: {
-          id: user.organizationId as string,
+          id: session.organizationId as string,
         },
         data: {
           name: name,
@@ -33,11 +33,11 @@ export const updateName = adminAction(
 
 export const updateLocations = adminAction(
   z.object({ towerLocations: z.array(z.string()) }),
-  async ({ towerLocations }, { user }) => {
+  async ({ towerLocations }, { session }) => {
     try {
       await prisma.organization.update({
         where: {
-          id: user.organizationId as string,
+          id: session.organizationId as string,
         },
         data: {
           towerLocations: towerLocations,
@@ -65,11 +65,11 @@ export const updateLocations = adminAction(
 
 export const updateBeachSections = adminAction(
   beachSectionsSchema,
-  async ({ beachSections }, { user }) => {
+  async ({ beachSections }, { session }) => {
     try {
       await prisma.organization.update({
         where: {
-          id: user.organizationId as string,
+          id: session.organizationId as string,
         },
         data: {
           beachSections: beachSections,
@@ -89,11 +89,11 @@ export const updateBeachSections = adminAction(
 
 export const updateTowerDayAdministration = adminAction(
   towerDayAdministrationSchema,
-  async ({ todo, weather, material }, { user }) => {
+  async ({ todo, weather, material }, { session }) => {
     try {
       await prisma.organization.update({
         where: {
-          id: user.organizationId as string,
+          id: session.organizationId as string,
         },
         data: {
           todo: todo,

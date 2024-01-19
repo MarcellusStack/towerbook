@@ -5,11 +5,11 @@ import * as z from "zod";
 
 export const getTowerAction = adminAction(
   z.object({}),
-  async ({}, { user }) => {
+  async ({}, { session }) => {
     try {
       const towers = await prisma.tower.findMany({
         where: {
-          organizationId: user.organizationId,
+          organizationId: session.organizationId,
         },
         select: {
           id: true,

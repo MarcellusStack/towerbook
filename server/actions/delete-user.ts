@@ -2,23 +2,23 @@
 import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
-import { deleteSchema, deleteUserSchema } from "@schemas/index";
+import { deleteSchema } from "@schemas/index";
 import { revalidatePath, revalidateTag } from "next/cache";
 
 export const deleteUser = adminAction(
   deleteSchema,
-  async ({ id }, { user }) => {
-    if (user.id === id) {
+  async ({ id }, { session }) => {
+    if (session.id === id) {
       throw new Error("Sie können sich selber nicht löschen.");
     }
 
     try {
       await prisma.$transaction(
         async (tx) => {
-          const profile = await tx.profile.delete({
+          const user = await tx.user.delete({
             where: {
-              organizationId: user.organizationId,
-              userId: id,
+              organizationId: session.organizationId,
+              id: id,
             },
             select: {
               firstName: true,
@@ -27,16 +27,15 @@ export const deleteUser = adminAction(
             },
           });
 
-          if (!profile.id) {
+          if (!user.id) {
             throw new Error("Couldnt delete profile");
           }
 
-          const { error } = await supabase.auth.admin.deleteUser(id);
+          const { error } = await supabase.auth.admin.deleteUser(user.id);
 
           if (error) {
             throw new Error("Couldnt delete user");
           }
-          return profile;
         },
         {
           maxWait: 15000, // default: 2000
@@ -49,6 +48,6 @@ export const deleteUser = adminAction(
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Benutzer wurde gelöscht.` };
+    return { message: `Der Benutzer wurde gelöscht` };
   }
 );

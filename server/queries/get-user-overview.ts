@@ -14,11 +14,11 @@ export type UserOverviewProps = Pick<
   | "towers"
 >;
 
-export const getUserOverview = authFilterQuery(async (search, user) => {
-  return await prisma.profile.findFirst({
+export const getUserOverview = authFilterQuery(async (search, session) => {
+  return await prisma.user.findFirst({
     where: {
-      organizationId: user.organizationId,
-      userId: search,
+      organizationId: session.organizationId,
+      id: search,
     },
     select: {
       firstName: true,
@@ -31,7 +31,6 @@ export const getUserOverview = authFilterQuery(async (search, user) => {
       shifts: {
         select: {
           id: true,
-          
           type: true,
           startTime: true,
           endTime: true,

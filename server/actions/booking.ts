@@ -2,17 +2,17 @@
 import { authAction } from "@server/lib/utils/action-clients";
 import { prisma } from "@server/db";
 import { revalidatePath } from "next/cache";
-import { bookSchema } from "@/schemas";
+import { bookSchema, deleteSchema } from "@/schemas";
 import { convertDate, formatDateTimeZone } from "@/utils";
 
-export const book = authAction(
+export const createBooking = authAction(
   bookSchema,
-  async ({ date, accomodationId }, { user }) => {
+  async ({ date, accomodationId }, { session }) => {
     try {
       await prisma.$transaction(
         async (tx) => {
           const accomodation = await tx.accomodation.findUnique({
-            where: { id: accomodationId },
+            where: { id: accomodationId, reservable: true },
             select: { availableBeds: true },
           });
 
@@ -22,10 +22,11 @@ export const book = authAction(
 
           const bookedBedsCount = await tx.booking.count({
             where: {
-              date,
-              accomodationId,
+              date: formatDateTimeZone(new Date(date)),
+              accomodationId: accomodationId,
             },
           });
+          console.log(bookedBedsCount, accomodation.availableBeds);
 
           if (bookedBedsCount >= accomodation.availableBeds) {
             throw new Error("Es sind keine Betten mehr verfügbar");
@@ -35,7 +36,9 @@ export const book = authAction(
             data: {
               date: formatDateTimeZone(new Date(date)),
               accomodation: { connect: { id: accomodationId } },
-              user: { connect: { userId: user.id } },
+              user: {
+                connect: { id: session.id },
+              },
             },
           });
         },
@@ -45,7 +48,6 @@ export const book = authAction(
         }
       );
     } catch (error) {
-      console.log(error);
       throw new Error("Fehler beim Buchen");
     }
 
@@ -53,6 +55,25 @@ export const book = authAction(
 
     return {
       message: `Sie haben für den ${convertDate(date)} gebucht`,
+    };
+  }
+);
+
+export const deleteBooking = authAction(
+  deleteSchema,
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.delete({
+        where: { id: id, userId: session.id },
+      });
+    } catch (error) {
+      throw new Error("Fehler beim Löschen der Buchung");
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben die Buchung gelöscht`,
     };
   }
 );

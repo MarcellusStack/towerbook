@@ -13,7 +13,7 @@ datasource db {
 model Organization {
   id                 String              @id @default(uuid())
   name               String
-  members            Profile[]
+  members            User[]
   towers             Tower[]
   searchlists        SearchList[]
   material           Json?
@@ -47,7 +47,7 @@ model Tower {
   id                 String              @id @default(uuid())
   main               Boolean             @default(false)
   name               String
-  members            Profile[]
+  members            User[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
   organization       Organization?       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -73,9 +73,9 @@ model TowerDay {
   startedAt      DateTime     @db.Time(4)
   status         Status       @default(open)
   guardLeaderId  String
-  guardLeader    Profile      @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
+  guardLeader    User         @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
   towerLeaderId  String
-  towerLeader    Profile      @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
+  towerLeader    User         @relation(fields: [towerLeaderId], references: [id], onDelete: Cascade, name: "towerLeader")
   watchman       Json?
   watchmanStatus Status       @default(open)
   todo           Json?
@@ -115,7 +115,7 @@ model Shift {
   type       ShiftType @default(duty)
   startTime  DateTime
   endTime    DateTime
-  user       Profile   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   dutyPlan   DutyPlan  @relation(fields: [dutyPlanId], references: [id], onDelete: Cascade)
   dutyPlanId String
@@ -126,15 +126,14 @@ enum ShiftType {
   prepared
 }
 
-model Profile {
-  id                          String              @id @default(uuid())
+model User {
+  id                          String              @id @unique
   emailVerified               Boolean             @default(false)
   verificationToken           String?
   passwordResetToken          String?
   passwordResetTokenExpires   DateTime?
   lastLogin                   DateTime?
   lastLogout                  DateTime?
-  userId                      String              @unique
   gender                      String?
   firstName                   String
   lastName                    String
@@ -207,7 +206,7 @@ model Profile {
   searchlists                 SearchList[]
   bookings                    Booking[]
 
-  @@index([userId, organizationId])
+  @@index([id, organizationId])
 }
 
 model SearchList {
@@ -243,7 +242,7 @@ model SearchList {
   timeFound                 DateTime?    @db.Time(4)
   handOverTo                String?
   lifeguardId               String
-  lifeguard                 Profile      @relation(fields: [lifeguardId], references: [id], onDelete: Cascade)
+  lifeguard                 User         @relation(fields: [lifeguardId], references: [id], onDelete: Cascade)
   tower                     Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)
   towerId                   String
   organization              Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -287,7 +286,7 @@ model FirstAidOperation {
   operationNumberWRD           String?
   operationLocation            String?
   guardLeaderId                String
-  guardLeader                  Profile               @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade)
+  guardLeader                  User                  @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade)
   helper                       Json?
   commissionedControlCenter    Boolean               @default(false)
   emergencyMedicalIntervention Boolean               @default(false)
@@ -448,7 +447,7 @@ model Booking {
   accomodationId String
   userId         String
   accomodation   Accomodation @relation(fields: [accomodationId], references: [id], onDelete: Cascade)
-  user           Profile      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([date, accomodationId, userId])
 }

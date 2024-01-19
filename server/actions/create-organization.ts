@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 
 export const createOrg = authAction(
   organizationSchema,
-  async ({ name }, { user }) => {
+  async ({ name }, { session }) => {
     try {
       await prisma.$transaction(
         async (tx) => {
@@ -15,7 +15,7 @@ export const createOrg = authAction(
             data: {
               name: name,
               members: {
-                connect: { userId: user.id },
+                connect: { id: session.id },
               },
             },
             select: {
@@ -36,9 +36,9 @@ export const createOrg = authAction(
             throw new Error("Couldnt create bucket");
           }
 
-          const profile = await tx.profile.update({
+          const user = await tx.user.update({
             where: {
-              userId: user.id,
+              id: session.id,
             },
             data: {
               role: {
@@ -50,14 +50,14 @@ export const createOrg = authAction(
             },
           });
 
-          if (!profile.role.includes("admin")) {
+          if (!user.role.includes("admin")) {
             throw new Error("Missing admin role");
           }
           revalidatePath("/", "layout");
         },
         {
-          maxWait: 15000, // default: 2000
-          timeout: 15000, // default: 5000
+          maxWait: 15000,
+          timeout: 15000,
         }
       );
     } catch (error) {

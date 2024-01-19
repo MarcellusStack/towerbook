@@ -7,43 +7,23 @@ import {
   Stack,
   Fieldset,
   SimpleGrid,
-  FileInput,
-  Select,
   Text,
-  NumberInput,
   Checkbox,
   Box,
   Card,
-  Group,
-  ActionIcon,
-  Divider,
   Textarea,
 } from "@mantine/core";
-import {
-  firstAidOperationBigSchema,
-  firstAidOperationSmallSchema,
-  userProfileSchema,
-} from "@/schemas";
+import { firstAidOperationSmallSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { DatePickerInput, TimeInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
-import { type Profile } from "@prisma/client";
-import { type ExtendFirstAidOperationWithRelationProps } from "@/server/queries/get-first-aid-operation";
-import { convertTime, extractTimeFromDate } from "@/utils";
+import { TimeInput } from "@mantine/dates";
+import { convertTime } from "@/utils";
 import { UserSelect } from "@components/user-select";
 import { UserComboboxButton } from "@components/user-combobox-button";
 import { UserFormCard } from "../user-form-card";
-import { IconTrash } from "@tabler/icons-react";
-import { v4 as uuidv4 } from "uuid";
 import { InputCheck } from "@components/inputs/input-check";
-import { updateFirstAidOperationBig } from "@server/actions/update-first-aid-operation-big";
 import { updateFirstAidOperationSmall } from "@server/actions/update-first-aid-operation-small";
 
-export const FirstAidOperationSmallForm = ({
-  operation,
-}: {
-  operation: ExtendFirstAidOperationWithRelationProps;
-}) => {
+export const FirstAidOperationSmallForm = ({ operation }: { operation }) => {
   const form = useForm({
     name: "first-aid-operation-small-form",
     validate: zodResolver(firstAidOperationSmallSchema),

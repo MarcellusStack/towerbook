@@ -1,34 +1,19 @@
-import RoleBadge from "@components/role-badge";
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
-import { getUser } from "@server/queries/get-user";
-import { UserTabs } from "@components/user-tabs";
 import {
   Alert,
-  Box,
-  Button,
   Grid,
   GridCol,
   Group,
   Stack,
   Text,
 } from "@mantine/core";
-import { getTower } from "@/server/queries/get-tower";
-import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
   IconCheck,
-  IconChecklist,
-  IconLayoutDashboard,
   IconUserExclamation,
 } from "@tabler/icons-react";
-import { getTowerDayOverview } from "@/server/queries/get-tower-day-overview";
 import { convertDate } from "@/utils";
-import { TowerDayProcess } from "@/components/process";
-import TowerDayOverview from "@/components/tower-day-overview";
-import Link from "next/link";
-import TowerDayAction from "@/components/tower-day-action";
 import { getSearchList } from "@server/queries/get-search-list";
 import { SearchListOverview } from "@/components/search-list-overview";
-import { Suspense } from "react";
 import { CompleteAction } from "@components/complete-action";
 import { completeSearchList } from "@server/actions/complete-search-list";
 import { RevisionAction } from "@/components/revision-action";

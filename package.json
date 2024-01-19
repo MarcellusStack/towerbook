@@ -30,7 +30,7 @@
     "dayjs": "^1.11.10",
     "emoji-picker-react": "^4.6.0",
     "mantine-react-table": "^2.0.0-alpha.4",
-    "next": "^14.0.5-canary.53",
+    "next": "^14.0.5-canary.59",
     "next-auth": "^5.0.0-beta.4",
     "next-safe-action": "^5.0.0",
     "nodemailer": "^6.9.8",

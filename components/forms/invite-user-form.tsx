@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import { PasswordInput, TextInput, Button, Stack, Select } from "@mantine/core";
+import { TextInput, Button, Stack, Select } from "@mantine/core";
 import { inviteUserSchema } from "@/schemas";
 import { roles } from "@constants/roles";
 import { useActionNotification } from "@hooks/use-action-notification";

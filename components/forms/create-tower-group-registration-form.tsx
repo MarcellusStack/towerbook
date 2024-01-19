@@ -3,7 +3,6 @@ import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { TextInput, Button, Stack } from "@mantine/core";
 import { createGroupRegistrationSchema } from "@/schemas";
-import { TowerSelect } from "@components/tower-select";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { createGroupRegistration } from "@server/actions/create-group-registration";

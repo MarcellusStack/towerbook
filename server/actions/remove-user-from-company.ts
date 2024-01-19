@@ -8,16 +8,16 @@ export const removeUserFromCompany = adminAction(
   z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),
-  async ({ id }, { user }) => {
-    if (user.id === id) {
-      throw new Error("Sie können sich selber nicht entfernen.");
+  async ({ id }, { session }) => {
+    if (session.id === id) {
+      throw new Error("Sie können sich selber nicht entfernen");
     }
 
     try {
-      const profile = await prisma.profile.update({
+      await prisma.user.update({
         where: {
-          organizationId: user.organizationId,
-          userId: id,
+          organizationId: session.organizationId,
+          id: id,
         },
         data: {
           organization: {
@@ -26,20 +26,13 @@ export const removeUserFromCompany = adminAction(
             },
           },
         },
-        select: {
-          id: true,
-        },
       });
-
-      if (!profile.id) {
-        throw new Error("Fehler beim entfernen des Benutzer");
-      }
     } catch (error) {
       throw new Error("Fehler beim entfernen des Benutzer");
     }
 
     revalidatePath("/", "layout");
 
-    return { message: `Der Benutzer wurde entfernt.` };
+    return { message: `Der Benutzer wurde entfernt` };
   }
 );

@@ -6,25 +6,24 @@ import { revalidatePath } from "next/cache";
 
 export const updateTowerStatus = adminAction(
   towerStatusSchema,
-  async ({ id, status }, { user }) => {
+  async ({ id, status }, { session }) => {
     try {
       await prisma.tower.update({
         where: {
           id: id,
-          organizationId: user.organizationId,
+          organizationId: session.organizationId,
         },
         data: {
           status: status,
         },
       });
-
-      revalidatePath("/", "layout");
-
-      return {
-        message: `Der Turm wurde aktualisiert.`,
-      };
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Turm");
     }
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Der Turm wurde aktualisiert`,
+    };
   }
 );

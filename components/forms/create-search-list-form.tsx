@@ -1,9 +1,8 @@
 "use client";
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import { PasswordInput, TextInput, Button, Stack, Select } from "@mantine/core";
-import { createSearchListSchema, createUserSchema } from "@/schemas";
-import { roles } from "@constants/roles";
+import { TextInput, Button, Stack } from "@mantine/core";
+import { createSearchListSchema } from "@/schemas";
 import { TowerSelect } from "@components/tower-select";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";

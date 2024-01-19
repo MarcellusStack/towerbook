@@ -8,10 +8,10 @@ export type InvitationExtendedProps = InvitationProps & {
   organization: Pick<Organization, "id" | "name">;
 };
 
-export const getInvitations = authQuery(async (user) => {
+export const getInvitations = authQuery(async (session) => {
   return await prisma.invitation.findMany({
     where: {
-      organizationId: user.organizationId as string,
+      organizationId: session.organizationId as string,
     },
     select: {
       id: true,

@@ -8,10 +8,16 @@ export type ModalAction = {
   icon?: React.ReactNode;
   label: string;
   content: React.ReactNode;
-  loading?:boolean;
+  loading?: boolean;
 };
 
-export const ModalAction = ({ color, icon, label, content, loading }: ModalAction) => {
+export const ModalAction = ({
+  color,
+  icon,
+  label,
+  content,
+  loading,
+}: ModalAction) => {
   return (
     <Button
       color={color}
