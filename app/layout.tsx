@@ -11,6 +11,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/server/lib/auth";
+import Providers from "@/server/lib/providers";
 
 export const metadata = {
   title: "My Mantine app",
@@ -31,10 +32,12 @@ export default async function RootLayout({
       </head>
       <body>
         <SessionProvider session={session}>
-          <MantineProvider>
-            <Notifications />
-            <ModalsProvider>{children}</ModalsProvider>
-          </MantineProvider>
+          <Providers>
+            <MantineProvider>
+              <Notifications />
+              <ModalsProvider>{children}</ModalsProvider>
+            </MantineProvider>
+          </Providers>
         </SessionProvider>
       </body>
     </html>

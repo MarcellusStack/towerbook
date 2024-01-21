@@ -10,6 +10,7 @@ import {
   IconUserSearch,
   IconUsersGroup,
 } from "@tabler/icons-react";
+import { QueryClient } from "@tanstack/react-query";
 
 export const links = [
   {
@@ -52,7 +53,14 @@ export default async function Layout({
   params: { id: string };
 }) {
   const { id } = params;
-  const tower = await getTower(id, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  const tower = await queryClient.fetchQuery({
+    queryKey: ["tower", id],
+    queryFn: async () => await getTower(id, ["admin"]),
+    staleTime: 0,
+  });
   return (
     <>
       <SecondaryAppHeading

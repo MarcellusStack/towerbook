@@ -4,6 +4,11 @@ import { getTowers } from "@/server/queries/get-towers";
 import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { TowerTable } from "@/components/tables/tower-table";
 import { Tower } from "@prisma/client";
+import {
+  QueryClient,
+  HydrationBoundary,
+  dehydrate,
+} from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +18,15 @@ export default async function Page({
   searchParams: { search: string };
 }) {
   const { search } = searchParams;
-  const towers = (await getTowers(search, [])) as Tower[];
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["towers", search],
+    queryFn: async () => await getTowers(search, []),
+  });
+
+  /* const towers = (await getTowers(search, [])) as Tower[]; */
 
   return (
     <>
@@ -24,7 +37,9 @@ export default async function Page({
         modalDescription="Erstellen Sie hier einen Turm für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
         modalContent={<CreateTowerForm />}
       />
-      <TowerTable towers={towers ?? []} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <TowerTable />
+      </HydrationBoundary>
     </>
   );
 }

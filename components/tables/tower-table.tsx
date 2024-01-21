@@ -7,6 +7,10 @@ import Image from "next/image";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteTower } from "@server/actions/delete-tower";
 import { TowerProps, TowersProps } from "@/server/queries/get-towers";
+import { getTowers } from "@/server/queries/tower";
+import { useQuery } from "@tanstack/react-query";
+import { useGetTowers } from "@/server/queries/use-get-towers";
+import { useSearchParams } from "next/navigation";
 
 export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
   return (
@@ -83,7 +87,12 @@ export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
   );
 };
 
-export function TowerTable({ towers }: { towers: TowersProps }) {
+export function TowerTable() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const { data: towers, isPending } = useGetTowers(search);
+
+  if (isPending) return "Loading...";
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>
@@ -97,9 +106,8 @@ export function TowerTable({ towers }: { towers: TowersProps }) {
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {towers.map((tower) => (
-          <TowerTableRow tower={tower} />
-        ))}
+        {towers &&
+          towers.map((tower) => <TowerTableRow key={tower.id} tower={tower} />)}
       </Table.Tbody>
     </Table>
   );
