@@ -1,6 +1,5 @@
 "use client";
 import { useAction } from "next-safe-action/hook";
-
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { modals } from "@mantine/modals";

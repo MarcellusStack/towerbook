@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteTower } from "@server/actions/delete-tower";
-import { TowerProps, TowersProps } from "@/server/queries/get-towers";
+import { TowerProps, TowersProps } from "@/server/queries/tower";
 import { getTowers } from "@/server/queries/tower";
 import { useQuery } from "@tanstack/react-query";
 import { useGetTowers } from "@/server/queries/use-get-towers";

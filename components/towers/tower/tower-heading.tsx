@@ -1,0 +1,28 @@
+"use client";
+import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
+import { useGetTower } from "@/server/queries/use-get-towers";
+import { Group, Text } from "@mantine/core";
+import { useParams } from "next/navigation";
+import React from "react";
+
+export const TowerHeading = () => {
+  const { id } = useParams();
+  const { data: tower, isPending } = useGetTower(id);
+
+  if (isPending) return "Loading...";
+
+  return (
+    <div>
+      <SecondaryAppHeading
+        title={`Turm ${tower.number}`}
+        extraInfo={
+          <Group>
+            <Text size="lg" c="dimmed">
+              {tower.name} {tower.location}
+            </Text>
+          </Group>
+        }
+      />
+    </div>
+  );
+};

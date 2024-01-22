@@ -10,7 +10,14 @@ import {
   IconUserSearch,
   IconUsersGroup,
 } from "@tabler/icons-react";
-import { QueryClient } from "@tanstack/react-query";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+
+import { TowerHeading } from "@/components/towers/tower/tower-heading";
+import { notFound } from "next/navigation";
 
 export const links = [
   {
@@ -58,24 +65,18 @@ export default async function Layout({
 
   const tower = await queryClient.fetchQuery({
     queryKey: ["tower", id],
-    queryFn: async () => await getTower(id, ["admin"]),
+    queryFn: async () => await getTower(id, []),
     staleTime: 0,
   });
+
+  if (!tower) {
+    return notFound();
+  }
   return (
     <>
-      <SecondaryAppHeading
-        title={`Turm ${tower.number}`}
-        extraInfo={
-          <Group>
-            <Text size="lg" c="dimmed">
-              {tower.name}
-            </Text>
-            <Text size="lg" c="dimmed">
-              {tower.location}
-            </Text>
-          </Group>
-        }
-      />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <TowerHeading />
+      </HydrationBoundary>
       <SecondaryPageTabs page="towers" links={links} />
       {children}
     </>

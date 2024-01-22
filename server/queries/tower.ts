@@ -63,3 +63,47 @@ export type TowerProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>[0];
     queryKey: ["towers"],
   });
 } */
+
+export const getTowerOverview = authFilterQuery(async (search, session) => {
+  if (session.role.includes("admin")) {
+    return await prisma.tower.findFirst({
+      where: {
+        organizationId: session.organizationId,
+        id: search,
+      },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+  }
+
+  return await prisma.tower.findFirst({
+    where: {
+      organizationId: session.organizationId,
+      id: search,
+      members: {
+        some: {
+          id: session.id,
+        },
+      },
+    },
+    select: {
+      id: true,
+      status: true,
+    },
+  });
+});
+
+export type TowerOverviewProps = NonNullable<
+  Awaited<ReturnType<typeof getTowerOverview>>
+>;
+
+import { useQuery } from "@tanstack/react-query";
+
+export const useGetTowerOverview = (id: string) => {
+  return useQuery({
+    queryKey: ["tower-overview", id],
+    queryFn: async () => await getTowerOverview(id, []),
+  });
+};

@@ -1,9 +1,9 @@
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
-import { getTowers } from "@/server/queries/get-towers";
+import { getTowers } from "@/server/queries/tower";
 import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { TowerTable } from "@/components/tables/tower-table";
-import { Tower } from "@prisma/client";
+
 import {
   QueryClient,
   HydrationBoundary,
@@ -21,12 +21,11 @@ export default async function Page({
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  await queryClient.fetchQuery({
     queryKey: ["towers", search],
     queryFn: async () => await getTowers(search, []),
+    staleTime: 0,
   });
-
-  /* const towers = (await getTowers(search, [])) as Tower[]; */
 
   return (
     <>

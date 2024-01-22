@@ -3,14 +3,23 @@
 import { Card, Stack, ThemeIcon, Text, Button, Group } from "@mantine/core";
 import { IconExclamationCircle } from "@tabler/icons-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { startTransition } from "react";
 
-export default function GlobalError({
+export default function Error({
   error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+  const reload = () => {
+    startTransition(() => {
+      router.refresh();
+      reset();
+    });
+  };
   return (
     <Stack
       gap="sm"
@@ -37,7 +46,7 @@ export default function GlobalError({
             <Button component={Link} href="/" variant="light">
               Zur Startseite
             </Button>
-            <Button variant="filled" onClick={() => reset()}>
+            <Button variant="filled" onClick={reload}>
               Erneut versuchen
             </Button>
           </Group>
