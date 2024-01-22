@@ -8,6 +8,9 @@ import { DeleteModalAction } from "@components/delete-modal-action";
 import { type Status } from "@prisma/client";
 import { deleteTowerDay } from "@/server/actions/delete-tower-day";
 import { status } from "@/constants";
+import { useParams } from "next/navigation";
+import { TableLoader } from "@components/loader/table-loader";
+import { useGetTowerTowerDays } from "@/data/tower";
 
 export type TowerDayProps = {
   id: string;
@@ -77,7 +80,11 @@ export const TowerDayTableRow = ({ towerday }: { towerday: TowerDayProps }) => {
   );
 };
 
-export function TowerDayTable({ towerdays }: { towerdays: TowerDayProps[] }) {
+export function TowerDayTable() {
+  const { id } = useParams();
+  const { data: towerdays, isPending } = useGetTowerTowerDays(id as string);
+
+  if (isPending) return <TableLoader />;
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>
@@ -91,9 +98,10 @@ export function TowerDayTable({ towerdays }: { towerdays: TowerDayProps[] }) {
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {towerdays.map((day) => (
-          <TowerDayTableRow towerday={day} />
-        ))}
+        {towerdays &&
+          towerdays.map((day) => (
+            <TowerDayTableRow key={day.id} towerday={day} />
+          ))}
       </Table.Tbody>
     </Table>
   );

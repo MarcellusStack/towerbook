@@ -26,6 +26,9 @@ import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteFirstAidOperation } from "@server/actions/delete-first-aid-operation";
 import { status } from "@/constants";
 import { ExtendFirstAidOperationsWithGuardLeaderProps } from "@server/queries/get-tower-first-aid-operations";
+import { useParams } from "next/navigation";
+import { TableLoader } from "@components/loader/table-loader";
+import { useGetTowerFirstAidOperations } from "@/data/tower";
 
 export const TowerFirstAidOperationTableRow = ({
   operation,
@@ -94,11 +97,14 @@ export const TowerFirstAidOperationTableRow = ({
   );
 };
 
-export const TowerFirstAidOperationTable = ({
-  operations,
-}: {
-  operations: ExtendFirstAidOperationsWithGuardLeaderProps[];
-}) => {
+export const TowerFirstAidOperationTable = () => {
+  const { id } = useParams();
+
+  const { data: operations, isPending } = useGetTowerFirstAidOperations(
+    id as string
+  );
+
+  if (isPending) return <TableLoader />;
   return (
     <>
       <Table verticalSpacing="sm" striped withTableBorder>
@@ -112,12 +118,13 @@ export const TowerFirstAidOperationTable = ({
           </TableTr>
         </TableThead>
         <TableTbody>
-          {operations.map((operation) => (
-            <TowerFirstAidOperationTableRow
-              key={operation.id}
-              operation={operation}
-            />
-          ))}
+          {operations &&
+            operations.map((operation) => (
+              <TowerFirstAidOperationTableRow
+                key={operation.id}
+                operation={operation}
+              />
+            ))}
         </TableTbody>
       </Table>
     </>

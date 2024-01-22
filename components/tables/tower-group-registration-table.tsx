@@ -18,6 +18,9 @@ import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { GroupRegistrationProps } from "@server/queries/get-group-registrations";
 import { deleteGroupRegistration } from "@/server/actions/delete-group-registration";
+import { useParams } from "next/navigation";
+import { TableLoader } from "@components/loader/table-loader";
+import { useGetTowerGroupRegistrations } from "@/data/tower";
 
 export const TowerGroupRegistrationTableRow = ({
   group,
@@ -76,11 +79,14 @@ export const TowerGroupRegistrationTableRow = ({
   );
 };
 
-export const TowerGroupRegistrationTable = ({
-  groups,
-}: {
-  groups: GroupRegistrationProps[];
-}) => {
+export const TowerGroupRegistrationTable = () => {
+  const { id } = useParams();
+
+  const { data: groups, isPending } = useGetTowerGroupRegistrations(
+    id as string
+  );
+
+  if (isPending) return <TableLoader />;
   return (
     <>
       <Table verticalSpacing="sm" striped withTableBorder>
@@ -95,9 +101,10 @@ export const TowerGroupRegistrationTable = ({
           </TableTr>
         </TableThead>
         <TableTbody>
-          {groups.map((group) => (
-            <TowerGroupRegistrationTableRow group={group} />
-          ))}
+          {groups &&
+            groups.map((group) => (
+              <TowerGroupRegistrationTableRow key={group.id} group={group} />
+            ))}
         </TableTbody>
       </Table>
     </>

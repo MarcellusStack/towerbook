@@ -15,10 +15,12 @@ import {
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import {
+  IconCheck,
   IconPencil,
   IconTrash,
   IconUserCheck,
   IconUserX,
+  IconX,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { convertDate, convertTime } from "@utils/index";
@@ -26,11 +28,15 @@ import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteSearchList } from "@server/actions/delete-search-list";
 import { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
 import { status } from "@/constants";
+import { TableLoader } from "@components/loader/table-loader";
+import { useParams } from "next/navigation";
+import { useGetTowerSearchLists } from "@/data/tower";
+import { TowerSearchListProps } from "@/server/queries/get-tower-search-list";
 
 export const TowerSearchListTableRow = ({
   searchlist,
 }: {
-  searchlist: ExtendSearchListWithTowerProps;
+  searchlist: TowerSearchListProps;
 }) => {
   return (
     <TableTr key={searchlist.id}>
@@ -49,14 +55,11 @@ export const TowerSearchListTableRow = ({
       <TableTd>
         {searchlist.handOverTo ? (
           <ThemeIcon color="green" variant="light">
-            <IconUserCheck
-              style={{ width: "70%", height: "70%" }}
-              stroke={1.5}
-            />
+            <IconCheck style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ThemeIcon>
         ) : (
           <ThemeIcon color="red" variant="light">
-            <IconUserX style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            <IconX style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ThemeIcon>
         )}
       </TableTd>
@@ -97,11 +100,11 @@ export const TowerSearchListTableRow = ({
   );
 };
 
-export const TowerSearchListTable = ({
-  searchlists,
-}: {
-  searchlists: ExtendSearchListWithTowerProps[];
-}) => {
+export const TowerSearchListTable = () => {
+  const { id } = useParams();
+  const { data: searchlists, isPending } = useGetTowerSearchLists(id as string);
+
+  if (isPending) return <TableLoader />;
   return (
     <>
       <Table verticalSpacing="sm" striped withTableBorder>
@@ -116,9 +119,13 @@ export const TowerSearchListTable = ({
           </TableTr>
         </TableThead>
         <TableTbody>
-          {searchlists.map((searchlist) => (
-            <TowerSearchListTableRow searchlist={searchlist} />
-          ))}
+          {searchlists &&
+            searchlists.map((searchlist) => (
+              <TowerSearchListTableRow
+                key={searchlist.id}
+                searchlist={searchlist}
+              />
+            ))}
         </TableTbody>
       </Table>
     </>
