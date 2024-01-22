@@ -22,7 +22,7 @@ export default async function Page({
   const queryClient = new QueryClient();
 
   await queryClient.fetchQuery({
-    queryKey: ["towers", search],
+    queryKey: ["towers"],
     queryFn: async () => await getTowers(search, []),
     staleTime: 0,
   });

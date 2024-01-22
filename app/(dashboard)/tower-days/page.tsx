@@ -3,6 +3,7 @@ import { QuickSearchAdd } from "@/components/quick-search-add";
 import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { getTowerDays } from "@/server/queries/tower-days";
 import { TowerDaysTable } from "@/components/tables/tower-days-table";
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,14 @@ export default async function Page({
   searchParams: { search: string };
 }) {
   const { search } = searchParams;
-  const towerdays = await getTowerDays(search, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["tower-days"],
+    queryFn: async () => await getTowerDays(search, []),
+    staleTime: 0,
+  });
 
   return (
     <>
@@ -22,7 +30,9 @@ export default async function Page({
         modalDescription="Erstellen Sie hier Turm Tage für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
         modalContent={<CreateTowerForm />}
       />
-      <TowerDaysTable towerdays={towerdays} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <TowerDaysTable />
+      </HydrationBoundary>
     </>
   );
 }

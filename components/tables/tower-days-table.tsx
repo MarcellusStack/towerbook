@@ -7,8 +7,10 @@ import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteTowerDay } from "@/server/actions/delete-tower-day";
 import { status } from "@/constants";
-
 import { type TowerDaysProps } from "@/server/queries/tower-days";
+import { useSearchParams } from "next/navigation";
+import { TableLoader } from "@components/loader/table-loader";
+import { useGetTowerDays } from "@/data/towerdays";
 
 export const TowerDayTableRow = ({
   towerday,
@@ -16,7 +18,7 @@ export const TowerDayTableRow = ({
   towerday: TowerDaysProps[0];
 }) => {
   return (
-    <Table.Tr key={towerday.id}>
+    <Table.Tr>
       <Table.Td>
         <Text size="sm">{convertDate(new Date(towerday.createdAt))}</Text>
       </Table.Td>
@@ -78,7 +80,12 @@ export const TowerDayTableRow = ({
   );
 };
 
-export function TowerDaysTable({ towerdays }: { towerdays: TowerDaysProps }) {
+export function TowerDaysTable() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const { data: towerdays, isPending } = useGetTowerDays(search as string);
+
+  if (isPending) return <TableLoader />;
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>
@@ -93,9 +100,8 @@ export function TowerDaysTable({ towerdays }: { towerdays: TowerDaysProps }) {
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
-        {towerdays.map((day) => (
-          <TowerDayTableRow towerday={day} />
-        ))}
+        {towerdays &&
+          towerdays.map((day) => <TowerDayTableRow towerday={day} />)}
       </Table.Tbody>
     </Table>
   );

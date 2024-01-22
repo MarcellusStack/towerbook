@@ -8,11 +8,13 @@ import { getTower } from "@server/queries/get-tower";
 import { getTowerFirstAidOperations } from "@/server/queries/get-tower-first-aid-operations";
 import { getTowerSearchLists } from "@/server/queries/get-tower-search-list";
 import { getTowerGroupRegistrations } from "@/server/queries/get-tower-group-registrations";
+import { getTowerDays } from "@/server/queries/tower-days";
 
 export const useGetTowers = (search: string) => {
   return useQuery({
-    queryKey: ["towers", search],
+    queryKey: ["towers"],
     queryFn: async () => await getTowers(search, []),
+    staleTime: 0,
   });
 };
 
@@ -41,7 +43,6 @@ export const useGetTowerFirstAidOperations = (id: string) => {
   return useQuery({
     queryKey: ["tower-first-aid-operations", id],
     queryFn: async () => await getTowerFirstAidOperations(id, []),
-    staleTime: 0,
   });
 };
 
@@ -49,14 +50,12 @@ export const useGetTowerSearchLists = (id: string) => {
   return useQuery({
     queryKey: ["tower-searchlists", id],
     queryFn: async () => await getTowerSearchLists(id, []),
-    staleTime: 0,
   });
 };
 
 export const useGetTowerGroupRegistrations = (id: string) => {
   return useQuery({
     queryKey: ["tower-group-registrations", id],
-    queryFn: async () => getTowerGroupRegistrations(id, []),
-    staleTime: 0,
+    queryFn: async () => await getTowerGroupRegistrations(id, []),
   });
 };
