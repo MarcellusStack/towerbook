@@ -15,7 +15,7 @@ import { useActionNotification } from "@/hooks/use-action-notification";
 import { updateTowerStatus } from "@/server/queries/tower";
 import { towerStatus } from "@/constants";
 import { useParams } from "next/navigation";
-import { useGetTowerOverview } from "@/server/queries/use-get-towers";
+import { useGetTowerOverview } from "@data/tower";
 
 export const TowerDashboard = () => {
   const { execute, result, status } = useActionNotification({

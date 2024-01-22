@@ -1,5 +1,3 @@
-import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
-import { Group, Text } from "@mantine/core";
 import { getTower } from "@/server/queries/get-tower";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {

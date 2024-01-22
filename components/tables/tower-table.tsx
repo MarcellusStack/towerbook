@@ -1,5 +1,5 @@
 "use client";
-import { Table, Group, Text, ActionIcon } from "@mantine/core";
+import { Table, Group, Text, ActionIcon, Skeleton } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
@@ -7,10 +7,9 @@ import Image from "next/image";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteTower } from "@server/actions/delete-tower";
 import { TowerProps, TowersProps } from "@/server/queries/tower";
-import { getTowers } from "@/server/queries/tower";
-import { useQuery } from "@tanstack/react-query";
-import { useGetTowers } from "@/server/queries/use-get-towers";
+import { useGetTowers } from "@data/tower";
 import { useSearchParams } from "next/navigation";
+import { TableLoader } from "@components/loader/table-loader";
 
 export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
   return (
@@ -90,9 +89,9 @@ export const TowerTableRow = ({ tower }: { tower: TowerProps }) => {
 export function TowerTable() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
-  const { data: towers, isPending } = useGetTowers(search);
+  const { data: towers, isPending } = useGetTowers(search as string);
 
-  if (isPending) return "Loading...";
+  if (isPending) return <TableLoader />;
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>

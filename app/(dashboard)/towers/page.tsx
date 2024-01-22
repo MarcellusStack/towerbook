@@ -30,7 +30,6 @@ export default async function Page({
   return (
     <>
       <PrimaryAppHeading title="Türme" />
-
       <QuickSearchAdd
         modalTitle="Turm anlegen"
         modalDescription="Erstellen Sie hier einen Turm für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
