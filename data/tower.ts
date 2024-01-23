@@ -14,7 +14,6 @@ export const useGetTowers = (search: string) => {
   return useQuery({
     queryKey: ["towers"],
     queryFn: async () => await getTowers(search, []),
-    staleTime: 0,
   });
 };
 
