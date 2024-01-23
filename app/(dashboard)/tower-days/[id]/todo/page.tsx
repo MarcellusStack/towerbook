@@ -1,16 +1,32 @@
 import { notFound } from "next/navigation";
 import { getTowerDayTodo } from "@/server/queries/get-tower-day-todo";
-import { TowerDayTodoForm } from "@/components/forms/tower-day-todo-form";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { TowerdayTodo } from "@/components/towerdays/towerday/towerday-todo";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const towerday = await getTowerDayTodo(id, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  const towerday = await queryClient.fetchQuery({
+    queryKey: ["towerday-todo", id],
+    queryFn: async () => await getTowerDayTodo(id, []),
+    staleTime: 0,
+  });
 
   if (!towerday) {
     notFound();
   }
 
-  return <TowerDayTodoForm towerday={towerday} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TowerdayTodo />
+    </HydrationBoundary>
+  );
 }

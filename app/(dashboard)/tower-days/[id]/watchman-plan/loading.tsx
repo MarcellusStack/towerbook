@@ -1,5 +1,5 @@
-import { Skeleton } from "@mantine/core";
+import { FormLoader } from "@/components/loader/form-loader";
 
 export default function Loading() {
-  return <Skeleton className="min-w-screen min-h-screen" />;
+  return <FormLoader />;
 }

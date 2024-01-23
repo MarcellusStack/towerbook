@@ -1,16 +1,32 @@
 import { notFound } from "next/navigation";
 import { getTowerDayMaterial } from "@/server/queries/get-tower-day-material";
-import { TowerDayMaterialForm } from "@/components/forms/tower-day-material-form";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { TowerdayMaterial } from "@/components/towerdays/towerday/towerday-material";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const towerday = await getTowerDayMaterial(id, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  const towerday = await queryClient.fetchQuery({
+    queryKey: ["towerday-material", id],
+    queryFn: async () => await getTowerDayMaterial(id, []),
+    staleTime: 0,
+  });
 
   if (!towerday) {
     notFound();
   }
 
-  return <TowerDayMaterialForm towerday={towerday} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TowerdayMaterial />
+    </HydrationBoundary>
+  );
 }

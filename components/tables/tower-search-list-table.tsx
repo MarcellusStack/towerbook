@@ -26,7 +26,6 @@ import Link from "next/link";
 import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteSearchList } from "@server/actions/delete-search-list";
-import { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
 import { status } from "@/constants";
 import { TableLoader } from "@components/loader/table-loader";
 import { useParams } from "next/navigation";

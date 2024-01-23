@@ -22,12 +22,12 @@ import { deleteDutyPlan } from "@/server/actions/delete-duty-plan";
 import { CreateShiftForm } from "@components/forms/create-shift-form";
 import { updateTowerDayDutyPlan } from "@/server/actions/update-tower-day-duty-plan";
 import { TowerDayDutyPlan } from "@components/tower-day-duty-plan";
-import { TowerdayWatchmanPlanProps } from "@/server/queries/get-tower-day-watchman-plan";
+import { type TowerdayDutyPlanProps } from "@/server/queries/get-tower-day-duty-plan";
 
-export const TowerDayDutyPlanForm = ({
+export const TowerdayDutyPlanForm = ({
   towerday,
 }: {
-  towerday: TowerdayWatchmanPlanProps;
+  towerday: TowerdayDutyPlanProps;
 }) => {
   const form = useForm({
     name: "tower-day-duty-plan-form",

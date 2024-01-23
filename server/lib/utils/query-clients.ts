@@ -1,3 +1,4 @@
+"use server";
 import { Role } from "@prisma/client";
 import { GetUserProps } from "@server/lib/utils/get-user";
 import { auth } from "@server/lib/auth";

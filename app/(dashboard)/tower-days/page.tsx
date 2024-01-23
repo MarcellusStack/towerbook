@@ -3,7 +3,11 @@ import { QuickSearchAdd } from "@/components/quick-search-add";
 import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { getTowerDays } from "@/server/queries/tower-days";
 import { TowerDaysTable } from "@/components/tables/tower-days-table";
-import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
 

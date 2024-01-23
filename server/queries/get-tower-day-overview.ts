@@ -1,3 +1,4 @@
+"use server";
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
@@ -9,7 +10,7 @@ export type TowerDayOverviewProps = Pick<
 >;
 
 export const getTowerDayOverview = authFilterQuery(async (search, session) => {
-  const towerday = await prisma.towerDay.findFirst({
+  return await prisma.towerDay.findFirst({
     where: {
       id: search,
       organizationId: session.organizationId,
@@ -37,6 +38,10 @@ export const getTowerDayOverview = authFilterQuery(async (search, session) => {
       towerId: true,
     },
   });
+});
 
-  return towerday;
-}); /* as unknown as (search: string, requiredRoles: Role[]) => Promise<TowerProps>; */
+export type TowerdayOverviewProps = NonNullable<
+  Awaited<ReturnType<typeof getTowerDayOverview>>
+>;
+
+

@@ -15,17 +15,17 @@ import {
 } from "@mantine/core";
 import { towerDayWatchmanPlanSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { type TowerDay } from "@prisma/client";
 import { IconTrash } from "@tabler/icons-react";
 import { UserComboboxButton } from "@components/user-combobox-button";
 import { UserSelect } from "@components/user-select";
 import { updateTowerDayWatchmanPlan } from "@/server/actions/update-tower-day-watchman-plan";
 import { TowerDayFormAction } from "@/components/tower-day-form-action";
+import { TowerdayWatchmanPlanProps } from "@/server/queries/get-tower-day-watchman-plan";
 
-export const TowerDayWatchmanPlanForm = ({
+export const TowerdayWatchmanPlanForm = ({
   towerday,
 }: {
-  towerday: TowerDay;
+  towerday: TowerdayWatchmanPlanProps;
 }) => {
   const form = useForm({
     name: "tower-day-watchman-plan-form",
@@ -74,7 +74,6 @@ export const TowerDayWatchmanPlanForm = ({
             />
             <Box />
             <Box />
-
             {form.values.watchman.map((watchman, index) => (
               <Card key={`${watchman.id}-${index}`} padding="xs" withBorder>
                 <Group justify="space-between">

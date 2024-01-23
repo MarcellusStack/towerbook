@@ -10,7 +10,7 @@ import { status } from "@/constants";
 import { type TowerDaysProps } from "@/server/queries/tower-days";
 import { useSearchParams } from "next/navigation";
 import { TableLoader } from "@components/loader/table-loader";
-import { useGetTowerDays } from "@/data/towerdays";
+import { useGetTowerdays } from "@/data/towerdays";
 
 export const TowerDayTableRow = ({
   towerday,
@@ -83,7 +83,7 @@ export const TowerDayTableRow = ({
 export function TowerDaysTable() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
-  const { data: towerdays, isPending } = useGetTowerDays(search as string);
+  const { data: towerdays, isPending } = useGetTowerdays(search as string);
 
   if (isPending) return <TableLoader />;
   return (
