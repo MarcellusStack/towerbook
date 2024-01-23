@@ -6,7 +6,6 @@ export const getTowerDays = authFilterQuery(async (search, session) => {
   return await prisma.towerDay.findMany({
     where: {
       organizationId: session.organizationId as string,
-      id: search,
     },
     select: {
       id: true,
