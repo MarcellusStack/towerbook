@@ -27,13 +27,13 @@ import { ModalAction } from "@/components/modal-action";
 import { RevisionAction } from "@/components/revision-action";
 import { useParams } from "next/navigation";
 import { useGetTowerdayOverview } from "@/data/towerdays";
-import { TowerdayLoader } from "@/components/loader/towerday-loader";
+import { LayoutLoader } from "@/components/loader/layout-loader";
 
 export const Towerday = ({ children }: { children: React.ReactNode }) => {
   const { id } = useParams();
   const { data: towerday, isPending } = useGetTowerdayOverview(id as string);
 
-  if (isPending || !towerday) return <TowerdayLoader />;
+  if (isPending || !towerday) return <LayoutLoader />;
   return (
     <>
       <SecondaryAppHeading
