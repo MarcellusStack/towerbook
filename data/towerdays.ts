@@ -19,6 +19,8 @@ export const useGetTowerdayOverview = (id: string) => {
   return useQuery({
     queryKey: ["towerday", id],
     queryFn: async () => await getTowerDayOverview(id, []),
+    staleTime: 30 * 1000,
+    refetchInterval: 30 * 1000,
   });
 };
 
