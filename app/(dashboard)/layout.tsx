@@ -1,7 +1,6 @@
 import { AppLayout } from "@/components/layouts/app-layout";
 import { JoinOrganization } from "@components/join-organization";
 import { auth } from "@/server/lib/auth";
-import { QueryProvider } from "@/server/lib/providers";
 
 export const metadata = {
   title: "My Mantine app",
