@@ -1,17 +1,6 @@
+"use server";
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { type Role, FirstAidOperation, Tower, User } from "@prisma/client";
-
-export type FirstAidOperationProps = Pick<
-  FirstAidOperation,
-  "id" | "status" | "type" | "date"
->;
-
-export type ExtendFirstAidOperationsWithRelationProps =
-  FirstAidOperationProps & {
-    tower: Pick<Tower, "name" | "number">;
-    guardLeader: Pick<User, "firstName" | "lastName">;
-  };
 
 export const getFirstAidOperations = authFilterQuery(
   async (search, session) => {
@@ -39,7 +28,12 @@ export const getFirstAidOperations = authFilterQuery(
       },
     });
   }
-) as (
-  search: string,
-  requiredRoles: Role[]
-) => Promise<ExtendFirstAidOperationsWithRelationProps[]>;
+);
+
+export type FirstAidOperationsProps = NonNullable<
+  Awaited<ReturnType<typeof getFirstAidOperations>>
+>;
+
+export type FirstAidOperationProps = NonNullable<
+  Awaited<ReturnType<typeof getFirstAidOperations>>
+>[0];

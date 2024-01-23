@@ -1,16 +1,6 @@
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
-import {
-  Alert,
-  Grid,
-  GridCol,
-  Group,
-  Stack,
-  Text,
-} from "@mantine/core";
-import {
-  IconCheck,
-  IconUserExclamation,
-} from "@tabler/icons-react";
+import { Alert, Grid, GridCol, Group, Stack, Text } from "@mantine/core";
+import { IconCheck, IconUserExclamation } from "@tabler/icons-react";
 import { convertDate } from "@/utils";
 import { CompleteAction } from "@components/complete-action";
 import { FirstAidOperationOverview } from "@components/first-aid-operation-overview";
@@ -19,6 +9,7 @@ import { completeFirstAidOperation } from "@server/actions/complete-first-aid-op
 import { ModalAction } from "@/components/modal-action";
 import { RevisionAction } from "@/components/revision-action";
 import { notFound } from "next/navigation";
+import { QueryClient } from "@tanstack/react-query";
 
 export default async function Layout({
   children,
@@ -29,6 +20,14 @@ export default async function Layout({
 }) {
   const { id } = params;
   const operation = await getFirstAidOperation(id, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["first-aid-operation", id],
+    queryFn: async () => await getFirstAidOperation(id, ["admin"]),
+    staleTime: 0,
+  });
 
   if (!operation) {
     notFound();
@@ -41,9 +40,7 @@ export default async function Layout({
         extraInfo={
           <Group>
             <Text size="lg" c="dimmed">
-              Turm {operation.tower.number}{" "}
-            </Text>
-            <Text size="lg" c="dimmed">
+              Turm {operation.tower.number}
               {convertDate(new Date(operation.date))}
             </Text>
           </Group>

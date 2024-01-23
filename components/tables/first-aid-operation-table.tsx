@@ -11,7 +11,6 @@ import {
   TableTbody,
   TableTd,
   ThemeIcon,
-  rem,
   Badge,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
@@ -24,14 +23,17 @@ import {
 import Link from "next/link";
 import { convertDate } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { ExtendFirstAidOperationsWithRelationProps } from "@server/queries/get-first-aid-operations";
+import { type FirstAidOperationProps } from "@server/queries/get-first-aid-operations";
 import { deleteFirstAidOperation } from "@server/actions/delete-first-aid-operation";
 import { status } from "@/constants";
+import { TableLoader } from "@components/loader/table-loader";
+import { useGetFirstAidOperations } from "@/data/protocols";
+import { useSearchParams } from "next/navigation";
 
 export const FirstAidOperationTableRow = ({
   operation,
 }: {
-  operation: ExtendFirstAidOperationsWithRelationProps;
+  operation: FirstAidOperationProps;
 }) => {
   return (
     <TableTr key={operation.id}>
@@ -99,11 +101,14 @@ export const FirstAidOperationTableRow = ({
   );
 };
 
-export const FirstAidOperationTable = ({
-  operations,
-}: {
-  operations: ExtendFirstAidOperationsWithRelationProps[];
-}) => {
+export const FirstAidOperationTable = () => {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const { data: operations, isPending } = useGetFirstAidOperations(
+    search as string
+  );
+
+  if (isPending || !operations) return <TableLoader />;
   return (
     <>
       <Table verticalSpacing="sm" striped withTableBorder>

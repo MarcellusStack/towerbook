@@ -3,11 +3,28 @@ import { QuickSearchAdd } from "@/components/quick-search-add";
 import { FirstAidOperationTable } from "@components/tables/first-aid-operation-table";
 import { getFirstAidOperations } from "@server/queries/get-first-aid-operations";
 import { CreateFirstAidOperationForm } from "@components/forms/create-first-aid-operation-form";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page() {
-  const operations = await getFirstAidOperations("", ["admin"]);
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { search: string };
+}) {
+  const { search } = searchParams;
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["first-aid-operations"],
+    queryFn: async () => await getFirstAidOperations(search, []),
+    staleTime: 0,
+  });
 
   return (
     <>
@@ -17,7 +34,9 @@ export default async function Page() {
         modalDescription="Erstellen Sie hier einen Einsatz. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
         modalContent={<CreateFirstAidOperationForm />}
       />
-      <FirstAidOperationTable operations={operations} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <FirstAidOperationTable />
+      </HydrationBoundary>
     </>
   );
 }
