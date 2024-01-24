@@ -8,7 +8,6 @@ import { getTower } from "@server/queries/get-tower";
 import { getTowerFirstAidOperations } from "@/server/queries/get-tower-first-aid-operations";
 import { getTowerSearchLists } from "@/server/queries/get-tower-search-list";
 import { getTowerGroupRegistrations } from "@/server/queries/get-tower-group-registrations";
-import { getTowerDays } from "@/server/queries/tower-days";
 
 export const useGetTowers = (search: string) => {
   return useQuery({
