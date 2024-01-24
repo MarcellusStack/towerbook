@@ -24,13 +24,17 @@ import Link from "next/link";
 import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteSearchList } from "@server/actions/delete-search-list";
-import { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
+
 import { status } from "@/constants";
+import { useSearchParams } from "next/navigation";
+import { TableLoader } from "@components/loader/table-loader";
+import { useGetSearchLists } from "@/data/protocols";
+import { type SearchListProps } from "@/server/queries/get-search-lists";
 
 export const SearchListTableRow = ({
   searchlist,
 }: {
-  searchlist: ExtendSearchListWithTowerProps;
+  searchlist: SearchListProps;
 }) => {
   return (
     <TableTr key={searchlist.id}>
@@ -102,11 +106,12 @@ export const SearchListTableRow = ({
   );
 };
 
-export const SearchListTable = ({
-  searchlists,
-}: {
-  searchlists: ExtendSearchListWithTowerProps[];
-}) => {
+export const SearchListTable = () => {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const { data: searchlists, isPending } = useGetSearchLists(search as string);
+
+  if (isPending || !searchlists) return <TableLoader />;
   return (
     <>
       <Table verticalSpacing="sm" striped withTableBorder>
@@ -123,7 +128,7 @@ export const SearchListTable = ({
         </TableThead>
         <TableTbody>
           {searchlists.map((searchlist) => (
-            <SearchListTableRow searchlist={searchlist} />
+            <SearchListTableRow key={searchlist.id} searchlist={searchlist} />
           ))}
         </TableTbody>
       </Table>

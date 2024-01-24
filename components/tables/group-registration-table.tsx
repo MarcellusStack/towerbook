@@ -16,13 +16,16 @@ import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
 import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
-import { ExtendGroupRegistrationWithTowerProps } from "@server/queries/get-group-registrations";
+import { type GroupRegistrationProps } from "@server/queries/get-group-registrations";
 import { deleteGroupRegistration } from "@/server/actions/delete-group-registration";
+import { useSearchParams } from "next/navigation";
+import { TableLoader } from "@components/loader/table-loader";
+import { useGetGroupRegistrations } from "@/data/protocols";
 
 export const GroupRegistrationTableRow = ({
   group,
 }: {
-  group: ExtendGroupRegistrationWithTowerProps;
+  group: GroupRegistrationProps;
 }) => {
   return (
     <TableTr key={group.id}>
@@ -81,11 +84,14 @@ export const GroupRegistrationTableRow = ({
   );
 };
 
-export const GroupRegistrationTable = ({
-  groups,
-}: {
-  groups: ExtendGroupRegistrationWithTowerProps[];
-}) => {
+export const GroupRegistrationTable = () => {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const { data: groups, isPending } = useGetGroupRegistrations(
+    search as string
+  );
+
+  if (isPending || !groups) return <TableLoader />;
   return (
     <>
       <Table verticalSpacing="sm" striped withTableBorder>
@@ -102,7 +108,7 @@ export const GroupRegistrationTable = ({
         </TableThead>
         <TableTbody>
           {groups.map((group) => (
-            <GroupRegistrationTableRow group={group} />
+            <GroupRegistrationTableRow key={group.id} group={group} />
           ))}
         </TableTbody>
       </Table>

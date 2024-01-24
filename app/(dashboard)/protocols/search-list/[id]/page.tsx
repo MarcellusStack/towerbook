@@ -1,7 +1,12 @@
 import { notFound } from "next/navigation";
 import { getSearchList } from "@server/queries/get-search-list";
-import { SearchListForm } from "@components/forms/search-list-form";
 import { TableOfContents } from "@components/table-of-contents";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { SearchList } from "@search-list/[id]/_components/search-list";
 
 export const dynamic = "force-dynamic";
 
@@ -15,14 +20,24 @@ const links = [
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const searchlist = await getSearchList(id, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  const searchlist = await queryClient.fetchQuery({
+    queryKey: ["searchlist", id],
+    queryFn: async () => await getSearchList(id, []),
+    staleTime: 0,
+  });
 
   if (!searchlist) {
     notFound();
   }
+
   return (
     <>
-      <SearchListForm searchlist={searchlist} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <SearchList />
+      </HydrationBoundary>
       <TableOfContents links={links} />
     </>
   );

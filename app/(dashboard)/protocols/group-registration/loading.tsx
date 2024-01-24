@@ -1,5 +1,5 @@
-import { Skeleton } from "@mantine/core";
+import { TableLoader } from "@/components/loader/table-loader";
 
 export default function Loading() {
-  return <Skeleton className="min-w-screen min-h-screen" />;
+  return <TableLoader  />;
 }

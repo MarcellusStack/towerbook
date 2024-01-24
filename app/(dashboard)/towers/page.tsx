@@ -21,7 +21,7 @@ export default async function Page({
 
   const queryClient = new QueryClient();
 
-  await queryClient.fetchQuery({
+  await queryClient.prefetchQuery({
     queryKey: ["towers"],
     queryFn: async () => await getTowers(search, []),
     staleTime: 0,
