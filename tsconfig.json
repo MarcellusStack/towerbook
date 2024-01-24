@@ -21,6 +21,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@app/*": ["./app/*"],
+      "@search-list/*": ["./app/(dashboard)/protocols/search-list/*"],
       "@components/*": ["./components/*"],
       "@server/*": ["./server/*"],
       "@schemas/*": ["./schemas/*"],
@@ -30,7 +32,7 @@
       "@styles/*": ["./styles/*"],
       "@type/*": ["./type/*"],
       "@services/*": ["./services/*"],
-      "@data/*": ["./data/*"],
+      "@data/*": ["./data/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
