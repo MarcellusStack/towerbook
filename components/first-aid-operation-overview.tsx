@@ -1,4 +1,3 @@
-
 import { convertDate, convertTime } from "@/utils";
 import {
   Card,
@@ -25,12 +24,7 @@ import {
 import React from "react";
 import { status } from "@constants/index";
 
-
-export const FirstAidOperationOverview = async ({
-  operation,
-}: {
-  operation
-}) => {
+export const FirstAidOperationOverview = ({ operation }: { operation }) => {
   return (
     <Card withBorder>
       <Stack gap="sm">

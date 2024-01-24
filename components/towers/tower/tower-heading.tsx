@@ -9,6 +9,7 @@ import React from "react";
 export const TowerHeading = () => {
   const { id } = useParams();
   const { data: tower, isPending } = useGetTower(id as string);
+  console.log(tower);
 
   if (isPending || !tower) return <SecondaryHeadingLoader />;
 

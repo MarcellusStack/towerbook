@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { SecondaryHeadingLoader } from "@components/loader/secondary-heading-loader";
 import { Grid, GridCol, Skeleton, Stack } from "@mantine/core";

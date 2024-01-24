@@ -9,9 +9,4 @@ export const useGetSearchList = (id: string) => {
   });
 };
 
-export const useGetSearchListLayout = (id: string) => {
-  return useQuery({
-    queryKey: ["searchlist-layout"],
-    queryFn: async () => await getSearchListLayout(id, []),
-  });
-};
+

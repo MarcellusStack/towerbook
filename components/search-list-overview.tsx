@@ -21,7 +21,7 @@ import React from "react";
 import type { ExtendSearchListWithTowerProps } from "@server/queries/get-search-list";
 import { status } from "@/constants";
 
-export const SearchListOverview = async ({
+export const SearchListOverview = ({
   searchlist,
 }: {
   searchlist: ExtendSearchListWithTowerProps;

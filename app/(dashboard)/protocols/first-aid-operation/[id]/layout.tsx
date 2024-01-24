@@ -5,6 +5,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { FirstAidOperation } from "@/components/protocols/first-aid-operation";
+import { notFound } from "next/navigation";
 
 export default async function Layout({
   children,
@@ -17,19 +18,21 @@ export default async function Layout({
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
+  const operation = await queryClient.fetchQuery({
     queryKey: ["first-aid-operation", id],
     queryFn: async () => await getFirstAidOperation(id, []),
     staleTime: 0,
   });
 
+  if (!operation) {
+    notFound();
+  }
+
   return (
     <>
-      {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
-      {/* <FirstAidOperation> */}
-      {children}
-      {/* </FirstAidOperation> */}
-      {/* </HydrationBoundary> */}
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <FirstAidOperation>{children}</FirstAidOperation>
+      </HydrationBoundary>
     </>
   );
 }
