@@ -1,21 +1,5 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { type Role, GroupRegistration, Tower } from "@prisma/client";
-
-export type GroupRegistrationProps = Pick<
-  GroupRegistration,
-  | "id"
-  | "date"
-  | "time"
-  | "name"
-  | "count"
-  | "supervisorFirstName"
-  | "supervisorLastName"
->;
-
-export type ExtendGroupRegistrationWithTowerProps = GroupRegistrationProps & {
-  tower: Pick<Tower, "name" | "number">;
-};
 
 export const getGroupRegistrations = authFilterQuery(
   async (search, session) => {
@@ -41,7 +25,12 @@ export const getGroupRegistrations = authFilterQuery(
       },
     });
   }
-) as (
-  search: string,
-  requiredRoles: Role[]
-) => Promise<ExtendGroupRegistrationWithTowerProps[]>;
+);
+
+export type GroupRegistrationsProps = NonNullable<
+  Awaited<ReturnType<typeof getGroupRegistrations>>
+>;
+
+export type GroupRegistrationProps = NonNullable<
+  Awaited<ReturnType<typeof getGroupRegistrations>>
+>[0];
