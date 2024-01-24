@@ -1,3 +1,4 @@
+"use server";
 import { prisma } from "@server/db";
 import { type Role } from "@prisma/client";
 import { authFilterQuery } from "@server/lib/utils/query-clients";

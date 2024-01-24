@@ -6,6 +6,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import { getSearchListLayout } from "@search-list/[id]/_actions";
 
 export default async function Layout({
   children,
@@ -19,8 +20,8 @@ export default async function Layout({
   const queryClient = new QueryClient();
 
   const searchlist = await queryClient.fetchQuery({
-    queryKey: ["searchlist", id],
-    queryFn: async () => await getSearchList(id, []),
+    queryKey: ["searchlist-layout"],
+    queryFn: async () => await getSearchListLayout(id, []),
     staleTime: 0,
   });
 

@@ -1,3 +1,4 @@
+"use server"
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 import { cache } from "react";

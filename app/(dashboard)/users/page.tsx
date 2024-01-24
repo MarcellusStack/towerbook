@@ -6,6 +6,12 @@ import { getUsers } from "@server/queries/get-users";
 import { InviteUserForm } from "@/components/forms/invite-user-form";
 import { UserInvitationsTable } from "@components/tables/user-invitation-table";
 import { getInvitations } from "@server/queries/get-invitations";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { Users } from "@users/_components/users";
 
 export const dynamic = "force-dynamic";
 
@@ -15,28 +21,32 @@ export default async function Page({
   searchParams: { search: string };
 }) {
   const { search } = searchParams;
-  const usersPromise = getUsers(search, ["admin"]);
-  const invitationsPromise = getInvitations([]);
 
-  const [users, invitations] = await Promise.all([
-    usersPromise,
-    invitationsPromise,
-  ]);
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["users"],
+    queryFn: async () => await getUsers(search, []),
+    staleTime: 0,
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ["invitations"],
+    queryFn: async () => await getInvitations([]),
+    staleTime: 0,
+  });
 
   return (
     <>
       <PrimaryAppHeading title="Benutzer" />
       <QuickSearchAdd
-        modalTitle="Benutzer anlegen"
-        modalDescription="Erstellen Sie hier Benutzer für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
+        modalTitle="Benutzer einladen"
+        modalDescription="Laden Sie hier Benutzer für Ihre Organisation ein. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
         modalContent={<InviteUserForm />}
       />
-      <UsersTable users={users ?? []} />
-      <Title order={2} size="h2" fw={700}>
-        Einladungen
-      </Title>
-      <Divider />
-      <UserInvitationsTable invitations={invitations} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Users />
+      </HydrationBoundary>
     </>
   );
 }

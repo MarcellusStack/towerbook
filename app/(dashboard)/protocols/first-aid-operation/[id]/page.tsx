@@ -4,7 +4,11 @@ import { TableOfContents } from "@components/table-of-contents";
 import { FirstAidOperationSmallForm } from "@components/forms/first-aid-operation-small-form";
 import { notFound } from "next/navigation";
 import { FirstAidOperationForm } from "@/components/protocols/first-aid-operation-form";
-import { QueryClient } from "@tanstack/react-query";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
 
 export const dynamic = "force-dynamic";
 
@@ -22,5 +26,9 @@ export default async function Page({ params }: { params: { id: string } }) {
     notFound();
   }
 
-  return <FirstAidOperationForm />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <FirstAidOperationForm />
+    </HydrationBoundary>
+  );
 }

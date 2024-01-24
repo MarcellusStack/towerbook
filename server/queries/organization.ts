@@ -1,3 +1,4 @@
+"use server";
 import { prisma } from "@server/db";
 import { authAdminQuery } from "@server/lib/utils/query-clients";
 

@@ -1,4 +1,5 @@
-import React, { use } from "react";
+"use client";
+import React from "react";
 import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
 import { Alert, Grid, GridCol, Group, Stack, Text } from "@mantine/core";
 import { IconCheck, IconUserExclamation } from "@tabler/icons-react";
@@ -29,7 +30,7 @@ export const FirstAidOperation = ({
         extraInfo={
           <Group>
             <Text size="lg" c="dimmed">
-              Turm {operation.tower.number}
+              Turm {operation.tower.number}{" "}
               {convertDate(new Date(operation.date))}
             </Text>
           </Group>

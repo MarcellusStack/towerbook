@@ -25,9 +25,11 @@ export default async function Layout({
 
   return (
     <>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <FirstAidOperation>{children}</FirstAidOperation>
-      </HydrationBoundary>
+      {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
+      {/* <FirstAidOperation> */}
+      {children}
+      {/* </FirstAidOperation> */}
+      {/* </HydrationBoundary> */}
     </>
   );
 }

@@ -1,10 +1,30 @@
-import { OrganizationSettingsForm } from "@/components/forms/organization-settings-form";
 import { getOrganizationSettings } from "@server/queries/organization";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { notFound } from "next/navigation";
+import { OrganizationSettings } from "@settings/organization/_components/organization-settings";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page() {
-  const organization = await getOrganizationSettings();
+  const queryClient = new QueryClient();
 
-  return <OrganizationSettingsForm organization={organization} />;
+  const organization = await queryClient.fetchQuery({
+    queryKey: ["organization"],
+    queryFn: async () => await getOrganizationSettings(),
+    staleTime: 0,
+  });
+
+  if (!organization) {
+    notFound();
+  }
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <OrganizationSettings />;
+    </HydrationBoundary>
+  );
 }

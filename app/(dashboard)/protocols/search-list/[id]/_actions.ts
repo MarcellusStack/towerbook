@@ -1,30 +1,8 @@
 "use server";
-import { prisma } from "@server/db";
-import { authFilterQuery } from "@server/lib/utils/query-clients";
+import { prisma } from "@/server/db";
+import { authFilterQuery } from "@/server/lib/utils/query-clients";
 
-import { type Tower, Role, TowerDay, SearchList } from "@prisma/client";
-import { cache } from "react";
-import { TRACE_OUTPUT_VERSION } from "next/dist/shared/lib/constants";
-
-export type SearchListProps = Pick<
-  SearchList,
-  | "id"
-  | "status"
-  | "date"
-  | "timeSearched"
-  | "firstName"
-  | "lastName"
-  | "age"
-  | "description"
-  | "timeFound"
-  | "handOverTo"
->;
-
-export type ExtendSearchListWithTowerProps = SearchListProps & {
-  tower: Pick<Tower, "name" | "number" | "location">;
-};
-
-export const getSearchList = authFilterQuery(async (search, session) => {
+export const getSearchListLayout = authFilterQuery(async (search, session) => {
   return await prisma.searchList.findFirst({
     where: {
       id: search,
@@ -46,7 +24,6 @@ export const getSearchList = authFilterQuery(async (search, session) => {
       lastNameReportingPerson: true,
       phoneReportingPerson: true,
       description: true,
-
       lastSeen: true,
       lastLocation: true,
       informationPolice: true,
@@ -65,7 +42,4 @@ export const getSearchList = authFilterQuery(async (search, session) => {
       tower: { select: { name: true, location: true, number: true } },
     },
   });
-}) as unknown as (
-  search: string,
-  requiredRoles: Role[]
-) => Promise<ExtendSearchListWithTowerProps>;
+});

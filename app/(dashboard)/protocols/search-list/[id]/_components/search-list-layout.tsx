@@ -11,7 +11,7 @@ import { RevisionAction } from "@/components/revision-action";
 import { ModalAction } from "@/components/modal-action";
 import { useParams } from "next/navigation";
 import { LayoutLoader } from "@/components/loader/layout-loader";
-import { useGetSearchList } from "@search-list/[id]/data";
+import { useGetSearchListLayout } from "@/app/(dashboard)/protocols/search-list/[id]/_data";
 
 export const SearchListLayout = ({
   children,
@@ -20,7 +20,7 @@ export const SearchListLayout = ({
 }) => {
   const { id } = useParams();
 
-  const { data: searchlist, isPending } = useGetSearchList(id as string);
+  const { data: searchlist, isPending } = useGetSearchListLayout(id as string);
 
   if (isPending || !searchlist) return <LayoutLoader />;
   return (

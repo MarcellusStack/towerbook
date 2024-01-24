@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { TableOfContents } from "@components/table-of-contents";
 import { FirstAidOperationBigForm } from "@components/forms/first-aid-operation-big-form";
@@ -41,6 +42,7 @@ export const FirstAidOperationForm = () => {
   const { data: operation, isPending } = useGetFirstAidOperation(id as string);
 
   if (isPending || !operation) return <FormLoader />;
+
   return (
     <>
       {operation.type === "big" ? (
