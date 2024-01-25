@@ -4,7 +4,7 @@ import { UserInvitationsTable } from "@/components/tables/user-invitation-table"
 import { UsersTable } from "@/components/tables/user-table";
 import { Divider, Title } from "@mantine/core";
 import React from "react";
-import { useGetInvitations, useGetUsers } from "@users/data";
+import { useGetInvitations, useGetUsers } from "@/app/(dashboard)/users/_data";
 import { useSearchParams } from "next/navigation";
 
 export const Users = () => {

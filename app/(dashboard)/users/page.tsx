@@ -1,10 +1,8 @@
 import { Title, Divider } from "@mantine/core";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
-import { UsersTable } from "@/components/tables/user-table";
 import { getUsers } from "@server/queries/get-users";
 import { InviteUserForm } from "@/components/forms/invite-user-form";
-import { UserInvitationsTable } from "@components/tables/user-invitation-table";
 import { getInvitations } from "@server/queries/get-invitations";
 import {
   HydrationBoundary,

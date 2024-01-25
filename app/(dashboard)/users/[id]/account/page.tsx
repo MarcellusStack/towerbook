@@ -1,7 +1,12 @@
-import { UserAccountForm } from "@components/forms/user-account-form";
-import { getUserAccount } from "@server/queries/get-user-account";
+import { getUserAccount } from "@users/[id]/account/_actions";
 import { TableOfContents } from "@/components/table-of-contents";
 import { notFound } from "next/navigation";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { UserAccount } from "@users/[id]/account/_components/user-account";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +18,14 @@ const links = [
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = params;
-  const user = await getUserAccount(id, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  const user = await queryClient.fetchQuery({
+    queryKey: ["user-account", id],
+    queryFn: async () => await getUserAccount(id, []),
+    staleTime: 0,
+  });
 
   if (!user) {
     notFound();
@@ -21,7 +33,9 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <UserAccountForm user={user} />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <UserAccount />
+      </HydrationBoundary>
       <TableOfContents links={links} />
     </>
   );

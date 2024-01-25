@@ -1,6 +1,3 @@
-import RoleBadge from "@components/role-badge";
-import { SecondaryAppHeading } from "@/components/typography/secondary-app-heading";
-import { getUser } from "@server/queries/get-user";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
   IconCalendar,
@@ -9,7 +6,14 @@ import {
   IconLayoutDashboard,
   IconUser,
 } from "@tabler/icons-react";
-import { Group, Text } from "@mantine/core";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { getUserLayout } from "./_actions";
+import { notFound } from "next/navigation";
+import { UserLayout } from "@user/[id]/_components/user-layout";
 
 export const metadata = {
   title: "My Mantine app",
@@ -52,20 +56,23 @@ export default async function Layout({
   params: { id: string };
 }) {
   const { id } = params;
-  const user = await getUser(id, ["admin"]);
+
+  const queryClient = new QueryClient();
+
+  const user = await queryClient.fetchQuery({
+    queryKey: ["user-layout", id],
+    queryFn: async () => await getUserLayout(id, []),
+    staleTime: 0,
+  });
+
+  if (!user) {
+    notFound();
+  }
   return (
     <>
-      <SecondaryAppHeading
-        title={`Benutzer`}
-        extraInfo={
-          <Group gap="sm">
-            <Text size="lg" c="dimmed">
-              {user.firstName} {user.lastName}
-            </Text>
-            <RoleBadge user={user} />
-          </Group>
-        }
-      />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <UserLayout />
+      </HydrationBoundary>
       <SecondaryPageTabs page="users" links={links} />
       {children}
     </>

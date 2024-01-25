@@ -1,10 +1,20 @@
 "use server";
-import { prisma } from "@server/db";
-import { type Role } from "@prisma/client";
-import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { ExtendProfileWithTowerProps } from "@/type";
+import { prisma } from "@/server/db";
+import { authFilterQuery } from "@/server/lib/utils/query-clients";
 
-
+export const getUserLayout = authFilterQuery(async (search, session) => {
+  return await prisma.user.findFirst({
+    where: {
+      id: search,
+      organizationId: session.organizationId as string,
+    },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+    },
+  });
+});
 
 export const getUserOverview = authFilterQuery(async (search, session) => {
   return await prisma.user.findFirst({

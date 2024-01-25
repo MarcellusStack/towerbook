@@ -23,6 +23,8 @@
       "@/*": ["./*"],
       "@app/*": ["./app/*"],
       "@search-list/*": ["./app/(dashboard)/protocols/search-list/*"],
+      "@user/*": ["./app/(dashboard)/users/*"],
+      "@accomodations/*": ["./app/(dashboard)/accomodations/*"],
       "@settings/*": ["./app/(dashboard)/settings/*"],
       "@users/*": ["./app/(dashboard)/users/*"],
       "@components/*": ["./components/*"],
