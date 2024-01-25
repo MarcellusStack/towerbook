@@ -14,12 +14,7 @@ import {
   Badge,
 } from "@mantine/core";
 import { modals } from "@mantine/modals";
-import {
-  IconPencil,
-  IconTrash,
-  IconUserCheck,
-  IconUserX,
-} from "@tabler/icons-react";
+import { IconPencil, IconTrash, IconCheck, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { convertDate, convertTime } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
@@ -58,14 +53,11 @@ export const SearchListTableRow = ({
       <TableTd>
         {searchlist.handOverTo ? (
           <ThemeIcon color="green" variant="light">
-            <IconUserCheck
-              style={{ width: "70%", height: "70%" }}
-              stroke={1.5}
-            />
+            <IconCheck style={{ width: "70%", height: "70%" }} />
           </ThemeIcon>
         ) : (
           <ThemeIcon color="red" variant="light">
-            <IconUserX style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            <IconX style={{ width: "70%", height: "70%" }} />
           </ThemeIcon>
         )}
       </TableTd>
@@ -77,7 +69,7 @@ export const SearchListTableRow = ({
             href={`/protocols/search-list/${searchlist.id}`}
             variant="subtle"
           >
-            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            <IconPencil style={{ width: "70%", height: "70%" }}  />
           </ActionIcon>
           <ActionIcon
             onClick={() => {
@@ -98,7 +90,7 @@ export const SearchListTableRow = ({
             variant="subtle"
             color="red"
           >
-            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            <IconTrash style={{ width: "70%", height: "70%" }}  />
           </ActionIcon>
         </Group>
       </TableTd>
