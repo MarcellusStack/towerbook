@@ -15,21 +15,16 @@ import { deleteBooking } from "@/server/actions/booking";
 import { useGetAccomodationBookings } from "@accomodations/[id]/_data";
 import { useParams } from "next/navigation";
 import { FormLoader } from "@/components/loader/form-loader";
-import { type AccomodationBookingsProps } from "@accomodations/[id]/_actions";
 
-export const BookingCalendar = ({
-  bookings,
-}: {
-  bookings: AccomodationBookingsProps["bookings"];
-}) => {
+export const BookingCalendar = () => {
   const { id } = useParams();
   const { data: session, status: sessionStatus } = useSession();
 
-  const { data: organization, isPending } = useGetAccomodationBookings(
+  const { data: bookings, isPending } = useGetAccomodationBookings(
     id as string
   );
 
-  if (isPending || !organization) return <FormLoader />;
+  if (isPending || !bookings) return <FormLoader />;
   return (
     <Card withBorder>
       <Stack gap="sm">
@@ -45,7 +40,7 @@ export const BookingCalendar = ({
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           selectable={true}
-          events={bookings.map((book) => ({
+          events={bookings.bookings.map((book) => ({
             id: book.id,
             allDay: true,
             start: book.date,
