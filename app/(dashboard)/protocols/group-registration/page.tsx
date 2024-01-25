@@ -20,7 +20,7 @@ export default async function Page({
 
   const queryClient = new QueryClient();
 
-  await queryClient.fetchQuery({
+  await queryClient.prefetchQuery({
     queryKey: ["group-registrations"],
     queryFn: async () => await getGroupRegistrations(search, []),
     staleTime: 0,
