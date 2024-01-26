@@ -1,6 +1,5 @@
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
-import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { getTowerDays } from "@/server/queries/tower-days";
 import { TowerDaysTable } from "@/components/tables/tower-days-table";
 import {
@@ -8,6 +7,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import { CreateTowerDaysForm } from "@towerdays/_components/create-towerdays-form";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +32,7 @@ export default async function Page({
       <QuickSearchAdd
         modalTitle="Turm Tag anlegen"
         modalDescription="Erstellen Sie hier Turm Tage für Ihre Organisation. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<CreateTowerForm />}
+        modalContent={<CreateTowerDaysForm />}
       />
       <HydrationBoundary state={dehydrate(queryClient)}>
         <TowerDaysTable />

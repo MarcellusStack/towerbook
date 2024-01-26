@@ -101,7 +101,9 @@ export function TowerDaysTable() {
       </Table.Thead>
       <Table.Tbody>
         {towerdays &&
-          towerdays.map((day) => <TowerDayTableRow towerday={day} />)}
+          towerdays.map((day) => (
+            <TowerDayTableRow key={day.id} towerday={day} />
+          ))}
       </Table.Tbody>
     </Table>
   );

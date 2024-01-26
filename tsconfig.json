@@ -24,6 +24,7 @@
       "@app/*": ["./app/*"],
       "@search-list/*": ["./app/(dashboard)/protocols/search-list/*"],
       "@user/*": ["./app/(dashboard)/users/*"],
+      "@towerdays/*": ["./app/(dashboard)/tower-days/*"],
       "@accomodations/*": ["./app/(dashboard)/accomodations/*"],
       "@settings/*": ["./app/(dashboard)/settings/*"],
       "@users/*": ["./app/(dashboard)/users/*"],
