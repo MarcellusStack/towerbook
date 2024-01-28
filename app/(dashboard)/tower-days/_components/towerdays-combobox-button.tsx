@@ -56,7 +56,7 @@ export const TowerComboboxButton = ({
         width={250}
         position="bottom-start"
         withArrow
-        withinPortal={false}
+        withinPortal={true}
         onOptionSubmit={(val) => {
           const filteredTower =
             result.data &&
