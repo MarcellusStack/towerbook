@@ -9,6 +9,8 @@ export const completeTowerDay = adminAction(
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),
   async ({ id }) => {
+
+    //add transaction
     try {
       const towerday = await prisma.towerDay.findUnique({
         where: { id: id },
@@ -63,6 +65,8 @@ export const completeTowerDay = adminAction(
           status: allCompleted ? "completed" : "ongoing",
         },
       });
+
+      //get tower id and update tower to inactive if all tower days formulars are completed
 
       revalidatePath("/", "layout");
 

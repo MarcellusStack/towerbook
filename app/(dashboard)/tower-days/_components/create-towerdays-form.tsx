@@ -16,6 +16,7 @@ import { createTowerDay } from "@/server/actions/create-tower-day";
 import { UserSelect } from "@components/user-select";
 import { TowerComboboxButton } from "@towerdays/_components/towerdays-combobox-button";
 import { IconTrash } from "@tabler/icons-react";
+import { createTowerDays } from "@towerdays/_actions";
 
 export const CreateTowerDaysForm = () => {
   const form = useForm({
@@ -29,7 +30,7 @@ export const CreateTowerDaysForm = () => {
   });
 
   const { execute, result, status } = useActionNotification({
-    action: createTowerDay,
+    action: createTowerDays,
     executeNotification: "Turm Tage werden erstellt",
     hideModals: true,
   });
@@ -37,8 +38,7 @@ export const CreateTowerDaysForm = () => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        console.log(values);
-        /* execute(values); */
+        execute(values);
       })}
     >
       <Stack gap="md" mt="md">

@@ -267,7 +267,6 @@ export const createTowerDaysSchema = z.object({
       .string()
       .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
   }),
-
   towerdays: z.array(
     z.object({
       tower: z.object({
