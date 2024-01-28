@@ -13,7 +13,8 @@ import {
   rem,
 } from "@mantine/core";
 import { createFormActions } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebouncedValue } from "@mantine/hooks";
 
 export const UserSelect = ({
   formActionId,
@@ -29,7 +30,10 @@ export const UserSelect = ({
   const formAction = createFormActions(formActionId);
   const [firstOpen, setFirstOpen] = useState(false);
   const [value, setValue] = useState<string | null>(initialValue || null);
+
   const [search, setSearch] = useState("");
+
+  const [debounced] = useDebouncedValue(search, 300);
   const { execute, result, status } = useActionNotification({
     action: getUserAction,
     executeNotification: `Benutzer werden geladen`,
@@ -38,7 +42,6 @@ export const UserSelect = ({
     onDropdownClose: () => {
       combobox.resetSelectedOption();
       combobox.focusTarget();
-      setSearch("");
     },
     onDropdownOpen: () => {
       combobox.focusSearchInput();
@@ -49,6 +52,13 @@ export const UserSelect = ({
     },
   });
 
+  useEffect(() => {
+    if (!firstOpen) {
+      return;
+    }
+    execute({ search: debounced });
+  }, [debounced]);
+
   return (
     <Stack gap={rem(4)}>
       <Text component="label" size="sm" fw={500}>
@@ -56,7 +66,7 @@ export const UserSelect = ({
       </Text>
       <Combobox
         store={combobox}
-        withinPortal={false}
+        withinPortal={true}
         onOptionSubmit={(val) => {
           const filteredUser =
             result.data && result.data.users.filter((user) => user.id === val);
@@ -77,7 +87,6 @@ export const UserSelect = ({
             {value || <Input.Placeholder>Benutzer auswählen</Input.Placeholder>}
           </InputBase>
         </Combobox.Target>
-
         <Combobox.Dropdown>
           <Combobox.Search
             value={search}
@@ -86,21 +95,11 @@ export const UserSelect = ({
           />
           <Combobox.Options>
             {result.data && result.data.users.length > 0 ? (
-              result.data.users
-                .filter(
-                  (item) =>
-                    item.firstName
-                      .toLowerCase()
-                      .includes(search.toLowerCase().trim()) ||
-                    item.lastName
-                      .toLowerCase()
-                      .includes(search.toLowerCase().trim())
-                )
-                .map((item) => (
-                  <Combobox.Option value={item.id} key={item.id}>
-                    {item.firstName} {item.lastName}
-                  </Combobox.Option>
-                ))
+              result.data.users.map((item) => (
+                <Combobox.Option value={item.id} key={item.id}>
+                  {item.firstName} {item.lastName}
+                </Combobox.Option>
+              ))
             ) : (
               <Combobox.Empty>
                 {result.data &&
