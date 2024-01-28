@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { createTowerDaySchema } from "@/schemas";
+import { createTowerDaysSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
 import { createTowerDay } from "@/server/actions/create-tower-day";
@@ -20,7 +20,7 @@ import { IconTrash } from "@tabler/icons-react";
 export const CreateTowerDaysForm = () => {
   const form = useForm({
     name: "create-towerdays-form",
-    /* validate: zodResolver(createTowerDaySchema), */
+    validate: zodResolver(createTowerDaysSchema),
     initialValues: {
       createdAt: new Date(),
       guardLeader: { id: "", firstName: "", lastName: "" },
