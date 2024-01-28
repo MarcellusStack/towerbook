@@ -223,9 +223,15 @@ export const towerStatusSchema = z.object({
   ),
 });
 
+export const openTowerdaySchema = z.object({
+  id: z.string().min(1, {
+    message: "Id wird benötigt",
+  }),
+  startedAt: z.string().min(1, { message: "Öffnungszeit wird benötigt" }),
+});
+
 export const createTowerDaySchema = z.object({
   createdAt: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
-  startedAt: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
   guardLeader: z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
 
@@ -247,6 +253,43 @@ export const createTowerDaySchema = z.object({
       .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
   }),
   towerId: z.string().min(1),
+});
+
+export const createTowerDaysSchema = z.object({
+  createdAt: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
+
+  guardLeader: z.object({
+    id: z.string().min(1, { message: "Id wird benötigt" }),
+    firstName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
+    lastName: z
+      .string()
+      .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+  }),
+
+  towerdays: z.array(
+    z.object({
+      tower: z.object({
+        id: z.string().min(1, { message: "Id wird benötigt" }),
+        name: z
+          .string()
+          .min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
+        number: z
+          .string()
+          .min(1, { message: "Bitte fügen sie eine Turmnummer hinzu." }),
+      }),
+      towerLeader: z.object({
+        id: z.string().min(1, { message: "Id wird benötigt" }),
+        firstName: z
+          .string()
+          .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
+        lastName: z
+          .string()
+          .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+      }),
+    })
+  ),
 });
 
 export const createSearchListSchema = z.object({

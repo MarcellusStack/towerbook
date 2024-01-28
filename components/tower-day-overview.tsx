@@ -82,7 +82,7 @@ const TowerDayOverview = ({ towerday }) => {
             }
           >
             {convertDate(new Date(towerday.createdAt))}{" "}
-            {convertTime(new Date(towerday.startedAt))}
+            {towerday.startedAt && convertTime(new Date(towerday.startedAt))}
           </ListItem>
           <ListItem
             icon={

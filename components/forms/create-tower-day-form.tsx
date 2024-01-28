@@ -43,7 +43,7 @@ export const CreateTowerDayForm = () => {
           valueFormat="DD.MM.YYYY"
           {...form.getInputProps("createdAt")}
         />
-        <TimeInput label="Uhrzeit" {...form.getInputProps("startedAt")} />
+
         <UserSelect
           formActionId="create-tower-day-form"
           formField="guardLeader"

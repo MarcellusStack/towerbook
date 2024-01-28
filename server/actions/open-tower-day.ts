@@ -2,11 +2,12 @@
 import { prisma } from "@server/db";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { extractTimeFromDate } from "@/utils";
+import { openTowerdaySchema } from "@/schemas";
 
 export const openTowerDay = adminAction(
-  z.object({ id: z.string().min(1, { message: "Id wird benötigt" }) }),
-  async ({ id }, { session }) => {
+  openTowerdaySchema,
+  async ({ id, startedAt }, { session }) => {
     try {
       await prisma.towerDay.update({
         where: {
@@ -15,8 +16,8 @@ export const openTowerDay = adminAction(
         },
         data: {
           status: "ongoing",
+          startedAt: extractTimeFromDate(startedAt),
         },
-        select: { id: true, towerId: true },
       });
     } catch (error) {
       throw new Error("Fehler beim öffnen des Turm Tag");

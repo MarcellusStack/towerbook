@@ -70,7 +70,7 @@ model TowerDay {
   id             String       @id @default(uuid())
   createdAt      DateTime
   updatedAt      DateTime     @updatedAt
-  startedAt      DateTime     @db.Time(4)
+  startedAt      DateTime?    @db.Time(4)
   status         Status       @default(open)
   guardLeaderId  String
   guardLeader    User         @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "guardLeader")
