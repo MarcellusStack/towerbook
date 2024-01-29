@@ -22,7 +22,7 @@ export default async function Page({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["towers"],
+    queryKey: ["towers", search],
     queryFn: async () => await getTowers(search, []),
     staleTime: 0,
   });

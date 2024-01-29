@@ -6,6 +6,12 @@ export const status = {
   incomplete: { color: "red", label: "unvollständig" },
 };
 
+export const tableColumnProps = {
+  resizable: true,
+  toggleable: true,
+  draggable: true,
+};
+
 export const revisionModels = [
   {
     type: "firstaidoperation",

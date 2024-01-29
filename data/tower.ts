@@ -11,7 +11,7 @@ import { getTowerGroupRegistrations } from "@/server/queries/get-tower-group-reg
 
 export const useGetTowers = (search: string) => {
   return useQuery({
-    queryKey: ["towers"],
+    queryKey: ["towers", search],
     queryFn: async () => await getTowers(search, []),
   });
 };
