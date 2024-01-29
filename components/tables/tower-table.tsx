@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { TableLoader } from "@components/loader/table-loader";
 import { MantineTable } from "@components/mantine-table";
 import { tableColumnProps } from "@/constants";
+import { TowerStatus } from "@towers/_components/tower-status";
 
 export function TowerTable() {
   const searchParams = useSearchParams();
@@ -52,9 +53,7 @@ export function TowerTable() {
         {
           accessor: "status",
           title: "Status",
-          render: ({ status }) => (
-            <Image src={`/${status}.jpg`} alt="status" width={32} height={32} />
-          ),
+          render: ({ status }) => <TowerStatus status={status} />,
           ...tableColumnProps,
         },
         {
