@@ -8,8 +8,6 @@ export const updateTowerDayWeather = adminAction(
   towerDayWeatherSchema,
   async ({ id, weather }) => {
     try {
-      // check if form is already on status completed based on that
-      // dont allow to update the form?
       await prisma.towerDay.update({
         where: {
           id: id,
