@@ -111,9 +111,7 @@ export const TowerdayDutyPlanForm = ({
                 >
                   Hinzufügen
                 </Button>
-                <Button onClick={() => console.log(towerday)}>
-                  Reset to initial values
-                </Button>
+
                 <ActionIcon
                   onClick={() => {
                     modals.open({
