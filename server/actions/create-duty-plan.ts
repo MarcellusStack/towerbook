@@ -10,17 +10,21 @@ export const createDutyPlan = adminAction(
     try {
       // check if form is already on status completed based on that
       // dont allow to update the form?
-      await prisma.dutyPlan.create({
+      const dutyplan = await prisma.dutyPlan.create({
         data: {
           tower: { connect: { id: towerId } },
           towerDay: { connect: { id: towerDayId } },
           date: new Date(date as Date),
         },
+        select: { id: true },
       });
+
+      if (!dutyplan) throw new Error("Fehler beim erstellen des Dienstplan");
 
       revalidatePath("/", "layout");
 
       return {
+        dutyPlanId: dutyplan.id,
         message: `Der Dienstplan wurde erstellt`,
       };
     } catch (error) {

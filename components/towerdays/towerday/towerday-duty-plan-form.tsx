@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import {
   Button,
@@ -32,6 +32,7 @@ export const TowerdayDutyPlanForm = ({
   const form = useForm({
     name: "tower-day-duty-plan-form",
     validate: zodResolver(towerDayDutyPlanSchema),
+
     initialValues: {
       towerDayId: towerday.id,
       towerId: towerday.towerId,
@@ -50,6 +51,11 @@ export const TowerdayDutyPlanForm = ({
     action: createDutyPlan,
     executeNotification: `Dienstplan wird erstellt`,
   });
+
+  useEffect(() => {
+    if (!create.result.data) return;
+    form.setFieldValue("dutyPlanId", create.result.data.dutyPlanId);
+  }, [create.result.data]);
   return (
     <>
       {!towerday.dutyplan && (
@@ -104,6 +110,9 @@ export const TowerdayDutyPlanForm = ({
                   }}
                 >
                   Hinzufügen
+                </Button>
+                <Button onClick={() => console.log(towerday)}>
+                  Reset to initial values
                 </Button>
                 <ActionIcon
                   onClick={() => {
