@@ -12,7 +12,6 @@ import {
 import { createTowerDaysSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
-import { createTowerDay } from "@/server/actions/create-tower-day";
 import { UserSelect } from "@components/user-select";
 import { TowerComboboxButton } from "@towerdays/_components/towerdays-combobox-button";
 import { IconTrash } from "@tabler/icons-react";

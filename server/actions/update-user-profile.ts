@@ -1,10 +1,10 @@
 "use server";
 import { prisma } from "@server/db";
-import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userProfileSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 import { encrypt, toLowercaseAndTrim } from "@/utils";
+import { clerkClient } from "@clerk/nextjs";
 
 export const updateUserProfile = adminAction(
   userProfileSchema,
@@ -76,18 +76,6 @@ export const updateUserProfile = adminAction(
           if (!user) {
             throw new Error("User konnte nicht aktualisiert werden");
           }
-
-          const { error } = await supabase.auth.admin.updateUserById(
-            user.id,
-
-            {
-              email: toLowercaseAndTrim(email),
-            }
-          );
-
-          if (error) {
-            throw new Error("Couldnt update user");
-          }
         },
         {
           maxWait: 15000,
@@ -101,7 +89,7 @@ export const updateUserProfile = adminAction(
     revalidatePath("/", "layout");
 
     return {
-      message: `Der Benutzer ${firstName} ${lastName} wurde aktualisiert`,
+      message: `Der Benutzer wurde aktualisiert`,
     };
   }
 );
