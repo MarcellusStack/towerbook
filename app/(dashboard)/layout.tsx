@@ -1,6 +1,4 @@
 import { AppLayout } from "@/components/layouts/app-layout";
-import { JoinOrganization } from "@components/join-organization";
-import { auth } from "@/server/lib/auth";
 
 export const metadata = {
   title: "My Mantine app",
@@ -12,15 +10,5 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
-  return (
-    <AppLayout>
-      {session && !session.user?.organizationId ? (
-        <JoinOrganization />
-      ) : (
-        children
-      )}
-    </AppLayout>
-  );
+  return <AppLayout>{children}</AppLayout>;
 }

@@ -17,6 +17,7 @@ export const CreateOrganizationForm = () => {
 
   const { execute, result, status } = useActionNotification({
     action: createOrg,
+    redirectUrl: "/dashboard",
   });
   return (
     <form onSubmit={form.onSubmit((values) => execute(values))}>

@@ -1,65 +1,40 @@
 "use server";
-import { Role } from "@prisma/client";
-import { GetUserProps } from "@server/lib/utils/get-user";
-import { auth } from "@server/lib/auth";
+import { auth } from "@clerk/nextjs";
+import { SessionProps, getSession } from "@/server/lib/utils/get-session";
 
 export const authFilterQuery =
   <T>(
     queryFunction: (
       search: string | undefined,
-      session: GetUserProps
+      session: SessionProps
     ) => Promise<T | null>
   ) =>
-  async (search: string, requiredRoles: Role[] = []): Promise<T | null> => {
-    const session = await auth();
+  async (search: string): Promise<T | null> => {
+    const { userId } = auth();
 
-    if (!session) {
-      throw new Error("Sie haben keine Berechtigung für diese Aktion");
-    }
+    const user = await getSession(userId);
 
-    if (requiredRoles.length === 0) {
-      return queryFunction(search, session.user);
-    }
+    console.log(user);
 
-    if (!requiredRoles.some((role) => session.user.role.includes(role))) {
-      return null;
-    }
-
-    return queryFunction(search, session.user);
+    return queryFunction(search, user);
   };
 
 export const authQuery =
-  <T>(queryFunction: (session: GetUserProps) => Promise<T | null>) =>
-  async (requiredRoles: string[] = []): Promise<T | null> => {
-    const session = await auth();
+  <T>(queryFunction: (session: SessionProps) => Promise<T | null>) =>
+  async (): Promise<T | null> => {
+    const { userId } = auth();
 
-    if (!session) {
-      throw new Error("Sie haben keine Berechtigung für diese Aktion");
-    }
+    const user = await getSession(userId);
 
-    if (requiredRoles.length === 0) {
-      return queryFunction(session.user);
-    }
-
-    if (!requiredRoles.some((role) => session.user.role.includes(role))) {
-      return null;
-    }
-
-    return queryFunction(session.user);
+    return queryFunction(user);
   };
 
 export const authAdminQuery =
-  <T>(queryFunction: (session: GetUserProps) => Promise<T>) =>
+  <T>(queryFunction: (session: SessionProps) => Promise<T>) =>
   async (): Promise<T> => {
-    const session = await auth();
+    const { userId } = auth();
 
-    if (!session || !session.user) {
-      throw new Error("Sie haben keine Berechtigung für diese Aktion");
-    }
+    const user = await getSession(userId);
 
-    if (!session.user.role.includes("admin")) {
-      throw new Error("Sie haben keine Berechtigung für diese Aktion");
-    }
-
-    return queryFunction(session.user);
+    return queryFunction(user);
   };

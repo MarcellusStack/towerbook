@@ -4,6 +4,7 @@ import { supabase } from "@server/supabase";
 import { authAction } from "@/server/lib/utils/action-clients";
 import { organizationSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
+import { clerkClient } from "@clerk/nextjs";
 
 export const createOrg = authAction(
   organizationSchema,
@@ -20,6 +21,7 @@ export const createOrg = authAction(
             },
             select: {
               id: true,
+              name: true,
             },
           });
 
@@ -36,7 +38,7 @@ export const createOrg = authAction(
             throw new Error("Couldnt create bucket");
           }
 
-          const user = await tx.user.update({
+          await tx.user.update({
             where: {
               id: session.id,
             },
@@ -50,9 +52,15 @@ export const createOrg = authAction(
             },
           });
 
-          if (!user.role.includes("admin")) {
-            throw new Error("Missing admin role");
-          }
+          await clerkClient.users.updateUserMetadata(session.id, {
+            privateMetadata: {
+              organizationId: organization.id,
+            },
+            publicMetadata: {
+              organizationName: organization.name,
+            },
+          });
+
           revalidatePath("/", "layout");
         },
         {

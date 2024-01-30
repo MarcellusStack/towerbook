@@ -16,7 +16,6 @@ export const getUserById = async (id: string) => {
           name: true,
         },
       },
-      emailVerified: true,
     },
   });
 };

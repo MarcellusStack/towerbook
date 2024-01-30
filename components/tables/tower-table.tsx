@@ -16,9 +16,10 @@ import { TowerStatus } from "@towers/_components/tower-status";
 export function TowerTable() {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
-  const { data: towers, isPending, isLoading } = useGetTowers(search as string);
+  const { data: towers, isPending } = useGetTowers(search as string);
 
   if (isPending) return <TableLoader />;
+
   return (
     <MantineTable
       records={towers || []}
@@ -115,7 +116,6 @@ export function TowerTable() {
           ...tableColumnProps,
         },
       ]}
-      loading={isLoading}
       key="towers-table"
     />
   );

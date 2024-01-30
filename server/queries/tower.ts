@@ -31,24 +31,10 @@ export const updateTowerStatus = adminAction(
 );
 
 export const getTowers = authFilterQuery(async (search, session) => {
-  if (session.role.includes("admin")) {
-    return await prisma.tower.findMany({
-      where: {
-        organizationId: session.organizationId,
-        number: search ?? undefined,
-      },
-    });
-  }
-
   return await prisma.tower.findMany({
     where: {
       organizationId: session.organizationId,
       number: search ?? undefined,
-      members: {
-        some: {
-          id: session.id,
-        },
-      },
     },
   });
 });

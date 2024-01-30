@@ -40,16 +40,18 @@ export const towerStatus = [
   { value: "beach_closed", label: "Baden und Schwimmen verboten" },
 ];
 
-export const authRoutes = [
-  "sign-in",
-  "sign-up",
-  "sign-out",
-  "verify",
-  "forgot-password",
-  "reset-password",
+export const publicRoutes = [
+  "/sign-in",
+  "/sign-up",
+  "/sign-out",
+  "/verify",
+  "/forgot-password",
+  "/reset-password",
 ];
 
 export const protectedRoutes = [
+  "/onboarding",
+  "/organization",
   "/accomodations",
   "/dashboard",
   "/protocols",

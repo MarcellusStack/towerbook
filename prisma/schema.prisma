@@ -128,12 +128,6 @@ enum ShiftType {
 
 model User {
   id                          String              @id @unique
-  emailVerified               Boolean             @default(false)
-  verificationToken           String?
-  passwordResetToken          String?
-  passwordResetTokenExpires   DateTime?
-  lastLogin                   DateTime?
-  lastLogout                  DateTime?
   gender                      String?
   firstName                   String
   lastName                    String

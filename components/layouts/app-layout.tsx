@@ -45,10 +45,11 @@ import Image from "next/image";
 import { logout } from "@/services/auth/actions";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { useSession } from "next-auth/react";
+import { UserButton } from "@clerk/nextjs";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { data: session, update, status: sessionStatus } = useSession();
+  
 
   const actions: SpotlightActionData[] = [
     {
@@ -170,12 +171,6 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
   const [scroll] = useWindowScroll();
 
-  const { execute, result, status } = useActionNotification({
-    action: logout,
-    executeNotification: "Sie werden abgemeldet",
-    redirectUrl: "/sign-in",
-  });
-
   return (
     <AppShell
       header={{ height: 73 }}
@@ -242,55 +237,29 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
             >
               <IconBell style={{ width: "70%", height: "70%" }} stroke={1.5} />
             </ActionIcon>
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <ActionIcon
-                  loading={sessionStatus === "loading"}
-                  variant="light"
-                  size="lg"
-                  aria-label="Search"
-                  radius="xl"
-                >
-                  <Avatar color="blue" radius="xl">
-                    {sessionStatus === "authenticated" && (
-                      <>
-                        {session.user.firstName?.charAt(0)}
-                        {session.user.lastName?.charAt(0)}
-                      </>
-                    )}
-                  </Avatar>
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  onClick={() => refresh.execute({})}
-                  leftSection={
-                    <IconRefresh style={{ width: rem(14), height: rem(14) }} />
-                  }
-                >
-                  Sitzung Aktualisieren
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() => router.push("/settings")}
-                  leftSection={
-                    <IconSettings style={{ width: rem(14), height: rem(14) }} />
-                  }
-                >
-                  Einstellungen
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item
-                  onClick={() => {
-                    execute({});
-                  }}
-                  leftSection={
-                    <IconLogout style={{ width: rem(14), height: rem(14) }} />
-                  }
-                >
-                  Abmelden
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
+            <ActionIcon
+              loading={refresh.status === "executing"}
+              onClick={() => refresh.execute({})}
+              variant="light"
+              size="lg"
+              aria-label="Reload page"
+              radius="xl"
+            >
+              <IconRefresh
+                style={{ width: "70%", height: "70%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+            <ActionIcon
+              onClick={() => router.push("/settings")}
+              variant="light"
+              size="lg"
+              aria-label="route to settings"
+              radius="xl"
+            >
+              <IconSettings style={{ width: "70%", height: "70%" }} />
+            </ActionIcon>
+            <UserButton afterSignOutUrl="/" />
             <Burger
               opened={opened}
               onClick={toggle}
@@ -333,22 +302,6 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 />
               </ActionIcon>
               <Divider mt="sm" />
-            </List.Item>
-            <List.Item className="grid place-items-center">
-              <ActionIcon
-                loading={status === "executing"}
-                onClick={() => {
-                  execute({});
-                }}
-                variant="subtle"
-                size="lg"
-                aria-label="Sign Out"
-              >
-                <IconLogout
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
             </List.Item>
           </List>
         </Stack>

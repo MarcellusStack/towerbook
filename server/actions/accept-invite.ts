@@ -1,5 +1,6 @@
 "use server";
 import { toLowercaseAndTrim } from "@/utils";
+import { clerkClient } from "@clerk/nextjs";
 import { Role } from "@prisma/client";
 import { prisma } from "@server/db";
 import { authAction } from "@server/lib/utils/action-clients";
@@ -41,12 +42,27 @@ export const acceptInvite = authAction(
             },
             select: {
               email: true,
+              organization: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
             },
           });
 
-          if (!user) {
+          if (!user || !user.organization) {
             throw new Error("User nicht gefunden");
           }
+
+          await clerkClient.users.updateUserMetadata(session.id, {
+            privateMetadata: {
+              organizationId: user.organization.id,
+            },
+            publicMetadata: {
+              organizationName: user.organization.name,
+            },
+          });
 
           await tx.invitation.deleteMany({
             where: {

@@ -10,14 +10,12 @@ type MantineTableProps<T> = {
   columns: DataTableColumn<T>[];
   records: T[];
   key: string;
-  loading: boolean;
 };
 
 export const MantineTable = <T,>({
   columns,
   records,
   key,
-  loading,
 }: MantineTableProps<T>) => {
   const {
     effectiveColumns,
@@ -38,7 +36,6 @@ export const MantineTable = <T,>({
         noRecordsText="Keine Einträge vorhanden"
         storeColumnsKey={key}
         columns={effectiveColumns}
-        fetching={loading}
         records={records}
       />
       <Group justify="right">

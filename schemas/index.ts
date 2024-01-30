@@ -51,6 +51,12 @@ export const signUpSchema = z.intersection(
   })
 );
 
+export const onboardingSchema = z.object({
+  firstName: z.string().min(1, { message: "Vorname wird benötigt" }),
+  lastName: z.string().min(1, { message: "Nachname wird benötigt" }),
+  birthDate: z.date(),
+});
+
 export const towerDayWatchmanPlanSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   guardLeader: z.string().min(1, { message: "Wachleiter wird benötigt" }),

@@ -1,29 +1,59 @@
-import NextAuth from "next-auth";
+import { publicRoutes, protectedRoutes } from "@constants/index";
 
-import authConfig from "@server/lib/auth-config";
-import { authRoutes, protectedRoutes } from "@constants/index";
+import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
+import { clerkClient } from "@clerk/nextjs";
 
-const { auth } = NextAuth(authConfig);
+export default authMiddleware({
+  async afterAuth(auth, req, evt) {
+    const { nextUrl } = req;
 
-export default auth(async (req) => {
-  const { nextUrl } = req;
-  const isAuthenticated = !!req.auth;
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+    const isProtectedRoute = protectedRoutes.some((prefix) =>
+      nextUrl.pathname.startsWith(prefix)
+    );
 
-  if (isAuthenticated && isAuthRoute) {
-    return Response.redirect(new URL("/dashboard", nextUrl));
-  }
+    if (!auth.userId && isProtectedRoute) {
+      return Response.redirect(new URL("/sign-in", nextUrl));
+    }
 
-  const isProtectedRoute = protectedRoutes.some((prefix) =>
-    nextUrl.pathname.startsWith(prefix)
-  );
+    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
-  if (!isAuthenticated && isProtectedRoute) {
-    return Response.redirect(new URL("/sign-in", nextUrl));
-  }
+    if (auth.userId) {
+      const userMetadata = await clerkClient.users.getUser(auth.userId);
+      console.log(userMetadata.publicMetadata.firstName);
+
+      // Redirect logged in users that are missing firstname, lastname, birthday to onboarding
+      if (
+        userMetadata.publicMetadata.firstName === undefined ||
+        userMetadata.publicMetadata.lastName === undefined ||
+        userMetadata.publicMetadata.birthDate === undefined
+      ) {
+        if (nextUrl.pathname !== "/onboarding") {
+          const onboarding = new URL("/onboarding", req.url);
+          return Response.redirect(onboarding);
+        }
+      }
+      // Redirect logged in users that are missing organization name and id to organization
+      else if (
+        userMetadata.publicMetadata.organizationName === undefined ||
+        userMetadata.privateMetadata.organizationId === undefined
+      ) {
+        if (nextUrl.pathname !== "/organization") {
+          const organization = new URL("/organization", req.url);
+          return Response.redirect(organization);
+        }
+      }
+      // If all required data is defined, redirect to dashboard
+      else if (isPublicRoute) {
+        return Response.redirect(new URL("/dashboard", nextUrl));
+      }
+    }
+
+    // Allow users visiting public routes to access them
+    return NextResponse.next();
+  },
 });
 
-// Optionally, don't invoke Middleware on some paths
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

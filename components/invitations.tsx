@@ -19,6 +19,7 @@ export const Invite = ({ props }: { props: InvitationExtendedProps }) => {
   const { execute, result, status } = useActionNotification({
     action: acceptInvite,
     executeNotification: `Einladung wird akzeptiert`,
+    redirectUrl: "/dashboard",
   });
   return (
     <Card key={props.id} padding="xs" withBorder>

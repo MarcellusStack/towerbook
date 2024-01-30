@@ -1,28 +1,25 @@
 import { createSafeActionClient } from "next-safe-action";
-import { auth } from "@server/lib/auth";
+import { auth } from "@clerk/nextjs";
+import { getSession } from "@/server/lib/utils/get-session";
 
 export const action = createSafeActionClient();
 
 export const authAction = createSafeActionClient({
   async middleware() {
-    const session = await auth();
+    const { userId } = auth();
 
-    if (!session) {
-      throw new Error("Sie haben keine Berechtigung für diese Aktion");
-    }
+    const user = await getSession(userId);
 
-    return { session: session.user };
+    return { session: user };
   },
 });
 
 export const adminAction = createSafeActionClient({
   async middleware() {
-    const session = await auth();
+    const { userId } = auth();
 
-    if (!session || !session.user.role.includes("admin")) {
-      throw new Error("Sie haben keine Berechtigung für diese Aktion");
-    }
+    const user = await getSession(userId);
 
-    return { session: session.user };
+    return { session: user };
   },
 });
