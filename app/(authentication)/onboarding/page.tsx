@@ -1,7 +1,4 @@
 import { Title, Text } from "@mantine/core";
-
-import { VerifyEmail } from "@/components/verify-email";
-import { currentUser } from "@clerk/nextjs";
 import { Onboarding } from "@/app/(authentication)/onboarding/_components/onboarding";
 
 export const dynamic = "force-dynamic";
