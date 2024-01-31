@@ -73,7 +73,9 @@ export const useActionNotification = ({
         withBorder: true,
         autoClose: 5000,
         title: "Fehler",
-        message: "Aktion fehlgeschlagen, versuchen sie es später erneut",
+        message: error.serverError
+          ? error.serverError
+          : "Aktion fehlgeschlagen, versuchen sie es später erneut",
         color: "red",
       });
     },

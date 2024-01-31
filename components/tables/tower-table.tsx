@@ -116,7 +116,7 @@ export function TowerTable() {
           ...tableColumnProps,
         },
       ]}
-      key="towers-table"
+      storeKey="towers-table"
     />
   );
 }

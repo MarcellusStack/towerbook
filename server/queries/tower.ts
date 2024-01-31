@@ -37,7 +37,7 @@ export const getTowers = authFilterQuery(async (search, session) => {
       number: search ?? undefined,
     },
   });
-});
+}, "readTower");
 
 export type TowersProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>;
 

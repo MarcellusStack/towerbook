@@ -9,13 +9,13 @@ import React from "react";
 type MantineTableProps<T> = {
   columns: DataTableColumn<T>[];
   records: T[];
-  key: string;
+  storeKey: string;
 };
 
 export const MantineTable = <T,>({
   columns,
   records,
-  key,
+  storeKey,
 }: MantineTableProps<T>) => {
   const {
     effectiveColumns,
@@ -23,8 +23,8 @@ export const MantineTable = <T,>({
     resetColumnsOrder,
     resetColumnsToggle,
   } = useDataTableColumns({
-    key,
-    columns: columns,
+    key: storeKey,
+    columns: columns as DataTableColumn<unknown>[],
   });
   return (
     <Stack>
@@ -34,7 +34,7 @@ export const MantineTable = <T,>({
         striped
         minHeight={records.length === 0 ? 150 : 0}
         noRecordsText="Keine Einträge vorhanden"
-        storeColumnsKey={key}
+        storeColumnsKey={storeKey}
         columns={effectiveColumns}
         records={records}
       />

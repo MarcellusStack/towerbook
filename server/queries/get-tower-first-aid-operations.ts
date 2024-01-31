@@ -31,7 +31,4 @@ export const getTowerFirstAidOperations = cache(
       },
     });
   })
-) as (
-  search: string,
-  requiredRoles: Role[]
-) => Promise<ExtendFirstAidOperationsWithGuardLeaderProps[]>;
+);

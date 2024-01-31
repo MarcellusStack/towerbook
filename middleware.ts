@@ -1,6 +1,6 @@
 import { publicRoutes, protectedRoutes } from "@constants/index";
 
-import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
+import { authMiddleware } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { clerkClient } from "@clerk/nextjs";
 
@@ -20,7 +20,6 @@ export default authMiddleware({
 
     if (auth.userId) {
       const userMetadata = await clerkClient.users.getUser(auth.userId);
-      console.log(userMetadata.publicMetadata.firstName);
 
       // Redirect logged in users that are missing firstname, lastname, birthday to onboarding
       if (

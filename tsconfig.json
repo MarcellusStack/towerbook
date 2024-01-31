@@ -25,6 +25,7 @@
       "@search-list/*": ["./app/(dashboard)/protocols/search-list/*"],
       "@user/*": ["./app/(dashboard)/users/*"],
       "@towers/*": ["./app/(dashboard)/towers/*"],
+      "@permissions/*": ["./app/(dashboard)/settings/permissions/*"],
       "@onboarding/*": ["./app/(authentication)/onboarding/*"],
       "@organization/*": ["./app/(authentication)/organization/*"],
       "@towerdays/*": ["./app/(dashboard)/tower-days/*"],

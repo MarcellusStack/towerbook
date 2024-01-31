@@ -217,6 +217,13 @@ export const createTowerSchema = z.object({
     .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
 });
 
+export const createPermissionSchema = z.object({
+  name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu" }),
+  description: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Beschreibung hinzu" }),
+});
+
 export const towerStatusSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   status: z.enum(

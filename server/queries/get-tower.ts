@@ -21,4 +21,4 @@ export const getTower = cache(
       },
     });
   })
-) as unknown as (search: string, requiredRoles: Role[]) => Promise<TowerProps>;
+);

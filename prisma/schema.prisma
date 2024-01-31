@@ -29,6 +29,7 @@ model Organization {
   revisions          Revision[]
   towerdays          TowerDay[]
   accomodations      Accomodation[]
+  permissions        Permission[]
 }
 
 model Invitation {
@@ -199,6 +200,7 @@ model User {
   firstAidOperations          FirstAidOperation[]
   searchlists                 SearchList[]
   bookings                    Booking[]
+  permissions                 Permission[]
 
   @@index([id, organizationId])
 }
@@ -444,6 +446,25 @@ model Booking {
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([date, accomodationId, userId])
+}
+
+model Permission {
+  id               String       @id @default(uuid())
+  name             String
+  description      String?
+  createTower      Boolean      @default(false)
+  readTower        Boolean      @default(false)
+  updateTower      Boolean      @default(false)
+  deleteTower      Boolean      @default(false)
+  createPermission Boolean      @default(false)
+  readPermission   Boolean      @default(false)
+  updatePermission Boolean      @default(false)
+  deletePermission Boolean      @default(false)
+  users            User[]
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId   String
+
+  @@unique([name, organizationId])
 }
 
 enum RevisionType {

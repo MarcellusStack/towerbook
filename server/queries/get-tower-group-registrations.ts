@@ -22,7 +22,4 @@ export const getTowerGroupRegistrations = authFilterQuery(
       },
     });
   }
-) as (
-  search: string,
-  requiredRoles: Role[]
-) => Promise<GroupRegistrationProps[]>;
+);

@@ -1,11 +1,11 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createTowerSchema } from "@schemas/index";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { type TowerType } from "@prisma/client";
 
-export const createTower = adminAction(
+export const createTower = authAction("createTower")(
   createTowerSchema,
   async ({ name, main, type, number, location }, { session }) => {
     try {
@@ -24,7 +24,7 @@ export const createTower = adminAction(
         },
       });
     } catch (error) {
-      throw new Error("Fehler beim Erstellen des Turms");
+      throw new Error("Fehler beim erstellen des Turms");
     }
 
     revalidatePath("/", "layout");
