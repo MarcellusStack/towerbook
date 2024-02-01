@@ -14,9 +14,13 @@ export const authFilterQuery =
 
     const user = await getSession(userId);
 
-    // If a permission is provided, check if the user has the necessary permission
-    if (permission && !user.permissions.some((p) => p[permission] === true)) {
-      throw new Error(`Berechtigung ${permission} wird benötigt`);
+    // Check if the user is an admin or has the necessary permission
+    const isAdmin = user.permissions.some((p) => p.isAdmin);
+    const hasPermission =
+      permission && user.permissions.some((p) => p[permission]);
+
+    if (!(isAdmin || hasPermission)) {
+      throw new Error(`Sie verfügen nicht über die nötigen Berechtigungen`);
     }
 
     return queryFunction(search, user);

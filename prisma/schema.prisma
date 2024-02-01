@@ -452,6 +452,7 @@ model Permission {
   id               String       @id @default(uuid())
   name             String
   description      String?
+  isAdmin          Boolean      @default(false)
   createTower      Boolean      @default(false)
   readTower        Boolean      @default(false)
   updateTower      Boolean      @default(false)
