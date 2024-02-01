@@ -4,25 +4,28 @@ import { prisma } from "@/server/db";
 import { authAction } from "@server/lib/utils/action-clients";
 import { createPermissionSchema, deleteSchema } from "@schemas/index";
 import { authFilterQuery } from "@/server/lib/utils/query-clients";
+import { cache } from "react";
 
-export const getPermissions = authFilterQuery(async (search, session) => {
-  return await prisma.permission.findMany({
-    where: {
-      organizationId: session.organizationId,
-      name: search ?? undefined,
-    },
-    select: {
-      id: true,
-      name: true,
-      description: true,
-      users: {
-        select: {
-          id: true,
+export const getPermissions = cache(
+  authFilterQuery(async (search, session) => {
+    return await prisma.permission.findMany({
+      where: {
+        organizationId: session.organizationId,
+        name: search ?? undefined,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        users: {
+          select: {
+            id: true,
+          },
         },
       },
-    },
-  });
-}, "readPermission");
+    });
+  }, "readPermission")
+);
 
 export type PermissionsProps = NonNullable<
   Awaited<ReturnType<typeof getPermissions>>

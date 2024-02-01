@@ -6,7 +6,7 @@ import { clerkClient } from "@clerk/nextjs";
 
 //since we are using clerk we have to synchronize the clerk user with the prisma user
 //we create a new user when the user enters data for the onboarding
-export const createUser = authAction(
+export const createUser = authAction()(
   onboardingSchema,
   async ({ firstName, lastName, birthDate }, { session }) => {
     try {

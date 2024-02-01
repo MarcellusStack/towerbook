@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { TowerDashboard } from "@/components/tower-dashboard";
-import { getTowerOverview } from "@/server/queries/get-tower-overview";
+import { getPermission } from "@permissions/[id]/_actions";
 import {
   HydrationBoundary,
   QueryClient,
@@ -14,19 +14,19 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const queryClient = new QueryClient();
 
-  const tower = await queryClient.fetchQuery({
-    queryKey: ["tower-overview", id],
-    queryFn: async () => await getTowerOverview(id, []),
+  const permission = await queryClient.fetchQuery({
+    queryKey: ["permission", id],
+    queryFn: async () => await getPermission(id),
     staleTime: 0,
   });
 
-  if (!tower) {
+  if (!permission) {
     return notFound();
   }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TowerDashboard />
+      <Permission />
     </HydrationBoundary>
   );
 }
