@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db";
 import { authAction } from "@server/lib/utils/action-clients";
-import { createPermissionSchema } from "@schemas/index";
+import { createPermissionSchema, deleteSchema } from "@schemas/index";
 import { authFilterQuery } from "@/server/lib/utils/query-clients";
 
 export const getPermissions = authFilterQuery(async (search, session) => {
@@ -28,7 +28,7 @@ export type PermissionsProps = NonNullable<
   Awaited<ReturnType<typeof getPermissions>>
 >;
 
-export const createTower = authAction("readTower")(
+export const createPermission = authAction("createPermission")(
   createPermissionSchema,
   async ({ name, description }, { session }) => {
     try {
@@ -50,5 +50,25 @@ export const createTower = authAction("readTower")(
     revalidatePath("/", "layout");
 
     return { message: `Die Berechtigung wurde erstellt` };
+  }
+);
+
+export const deletePermission = authAction("deletePermission")(
+  deleteSchema,
+  async ({ id }, { session }) => {
+    try {
+      await prisma.permission.delete({
+        where: {
+          organizationId: session.organizationId,
+          id: id,
+        },
+      });
+    } catch (error) {
+      throw new Error("Fehler beim löschen der Berechtigung");
+    }
+
+    revalidatePath("/", "layout");
+
+    return { message: `Die Berechtigung wurde gelöscht` };
   }
 );

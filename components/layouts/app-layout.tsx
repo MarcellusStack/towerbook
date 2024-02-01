@@ -3,10 +3,8 @@ import { useDisclosure, useWindowScroll } from "@mantine/hooks";
 import {
   ActionIcon,
   AppShell,
-  Avatar,
   Burger,
   Group,
-  Menu,
   rem,
   List,
   Divider,
@@ -19,7 +17,6 @@ import {
   IconSearch,
   IconBell,
   IconSettings,
-  IconLogout,
   IconRefresh,
   IconFileInfo,
   IconFileExport,
@@ -33,6 +30,7 @@ import {
   IconWriting,
   IconUserSearch,
   IconBed,
+  IconUserShield,
 } from "@tabler/icons-react";
 import { navLinks } from "@constants/nav-links";
 import Link from "next/link";
@@ -42,14 +40,10 @@ import { refreshSession } from "@server/actions/refresh-session";
 import { useAction } from "next-safe-action/hook";
 import { Breadcrumb } from "@components/breadcrumb";
 import Image from "next/image";
-import { logout } from "@/services/auth/actions";
-import { useActionNotification } from "@/hooks/use-action-notification";
-import { useSession } from "next-auth/react";
 import { UserButton } from "@clerk/nextjs";
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  
 
   const actions: SpotlightActionData[] = [
     {
@@ -80,25 +74,31 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       id: "first-aid-operation",
       label: "Erste-Hilfe-Einsätze",
       onClick: () => router.push("/protocols/first-aid-operation"),
-      leftSection: <IconFirstAidKit />,
+      leftSection: <IconFirstAidKit stroke={1.5} />,
     },
     {
       id: "group-registration",
       label: "Dokumentation Kinder Gruppen",
       onClick: () => router.push("/protocols/group-registration"),
-      leftSection: <IconWriting />,
+      leftSection: <IconWriting stroke={1.5} />,
     },
     {
       id: "search-list",
       label: "Personen Suchliste",
       onClick: () => router.push("/protocols/search-list"),
-      leftSection: <IconUserSearch />,
+      leftSection: <IconUserSearch stroke={1.5} />,
     },
     {
       id: "users",
       label: "Benutzer",
       onClick: () => router.push("/users"),
       leftSection: <IconUsers stroke={1.5} />,
+    },
+    {
+      id: "permissions",
+      label: "Berechtigungen",
+      onClick: () => router.push("/permissions"),
+      leftSection: <IconUserShield stroke={1.5} />,
     },
     {
       id: "duty-plans",

@@ -1,7 +1,6 @@
 import { createSafeActionClient } from "next-safe-action";
 import { auth } from "@clerk/nextjs";
-import { getSession, type SessionProps } from "@/server/lib/utils/get-session";
-import { ZodType } from "zod";
+import { getSession } from "@/server/lib/utils/get-session";
 
 export const action = createSafeActionClient();
 

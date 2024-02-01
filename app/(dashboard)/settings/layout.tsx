@@ -23,11 +23,6 @@ export const links = [
     icon: <IconTopologyStar3 size={16} stroke={1.5} />,
     label: "Organisation",
   },
-  {
-    value: "permissions",
-    icon: <IconUserShield size={16} stroke={1.5} />,
-    label: "Berechtigungen",
-  },
 ];
 
 export default async function Layout({

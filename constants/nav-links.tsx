@@ -6,6 +6,7 @@ import {
   IconCalendarPin,
   IconBroadcast,
   IconBed,
+  IconUserShield,
 } from "@tabler/icons-react";
 
 export type NavLinkProps = {
@@ -61,6 +62,15 @@ export const navLinks: NavLinkProps[] = [
     icon: <IconUsers style={{ width: "70%", height: "70%" }} stroke={1.5} />,
     name: "Benutzer",
   },
+  {
+    id: "nav-UHDSGAS5HJ",
+    href: "/permissions",
+    icon: (
+      <IconUserShield style={{ width: "70%", height: "70%" }} stroke={1.5} />
+    ),
+    name: "Berechtigungen",
+  },
+
   {
     id: "nav-ZCQ3ZSEKLJ",
     href: "/duty-plans",
