@@ -226,7 +226,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                     stroke={1.5}
                   />
                 ),
-                placeholder: "Search...",
+                placeholder: "Suche...",
               }}
             />
             <ActionIcon
