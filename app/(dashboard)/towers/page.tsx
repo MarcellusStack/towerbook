@@ -3,8 +3,6 @@ import { QuickSearchAdd } from "@/components/quick-search-add";
 import { getTowers } from "@/server/queries/tower";
 import { CreateTowerForm } from "@/components/forms/create-tower-form";
 import { TowerTable } from "@/components/tables/tower-table";
-
-
 import {
   QueryClient,
   HydrationBoundary,

@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
-import { TowerDashboard } from "@/components/tower-dashboard";
+
 import { getPermission } from "@permissions/[id]/_actions";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import { Permission } from "@permissions/[id]/_components/permission";
 
 export const dynamic = "force-dynamic";
 

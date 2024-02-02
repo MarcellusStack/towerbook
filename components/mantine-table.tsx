@@ -10,6 +10,14 @@ type MantineTableProps<T> = {
   columns: DataTableColumn<T>[];
   records: T[];
   storeKey: string;
+  height?: number;
+  classes?: {
+    root?: string;
+    table?: string;
+    header?: string;
+    footer?: string;
+    pagination?: string;
+  };
 };
 
 export const MantineTable = <T,>({

@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const tower = await queryClient.fetchQuery({
     queryKey: ["tower-overview", id],
-    queryFn: async () => await getTowerOverview(id, []),
+    queryFn: async () => await getTowerOverview(id),
     staleTime: 0,
   });
 

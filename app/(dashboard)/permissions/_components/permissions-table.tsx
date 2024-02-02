@@ -11,6 +11,7 @@ import { tableColumnProps } from "@/constants";
 import { useGetPermissions } from "@permissions/_data";
 import { deletePermission } from "@permissions/_actions";
 
+
 export const PermissionsTable = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");

@@ -63,7 +63,7 @@ export default async function Layout({
 
   const tower = await queryClient.fetchQuery({
     queryKey: ["tower", id],
-    queryFn: async () => await getTower(id, []),
+    queryFn: async () => await getTower(id),
     staleTime: 0,
   });
 
