@@ -60,3 +60,97 @@ export const protectedRoutes = [
   "/towers",
   "/users",
 ];
+
+export const permissions = [
+  {
+    name: "Organisation",
+    permissions: [
+      "createOrganization",
+      "readOrganization",
+      "updateOrganization",
+      "deleteOrganization",
+    ],
+  },
+  {
+    name: "Einladung",
+    permissions: [
+      "createInvitation",
+      "readInvitation",
+      "updateInvitation",
+      "deleteInvitation",
+    ],
+  },
+  {
+    name: "Turm",
+    permissions: ["createTower", "readTower", "updateTower", "deleteTower"],
+  },
+  {
+    name: "Turm Tag",
+    permissions: [
+      "createTowerday",
+      "readTowerday",
+      "updateTowerday",
+      "deleteTowerday",
+      "completeTowerday",
+    ],
+  },
+  {
+    name: "Dienstplan",
+    permissions: [
+      "createDutyplan",
+      "readDutyplan",
+      "updateDutyplan",
+      "deleteDutyplan",
+    ],
+  },
+  {
+    name: "Benutzer",
+    permissions: ["createUser", "readUser", "updateUser", "deleteUser"],
+  },
+  {
+    name: "Protokoll",
+    permissions: [
+      "createProtocol",
+      "readProtocol",
+      "updateProtocol",
+      "deleteProtocol",
+      "completeProtocol",
+    ],
+  },
+  {
+    name: "Revision",
+    permissions: [
+      "createRevision",
+      "readRevision",
+      "updateRevision",
+      "deleteRevision",
+    ],
+  },
+  {
+    name: "Unterkunft",
+    permissions: [
+      "createAccomodation",
+      "readAccomodation",
+      "updateAccomodation",
+      "deleteAccomodation",
+    ],
+  },
+  {
+    name: "Buchen/Reservierung(Unterkunft)",
+    permissions: [
+      "createBooking",
+      "readBooking",
+      "updateBooking",
+      "deleteBooking",
+    ],
+  },
+  {
+    name: "Berechtigung",
+    permissions: [
+      "createPermission",
+      "readPermission",
+      "updatePermission",
+      "deletePermission",
+    ],
+  },
+];

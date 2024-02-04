@@ -15,7 +15,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
             refetchOnWindowFocus: true,
             refetchOnMount: true,
             staleTime: 0,
-            
           },
         },
       })

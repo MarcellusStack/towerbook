@@ -71,6 +71,7 @@ export const UserComboboxButton = ({
       >
         <Combobox.Target withAriaAttributes={false}>
           <Button
+            className="self-start"
             variant="outline"
             onClick={() => {
               combobox.toggleDropdown();

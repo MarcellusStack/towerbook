@@ -268,6 +268,68 @@ export const createTowerDaySchema = z.object({
   towerId: z.string().min(1),
 });
 
+export const updatePermissionSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu" }),
+  description: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Beschreibung hinzu" }),
+  isAdmin: z.boolean(),
+  createOrganization: z.boolean(),
+  readOrganization: z.boolean(),
+  updateOrganization: z.boolean(),
+  deleteOrganization: z.boolean(),
+  createInvitation: z.boolean(),
+  readInvitation: z.boolean(),
+  updateInvitation: z.boolean(),
+  deleteInvitation: z.boolean(),
+  createTower: z.boolean(),
+  readTower: z.boolean(),
+  updateTower: z.boolean(),
+  deleteTower: z.boolean(),
+  createTowerday: z.boolean(),
+  readTowerday: z.boolean(),
+  updateTowerday: z.boolean(),
+  deleteTowerday: z.boolean(),
+  completeTowerday: z.boolean(),
+  createDutyplan: z.boolean(),
+  readDutyplan: z.boolean(),
+  updateDutyplan: z.boolean(),
+  deleteDutyplan: z.boolean(),
+  createUser: z.boolean(),
+  readUser: z.boolean(),
+  updateUser: z.boolean(),
+  deleteUser: z.boolean(),
+  createProtocol: z.boolean(),
+  readProtocol: z.boolean(),
+  updateProtocol: z.boolean(),
+  deleteProtocol: z.boolean(),
+  completeProtocol: z.boolean(),
+  createRevision: z.boolean(),
+  readRevision: z.boolean(),
+  updateRevision: z.boolean(),
+  deleteRevision: z.boolean(),
+  createAccomodation: z.boolean(),
+  readAccomodation: z.boolean(),
+  updateAccomodation: z.boolean(),
+  deleteAccomodation: z.boolean(),
+  createBooking: z.boolean(),
+  readBooking: z.boolean(),
+  updateBooking: z.boolean(),
+  deleteBooking: z.boolean(),
+  createPermission: z.boolean(),
+  readPermission: z.boolean(),
+  updatePermission: z.boolean(),
+  deletePermission: z.boolean(),
+  users: z.array(
+    z.object({
+      id: z.string(),
+      firstName: z.string(),
+      lastName: z.string(),
+    })
+  ),
+});
+
 export const createTowerDaysSchema = z.object({
   createdAt: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
 

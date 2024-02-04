@@ -27,13 +27,12 @@ export default async function Layout({
   if (!permission) {
     return notFound();
   }
-  
+
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <PermissionLayout />
+        <PermissionLayout>{children}</PermissionLayout>
       </HydrationBoundary>
-      {children}
     </>
   );
 }
