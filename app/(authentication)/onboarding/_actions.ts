@@ -1,23 +1,29 @@
 "use server";
 import { prisma } from "@server/db";
-import { authAction } from "@/server/lib/utils/action-clients";
+import { action } from "@/server/lib/utils/action-clients";
 import { onboardingSchema } from "@/schemas";
-import { clerkClient } from "@clerk/nextjs";
+import { clerkClient, currentUser } from "@clerk/nextjs";
 
 //since we are using clerk we have to synchronize the clerk user with the prisma user
 //we create a new user when the user enters data for the onboarding
-export const createUser = authAction()(
+export const createUser = action(
   onboardingSchema,
-  async ({ firstName, lastName, birthDate }, { session }) => {
+  async ({ firstName, lastName, birthDate }) => {
     try {
+      const auth = await currentUser();
+
+      if (!auth) {
+        throw new Error("Nicht authentifiziert");
+      }
+
       await prisma.$transaction(
         async (tx) => {
           const user = await tx.user.create({
             data: {
-              id: session.id,
+              id: auth.id,
               firstName: firstName,
               lastName: lastName,
-              email: session.email,
+              email: auth?.emailAddresses[0]?.emailAddress,
               birthDate: birthDate,
             },
             select: {
@@ -32,7 +38,7 @@ export const createUser = authAction()(
             throw new Error("Fehler beim Onboarding");
           }
 
-          await clerkClient.users.updateUserMetadata(session.id, {
+          await clerkClient.users.updateUserMetadata(auth.id, {
             publicMetadata: {
               firstName: firstName,
               lastName: lastName,

@@ -4,14 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useGetUsers = (search: string) => {
   return useQuery({
-    queryKey: ["users"],
-    queryFn: async () => await getUsers(search, []),
+    queryKey: ["users", search],
+    queryFn: async () => await getUsers(search),
   });
 };
 
-export const useGetInvitations = () => {
+export const useGetInvitations = (search: string) => {
   return useQuery({
-    queryKey: ["invitations"],
-    queryFn: async () => await getInvitations([]),
+    queryKey: ["invitations", search],
+    queryFn: async () => await getInvitations(search),
   });
 };

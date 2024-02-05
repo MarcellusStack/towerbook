@@ -1,18 +1,19 @@
 "use client";
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import { TextInput, Button, Stack, Select } from "@mantine/core";
+import { TextInput, Button, Stack } from "@mantine/core";
 import { inviteUserSchema } from "@/schemas";
-import { roles } from "@constants/roles";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { inviteUser } from "@/server/actions/invite-user";
+import { PermissionSelect } from "@components/permission-select";
 
 export const InviteUserForm = () => {
   const form = useForm({
+    name: "invite-user-form",
     validate: zodResolver(inviteUserSchema),
     initialValues: {
       email: "",
-      role: "",
+      permissionId: "",
     },
   });
 
@@ -34,13 +35,10 @@ export const InviteUserForm = () => {
           type="email"
           {...form.getInputProps("email")}
         />
-        <Select
-          label="Rolle"
-          placeholder="Rolle auswählen"
-          data={roles}
-          searchable
-          nothingFoundMessage="Keine Ergebnisse gefunden"
-          {...form.getInputProps("role")}
+        <PermissionSelect
+          formActionId="invite-user-form"
+          formField="permissionId"
+          label="Berechtigung"
         />
         <Button loading={status === "executing"} type="submit">
           Hinzufügen

@@ -11,10 +11,13 @@ export const authAction = (permission?: string) =>
 
       const user = await getSession(userId);
 
-      // Check if the user is an admin or has the necessary permission
+      // Check if the user is an admin
       const isAdmin = user.permissions.some((p) => p.isAdmin);
-      const hasPermission =
-        permission && user.permissions.some((p) => p[permission]);
+
+      // If a specific permission is provided, check if the user has the necessary permission
+      const hasPermission = permission
+        ? user.permissions.some((p) => p[permission])
+        : true;
 
       if (!(isAdmin || hasPermission)) {
         throw new Error(`Sie verfügen nicht über die nötigen Berechtigungen`);

@@ -14,7 +14,7 @@ export const Users = () => {
     search as string
   );
   const { data: invitations, isPending: isPendingInvitations } =
-    useGetInvitations();
+    useGetInvitations(search as string);
 
   if (isPendingUsers || isPendingInvitations || !users || !invitations)
     return <FormLoader />;

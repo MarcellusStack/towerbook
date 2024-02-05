@@ -33,13 +33,15 @@ model Organization {
 }
 
 model Invitation {
-  id             String       @id @default(uuid())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  email          String
-  role           Role
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId String
+  permission     Permission   @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  permissionId   String
 
   @@unique([email, organizationId])
 }
@@ -188,7 +190,6 @@ model User {
   car                         String?
   rwc                         String?
   guardLeaderInstruction      String?
-  role                        Role[]              @default([intern])
   createdAt                   DateTime            @default(now())
   updatedAt                   DateTime            @updatedAt
   organization                Organization?       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
@@ -499,6 +500,7 @@ model Permission {
   readPermission     Boolean      @default(false)
   updatePermission   Boolean      @default(false)
   deletePermission   Boolean      @default(false)
+  invitations        Invitation[]
   users              User[]
   organization       Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   organizationId     String
@@ -516,15 +518,6 @@ enum RevisionType {
 enum FirstAidOperationType {
   small
   big
-}
-
-enum Role {
-  admin
-  full_time_security_guard
-  volunteer_security_guard
-  towerleader
-  watchman
-  intern
 }
 
 enum TowerStatus {

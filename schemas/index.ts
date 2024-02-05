@@ -183,9 +183,11 @@ export const createUserSchema = z.intersection(
 
 export const inviteUserSchema = z.object({
   email: z.string().email({
-    message: "Keine gültige E-Mail.",
+    message: "Keine gültige E-Mail",
   }),
-  role: z.string().min(1, { message: "Bitte fügen Sie eine Rolle hinzu." }),
+  permissionId: z
+    .string()
+    .min(1, { message: "Bitte fügen Sie eine Berechtigung hinzu" }),
 });
 
 export const createAccomodationSchema = z.object({

@@ -21,9 +21,8 @@ export const getUsers = authFilterQuery(async (search, session) => {
       firstName: true,
       lastName: true,
       email: true,
-      role: true,
       birthDate: true,
       /* towers: true, */
     },
   });
-}) as (search: string, requiredRoles: Role[]) => Promise<UserTableProps[]>;
+});

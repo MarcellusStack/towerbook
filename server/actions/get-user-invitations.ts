@@ -1,10 +1,10 @@
 "use server";
 import { toLowercaseAndTrim } from "@/utils";
 import { prisma } from "@server/db";
-import { adminAction, authAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import * as z from "zod";
 
-export const getUserInvitations = authAction(
+export const getUserInvitations = authAction()(
   z.object({}),
   async ({}, { session }) => {
     try {

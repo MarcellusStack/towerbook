@@ -1,7 +1,6 @@
 "use client";
 
-import { roles } from "@/constants/roles";
-import { Badge, Table, Group, Text, ActionIcon } from "@mantine/core";
+import { Table, Group, Text, ActionIcon } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
@@ -21,18 +20,6 @@ export const UserTableRow = ({ user }: { user: UserTableProps }) => {
       </Table.Td>
       <Table.Td>
         <Text size="sm">{user.email}</Text>
-      </Table.Td>
-      <Table.Td>
-        <Group gap="xs">
-          {user.role.map((role) => (
-            <Badge
-              key={role}
-              color={roles.filter((r) => r.value === role)[0].color}
-            >
-              {roles.filter((r) => r.value === role)[0].label}
-            </Badge>
-          ))}
-        </Group>
       </Table.Td>
       <Table.Td>
         <Text size="sm">{convertDate(new Date(user.birthDate))}</Text>
@@ -80,7 +67,6 @@ export function UsersTable({ users }: { users: UserTableProps[] }) {
           <Table.Th>Name</Table.Th>
           <Table.Th>Vorname</Table.Th>
           <Table.Th>E-Mail</Table.Th>
-          <Table.Th>Rolle</Table.Th>
           <Table.Th>Geburtsdatum</Table.Th>
           <Table.Th />
         </Table.Tr>

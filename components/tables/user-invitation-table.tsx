@@ -19,15 +19,6 @@ export const UserInvitationTableRow = ({
         <Text size="sm">{invitation.email}</Text>
       </Table.Td>
       <Table.Td>
-        <Group gap="xs">
-          <Badge
-            color={roles.filter((r) => r.value === invitation.role)[0].color}
-          >
-            {roles.filter((r) => r.value === invitation.role)[0].label}
-          </Badge>
-        </Group>
-      </Table.Td>
-      <Table.Td>
         <ActionIcon
           onClick={() => {
             modals.open({
@@ -63,7 +54,6 @@ export function UserInvitationsTable({
       <Table.Thead>
         <Table.Tr>
           <Table.Th>E-Mail</Table.Th>
-          <Table.Th>Rolle</Table.Th>
           <Table.Th />
         </Table.Tr>
       </Table.Thead>

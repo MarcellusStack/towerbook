@@ -1,4 +1,3 @@
-import { Title, Divider } from "@mantine/core";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { getUsers } from "@server/queries/get-users";
@@ -23,14 +22,14 @@ export default async function Page({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["users"],
-    queryFn: async () => await getUsers(search, []),
+    queryKey: ["users", search],
+    queryFn: async () => await getUsers(search),
     staleTime: 0,
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ["invitations"],
-    queryFn: async () => await getInvitations([]),
+    queryKey: ["invitations", search],
+    queryFn: async () => await getInvitations(search),
     staleTime: 0,
   });
 

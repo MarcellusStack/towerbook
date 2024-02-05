@@ -2,14 +2,15 @@
 
 import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
-import { action, authAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 
 import { toLowercaseAndTrim } from "@/utils";
+import { clerkClient } from "@clerk/nextjs";
 
-export const deleteAccount = authAction(
+export const deleteAccount = authAction()(
   z.object({}),
   async ({}, { session }) => {
     try {
@@ -20,16 +21,11 @@ export const deleteAccount = authAction(
             select: {
               id: true,
               organizationId: true,
-              role: true,
             },
           });
 
           if (!user) {
             throw new Error("User nicht gefunden");
-          }
-
-          if (user.role.includes("admin")) {
-            throw new Error("Sie können als Admin den Account nicht löschen");
           }
 
           await tx.user.delete({
@@ -38,11 +34,7 @@ export const deleteAccount = authAction(
             },
           });
 
-          const { error } = await supabase.auth.admin.deleteUser(user.id);
-
-          if (error) {
-            throw new Error("Fehler beim löschen des Accounts");
-          }
+          await clerkClient.users.deleteUser(session.id);
         },
         {
           maxWait: 15000,
@@ -55,11 +47,11 @@ export const deleteAccount = authAction(
 
     revalidatePath("/", "layout");
 
-    redirect("/login");
+    return { message: "Ihr Account wurde gelöscht" };
   }
 );
 
-export const leaveOrganization = authAction(
+export const leaveOrganization = authAction()(
   z.object({}),
   async ({}, { session }) => {
     try {
@@ -77,12 +69,6 @@ export const leaveOrganization = authAction(
           if (!user || !user.organizationId) {
             throw new Error(
               "User nicht gefunden oder gehört keiner Organisation an"
-            );
-          }
-
-          if (user.role.includes("admin") && user.organizationId) {
-            throw new Error(
-              "Sie können als Admin die Organisation nicht verlassen"
             );
           }
 

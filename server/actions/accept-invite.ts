@@ -1,13 +1,12 @@
 "use server";
 import { toLowercaseAndTrim } from "@/utils";
 import { clerkClient } from "@clerk/nextjs";
-import { Role } from "@prisma/client";
 import { prisma } from "@server/db";
 import { authAction } from "@server/lib/utils/action-clients";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const acceptInvite = authAction(
+export const acceptInvite = authAction()(
   z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),
@@ -20,7 +19,7 @@ export const acceptInvite = authAction(
             select: {
               id: true,
               organizationId: true,
-              role: true,
+              permissionId: true,
             },
           });
 
@@ -38,7 +37,12 @@ export const acceptInvite = authAction(
                   id: invitation.organizationId,
                 },
               },
-              role: new Array(invitation.role) as Role[],
+
+              permissions: {
+                connect: {
+                  id: invitation.permissionId,
+                },
+              },
             },
             select: {
               email: true,
@@ -58,9 +62,6 @@ export const acceptInvite = authAction(
           await clerkClient.users.updateUserMetadata(session.id, {
             privateMetadata: {
               organizationId: user.organization.id,
-            },
-            publicMetadata: {
-              organizationName: user.organization.name,
             },
           });
 

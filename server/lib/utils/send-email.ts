@@ -4,7 +4,7 @@ import { transporter } from "@/server/nodemailer";
 import { render } from "@react-email/render";
 import { ReactElement } from "react";
 
-export const sendEmail = (
+export const sendEmail = async (
   receiver: string,
   subject: string,
   template: ReactElement
@@ -16,7 +16,7 @@ export const sendEmail = (
     html: render(template),
   };
 
-  transporter
+  await transporter
     .sendMail(options)
     .then()
     .catch((error: string) => {

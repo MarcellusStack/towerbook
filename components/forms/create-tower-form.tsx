@@ -13,9 +13,11 @@ import { createTowerSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import Image from "next/image";
 import { createTower } from "@/server/actions/create-tower";
+import { LocationSelect } from "@components/location-select";
 
 export const CreateTowerForm = () => {
   const form = useForm({
+    name: "create-tower-form",
     validate: zodResolver(createTowerSchema),
     initialValues: {
       name: "",
@@ -77,7 +79,11 @@ export const CreateTowerForm = () => {
           label="Turmnummer"
           {...form.getInputProps("number")}
         />
-        <TextInput label="Standort" {...form.getInputProps("location")} />
+        <LocationSelect
+          formActionId="create-tower-form"
+          formField="location"
+          label="Standort"
+        />
         <Button loading={status === "executing"} type="submit">
           Hinzufügen
         </Button>

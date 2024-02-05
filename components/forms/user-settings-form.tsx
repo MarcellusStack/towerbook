@@ -34,55 +34,22 @@ export const UserSettingsForm = ({ user }: { user: UserSettingsProps }) => {
     },
   });
 
-  const updateEmailAction = useActionNotification({
-    action: updateEmail,
-    executeNotification: `E-Mail wird aktualisiert`,
-  });
-
   const leaveOrganizationAction = useActionNotification({
     action: leaveOrganization,
     executeNotification: `Verlasse Organisation`,
     hideModals: true,
+    redirectUrl: "/organization",
   });
 
   const deleteAccountAction = useActionNotification({
     action: deleteAccount,
     executeNotification: `Benutzer wird gelöscht`,
     hideModals: true,
+    redirectUrl: "/",
   });
   return (
     <Stack gap="md">
       <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-        <Fieldset
-          id="update-email"
-          legend={
-            <Text fw={700} size="xl">
-              E-Mail aktualisieren
-            </Text>
-          }
-        >
-          <form
-            onSubmit={form.onSubmit((values) =>
-              updateEmailAction.execute({ email: values.email })
-            )}
-          >
-            <Stack gap="sm">
-              <TextInput
-                {...form.getInputProps("email")}
-                type="email"
-                label="E-Mail"
-              />
-              <Button
-                variant="filled"
-                type="submit"
-                loading={updateEmailAction.status === "executing"}
-                className="self-end"
-              >
-                Aktualisieren
-              </Button>
-            </Stack>
-          </form>
-        </Fieldset>
         <Fieldset
           style={{
             borderColor: "var(--mantine-color-red-2)",
