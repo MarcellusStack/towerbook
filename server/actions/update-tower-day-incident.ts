@@ -1,10 +1,10 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { towerDayIncidentSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 
-export const updateTowerDayIncident = adminAction(
+export const updateTowerDayIncident = authAction("updateTowerday")(
   towerDayIncidentSchema,
   async ({ id, incident }) => {
     try {

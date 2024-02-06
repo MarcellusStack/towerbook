@@ -1,12 +1,12 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { towerStatusSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-export const updateTowerStatus = adminAction(
+export const updateTowerStatus = authAction("updateTower")(
   towerStatusSchema,
   async ({ id, status }, { session }) => {
     try {
@@ -44,35 +44,49 @@ export type TowersProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>;
 export type TowerProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>[0];
 
 export const getTowerOverview = authFilterQuery(async (search, session) => {
-  if (session.role.includes("admin")) {
-    return await prisma.tower.findFirst({
-      where: {
-        organizationId: session.organizationId,
-        id: search,
-      },
-      select: {
-        id: true,
-        status: true,
-      },
-    });
-  }
-
-  return await prisma.tower.findFirst({
+  const tower = await prisma.tower.findFirst({
     where: {
       organizationId: session.organizationId,
       id: search,
-      members: {
-        some: {
-          id: session.id,
-        },
-      },
     },
     select: {
       id: true,
       status: true,
+      main: true,
     },
   });
-});
+
+  if (!tower) {
+    throw new Error("Turm nicht gefunden");
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const towerdays = await prisma.towerDay.findMany({
+    where: {
+      towerId: tower.id,
+      createdAt: {
+        gte: today,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 25,
+    select: {
+      id: true,
+      createdAt: true,
+      startedAt: true,
+      status: true,
+    },
+  });
+
+  return {
+    ...tower,
+    towerdays,
+  };
+}, "readTower");
 
 export type TowerOverviewProps = NonNullable<
   Awaited<ReturnType<typeof getTowerOverview>>
@@ -98,4 +112,4 @@ export const getTowerTowerDays = authFilterQuery(async (search, session) => {
       towerLeader: { select: { firstName: true, lastName: true } },
     },
   });
-});
+}, "readTowerday");

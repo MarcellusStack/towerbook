@@ -237,7 +237,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
             >
               <IconBell style={{ width: "70%", height: "70%" }} stroke={1.5} />
             </ActionIcon>
-            <ActionIcon
+            {/* <ActionIcon
               loading={refresh.status === "executing"}
               onClick={() => refresh.execute({})}
               variant="light"
@@ -249,16 +249,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 style={{ width: "70%", height: "70%" }}
                 stroke={1.5}
               />
-            </ActionIcon>
-            <ActionIcon
-              onClick={() => router.push("/settings")}
-              variant="light"
-              size="lg"
-              aria-label="route to settings"
-              radius="xl"
-            >
-              <IconSettings style={{ width: "70%", height: "70%" }} />
-            </ActionIcon>
+            </ActionIcon> */}
             <UserButton afterSignOutUrl="/" />
             <Burger
               opened={opened}

@@ -21,8 +21,8 @@ export default async function Page({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["tower-days"],
-    queryFn: async () => await getTowerDays(search, []),
+    queryKey: ["tower-days", search],
+    queryFn: async () => await getTowerDays(search),
     staleTime: 0,
   });
 

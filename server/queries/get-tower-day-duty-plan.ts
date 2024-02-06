@@ -34,7 +34,7 @@ export const getTowerDayDutyPlan = authFilterQuery(async (search, session) => {
       towerId: true,
     },
   });
-});
+}, "readTowerday");
 
 export type TowerdayDutyPlanProps = NonNullable<
   Awaited<ReturnType<typeof getTowerDayDutyPlan>>

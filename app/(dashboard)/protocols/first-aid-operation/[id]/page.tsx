@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const operation = await queryClient.fetchQuery({
     queryKey: ["first-aid-operation", id],
-    queryFn: async () => await getFirstAidOperation(id, []),
+    queryFn: async () => await getFirstAidOperation(id),
     staleTime: 0,
   });
 

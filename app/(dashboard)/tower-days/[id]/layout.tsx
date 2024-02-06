@@ -20,7 +20,7 @@ export default async function Layout({
 
   const towerday = await queryClient.fetchQuery({
     queryKey: ["towerday", id],
-    queryFn: async () => await getTowerDayOverview(id, []),
+    queryFn: async () => await getTowerDayOverview(id),
     staleTime: 0,
   });
 

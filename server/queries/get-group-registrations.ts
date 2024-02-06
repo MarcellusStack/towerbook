@@ -25,7 +25,8 @@ export const getGroupRegistrations = authFilterQuery(
         },
       },
     });
-  }
+  },
+  "readProtocol"
 );
 
 export type GroupRegistrationsProps = NonNullable<

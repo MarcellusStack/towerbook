@@ -61,7 +61,7 @@ export const CreateTowerDaysForm = () => {
         />
         <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
           {form.values.towerdays.map((towerday, index) => (
-            <Card key={towerday.id} padding="xs" withBorder>
+            <Card key={`${towerday.id} - ${index}`} padding="xs" withBorder>
               <Stack gap="xs">
                 <Text>
                   {towerday.tower.name} {towerday.tower.number}

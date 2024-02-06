@@ -1,11 +1,10 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
-import { towerDayFormStatusSchema } from "@schemas/index";
+import { authAction } from "@server/lib/utils/action-clients";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const completeSearchList = adminAction(
+export const completeSearchList = authAction("completeProtocol")(
   z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
   }),

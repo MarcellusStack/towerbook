@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-import { type Tower, Role, TowerDay } from "@prisma/client";
+import { TowerDay } from "@prisma/client";
 
 export type TowerDayOverviewProps = Pick<
   TowerDay,
@@ -30,7 +30,8 @@ export const getTowerDayWatchmanPlan = authFilterQuery(
         towerId: true,
       },
     });
-  }
+  },
+  "readTowerday"
 );
 
 export type TowerdayWatchmanPlanProps = NonNullable<

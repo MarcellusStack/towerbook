@@ -1,12 +1,12 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createFirstAidOperationSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 import { extractTimeFromDate } from "@/utils";
 import { type FirstAidOperationType } from "@prisma/client";
 
-export const createFirstAidOperation = adminAction(
+export const createFirstAidOperation = authAction("createProtocol")(
   createFirstAidOperationSchema,
   async ({ type, date, startTime, guardLeader, towerId }, { session }) => {
     try {

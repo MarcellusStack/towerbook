@@ -2,12 +2,12 @@
 
 import { beachSectionsSchema, towerDayAdministrationSchema } from "@/schemas";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { adminAction, authAction } from "@server/lib/utils/action-clients";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { v4 as uuidv4 } from "uuid";
 
-export const updateName = adminAction(
+export const updateName = authAction()(
   z.object({ name: z.string() }),
   async ({ name }, { session }) => {
     try {
@@ -31,7 +31,7 @@ export const updateName = adminAction(
   }
 );
 
-export const updateLocations = adminAction(
+export const updateLocations = authAction("updateOrganization")(
   z.object({ towerLocations: z.array(z.string()) }),
   async ({ towerLocations }, { session }) => {
     try {
@@ -63,7 +63,7 @@ export const updateLocations = adminAction(
   }
 );
 
-export const updateBeachSections = adminAction(
+export const updateBeachSections = authAction("updateOrganization")(
   beachSectionsSchema,
   async ({ beachSections }, { session }) => {
     try {
@@ -87,7 +87,7 @@ export const updateBeachSections = adminAction(
   }
 );
 
-export const updateTowerDayAdministration = adminAction(
+export const updateTowerDayAdministration = authAction("updateOrganization")(
   towerDayAdministrationSchema,
   async ({ todo, weather, material }, { session }) => {
     try {

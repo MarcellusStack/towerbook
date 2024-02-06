@@ -10,15 +10,15 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useGetTowerdays = (search: string) => {
   return useQuery({
-    queryKey: ["tower-days"],
-    queryFn: async () => await getTowerDays(search, []),
+    queryKey: ["tower-days", search],
+    queryFn: async () => await getTowerDays(search),
   });
 };
 
 export const useGetTowerdayOverview = (id: string) => {
   return useQuery({
     queryKey: ["towerday", id],
-    queryFn: async () => await getTowerDayOverview(id, []),
+    queryFn: async () => await getTowerDayOverview(id),
     staleTime: 30 * 1000,
     refetchInterval: 30 * 1000,
   });
@@ -27,41 +27,41 @@ export const useGetTowerdayOverview = (id: string) => {
 export const useGetTowerdayWatchmanPlan = (id: string) => {
   return useQuery({
     queryKey: ["towerday-watchman-plan", id],
-    queryFn: async () => await getTowerDayWatchmanPlan(id, []),
+    queryFn: async () => await getTowerDayWatchmanPlan(id),
   });
 };
 
 export const useGetTowerdayTodo = (id: string) => {
   return useQuery({
     queryKey: ["towerday-todo", id],
-    queryFn: async () => await getTowerDayTodo(id, []),
+    queryFn: async () => await getTowerDayTodo(id),
   });
 };
 
 export const useGetTowerdayIncident = (id: string) => {
   return useQuery({
     queryKey: ["towerday-incident", id],
-    queryFn: async () => await getTowerDayIncident(id, []),
+    queryFn: async () => await getTowerDayIncident(id),
   });
 };
 
 export const useGetTowerdayWeather = (id: string) => {
   return useQuery({
     queryKey: ["towerday-weather", id],
-    queryFn: async () => await getTowerDayWeather(id, []),
+    queryFn: async () => await getTowerDayWeather(id),
   });
 };
 
 export const useGetTowerdayMaterial = (id: string) => {
   return useQuery({
     queryKey: ["towerday-material", id],
-    queryFn: async () => await getTowerDayMaterial(id, []),
+    queryFn: async () => await getTowerDayMaterial(id),
   });
 };
 
 export const useGetTowerdayDutyPlan = (id: string) => {
   return useQuery({
     queryKey: ["towerday-duty-plan", id],
-    queryFn: async () => await getTowerDayDutyPlan(id, []),
+    queryFn: async () => await getTowerDayDutyPlan(id),
   });
 };

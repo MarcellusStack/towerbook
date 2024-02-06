@@ -1,14 +1,13 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { towerDayTodoSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
-export const updateTowerDayTodo = adminAction(
+export const updateTowerDayTodo = authAction("updateTowerday")(
   towerDayTodoSchema,
   async ({ id, todo }) => {
     try {
-      
       await prisma.towerDay.update({
         where: {
           id: id,

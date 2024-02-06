@@ -27,7 +27,8 @@ export const getFirstAidOperations = authFilterQuery(
         },
       },
     });
-  }
+  },
+  "readProtocol"
 );
 
 export type FirstAidOperationsProps = NonNullable<

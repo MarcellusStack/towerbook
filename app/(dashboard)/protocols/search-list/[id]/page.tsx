@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const searchlist = await queryClient.fetchQuery({
     queryKey: ["searchlist", id],
-    queryFn: async () => await getSearchList(id, []),
+    queryFn: async () => await getSearchList(id),
     staleTime: 0,
   });
 

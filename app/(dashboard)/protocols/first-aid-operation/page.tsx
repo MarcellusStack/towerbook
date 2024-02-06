@@ -22,7 +22,7 @@ export default async function Page({
 
   await queryClient.prefetchQuery({
     queryKey: ["first-aid-operations"],
-    queryFn: async () => await getFirstAidOperations(search, []),
+    queryFn: async () => await getFirstAidOperations(search),
     staleTime: 0,
   });
 

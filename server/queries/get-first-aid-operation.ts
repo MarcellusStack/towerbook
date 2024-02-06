@@ -13,7 +13,7 @@ export const getFirstAidOperation = authFilterQuery(async (search, session) => {
       tower: { select: { name: true, location: true, number: true } },
     },
   });
-});
+}, "readProtocol");
 
 export type FirstAidOperationProps = NonNullable<
   Awaited<ReturnType<typeof getFirstAidOperation>>

@@ -1,12 +1,9 @@
 import { getSearchList } from "@/server/queries/get-search-list";
 import { useQuery } from "@tanstack/react-query";
-import { getSearchListLayout } from "@search-list/[id]/_actions";
 
 export const useGetSearchList = (id: string) => {
   return useQuery({
     queryKey: ["searchlist", id],
-    queryFn: async () => await getSearchList(id, []),
+    queryFn: async () => await getSearchList(id),
   });
 };
-
-

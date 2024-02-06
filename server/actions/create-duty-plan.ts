@@ -1,10 +1,10 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { adminAction, authAction } from "@server/lib/utils/action-clients";
 import { dutyPlanSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 
-export const createDutyPlan = adminAction(
+export const createDutyPlan = authAction("createDutyplan")(
   dutyPlanSchema,
   async ({ towerId, towerDayId, date }) => {
     try {

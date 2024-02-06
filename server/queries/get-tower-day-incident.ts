@@ -14,7 +14,7 @@ export const getTowerDayIncident = authFilterQuery(async (search, session) => {
       towerId: true,
     },
   });
-});
+}, "readTowerday");
 
 export type TowerdayIncidentProps = NonNullable<
   Awaited<ReturnType<typeof getTowerDayIncident>>

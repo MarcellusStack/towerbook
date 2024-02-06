@@ -22,7 +22,7 @@ export default async function Page({
 
   await queryClient.prefetchQuery({
     queryKey: ["search-lists"],
-    queryFn: async () => await getSearchLists(search, []),
+    queryFn: async () => await getSearchLists(search),
     staleTime: 0,
   });
   return (

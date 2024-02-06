@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const towerday = await queryClient.fetchQuery({
     queryKey: ["towerday-material", id],
-    queryFn: async () => await getTowerDayMaterial(id, []),
+    queryFn: async () => await getTowerDayMaterial(id),
     staleTime: 0,
   });
 

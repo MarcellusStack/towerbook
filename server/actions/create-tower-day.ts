@@ -1,16 +1,18 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createTowerDaySchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 
-export const createTowerDay = adminAction(
+export const createTowerDay = authAction("createTowerday")(
   createTowerDaySchema,
   async ({ createdAt, guardLeader, towerLeader, towerId }, { session }) => {
     try {
+      const date = new Date(createdAt as Date);
+      date.setHours(0, 0, 0, 0);
       await prisma.towerDay.create({
         data: {
-          createdAt: new Date(createdAt as Date),
+          createdAt: date,
           tower: { connect: { id: towerId } },
           guardLeader: { connect: { id: guardLeader.id } },
           towerLeader: { connect: { id: towerLeader.id } },

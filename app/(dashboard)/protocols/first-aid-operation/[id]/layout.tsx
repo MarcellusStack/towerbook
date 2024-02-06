@@ -20,7 +20,7 @@ export default async function Layout({
 
   const operation = await queryClient.fetchQuery({
     queryKey: ["first-aid-operation", id],
-    queryFn: async () => await getFirstAidOperation(id, []),
+    queryFn: async () => await getFirstAidOperation(id),
     staleTime: 0,
   });
 

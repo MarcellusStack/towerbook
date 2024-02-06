@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const towerday = await queryClient.fetchQuery({
     queryKey: ["towerday-todo", id],
-    queryFn: async () => await getTowerDayTodo(id, []),
+    queryFn: async () => await getTowerDayTodo(id),
     staleTime: 0,
   });
 

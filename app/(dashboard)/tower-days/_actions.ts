@@ -1,11 +1,11 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { adminAction, authAction } from "@server/lib/utils/action-clients";
 import { createTowerDaysSchema } from "@/schemas";
 import * as z from "zod";
 import { revalidatePath } from "next/cache";
 
-export const getTowersAction = adminAction(
+export const getTowersAction = authAction("readTower")(
   z.object({}),
   async ({}, { session }) => {
     try {
@@ -27,17 +27,22 @@ export const getTowersAction = adminAction(
   }
 );
 
-export const createTowerDays = adminAction(
+export const createTowerDays = authAction("createTowerday")(
   createTowerDaysSchema,
   async ({ createdAt, guardLeader, towerdays }, { session }) => {
     try {
-      const towerDayData = towerdays.map((towerday) => ({
-        createdAt: new Date(createdAt as Date),
-        guardLeaderId: guardLeader.id,
-        towerId: towerday.tower.id,
-        towerLeaderId: towerday.towerLeader.id,
-        organizationId: session.organizationId as string,
-      }));
+      const towerDayData = towerdays.map((towerday) => {
+        const date = new Date(createdAt as Date);
+        date.setHours(0, 0, 0, 0);
+
+        return {
+          createdAt: date,
+          guardLeaderId: guardLeader.id,
+          towerId: towerday.tower.id,
+          towerLeaderId: towerday.towerLeader.id,
+          organizationId: session.organizationId as string,
+        };
+      });
 
       await prisma.towerDay.createMany({
         data: towerDayData,

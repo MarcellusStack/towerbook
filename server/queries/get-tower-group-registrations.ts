@@ -1,8 +1,6 @@
 "use server";
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { type Role } from "@prisma/client";
-import { GroupRegistrationProps } from "@server/queries/get-group-registrations";
 
 export const getTowerGroupRegistrations = authFilterQuery(
   async (search, session) => {
@@ -21,5 +19,6 @@ export const getTowerGroupRegistrations = authFilterQuery(
         supervisorLastName: true,
       },
     });
-  }
+  },
+  "readProtocol"
 );

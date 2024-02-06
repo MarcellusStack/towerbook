@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   await queryClient.prefetchQuery({
     queryKey: ["tower-searchlists", id],
-    queryFn: async () => await getTowerSearchLists(id, []),
+    queryFn: async () => await getTowerSearchLists(id),
     staleTime: 0,
   });
 

@@ -1,11 +1,11 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createGroupRegistrationSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 import { extractTimeFromDate } from "@/utils";
 
-export const createGroupRegistration = adminAction(
+export const createGroupRegistration = authAction("createProtocol")(
   createGroupRegistrationSchema,
   async (
     {

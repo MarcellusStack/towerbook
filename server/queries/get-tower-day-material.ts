@@ -14,7 +14,7 @@ export const getTowerDayMaterial = authFilterQuery(async (search, session) => {
       towerId: true,
     },
   });
-});
+}, "readTowerday");
 
 export type TowerdayMaterialProps = NonNullable<
   Awaited<ReturnType<typeof getTowerDayMaterial>>

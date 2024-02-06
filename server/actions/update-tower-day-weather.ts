@@ -1,10 +1,10 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { towerDayWeatherSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
-export const updateTowerDayWeather = adminAction(
+export const updateTowerDayWeather = authAction("updateTowerday")(
   towerDayWeatherSchema,
   async ({ id, weather }) => {
     try {

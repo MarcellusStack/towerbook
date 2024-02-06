@@ -1,11 +1,11 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createSearchListSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 import { extractTimeFromDate } from "@/utils";
 
-export const createSearchList = adminAction(
+export const createSearchList = authAction("createProtocol")(
   createSearchListSchema,
   async ({ date, timeSearched, firstName, lastName, towerId }, { session }) => {
     try {

@@ -1,11 +1,11 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
-import { firstAidOperationBigSchema, searchListSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { authAction } from "@server/lib/utils/action-clients";
+import { firstAidOperationBigSchema } from "@schemas/index";
+import { revalidatePath } from "next/cache";
 import { extractTimeFromDate, formatDateTimeZone } from "@/utils";
 
-export const updateFirstAidOperationBig = adminAction(
+export const updateFirstAidOperationBig = authAction("updateProtocol")(
   firstAidOperationBigSchema,
   async (
     {

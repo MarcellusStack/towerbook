@@ -19,7 +19,7 @@ export const getTowerSearchLists = authFilterQuery(async (search, session) => {
       handOverTo: true,
     },
   });
-});
+}, "readProtocol");
 
 export type TowerSearchListsProps = NonNullable<
   Awaited<ReturnType<typeof getTowerSearchLists>>

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { TowerDashboard } from "@/components/tower-dashboard";
-import { getTowerOverview } from "@/server/queries/get-tower-overview";
+import { getTowerOverview } from "@/server/queries/tower";
 import {
   HydrationBoundary,
   QueryClient,

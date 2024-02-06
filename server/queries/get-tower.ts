@@ -18,6 +18,7 @@ export const getTower = cache(
         name: true,
         location: true,
         number: true,
+        main: true,
       },
     });
   })

@@ -2,7 +2,7 @@
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-import { type Tower, Role, TowerDay, SearchList } from "@prisma/client";
+import { type Tower, SearchList } from "@prisma/client";
 import { cache } from "react";
 import { TRACE_OUTPUT_VERSION } from "next/dist/shared/lib/constants";
 
@@ -65,7 +65,4 @@ export const getSearchList = authFilterQuery(async (search, session) => {
       tower: { select: { name: true, location: true, number: true } },
     },
   });
-}) as unknown as (
-  search: string,
-  requiredRoles: Role[]
-) => Promise<ExtendSearchListWithTowerProps>;
+}, "readProtocol");

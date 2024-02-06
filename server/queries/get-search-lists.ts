@@ -25,7 +25,7 @@ export const getSearchLists = authFilterQuery(async (search, session) => {
       },
     },
   });
-});
+}, "readProtocol");
 
 export type SearchListsProps = NonNullable<
   Awaited<ReturnType<typeof getSearchLists>>

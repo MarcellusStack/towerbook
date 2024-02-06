@@ -14,7 +14,7 @@ export const getTowerDayWeather = authFilterQuery(async (search, session) => {
       towerId: true,
     },
   });
-});
+}, "readTowerday");
 
 export type TowerdayWeatherProps = NonNullable<
   Awaited<ReturnType<typeof getTowerDayWeather>>

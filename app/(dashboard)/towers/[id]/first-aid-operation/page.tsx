@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   await queryClient.prefetchQuery({
     queryKey: ["tower-first-aid-operations", id],
-    queryFn: async () => await getTowerFirstAidOperations(id, []),
+    queryFn: async () => await getTowerFirstAidOperations(id),
     staleTime: 0,
   });
 

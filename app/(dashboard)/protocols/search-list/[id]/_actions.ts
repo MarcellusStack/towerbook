@@ -42,4 +42,4 @@ export const getSearchListLayout = authFilterQuery(async (search, session) => {
       tower: { select: { name: true, location: true, number: true } },
     },
   });
-});
+}, "readProtocol");
