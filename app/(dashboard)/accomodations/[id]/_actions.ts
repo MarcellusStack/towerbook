@@ -30,7 +30,7 @@ export const getAccomodation = authFilterQuery(async (search, session) => {
       },
     },
   });
-});
+}, "readAccomodation");
 
 export const getAccomodationBookings = authFilterQuery(
   async (search, session) => {
@@ -54,7 +54,8 @@ export const getAccomodationBookings = authFilterQuery(
         },
       },
     });
-  }
+  },
+  "readBooking"
 );
 
 export type AccomodationProps = NonNullable<

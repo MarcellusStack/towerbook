@@ -32,6 +32,7 @@ import { useActionNotification } from "@/hooks/use-action-notification";
 import { TableLoader } from "@/components/loader/table-loader";
 import { useGetAccomodations } from "@/app/(dashboard)/accomodations/_data";
 import { type AccomodationsProps } from "@/app/(dashboard)/accomodations/_actions";
+import { useSearchParams } from "next/navigation";
 
 const Accomodation = ({ props }: { props: AccomodationsProps[0] }) => {
   const enable = useActionNotification({
@@ -159,7 +160,11 @@ const Accomodation = ({ props }: { props: AccomodationsProps[0] }) => {
 };
 
 export const Accomodations = () => {
-  const { data: accomodations, isPending } = useGetAccomodations();
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
+  const { data: accomodations, isPending } = useGetAccomodations(
+    search as string
+  );
 
   if (isPending || !accomodations) return <TableLoader />;
   return (

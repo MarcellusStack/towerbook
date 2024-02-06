@@ -11,12 +11,18 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { search: string };
+}) {
+  const { search } = searchParams;
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["accomodations"],
-    queryFn: async () => await getAccomodations("", []),
+    queryKey: ["accomodations", search],
+    queryFn: async () => await getAccomodations(search),
     staleTime: 0,
   });
 

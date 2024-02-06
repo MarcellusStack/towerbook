@@ -15,9 +15,11 @@ import { createAccomodationSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { createAccomodation } from "@services/accomodation/actions";
 import { IconBed } from "@tabler/icons-react";
+import { LocationSelect } from "@/components/location-select";
 
 export const CreateAccomodationForm = () => {
   const form = useForm({
+    name: "create-accomodation-form",
     validate: zodResolver(createAccomodationSchema),
     initialValues: {
       number: 0,
@@ -50,7 +52,11 @@ export const CreateAccomodationForm = () => {
         <TextInput label="Name" {...form.getInputProps("name")} />
         <TextInput label="Straße" {...form.getInputProps("street")} />
         <TextInput label="Postleitzahl" {...form.getInputProps("zipCode")} />
-        <TextInput label="Standort" {...form.getInputProps("location")} />
+        <LocationSelect
+          formActionId="create-accomodation-form"
+          formField="location"
+          label="Standort"
+        />
         <Stack gap={rem(4)}>
           <Text size="sm" fw={500}>
             Verfügbare Betten: {form.values.availableBeds}

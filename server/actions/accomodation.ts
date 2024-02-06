@@ -4,7 +4,7 @@ import { prisma } from "@server/db";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const enableAccomodation = authAction(
+export const enableAccomodation = authAction("updateAccomodation")(
   z.object({ id: z.string().min(1) }),
   async ({ id }, { session }) => {
     try {
@@ -27,7 +27,7 @@ export const enableAccomodation = authAction(
   }
 );
 
-export const disableAccomodation = authAction(
+export const disableAccomodation = authAction("updateAccomodation")(
   z.object({ id: z.string().min(1) }),
   async ({ id }, { session }) => {
     try {
@@ -47,7 +47,7 @@ export const disableAccomodation = authAction(
   }
 );
 
-export const deleteAccomodation = authAction(
+export const deleteAccomodation = authAction("deleteAccomodation")(
   z.object({ id: z.string().min(1) }),
   async ({ id }, { session }) => {
     try {

@@ -1,11 +1,11 @@
 "use server";
 
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createAccomodationSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 
-export const createAccomodation = adminAction(
+export const createAccomodation = authAction("createAccomodation")(
   createAccomodationSchema,
   async (
     { number, name, street, zipCode, location, availableBeds },

@@ -6,6 +6,12 @@ export const getAccomodations = authFilterQuery(async (search, session) => {
   return await prisma.accomodation.findMany({
     where: {
       organizationId: session.organizationId as string,
+      ...(search && {
+        OR: [
+          { name: { contains: search } },
+          { number: { equals: Number(search) } },
+        ],
+      }),
     },
     select: {
       id: true,
@@ -18,7 +24,7 @@ export const getAccomodations = authFilterQuery(async (search, session) => {
       reservable: true,
     },
   });
-});
+}, "readAccomodation");
 
 export type AccomodationsProps = NonNullable<
   Awaited<ReturnType<typeof getAccomodations>>

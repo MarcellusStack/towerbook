@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { bookSchema, deleteSchema } from "@/schemas";
 import { convertDate, formatDateTimeZone } from "@/utils";
 
-export const createBooking = authAction(
+export const createBooking = authAction("createBooking")(
   bookSchema,
   async ({ date, accomodationId }, { session }) => {
     try {
@@ -26,7 +26,6 @@ export const createBooking = authAction(
               accomodationId: accomodationId,
             },
           });
-          console.log(bookedBedsCount, accomodation.availableBeds);
 
           if (bookedBedsCount >= accomodation.availableBeds) {
             throw new Error("Es sind keine Betten mehr verfügbar");
@@ -48,7 +47,7 @@ export const createBooking = authAction(
         }
       );
     } catch (error) {
-      throw new Error("Fehler beim Buchen");
+      throw new Error("Eine Buchung für dieses Datum ist nicht möglich da sie schon ausgebucht ist oder die Unterkunft nicht reservierbar ist");
     }
 
     revalidatePath("/", "layout");
@@ -59,7 +58,7 @@ export const createBooking = authAction(
   }
 );
 
-export const deleteBooking = authAction(
+export const deleteBooking = authAction("deleteBooking")(
   deleteSchema,
   async ({ id }, { session }) => {
     try {

@@ -20,7 +20,7 @@ export default async function Layout({
 
   const accomodation = await queryClient.fetchQuery({
     queryKey: ["accomodation", id],
-    queryFn: async () => await getAccomodation(id, []),
+    queryFn: async () => await getAccomodation(id),
     staleTime: 0,
   });
 

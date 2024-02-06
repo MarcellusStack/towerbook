@@ -43,7 +43,7 @@ export const AccomodationOverview = ({
               </ThemeIcon>
             }
           >
-            <Badge color={accomodation.reservable ? "green" : "yellow"}>
+            <Badge color={accomodation.reservable ? "green" : "red"}>
               {accomodation.reservable ? "Reservierbar" : "Nicht reservierbar"}
             </Badge>
           </List.Item>

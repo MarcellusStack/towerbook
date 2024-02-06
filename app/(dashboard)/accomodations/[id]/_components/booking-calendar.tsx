@@ -9,7 +9,7 @@ import { IconCalendar } from "@tabler/icons-react";
 import React from "react";
 import { modals } from "@mantine/modals";
 import { CreateBookingForm } from "@/components/booking/create-booking-form";
-import { useSession } from "next-auth/react";
+import { useUser } from "@clerk/nextjs";
 import { DeleteModalAction } from "@/components/delete-modal-action";
 import { deleteBooking } from "@/server/actions/booking";
 import { useGetAccomodationBookings } from "@accomodations/[id]/_data";
@@ -18,13 +18,14 @@ import { FormLoader } from "@/components/loader/form-loader";
 
 export const BookingCalendar = () => {
   const { id } = useParams();
-  const { data: session, status: sessionStatus } = useSession();
+  const { user, isLoaded } = useUser();
 
   const { data: bookings, isPending } = useGetAccomodationBookings(
     id as string
   );
 
-  if (isPending || !bookings) return <FormLoader />;
+  if (isPending || !bookings || !isLoaded) return <FormLoader />;
+
   return (
     <Card withBorder>
       <Stack gap="sm">
@@ -45,7 +46,7 @@ export const BookingCalendar = () => {
             allDay: true,
             start: book.date,
             end: book.date,
-            color: book.user.id === session?.user?.id ? "green" : "gray",
+            color: book.user.id === user?.id ? "green" : "gray",
           }))}
           dateClick={(event) => {
             modals.open({

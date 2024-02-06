@@ -435,7 +435,7 @@ model Accomodation {
   organization   Organization @relation(fields: [organizationId], references: [id])
   bookings       Booking[]
 
-  @@unique(number)
+  @@unique([number, organizationId])
 }
 
 model Booking {
