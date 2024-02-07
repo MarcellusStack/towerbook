@@ -12,9 +12,16 @@ export const getUserLayout = authFilterQuery(async (search, session) => {
       id: true,
       firstName: true,
       lastName: true,
+      email: true,
+      birthDate: true,
+      phone: true,
     },
   });
 }, "readUser");
+
+export type UserLayoutProps = NonNullable<
+  Awaited<ReturnType<typeof getUserLayout>>
+>;
 
 export const getUserOverview = authFilterQuery(async (search, session) => {
   return await prisma.user.findFirst({
@@ -41,3 +48,7 @@ export const getUserOverview = authFilterQuery(async (search, session) => {
     },
   });
 }, "readUser");
+
+export type UserOverviewProps = NonNullable<
+  Awaited<ReturnType<typeof getUserOverview>>
+>;

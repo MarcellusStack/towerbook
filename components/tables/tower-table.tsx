@@ -1,5 +1,5 @@
 "use client";
-import { Group, ActionIcon } from "@mantine/core";
+import { Group, ActionIcon, ThemeIcon, Badge } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import Link from "next/link";
@@ -71,6 +71,16 @@ export function TowerTable() {
           accessor: "location",
           title: "Standort",
           ...tableColumnProps,
+        },
+        {
+          accessor: "main",
+          title: "Hauptturm",
+          ...tableColumnProps,
+          render: ({ main }) => (
+            <Badge color="black" variant={main ? "filled" : "outline"}>
+              {main ? "Hauptturm" : "Nebenturm"}
+            </Badge>
+          ),
         },
         {
           accessor: "actions",

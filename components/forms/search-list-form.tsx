@@ -13,6 +13,7 @@ import {
   Box,
   Textarea,
   MultiSelect,
+  Space,
 } from "@mantine/core";
 import { searchListSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
@@ -22,6 +23,7 @@ import type { ExtendSearchListWithTowerProps } from "@/server/queries/get-search
 import { updateSearchList } from "@server/actions/update-search-list";
 import { completeSearchList } from "@/server/actions/complete-search-list";
 import { convertTime } from "@/utils";
+import SignatureCanvas from "react-signature-canvas";
 
 export const SearchListForm = ({
   searchlist,
@@ -241,6 +243,18 @@ export const SearchListForm = ({
             />
             <Box />
           </SimpleGrid>
+          <Space h="sm" />
+          <Text size="sm" fw={500} mb="2">
+            Unterschrift
+          </Text>
+          <Box bg="gray.2">
+            <SignatureCanvas
+              penColor="black"
+              canvasProps={{
+                className: "w-full h-full ",
+              }}
+            />
+          </Box>
         </Fieldset>
         <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <Button

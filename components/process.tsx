@@ -91,21 +91,9 @@ export const Process = ({ process, title, href, form }: ProcessProps) => {
             });
           }}
         >
-          {process === "open" && (
-            <IconCircle style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          )}
-          {process === "ongoing" && (
-            <IconCircleDashed
-              style={{ width: "70%", height: "70%" }}
-              stroke={1.5}
-            />
-          )}
-          {process === "completed" && (
-            <IconCircleCheck
-              style={{ width: "70%", height: "70%" }}
-              stroke={1.5}
-            />
-          )}
+          {process === "open" && <IconCircle stroke={1.5} />}
+          {process === "ongoing" && <IconCircleDashed stroke={1.5} />}
+          {process === "completed" && <IconCircleCheck stroke={1.5} />}
           {process === "incomplete" && (
             <IconCircleX style={{ width: "70%", height: "70%" }} stroke={1.5} />
           )}

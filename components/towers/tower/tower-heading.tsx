@@ -20,7 +20,9 @@ export const TowerHeading = () => {
           <Text size="lg" c="dimmed">
             {tower.name} {tower.location}
           </Text>
-          {tower.main && <Badge color="black">Hauptturm</Badge>}
+          <Badge color="black" variant={tower.main ? "filled" : "outline"}>
+            {tower.main ? "Hauptturm" : "Nebenturm"}
+          </Badge>
         </Group>
       }
     />
