@@ -90,7 +90,7 @@ export const getUserAccount = authFilterQuery(async (search, session) => {
   const decryptedUserAccount = await decryptUserAccount(userAccount);
 
   return decryptedUserAccount;
-});
+}, "readUser");
 
 export type UserAccountProps = NonNullable<
   Awaited<ReturnType<typeof userAccountQuery>>

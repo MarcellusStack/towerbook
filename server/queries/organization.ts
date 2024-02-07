@@ -1,6 +1,6 @@
 "use server";
 import { prisma } from "@server/db";
-import { authAdminQuery } from "@server/lib/utils/query-clients";
+import { authQuery } from "@server/lib/utils/query-clients";
 
 import { type Organization } from "@prisma/client";
 
@@ -9,8 +9,8 @@ export type OrganizationSettingsProps = Pick<
   "name" | "towerLocations" | "todo" | "beachSections" | "weather" | "material"
 >;
 
-export const getOrganizationSettings =
-  authAdminQuery<OrganizationSettingsProps>(async (session) => {
+export const getOrganizationSettings = authQuery<OrganizationSettingsProps>(
+  async (session) => {
     const organization = await prisma.organization.findFirst({
       where: {
         id: session.organizationId as string,
@@ -30,4 +30,6 @@ export const getOrganizationSettings =
     }
 
     return organization;
-  });
+  },
+  "readOrganization"
+);

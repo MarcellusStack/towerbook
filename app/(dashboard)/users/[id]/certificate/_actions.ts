@@ -48,7 +48,7 @@ export const getUserCertificate = authFilterQuery(async (search, session) => {
       guardLeaderInstruction: true,
     },
   });
-});
+}, "readUser");
 
 export type UserCertificateProps = NonNullable<
   Awaited<ReturnType<typeof getUserCertificate>>

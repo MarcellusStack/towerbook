@@ -11,12 +11,17 @@ export const getUserPermission = authFilterQuery(async (search, session) => {
     select: {
       firstName: true,
       lastName: true,
-      role: true,
       towers: true,
+      permissions: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
       id: true,
     },
   });
-});
+}, "readUser");
 
 export type UserPermissionProps = NonNullable<
   Awaited<ReturnType<typeof getUserPermission>>

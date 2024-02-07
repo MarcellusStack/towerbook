@@ -1,7 +1,7 @@
 "use server";
 import { prisma } from "@server/db";
-import { authFilterQuery, authQuery } from "@server/lib/utils/query-clients";
-import { Role, type Invitation, Organization } from "@prisma/client";
+import { authFilterQuery } from "@server/lib/utils/query-clients";
+import { type Invitation, Organization } from "@prisma/client";
 
 export type InvitationProps = Pick<Invitation, "id" | "email">;
 
@@ -22,4 +22,4 @@ export const getInvitations = authFilterQuery(async (search, session) => {
       email: true,
     },
   });
-});
+}, "readInvitation");

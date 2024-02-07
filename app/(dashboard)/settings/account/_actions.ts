@@ -1,13 +1,65 @@
 "use server";
-import { prisma } from "@server/db";
-import { authAction } from "@server/lib/utils/action-clients";
-import { userAccountSchema } from "@schemas/index";
-import { revalidatePath } from "next/cache";
+import { accountSchema } from "@/schemas";
+import { authAction } from "@/server/lib/utils/action-clients";
 import { encrypt } from "@/utils";
 import { clerkClient } from "@clerk/nextjs";
+import { prisma } from "@server/db";
+import { authQuery } from "@server/lib/utils/query-clients";
+import {
+  decryptUserAccount,
+  userAccountQuery,
+} from "@users/[id]/account/_actions";
+import { revalidatePath } from "next/cache";
 
-export const updateUserAccount = authAction("updateUser")(
-  userAccountSchema,
+export const getUserSettingsAccount = authQuery(async (session) => {
+  const userAccount = await prisma.user.findFirst({
+    where: {
+      organizationId: session.organizationId,
+      id: session.id,
+    },
+    select: {
+      gender: true,
+      firstName: true,
+      lastName: true,
+      salutation: true,
+      title: true,
+      birthName: true,
+      birthDate: true,
+      birthPlace: true,
+      street: true,
+      houseNumber: true,
+      zipCode: true,
+      location: true,
+      email: true,
+      phone: true,
+      drkMember: true,
+      drkMemberLocation: true,
+      emergencyContactLastName: true,
+      emergencyContactFirstName: true,
+      emergencyContactPhone: true,
+      bankName: true,
+      iban: true,
+      bic: true,
+      differentBankholder: true,
+      id: true,
+    },
+  });
+
+  if (!userAccount) {
+    throw new Error("Benutzer nicht gefunden");
+  }
+
+  const decryptedUserAccount = await decryptUserAccount(userAccount);
+
+  return decryptedUserAccount;
+});
+
+export type UserAccountProps = NonNullable<
+  Awaited<ReturnType<typeof userAccountQuery>>
+>;
+
+export const updateUserSettingsAccount = authAction()(
+  accountSchema,
   async (
     {
       gender,
@@ -32,7 +84,6 @@ export const updateUserAccount = authAction("updateUser")(
       iban,
       bic,
       differentBankholder,
-      userId,
     },
     { session }
   ) => {
@@ -42,7 +93,7 @@ export const updateUserAccount = authAction("updateUser")(
           const user = await tx.user.update({
             where: {
               organizationId: session.organizationId,
-              id: userId,
+              id: session.id,
             },
             data: {
               gender: gender,

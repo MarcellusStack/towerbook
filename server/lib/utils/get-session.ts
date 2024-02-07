@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/server/db";
-import { clerkClient } from "@clerk/nextjs";
 
 type Permission = {
   [key: string]: boolean;
@@ -13,31 +12,36 @@ export const getSession = async (id: string | null) => {
     throw new Error("Sie haben keine Berechtigung für diese Aktion");
   }
 
-  const userMetadata = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id },
-    include: {
+    select: {
+      id: true,
+      email: true,
+      birthDate: true,
+      firstName: true,
+      lastName: true,
+      organizationId: true,
       permissions: true,
-      organization: { select: { id: true, name: true } },
+      organization: { select: { name: true } },
     },
   });
-  const userMetadat = await clerkClient.users.getUser(id);
 
-  if (!userMetadata) {
+  if (!user) {
     throw new Error("Benutzer nicht gefunden");
   }
 
-  const user = {
-    id: userMetadata.id as string,
-    email: userMetadata.email as string,
-    birthDate: userMetadata.birthDate,
-    firstName: userMetadata.firstName as string,
-    lastName: userMetadata.lastName as string,
-    organizationId: userMetadata.organizationId as string,
-    organizationName: userMetadata.organization?.name as string,
-    permissions: userMetadata.permissions,
+  const userData = {
+    id: user.id as string,
+    email: user.email as string,
+    birthDate: user.birthDate,
+    firstName: user.firstName as string,
+    lastName: user.lastName as string,
+    organizationId: user.organizationId as string,
+    organizationName: user.organization?.name as string,
+    permissions: user.permissions,
   };
 
-  return user;
+  return userData;
 };
 
 export type SessionProps = NonNullable<

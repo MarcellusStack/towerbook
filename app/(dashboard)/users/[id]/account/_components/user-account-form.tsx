@@ -12,16 +12,15 @@ import {
   NumberInput,
   Checkbox,
 } from "@mantine/core";
-import { userProfileSchema } from "@/schemas";
+import { userAccountSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
-import { type User } from "@prisma/client";
+import { updateUserAccount } from "@server/actions/update-user-profile";
 import { UserAccountProps } from "@users/[id]/account/_actions";
 
 export const UserAccountForm = ({ user }: { user: UserAccountProps }) => {
   const form = useForm({
-    validate: zodResolver(userProfileSchema),
+    validate: zodResolver(userAccountSchema),
     initialValues: {
       gender: user.gender,
       firstName: user.firstName,
@@ -35,7 +34,6 @@ export const UserAccountForm = ({ user }: { user: UserAccountProps }) => {
       houseNumber: user.houseNumber,
       zipCode: user.zipCode,
       location: user.location,
-      email: user.email,
       phone: user.phone,
       drkMember: user.drkMember,
       drkMemberLocation: user.drkMemberLocation,
@@ -51,7 +49,7 @@ export const UserAccountForm = ({ user }: { user: UserAccountProps }) => {
   });
 
   const { execute, result, status } = useActionNotification({
-    action: updateUserProfile,
+    action: updateUserAccount,
     executeNotification: `Benutzer wird aktualisiert`,
   });
   return (
@@ -140,12 +138,6 @@ export const UserAccountForm = ({ user }: { user: UserAccountProps }) => {
               label="Ort"
               placeholder="Ort"
               {...form.getInputProps("location")}
-            />
-            <TextInput
-              label="E-Mail"
-              type="email"
-              placeholder="E-Mail"
-              {...form.getInputProps("email")}
             />
             <TextInput
               label="Handynummer"

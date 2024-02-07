@@ -210,10 +210,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
               aria-label="Search"
               radius="xl"
             >
-              <IconSearch
-                style={{ width: "70%", height: "70%" }}
-                stroke={1.5}
-              />
+              <IconSearch stroke={1.5} />
             </ActionIcon>
             <Spotlight
               actions={actions}
@@ -235,7 +232,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
               aria-label="Search"
               radius="xl"
             >
-              <IconBell style={{ width: "70%", height: "70%" }} stroke={1.5} />
+              <IconBell stroke={1.5} />
             </ActionIcon>
             {/* <ActionIcon
               loading={refresh.status === "executing"}
@@ -287,10 +284,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 size="lg"
                 aria-label="Settings"
               >
-                <IconSettings
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
+                <IconSettings stroke={1.5} />
               </ActionIcon>
               <Divider mt="sm" />
             </List.Item>
@@ -308,19 +302,13 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
           <List spacing="sm" size="sm" center>
             <List.Item className="grid place-items-center">
               <ActionIcon variant="subtle" size="lg" aria-label="Informationen">
-                <IconFileInfo
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
+                <IconFileInfo stroke={1.5} />
               </ActionIcon>
               <Divider mt="sm" />
             </List.Item>
             <List.Item className="grid place-items-center">
               <ActionIcon variant="subtle" size="lg" aria-label="Export">
-                <IconFileExport
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
+                <IconFileExport stroke={1.5} />
               </ActionIcon>
               <Divider mt="sm" />
             </List.Item>

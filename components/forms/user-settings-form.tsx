@@ -11,11 +11,7 @@ import {
   Box,
 } from "@mantine/core";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import {
-  deleteAccount,
-  leaveOrganization,
-  updateEmail,
-} from "@/server/actions/user";
+import { deleteAccount, leaveOrganization } from "@/server/actions/user";
 import { ModalAction } from "@/components/modal-action";
 import { z } from "zod";
 import { UserSettingsProps } from "@/server/queries/user";

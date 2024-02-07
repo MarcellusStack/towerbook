@@ -128,29 +128,38 @@ export const towerDayFormStatusSchema = z.object({
   form: z.string().min(1, { message: "Formular wird benötigt" }),
 });
 
-export const userProfileSchema = z.intersection(
-  baseUserSchema,
+export const accountSchema = z.object({
+  firstName: z
+    .string()
+    .min(3, { message: "Name muss mindestens 3 Zeichen lang sein." }),
+  lastName: z
+    .string()
+    .min(3, { message: "Name muss mindestens 3 Zeichen lang sein." }),
+  gender: z.string().nullable(),
+  salutation: z.string().nullable(),
+  title: z.string().nullable(),
+  birthName: z.string().nullable(),
+  birthDate: z.date().nullable(),
+  birthPlace: z.string().nullable(),
+  street: z.string().nullable(),
+  houseNumber: z.string().nullable(),
+  zipCode: z.string().nullable(),
+  location: z.string().nullable(),
+  phone: z.string().nullable(),
+  drkMember: z.boolean().nullable(),
+  drkMemberLocation: z.string().nullable(),
+  emergencyContactLastName: z.string().nullable(),
+  emergencyContactFirstName: z.string().nullable(),
+  emergencyContactPhone: z.string().nullable(),
+  bankName: z.string().nullable(),
+  iban: z.string().nullable(),
+  bic: z.string().nullable(),
+  differentBankholder: z.string().nullable(),
+});
+
+export const userAccountSchema = z.intersection(
+  accountSchema,
   z.object({
-    gender: z.string().nullable(),
-    salutation: z.string().nullable(),
-    title: z.string().nullable(),
-    birthName: z.string().nullable(),
-    birthDate: z.date().nullable(),
-    birthPlace: z.string().nullable(),
-    street: z.string().nullable(),
-    houseNumber: z.string().nullable(),
-    zipCode: z.string().nullable(),
-    location: z.string().nullable(),
-    phone: z.string().nullable(),
-    drkMember: z.boolean().nullable(),
-    drkMemberLocation: z.string().nullable(),
-    emergencyContactLastName: z.string().nullable(),
-    emergencyContactFirstName: z.string().nullable(),
-    emergencyContactPhone: z.string().nullable(),
-    bankName: z.string().nullable(),
-    iban: z.string().nullable(),
-    bic: z.string().nullable(),
-    differentBankholder: z.string().nullable(),
     userId: z.string().min(1, { message: "User Id wird benötigt" }),
   })
 );
@@ -425,8 +434,7 @@ export const deleteSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
 });
 
-export const userCertificateSchema = z.object({
-  userId: z.string().min(1, { message: "User Id wird benötigt" }),
+export const certificateSchema = z.object({
   lifeguardLicense: z.string().nullable(),
   snorkelLicense: z.string().nullable(),
   lifeguardWaterRescueService: z.string().nullable(),
@@ -464,6 +472,13 @@ export const userCertificateSchema = z.object({
   rwc: z.string().nullable(),
   guardLeaderInstruction: z.string().nullable(),
 });
+
+export const userCertificateSchema = z.intersection(
+  certificateSchema,
+  z.object({
+    userId: z.string().min(1, { message: "User Id wird benötigt" }),
+  })
+);
 
 export const searchListSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),

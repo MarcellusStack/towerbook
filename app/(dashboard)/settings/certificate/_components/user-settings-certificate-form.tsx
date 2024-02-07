@@ -2,22 +2,21 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { Button, Stack, Fieldset, SimpleGrid, Text } from "@mantine/core";
-import { userCertificateSchema } from "@/schemas";
+import { certificateSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { updateUserCertificate } from "@/server/actions/update-user-certificate";
 import { UploadInput } from "@components/upload-input";
 import { certificateInputs } from "@constants/certificate-inputs";
 import { UserCertificateProps } from "@users/[id]/certificate/_actions";
+import { updateUserSettingsCertificate } from "@settings/certificate/_actions";
 
-export const UserCertificateForm = ({
+export const UserSettingsCertificateForm = ({
   user,
 }: {
   user: UserCertificateProps;
 }) => {
   const form = useForm({
-    validate: zodResolver(userCertificateSchema),
+    validate: zodResolver(certificateSchema),
     initialValues: {
-      userId: user.id,
       lifeguardLicense: user.lifeguardLicense,
       snorkelLicense: user.snorkelLicense,
       lifeguardWaterRescueService: user.lifeguardWaterRescueService,
@@ -58,7 +57,7 @@ export const UserCertificateForm = ({
   });
 
   const { execute, result, status } = useActionNotification({
-    action: updateUserCertificate,
+    action: updateUserSettingsCertificate,
     executeNotification: `Benutzer wird aktualisiert`,
   });
 

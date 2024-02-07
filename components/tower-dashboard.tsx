@@ -67,7 +67,12 @@ export const TowerDashboard = () => {
                 <Text fw={700} size="xl">
                   Turmtage
                 </Text>
-                <IconBroadcast size={28} stroke={1.5} />
+                <ThemeIcon variant="white" size="lg" color="black">
+                  <IconBroadcast
+                    style={{ width: "70%", height: "70%" }}
+                    stroke={1.5}
+                  />
+                </ThemeIcon>
               </Group>
               {tower.towerdays.length === 0 ? (
                 <Stack align="center">
@@ -75,7 +80,8 @@ export const TowerDashboard = () => {
                     <IconBroadcastOff style={{ width: "70%", height: "70%" }} />
                   </ThemeIcon>
                   <Text c="dimmed">
-                    Keine Turmtage für diesen Turm vorhanden.
+                    Keine Turmtage für diesen Tag vorhanden. Erstellen sie hier
+                    die benötigten Turmtage für alle Türme.
                   </Text>
                   <Button
                     className="shrink-0 self-stretch"
@@ -100,7 +106,14 @@ export const TowerDashboard = () => {
                   </Button>
                 </Stack>
               ) : (
-                "Your tower has tower days."
+                <Stack gap="sm" align="center">
+                  <ThemeIcon variant="light" size="xl" color="green">
+                    <IconBroadcast style={{ width: "70%", height: "70%" }} />
+                  </ThemeIcon>
+                  <Text c="dimmed">
+                    Turmtage wurden für diesen Tag erstellt.
+                  </Text>
+                </Stack>
               )}
             </Stack>
           </Card>

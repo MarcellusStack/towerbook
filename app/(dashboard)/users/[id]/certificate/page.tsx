@@ -1,5 +1,4 @@
-import { UserCertificateForm } from "@components/forms/user-certificate-form";
-import { getUserCertificate } from "@server/queries/get-user-certificate";
+import { getUserCertificate } from "@users/[id]/certificate/_actions";
 import { TableOfContents } from "@/components/table-of-contents";
 import { notFound } from "next/navigation";
 import {
@@ -29,7 +28,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const user = await queryClient.fetchQuery({
     queryKey: ["user-certificate", id],
-    queryFn: async () => await getUserCertificate(id, []),
+    queryFn: async () => await getUserCertificate(id),
     staleTime: 0,
   });
 

@@ -5,20 +5,18 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import { getUserSettingsAccount } from "@settings/account/_actions";
-import { UserSettingsAccount } from "@settings/account/_components/user-settings-account";
-import { userLinks } from "@/constants";
+import { UserCertificate } from "@users/[id]/certificate/_components/user-certificate";
+import { userCertificateLinks } from "@/constants";
+import { getUserSettingsCertificate } from "@settings/certificate/_actions";
 
 export const dynamic = "force-dynamic";
-
-
 
 export default async function Page() {
   const queryClient = new QueryClient();
 
   const user = await queryClient.fetchQuery({
-    queryKey: ["user-settings-account"],
-    queryFn: async () => await getUserSettingsAccount(),
+    queryKey: ["user-settings-certificate"],
+    queryFn: async () => await getUserSettingsCertificate(),
     staleTime: 0,
   });
 
@@ -29,9 +27,9 @@ export default async function Page() {
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <UserSettingsAccount />
+        <UserCertificate />
       </HydrationBoundary>
-      <TableOfContents links={userLinks} />
+      <TableOfContents links={userCertificateLinks} />
     </>
   );
 }

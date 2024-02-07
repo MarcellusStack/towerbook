@@ -14,7 +14,7 @@ export const getUserLayout = authFilterQuery(async (search, session) => {
       lastName: true,
     },
   });
-});
+}, "readUser");
 
 export const getUserOverview = authFilterQuery(async (search, session) => {
   return await prisma.user.findFirst({
@@ -40,4 +40,4 @@ export const getUserOverview = authFilterQuery(async (search, session) => {
       },
     },
   });
-});
+}, "readUser");

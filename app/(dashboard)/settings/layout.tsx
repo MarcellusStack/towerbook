@@ -1,8 +1,8 @@
 import {
+  IconFileCertificate,
   IconLayoutDashboard,
   IconTopologyStar3,
   IconUser,
-  IconUserShield,
 } from "@tabler/icons-react";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { PageTabs } from "@components/page-tabs";
@@ -17,6 +17,11 @@ export const links = [
     value: "account",
     icon: <IconUser size={16} stroke={1.5} />,
     label: "Account",
+  },
+  {
+    value: "certificate",
+    icon: <IconFileCertificate size={16} stroke={1.5} />,
+    label: "Zertifikate",
   },
   {
     value: "organization",

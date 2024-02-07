@@ -30,7 +30,12 @@ const TowerDayOverview = ({ towerday }) => {
           <Text fw={700} size="xl">
             Turm Tag
           </Text>
-          <IconBroadcast size={28} stroke={1.5} />
+          <ThemeIcon variant="white" color="black" size="lg">
+            <IconBroadcast
+              style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          </ThemeIcon>
         </Group>
         <Divider />
         <List center spacing="sm">

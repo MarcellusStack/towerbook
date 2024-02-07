@@ -1,13 +1,9 @@
 "use server";
 
 import { prisma } from "@server/db";
-import { supabase } from "@server/supabase";
 import { authAction } from "@server/lib/utils/action-clients";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { redirect } from "next/navigation";
-
-import { toLowercaseAndTrim } from "@/utils";
 import { clerkClient } from "@clerk/nextjs";
 
 export const deleteAccount = authAction()(
@@ -62,7 +58,6 @@ export const leaveOrganization = authAction()(
             select: {
               id: true,
               organizationId: true,
-              role: true,
             },
           });
 
@@ -82,6 +77,19 @@ export const leaveOrganization = authAction()(
               },
             },
           });
+
+          const syncClerkAccount = await clerkClient.users.updateUser(
+            session.id,
+            {
+              privateMetadata: {
+                organizationId: undefined,
+              },
+            }
+          );
+
+          if (!syncClerkAccount) {
+            throw new Error("Fehler beim verlassen der Organisation");
+          }
         },
         {
           maxWait: 15000,
@@ -100,7 +108,7 @@ export const leaveOrganization = authAction()(
   }
 );
 
-export const updateEmail = authAction(
+/* export const updateEmail = authAction(
   z.object({
     email: z.string().email({
       message: "Keine gültige E-Mail",
@@ -143,6 +151,6 @@ export const updateEmail = authAction(
       message: `Sie haben Ihre E-Mail Adresse aktualisiert`,
     };
   }
-);
+); */
 
 const oneDayInMilliseconds = 24 * 60 * 60 * 1000;

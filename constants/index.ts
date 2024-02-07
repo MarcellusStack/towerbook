@@ -154,3 +154,20 @@ export const permissions = [
     ],
   },
 ];
+
+export const userCertificateLinks = [
+  { label: "Schwimmen", link: "#swim" },
+  { label: "Medizinisch", link: "#medical" },
+  { label: "Führungsausbildung", link: "#leadership-training" },
+  { label: "Fahrzeug-Qualifikation", link: "#vehicle-qualification" },
+  { label: "Funkzeugnisse", link: "#radio-certificate" },
+  { label: "Sonstige Qualifikationen", link: "#other-qualification" },
+  { label: "Ausbilder Qualifikation", link: "#instructor-qualification" },
+  { label: "Unterweisungen", link: "#instructions" },
+];
+
+export const userLinks = [
+  { label: "Stammdaten", link: "#base-data" },
+  { label: "Notfallkontakt", link: "#emergency-contact" },
+  { label: "Bankverbindung", link: "#bank-details" },
+];

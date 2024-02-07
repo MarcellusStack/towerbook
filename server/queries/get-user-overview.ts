@@ -1,10 +1,6 @@
 "use server";
 import { prisma } from "@server/db";
-import { type Role } from "@prisma/client";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { ExtendProfileWithTowerProps } from "@/type";
-
-
 
 export const getUserOverview = authFilterQuery(async (search, session) => {
   return await prisma.user.findFirst({
@@ -30,4 +26,4 @@ export const getUserOverview = authFilterQuery(async (search, session) => {
       },
     },
   });
-});
+}, "readUser");

@@ -61,7 +61,7 @@ export default async function Layout({
 
   const user = await queryClient.fetchQuery({
     queryKey: ["user-layout", id],
-    queryFn: async () => await getUserLayout(id, []),
+    queryFn: async () => await getUserLayout(id),
     staleTime: 0,
   });
 

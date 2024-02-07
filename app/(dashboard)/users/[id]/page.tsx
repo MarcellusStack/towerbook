@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   await queryClient.prefetchQuery({
     queryKey: ["user-overview", id],
-    queryFn: async () => await getUserOverview(id, []),
+    queryFn: async () => await getUserOverview(id),
     staleTime: 0,
   });
 
