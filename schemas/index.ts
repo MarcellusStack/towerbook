@@ -697,7 +697,7 @@ export const firstAidOperationSmallSchema = z.object({
   ),
 });
 
-export const towerDayAdministrationSchema = z.object({
+export const towerdayAdministrationTodoSchema = z.object({
   todo: z.array(
     z.object({
       id: z.string(),
@@ -711,16 +711,22 @@ export const towerDayAdministrationSchema = z.object({
       date: z.union([z.string(), z.date()]),
     })
   ),
-  weather: z.array(
-    z.object({
-      id: z.string(),
-      time: z.string(),
-    })
-  ),
+});
+
+export const towerdayAdministrationMaterialSchema = z.object({
   material: z.array(
     z.object({
       id: z.string(),
       material: z.string(),
+    })
+  ),
+});
+
+export const towerdayAdministrationWeatherSchema = z.object({
+  weather: z.array(
+    z.object({
+      id: z.string(),
+      time: z.string(),
     })
   ),
 });

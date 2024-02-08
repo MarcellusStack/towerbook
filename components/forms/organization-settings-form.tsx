@@ -34,8 +34,18 @@ import { type OrganizationSettingsProps } from "@/server/queries/organization";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { v4 as uuidv4 } from "uuid";
-import { beachSectionsSchema, towerDayAdministrationSchema } from "@/schemas";
+import {
+  beachSectionsSchema,
+  towerdayAdministrationTodoSchema,
+  towerdayAdministrationMaterialSchema,
+  towerdayAdministrationWeatherSchema,
+} from "@/schemas";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import {
+  updateTowerdayAdministrationMaterial,
+  updateTowerdayAdministrationTodo,
+  updateTowerdayAdministrationWeather,
+} from "@settings/organization/_actions";
 
 export const OrganizationSettingsForm = ({
   organization,
@@ -77,12 +87,24 @@ export const OrganizationSettingsForm = ({
     },
   });
 
-  const towerDayAdministrationForm = useForm({
-    validate: zodResolver(towerDayAdministrationSchema),
+  const towerdayAdministrationWeatherForm = useForm({
+    validate: zodResolver(towerdayAdministrationWeatherSchema),
     initialValues: {
-      todo: organization.todo === null ? new Array() : organization.todo,
       weather:
         organization.weather === null ? new Array() : organization.weather,
+    },
+  });
+
+  const towerdayAdministrationTodoForm = useForm({
+    validate: zodResolver(towerdayAdministrationTodoSchema),
+    initialValues: {
+      todo: organization.todo === null ? new Array() : organization.todo,
+    },
+  });
+
+  const towerdayAdministrationMaterialForm = useForm({
+    validate: zodResolver(towerdayAdministrationMaterialSchema),
+    initialValues: {
       material:
         organization.material === null ? new Array() : organization.material,
     },
@@ -103,9 +125,19 @@ export const OrganizationSettingsForm = ({
     executeNotification: `Strandabschnitte wird aktualisiert`,
   });
 
-  const updateTowerDayAdministrationAction = useActionNotification({
-    action: updateTowerDayAdministration,
-    executeNotification: `Turm Tag Administration wird aktualisiert`,
+  const updateTowerdayAdministrationWeatherAction = useActionNotification({
+    action: updateTowerdayAdministrationWeather,
+    executeNotification: `Turm Tag Wetter wird aktualisiert`,
+  });
+
+  const updateTowerdayAdministrationTodoAction = useActionNotification({
+    action: updateTowerdayAdministrationTodo,
+    executeNotification: `Turm Tag Todos werden aktualisiert`,
+  });
+
+  const updateTowerdayAdministrationMaterialAction = useActionNotification({
+    action: updateTowerdayAdministrationMaterial,
+    executeNotification: `Turm Tag Material wird aktualisiert`,
   });
 
   return (
@@ -305,234 +337,112 @@ export const OrganizationSettingsForm = ({
         </Fieldset>
       </form>
       <Fieldset
-        id="tower-day-administration"
+        id="tower-day-administration-weather"
         legend={
           <Text fw={700} size="xl">
-            Turm Tag Administration
+            Wetter
           </Text>
         }
       >
         <form
-          onSubmit={towerDayAdministrationForm.onSubmit((values) =>
-            updateTowerDayAdministrationAction.execute({
-              todo: values.todo,
+          onSubmit={towerdayAdministrationWeatherForm.onSubmit((values) =>
+            updateTowerdayAdministrationWeatherAction.execute({
               weather: values.weather,
-              material: values.material,
             })
           )}
         >
           <Stack gap="sm">
             <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  towerDayAdministrationForm.insertListItem("todo", {
-                    id: uuidv4(),
-                    todo: "",
-                    type: "",
-                    day: "",
-                    date: new Date(),
-                  });
-                }}
-              >
-                Todo hinzufügen
-              </Button>
-              <Box />
-              <Box />
-              {towerDayAdministrationForm.values.todo &&
-                towerDayAdministrationForm.values.todo.map(
-                  (field, index: number) => (
-                    <Card key={`${field.id}-${index}`} padding="sm" withBorder>
-                      <Group justify="space-between" wrap="nowrap">
-                        <Group>
-                          <TextInput
-                            {...towerDayAdministrationForm.getInputProps(
-                              `todo.${index}.todo`
-                            )}
-                          />
-                          <Select
-                            placeholder="Zeitraum"
-                            data={[
-                              {
-                                label: "Täglich",
-                                value: "daily",
-                              },
-                              {
-                                label: "Wöchentlich",
-                                value: "weekly",
-                              },
-                              {
-                                label: "Monatlich",
-                                value: "monthly",
-                              },
-                            ]}
-                            {...towerDayAdministrationForm.getInputProps(
-                              `todo.${index}.type`
-                            )}
-                          />
-                          {towerDayAdministrationForm.values.todo[index]
-                            .type === "weekly" && (
-                            <Select
-                              placeholder="Wochentag"
-                              data={[
-                                {
-                                  label: "Montag",
-                                  value: "monday",
-                                },
-                                {
-                                  label: "Dienstag",
-                                  value: "tuesday",
-                                },
-                                {
-                                  label: "Mittwoch",
-                                  value: "wednesday",
-                                },
-                                {
-                                  label: "Donnerstag",
-                                  value: "thursday",
-                                },
-                                {
-                                  label: "Freitag",
-                                  value: "friday",
-                                },
-                                {
-                                  label: "Samstag",
-                                  value: "saturday",
-                                },
-                                {
-                                  label: "Sonntag",
-                                  value: "sunday",
-                                },
-                              ]}
-                              {...towerDayAdministrationForm.getInputProps(
-                                `todo.${index}.day`
-                              )}
-                            />
+              {towerdayAdministrationWeatherForm.values.weather &&
+                towerdayAdministrationWeatherForm.values.weather.map(
+                  (weather, index) => (
+                    <Card key={`${weather.id}`} padding="sm" withBorder>
+                      <Stack justify="space-between" gap="sm">
+                        <TimeInput
+                          {...towerdayAdministrationWeatherForm.getInputProps(
+                            `weather.${index}.time`
                           )}
-                          {towerDayAdministrationForm.values.todo[index]
-                            .type === "monthly" && (
-                            <DatePickerInput
-                              clearable
-                              locale="de"
-                              placeholder="Tag"
-                              valueFormat="DD"
-                              {...towerDayAdministrationForm.getInputProps(
-                                `todo.${index}.date`
-                              )}
-                              value={
-                                towerDayAdministrationForm.values.todo[index]
-                                  .date
-                                  ? new Date(
-                                      towerDayAdministrationForm.values.todo[
-                                        index
-                                      ].date
-                                    )
-                                  : null
-                              }
-                            />
-                          )}
-                        </Group>
+                        />
+
                         <ActionIcon
                           onClick={() => {
-                            towerDayAdministrationForm.removeListItem(
-                              "todo",
+                            towerdayAdministrationWeatherForm.removeListItem(
+                              `weather`,
                               index
                             );
                           }}
+                          size="md"
                           variant="subtle"
                           color="red"
+                          className="self-end"
                         >
                           <IconTrash
                             style={{ width: "70%", height: "70%" }}
                             stroke={1.5}
                           />
                         </ActionIcon>
-                      </Group>
+                      </Stack>
                     </Card>
                   )
                 )}
             </SimpleGrid>
-            <Table verticalSpacing="sm" striped withTableBorder>
-              <TableThead>
-                <TableTr>
-                  <TableTh>Zeit</TableTh>
-                  <TableTh>
-                    <Button
-                      onClick={() => {
-                        towerDayAdministrationForm.insertListItem(`weather`, {
-                          id: uuidv4(),
-                          time: "",
-                        });
-                      }}
-                    >
-                      Wetter Hinzufügen
-                    </Button>
-                  </TableTh>
-                </TableTr>
-              </TableThead>
-              <TableTbody>
-                {towerDayAdministrationForm.values.weather &&
-                  towerDayAdministrationForm.values.weather.map(
-                    (weather, index) => (
-                      <TableTr key={weather.id}>
-                        <TableTd>
-                          <TimeInput
-                            {...towerDayAdministrationForm.getInputProps(
-                              `weather.${index}.time`
-                            )}
-                          />
-                        </TableTd>
-                        <TableTd>
-                          <ActionIcon
-                            onClick={() => {
-                              towerDayAdministrationForm.removeListItem(
-                                `weather`,
-                                index
-                              );
-                            }}
-                            size="md"
-                            variant="subtle"
-                            color="red"
-                          >
-                            <IconTrash
-                              style={{ width: "70%", height: "70%" }}
-                              stroke={1.5}
-                            />
-                          </ActionIcon>
-                        </TableTd>
-                      </TableTr>
-                    )
-                  )}
-              </TableTbody>
-            </Table>
+            <Button
+              className="self-start"
+              variant="outline"
+              onClick={() => {
+                towerdayAdministrationWeatherForm.insertListItem(`weather`, {
+                  id: uuidv4(),
+                  time: "",
+                });
+              }}
+            >
+              Wetter Hinzufügen
+            </Button>
+            <Button
+              variant="filled"
+              type="submit"
+              loading={
+                updateTowerdayAdministrationWeatherAction.status === "executing"
+              }
+              className="self-end"
+            >
+              Aktualisieren
+            </Button>
+          </Stack>
+        </form>
+      </Fieldset>
+      <Fieldset
+        id="tower-day-administration-material"
+        legend={
+          <Text fw={700} size="xl">
+            Material
+          </Text>
+        }
+      >
+        <form
+          onSubmit={towerdayAdministrationMaterialForm.onSubmit((values) =>
+            updateTowerdayAdministrationMaterialAction.execute({
+              material: values.material,
+            })
+          )}
+        >
+          <Stack gap="sm">
             <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  towerDayAdministrationForm.insertListItem("material", {
-                    id: uuidv4(),
-                    material: "",
-                  });
-                }}
-              >
-                Material hinzufügen
-              </Button>
-              <Box />
-              <Box />
-              {towerDayAdministrationForm.values.material &&
-                towerDayAdministrationForm.values.material.map(
+              {towerdayAdministrationMaterialForm.values.material &&
+                towerdayAdministrationMaterialForm.values.material.map(
                   (field, index: number) => (
                     <Card key={`${field.id}-${index}`} padding="sm" withBorder>
-                      <Group justify="space-between" wrap="nowrap">
+                      <Stack justify="space-between" gap="sm">
                         <TextInput
-                          {...towerDayAdministrationForm.getInputProps(
+                          {...towerdayAdministrationMaterialForm.getInputProps(
                             `material.${index}.material`
                           )}
                         />
 
                         <ActionIcon
+                          className="self-end"
                           onClick={() => {
-                            towerDayAdministrationForm.removeListItem(
+                            towerdayAdministrationMaterialForm.removeListItem(
                               "material",
                               index
                             );
@@ -545,16 +455,186 @@ export const OrganizationSettingsForm = ({
                             stroke={1.5}
                           />
                         </ActionIcon>
-                      </Group>
+                      </Stack>
                     </Card>
                   )
                 )}
             </SimpleGrid>
             <Button
+              className="self-start"
+              variant="outline"
+              onClick={() => {
+                towerdayAdministrationMaterialForm.insertListItem("material", {
+                  id: uuidv4(),
+                  material: "",
+                });
+              }}
+            >
+              Material hinzufügen
+            </Button>
+            <Button
               variant="filled"
               type="submit"
               loading={
-                updateTowerDayAdministrationAction.status === "executing"
+                updateTowerdayAdministrationMaterialAction.status ===
+                "executing"
+              }
+              className="self-end"
+            >
+              Aktualisieren
+            </Button>
+          </Stack>
+        </form>
+      </Fieldset>
+      <Fieldset
+        id="tower-day-administration-todo"
+        legend={
+          <Text fw={700} size="xl">
+            Todos
+          </Text>
+        }
+      >
+        <form
+          onSubmit={towerdayAdministrationTodoForm.onSubmit((values) =>
+            updateTowerdayAdministrationTodoAction.execute({
+              todo: values.todo,
+            })
+          )}
+        >
+          <Stack gap="sm">
+            <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+              {towerdayAdministrationTodoForm.values.todo &&
+                towerdayAdministrationTodoForm.values.todo.map(
+                  (field, index: number) => (
+                    <Card key={`${field.id}-${index}`} padding="sm" withBorder>
+                      <Stack justify="space-between">
+                        <TextInput
+                          {...towerdayAdministrationTodoForm.getInputProps(
+                            `todo.${index}.todo`
+                          )}
+                        />
+                        <Select
+                          placeholder="Zeitraum"
+                          data={[
+                            {
+                              label: "Täglich",
+                              value: "daily",
+                            },
+                            {
+                              label: "Wöchentlich",
+                              value: "weekly",
+                            },
+                            {
+                              label: "Monatlich",
+                              value: "monthly",
+                            },
+                          ]}
+                          {...towerdayAdministrationTodoForm.getInputProps(
+                            `todo.${index}.type`
+                          )}
+                        />
+                        {towerdayAdministrationTodoForm.values.todo[index]
+                          .type === "weekly" && (
+                          <Select
+                            placeholder="Wochentag"
+                            data={[
+                              {
+                                label: "Montag",
+                                value: "monday",
+                              },
+                              {
+                                label: "Dienstag",
+                                value: "tuesday",
+                              },
+                              {
+                                label: "Mittwoch",
+                                value: "wednesday",
+                              },
+                              {
+                                label: "Donnerstag",
+                                value: "thursday",
+                              },
+                              {
+                                label: "Freitag",
+                                value: "friday",
+                              },
+                              {
+                                label: "Samstag",
+                                value: "saturday",
+                              },
+                              {
+                                label: "Sonntag",
+                                value: "sunday",
+                              },
+                            ]}
+                            {...towerdayAdministrationTodoForm.getInputProps(
+                              `todo.${index}.day`
+                            )}
+                          />
+                        )}
+                        {towerdayAdministrationTodoForm.values.todo[index]
+                          .type === "monthly" && (
+                          <DatePickerInput
+                            clearable
+                            locale="de"
+                            placeholder="Tag"
+                            valueFormat="DD"
+                            {...towerdayAdministrationTodoForm.getInputProps(
+                              `todo.${index}.date`
+                            )}
+                            value={
+                              towerdayAdministrationTodoForm.values.todo[index]
+                                .date
+                                ? new Date(
+                                    towerdayAdministrationTodoForm.values.todo[
+                                      index
+                                    ].date
+                                  )
+                                : null
+                            }
+                          />
+                        )}
+                        <ActionIcon
+                          onClick={() => {
+                            towerdayAdministrationTodoForm.removeListItem(
+                              "todo",
+                              index
+                            );
+                          }}
+                          variant="subtle"
+                          color="red"
+                          className="self-end"
+                        >
+                          <IconTrash
+                            style={{ width: "70%", height: "70%" }}
+                            stroke={1.5}
+                          />
+                        </ActionIcon>
+                      </Stack>
+                    </Card>
+                  )
+                )}
+            </SimpleGrid>
+            <Button
+              className="self-start"
+              variant="outline"
+              onClick={() => {
+                towerdayAdministrationTodoForm.insertListItem("todo", {
+                  id: uuidv4(),
+                  todo: "",
+                  type: "",
+                  day: "",
+                  date: new Date(),
+                });
+              }}
+            >
+              Todo hinzufügen
+            </Button>
+            <Button
+              variant="filled"
+              type="submit"
+              loading={
+                updateTowerdayAdministrationTodoAction.status === "executing"
               }
               className="self-end"
             >
