@@ -29,11 +29,11 @@ export const inviteUser = authAction("createInvitation")(
           id: true,
         },
       });
-      await sendEmail(
+      /* await sendEmail(
         email,
         "Einladung zum Digitales Turmbuch",
         InviteEmail({ organizationName: session.organizationName as string })
-      );
+      ); */
     } catch (error) {
       throw new Error("Fehler beim Einladen des Benutzer");
     }
