@@ -268,6 +268,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                   variant="subtle"
                   size="lg"
                   aria-label={link.name}
+                  disabled={link.disabled && link.disabled}
                 >
                   {link.icon}
                 </ActionIcon>

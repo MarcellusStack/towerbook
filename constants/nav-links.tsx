@@ -14,6 +14,7 @@ export type NavLinkProps = {
   href: string;
   icon: React.ReactNode;
   name: string;
+  disabled?: boolean;
 };
 
 export const navLinks: NavLinkProps[] = [
@@ -59,7 +60,8 @@ export const navLinks: NavLinkProps[] = [
     id: "nav-ZCQ3ZSEKLJ",
     href: "/duty-plans",
     icon: <IconCalendarPin stroke={1.5} />,
-    name: "Dienstplan",
+    name: "Monatsplan",
+    disabled: true,
   },
   {
     id: "nav-HEGSGR52GS",

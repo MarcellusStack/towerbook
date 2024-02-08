@@ -52,8 +52,45 @@ export const TowerdayTodoForm = ({
             </Text>
           }
         >
-          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
+          <Stack gap="sm">
+            <SimpleGrid
+              cols={{ base: 2, xl: 3 }}
+              spacing="sm"
+              verticalSpacing="sm"
+            >
+              {form.values.todo &&
+                form.values.todo.map((todo, index) => (
+                  <Card key={`${todo.id}-${index}`} padding="sm" withBorder>
+                    <Group justify="space-between">
+                      <TextInput
+                        placeholder="Todo"
+                        {...form.getInputProps(`todo.${index}.todo`)}
+                      />
+                      <Checkbox
+                        color="green"
+                        label="Erledigt"
+                        {...form.getInputProps(`todo.${index}.checked`, {
+                          type: "checkbox",
+                        })}
+                      />
+                      <ActionIcon
+                        onClick={() => {
+                          form.removeListItem("todo", index);
+                        }}
+                        variant="subtle"
+                        color="red"
+                      >
+                        <IconTrash
+                          style={{ width: rem(16), height: rem(16) }}
+                          stroke={1.5}
+                        />
+                      </ActionIcon>
+                    </Group>
+                  </Card>
+                ))}
+            </SimpleGrid>
             <Button
+              className="self-start"
               variant="outline"
               onClick={() => {
                 form.insertListItem("todo", {
@@ -65,39 +102,7 @@ export const TowerdayTodoForm = ({
             >
               Todo hinzufügen
             </Button>
-            <Box />
-            <Box />
-            {form.values.todo &&
-              form.values.todo.map((todo, index) => (
-                <Card key={`${todo.id}-${index}`} padding="sm" withBorder>
-                  <Group justify="space-between">
-                    <TextInput
-                      placeholder="Todo"
-                      {...form.getInputProps(`todo.${index}.todo`)}
-                    />
-                    <Checkbox
-                      color="green"
-                      label="Erledigt"
-                      {...form.getInputProps(`todo.${index}.checked`, {
-                        type: "checkbox",
-                      })}
-                    />
-                    <ActionIcon
-                      onClick={() => {
-                        form.removeListItem("todo", index);
-                      }}
-                      variant="subtle"
-                      color="red"
-                    >
-                      <IconTrash
-                        style={{ width: rem(16), height: rem(16) }}
-                        stroke={1.5}
-                      />
-                    </ActionIcon>
-                  </Group>
-                </Card>
-              ))}
-          </SimpleGrid>
+          </Stack>
         </Fieldset>
         <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <TowerDayFormAction

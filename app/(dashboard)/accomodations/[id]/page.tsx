@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const accomodation = await queryClient.fetchQuery({
     queryKey: ["accomodation-bookings", id],
-    queryFn: async () => await getAccomodationBookings(id, []),
+    queryFn: async () => await getAccomodationBookings(id),
     staleTime: 0,
   });
 

@@ -53,54 +53,59 @@ export const TowerdayWatchmanPlanForm = ({
             </Text>
           }
         >
-          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-            <UserSelect
-              formActionId="tower-day-watchman-plan-form"
-              formField="guardLeader"
-              label="Wachleiter"
-              initialValue={`${towerday.guardLeader.firstName} ${towerday.guardLeader.lastName}`}
-            />
-            <UserSelect
-              formActionId="tower-day-watchman-plan-form"
-              formField="towerLeader"
-              label="Turmleiter"
-              initialValue={`${towerday.towerLeader.firstName} ${towerday.towerLeader.lastName}`}
-            />
-            <Box />
+          <Stack gap="sm">
+            <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
+              <UserSelect
+                formActionId="tower-day-watchman-plan-form"
+                formField="guardLeader"
+                label="Wachleiter"
+                initialValue={`${towerday.guardLeader.firstName} ${towerday.guardLeader.lastName}`}
+              />
+              <UserSelect
+                formActionId="tower-day-watchman-plan-form"
+                formField="towerLeader"
+                label="Turmleiter"
+                initialValue={`${towerday.towerLeader.firstName} ${towerday.towerLeader.lastName}`}
+              />
+            </SimpleGrid>
             <UserComboboxButton
               label="Wachgänger"
               formActionId="tower-day-watchman-plan-form"
               formField="watchman"
             />
-            <Box />
-            <Box />
-            {form.values.watchman.map((watchman, index) => (
-              <Card key={`${watchman.id}-${index}`} padding="xs" withBorder>
-                <Group justify="space-between">
-                  <Avatar color="blue" radius="xl">
-                    {watchman.firstName?.charAt(0)}
-                    {watchman.lastName?.charAt(0)}
-                  </Avatar>
-                  <Group gap={rem(4)}>
-                    <Text>{watchman.firstName}</Text>
-                    <Text>{watchman.lastName}</Text>
+            <SimpleGrid
+              cols={{ base: 2, xl: 3 }}
+              spacing="sm"
+              verticalSpacing="sm"
+            >
+              {form.values.watchman.map((watchman, index) => (
+                <Card key={`${watchman.id}-${index}`} padding="xs" withBorder>
+                  <Group justify="space-between">
+                    <Avatar color="blue" radius="xl">
+                      {watchman.firstName?.charAt(0)}
+                      {watchman.lastName?.charAt(0)}
+                    </Avatar>
+                    <Group gap={rem(4)}>
+                      <Text>{watchman.firstName}</Text>
+                      <Text>{watchman.lastName}</Text>
+                    </Group>
+                    <ActionIcon
+                      onClick={() => {
+                        form.removeListItem("watchman", index);
+                      }}
+                      variant="subtle"
+                      color="red"
+                    >
+                      <IconTrash
+                        style={{ width: rem(16), height: rem(16) }}
+                        stroke={1.5}
+                      />
+                    </ActionIcon>
                   </Group>
-                  <ActionIcon
-                    onClick={() => {
-                      form.removeListItem("watchman", index);
-                    }}
-                    variant="subtle"
-                    color="red"
-                  >
-                    <IconTrash
-                      style={{ width: rem(16), height: rem(16) }}
-                      stroke={1.5}
-                    />
-                  </ActionIcon>
-                </Group>
-              </Card>
-            ))}
-          </SimpleGrid>
+                </Card>
+              ))}
+            </SimpleGrid>
+          </Stack>
         </Fieldset>
         <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <TowerDayFormAction

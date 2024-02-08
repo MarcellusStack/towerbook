@@ -49,20 +49,11 @@ export const TowerdayIncidentForm = ({
             </Text>
           }
         >
-          <Button
-            variant="outline"
-            mb="md"
-            onClick={() => {
-              form.insertListItem("incident", {
-                id: uuidv4(),
-                event: "",
-                description: "",
-              });
-            }}
+          <SimpleGrid
+            cols={{ base: 2, xl: 3 }}
+            spacing="sm"
+            verticalSpacing="sm"
           >
-            Hinzufügen
-          </Button>
-          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
             {form.values.incident &&
               form.values.incident.map((incident, index) => (
                 <Card key={incident.id} withBorder p="sm">
@@ -92,6 +83,19 @@ export const TowerdayIncidentForm = ({
                 </Card>
               ))}
           </SimpleGrid>
+          <Button
+            variant="outline"
+            mb="md"
+            onClick={() => {
+              form.insertListItem("incident", {
+                id: uuidv4(),
+                event: "",
+                description: "",
+              });
+            }}
+          >
+            Hinzufügen
+          </Button>
         </Fieldset>
         <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <TowerDayFormAction
