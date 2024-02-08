@@ -46,7 +46,8 @@ export const links = [
   {
     value: "duty-plan",
     icon: <IconCalendarPin size={16} stroke={1.5} />,
-    label: "Dienstplan",
+    label: "Wachplan",
+    disabled: true,
   },
 ];
 

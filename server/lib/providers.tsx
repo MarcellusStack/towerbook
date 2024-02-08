@@ -14,7 +14,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           queries: {
             refetchOnWindowFocus: true,
             refetchOnMount: true,
-            staleTime: 10 * 1000,
+            staleTime: 0,
           },
         },
       })

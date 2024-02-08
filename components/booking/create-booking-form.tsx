@@ -2,7 +2,7 @@
 import React from "react";
 
 import { useForm, zodResolver } from "@mantine/form";
-import { Button, Stack, Text } from "@mantine/core";
+import { Button, SegmentedControl, Stack, Text } from "@mantine/core";
 import { bookSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { convertDate } from "@/utils";
@@ -28,6 +28,10 @@ export const CreateBookingForm = ({ date }: { date: Date }) => {
   return (
     <Stack gap="md">
       <Text>{convertDate(date)}</Text>
+      <SegmentedControl
+        data={["Für mich", "Für Benutzer"]}
+        defaultValue="Für mich"
+      />
       <Button
         loading={status === "executing"}
         onClick={() => {

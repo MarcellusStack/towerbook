@@ -25,7 +25,12 @@ export const SecondaryPageTabs = ({ page, links }: SecondaryPageTabsProps) => {
     >
       <Tabs.List>
         {links.map((link) => (
-          <Tabs.Tab key={link.value} value={link.value} leftSection={link.icon}>
+          <Tabs.Tab
+            disabled={link.disabled && link.disabled}
+            key={link.value}
+            value={link.value}
+            leftSection={link.icon}
+          >
             {link.label}
           </Tabs.Tab>
         ))}

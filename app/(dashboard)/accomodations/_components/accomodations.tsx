@@ -168,7 +168,7 @@ export const Accomodations = () => {
 
   if (isPending || !accomodations) return <TableLoader />;
   return (
-    <SimpleGrid cols={4} spacing="sm" verticalSpacing="sm">
+    <SimpleGrid cols={{ base: 3, xl: 4 }} spacing="sm" verticalSpacing="sm">
       {accomodations.map((accomodation) => (
         <Accomodation key={accomodation.id} props={accomodation} />
       ))}
