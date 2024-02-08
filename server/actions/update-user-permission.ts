@@ -3,14 +3,15 @@ import { prisma } from "@server/db";
 import { supabase } from "@server/supabase";
 import { adminAction } from "@server/lib/utils/action-clients";
 import { userPermissionsSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { type Role } from "@prisma/client";
 
 export const updateUserPermissions = adminAction(
   userPermissionsSchema,
-  async ({ userId, role, towers }, { user }) => {
+  async ({ userId, role, towers }, { session }) => {
     try {
-      const filteredProfile = await prisma.profile.findUnique({
-        where: { userId: userId, organizationId: user.organizationId },
+      const filteredProfile = await prisma.user.findUnique({
+        where: { id: userId, organizationId: session.organizationId },
         include: {
           towers: true,
         },
@@ -30,30 +31,31 @@ export const updateUserPermissions = adminAction(
         (id) => !currentTowerIds.includes(id)
       );
 
-      const profile = await prisma.profile.update({
+      const profile = await prisma.user.update({
         where: {
-          organizationId: user.organizationId,
-          userId: userId,
+          organizationId: session.organizationId,
+          id: userId,
         },
         data: {
-          role: role,
+          role: role as Role[],
           towers: {
             disconnect: towersToDisconnect.map((id) => ({ id })),
             connect: towersToConnect.map((id) => ({ id })),
           },
         },
-        select: { id: true, role: true, firstName: true, lastName: true },
       });
 
       if (!profile.id) {
         throw new Error("Couldnt update Permissions");
       }
-      revalidateTag(userId);
-      revalidateTag("users");
-
-      return `Der Benutzer ${profile.firstName} ${profile.lastName} wurde aktualisiert.`;
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Der Benutzer wurde aktualisiert`,
+    };
   }
 );

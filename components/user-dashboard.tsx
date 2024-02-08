@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   Avatar,
@@ -11,8 +10,8 @@ import {
   Text,
   ThemeIcon,
 } from "@mantine/core";
-import { Calendar } from "@mantine/dates";
 import {
+  IconBuildingBroadcastTower,
   IconCalendar,
   IconMail,
   IconPhone,
@@ -21,10 +20,10 @@ import {
 } from "@tabler/icons-react";
 import FullCalendar from "@fullcalendar/react";
 import deLocale from "@fullcalendar/core/locales/de";
-import { IconAlertCircle } from "@tabler/icons-react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import { UserOverviewProps } from "@/server/queries/get-user-overview";
 
-const UserDashboard = () => {
+const UserDashboard = ({ user }: { user: UserOverviewProps }) => {
   return (
     <>
       <SimpleGrid cols={4} spacing="sm" verticalSpacing="sm">
@@ -37,7 +36,8 @@ const UserDashboard = () => {
               <IconUser size={28} stroke={1.5} />
             </Group>
             <Avatar color="blue" radius="xl">
-              TE
+              {user.firstName?.charAt(0)}
+              {user.lastName?.charAt(0)}
             </Avatar>
             <List center spacing="sm">
               <List.Item
@@ -47,7 +47,7 @@ const UserDashboard = () => {
                   </ThemeIcon>
                 }
               >
-                Herr Vorname Nachname
+                {user.firstName} {user.lastName}
               </List.Item>
               <List.Item
                 icon={
@@ -56,7 +56,7 @@ const UserDashboard = () => {
                   </ThemeIcon>
                 }
               >
-                E-Mail
+                {user.email}
               </List.Item>
               <List.Item
                 icon={
@@ -65,7 +65,7 @@ const UserDashboard = () => {
                   </ThemeIcon>
                 }
               >
-                01756352642
+                {user.phone}
               </List.Item>
             </List>
           </Stack>
@@ -76,7 +76,7 @@ const UserDashboard = () => {
               <Text fw={700} size="xl">
                 Turm Berechtigungen
               </Text>
-              <IconUser size={28} stroke={1.5} />
+              <IconBuildingBroadcastTower size={28} stroke={1.5} />
             </Group>
           </Stack>
         </Card>
@@ -97,24 +97,15 @@ const UserDashboard = () => {
               locales={[deLocale]}
               plugins={[dayGridPlugin]}
               initialView="dayGridMonth"
-              events={[
-                {
-                  title: "Rettungsschwimmer",
-                  date: new Date("2023-10-17T09:00:00"),
-                },
-                {
-                  title: "Rettungsschwimmer",
-                  date: new Date("2023-10-18T10:00:00"),
-                },
-                {
-                  title: "Rettungsschwimmer",
-                  date: new Date("2023-10-19T11:00:00"),
-                },
-                {
-                  title: "Wachleiter",
-                  date: new Date("2023-10-20T11:00:00"),
-                },
-              ]}
+              events={user.shifts.map((shift, index) => ({
+                index: index,
+                id: shift.id,
+
+                /* title: `${shift.user.firstName} ${shift.user.lastName}`, */
+                start: shift.startTime,
+                end: shift.endTime,
+                color: shift.type === "duty" ? "green" : "gray",
+              }))}
             />
           </Stack>
         </Card>

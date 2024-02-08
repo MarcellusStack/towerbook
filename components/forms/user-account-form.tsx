@@ -2,36 +2,26 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import {
-  PasswordInput,
   TextInput,
   Button,
   Stack,
-  Anchor,
   Fieldset,
   SimpleGrid,
-  FileInput,
   Select,
   Text,
   NumberInput,
   Checkbox,
 } from "@mantine/core";
-import { authSchema, userProfileSchema } from "@/schemas";
-import { useAction } from "next-safe-action/hook";
-import Link from "next/link";
-import { signUp } from "@server/actions/sign-up";
+import { userProfileSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { useRouter } from "next/navigation";
 import { DatePickerInput } from "@mantine/dates";
 import { updateUserProfile } from "@server/actions/update-user-profile";
+import { type User } from "@prisma/client";
 
-import { type Profile } from "@prisma/client";
-import { TableOfContents } from "../table-of-contents";
-
-export const UserAccountForm = ({ user }: { user: Profile }) => {
+export const UserAccountForm = ({ user }: { user: User }) => {
   const form = useForm({
     validate: zodResolver(userProfileSchema),
     initialValues: {
-      picture: user.picture,
       gender: user.gender,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -55,7 +45,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
       iban: user.iban,
       bic: user.bic,
       differentBankholder: user.differentBankholder,
-      userId: user.userId,
+      userId: user.id,
     },
   });
 
@@ -64,13 +54,10 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
     executeNotification: `Benutzer ${user.firstName} ${user.lastName}wird aktualisiert`,
   });
   return (
-    <form
-      onSubmit={form.onSubmit((values) =>
-        execute({ ...values, userId: user.userId })
-      )}
-    >
+    <form onSubmit={form.onSubmit((values) => execute(values))}>
       <Stack gap="md">
         <Fieldset
+          id="base-data"
           legend={
             <Text fw={700} size="xl">
               Stammdaten
@@ -78,11 +65,6 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           }
         >
           <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-            <FileInput
-              label="Profil Bild"
-              placeholder="Datei auswählen"
-              {...form.getInputProps("picture")}
-            />
             <Select
               label="Geschlecht"
               placeholder="Geschlecht"
@@ -184,9 +166,10 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           </SimpleGrid>
         </Fieldset>
         <Fieldset
+          id="emergency-contact"
           legend={
             <Text fw={700} size="xl">
-              Notfallkontakte
+              Notfallkontakt
             </Text>
           }
         >
@@ -209,6 +192,7 @@ export const UserAccountForm = ({ user }: { user: Profile }) => {
           </SimpleGrid>
         </Fieldset>
         <Fieldset
+          id="bank-details"
           legend={
             <Text fw={700} size="xl">
               Bankverbindung

@@ -2,43 +2,26 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import {
-  PasswordInput,
-  TextInput,
   Button,
   Stack,
-  Anchor,
   Fieldset,
   SimpleGrid,
-  FileInput,
-  Select,
   Text,
-  NumberInput,
-  Checkbox,
   MultiSelect,
-  Group,
-  ActionIcon,
-  Collapse,
 } from "@mantine/core";
-import { authSchema, userPermissionsSchema } from "@/schemas";
-import { useAction } from "next-safe-action/hook";
-import Link from "next/link";
-import { signUp } from "@server/actions/sign-up";
+import { userPermissionsSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { useRouter } from "next/navigation";
-import { DatePickerInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
-import { useDisclosure } from "@mantine/hooks";
-import { type Profile } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import { updateUserPermissions } from "@/server/actions/update-user-permission";
 import { type Tower } from "@prisma/client";
 import { capitalizeFirstLetter } from "@/utils";
+import { UserPermissionProps } from "@/server/queries/get-user-permission";
 
 export const UserPermissionForm = ({
   user,
   towers,
 }: {
-  user: Profile;
+  user: UserPermissionProps;
   towers: Tower[];
 }) => {
   const form = useForm({
@@ -46,7 +29,7 @@ export const UserPermissionForm = ({
     initialValues: {
       role: user.role,
       towers: user.towers.map((tower) => tower.id),
-      userId: user.userId,
+      userId: user.id,
     },
   });
 
@@ -57,7 +40,7 @@ export const UserPermissionForm = ({
   return (
     <form
       onSubmit={form.onSubmit((values) =>
-        execute({ ...values, userId: user.userId })
+        execute({ ...values, userId: user.id })
       )}
     >
       <Stack gap="md">

@@ -1,11 +1,10 @@
 "use client";
-
 import React from "react";
 import { Badge, Group } from "@mantine/core";
 import { roles } from "@/constants/roles";
-import type { Profile } from "@prisma/client";
+import type { User } from "@prisma/client";
 
-const RoleBadge = ({ user }: { user: Profile }) => {
+const RoleBadge = ({ user }: { user: User }) => {
   return (
     <Group>
       {user.role.map((role) => (

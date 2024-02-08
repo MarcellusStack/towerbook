@@ -1,28 +1,30 @@
+"use server";
 import { prisma } from "@server/db";
-import { authQuery } from "@server/lib/utils/query-clients";
-import { unstable_cache } from "next/cache";
+import { authFilterQuery } from "@server/lib/utils/query-clients";
+import { type ExtendProfileWithTowerProps } from "@type/index";
 
-export const getUserPermission = authQuery(async (search, user) => {
-  const userData = await unstable_cache(
-    async (search) => {
-      const query = await prisma.profile.findFirst({
-        where: {
-          organizationId: user.organizationId,
-          userId: search,
-        },
-        select: {
-          role: true,
-          towers: true,
-          userId: true,
-        },
-      });
-      return query;
+import { type Role } from "@prisma/client";
+
+export type UserPermissionProps = Pick<
+  ExtendProfileWithTowerProps,
+  "firstName" | "lastName" | "role" | "id" | "towers"
+>;
+
+export const getUserPermission = authFilterQuery(async (search, session) => {
+  return await prisma.user.findFirst({
+    where: {
+      organizationId: session.organizationId,
+      id: search,
     },
-    [],
-    {
-      tags: [search],
-      revalidate: 1,
-    }
-  )(search);
-  return userData;
-});
+    select: {
+      firstName: true,
+      lastName: true,
+      role: true,
+      towers: true,
+      id: true,
+    },
+  });
+}) as unknown as (
+  search: string,
+  requiredRoles: Role[]
+) => Promise<UserPermissionProps>;

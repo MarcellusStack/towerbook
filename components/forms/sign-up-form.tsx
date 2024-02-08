@@ -2,17 +2,17 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { PasswordInput, TextInput, Button, Stack, Anchor } from "@mantine/core";
-import { authSchema } from "@/schemas";
-import { useAction } from "next-safe-action/hook";
+import { signUpSchema } from "@/schemas";
 import Link from "next/link";
 import { signUp } from "@/server/actions/sign-up";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const form = useForm({
-    validate: zodResolver(authSchema),
+    validate: zodResolver(signUpSchema),
     initialValues: {
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
     },
@@ -28,14 +28,11 @@ const SignUpForm = () => {
         <TextInput
           label="E-Mail"
           type="email"
-          placeholder="example@mail.com"
           {...form.getInputProps("email")}
         />
-        <PasswordInput
-          label="Passwort"
-          placeholder="MeinSicheresPasswort123"
-          {...form.getInputProps("password")}
-        />
+        <TextInput label="Vorname" {...form.getInputProps("firstName")} />
+        <TextInput label="Nachname" {...form.getInputProps("lastName")} />
+        <PasswordInput label="Passwort" {...form.getInputProps("password")} />
         <Button variant="filled" loading={status === "executing"} type="submit">
           Registrieren
         </Button>

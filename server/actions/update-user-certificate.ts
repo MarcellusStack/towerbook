@@ -1,10 +1,10 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { userCertificateSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
-export const updateUserCertificate = adminAction(
+export const updateUserCertificate = authAction("updateUser")(
   userCertificateSchema,
   async (
     {
@@ -46,13 +46,13 @@ export const updateUserCertificate = adminAction(
       rwc,
       guardLeaderInstruction,
     },
-    { user }
+    { session }
   ) => {
     try {
-      const profile = await prisma.profile.update({
+      await prisma.user.update({
         where: {
-          organizationId: user.organizationId,
-          userId: userId,
+          organizationId: session.organizationId,
+          id: userId,
         },
         data: {
           lifeguardLicense: lifeguardLicense,
@@ -92,18 +92,14 @@ export const updateUserCertificate = adminAction(
           rwc: rwc,
           guardLeaderInstruction: guardLeaderInstruction,
         },
-        select: { id: true, firstName: true, lastName: true },
       });
-
-      if (!profile.id) {
-        throw new Error("Couldnt update Permissions");
-      }
-      revalidateTag(userId);
-      revalidateTag("users");
-
-      return `Der Benutzer ${profile.firstName} ${profile.lastName} wurde aktualisiert.`;
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }
+
+    revalidatePath("/", "layout");
+    return {
+      message: `Der Benutzer wurde aktualisiert`,
+    };
   }
 );

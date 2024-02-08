@@ -1,29 +1,60 @@
-import { getUser } from "@server/lib/utils/get-user";
+"use server";
+import { auth } from "@clerk/nextjs";
+import { SessionProps, getSession } from "@/server/lib/utils/get-session";
 
-export type UserProps = {
-  id: string;
-  profileId: string;
-  email: string;
-  organizationId: string;
-  role: string[];
-};
+type AuthFilterQueryFunction<T> = (
+  search: string | undefined,
+  session: SessionProps
+) => Promise<T | null>;
 
-export const authQuery =
-  (queryFunction: (search: string | undefined, user: UserProps) => void) =>
-  async (search: string, requiredRoles: string[] = []) => {
-    const user = await getUser();
+export const authFilterQuery =
+  <T>(queryFunction: AuthFilterQueryFunction<T>, permission?: string) =>
+  async (search: string): Promise<T | null> => {
+    const { userId } = auth();
 
-    if (!user) {
-      throw new Error("Sie haben keine Berechtigung für diese Aktion");
-    }
+    const user = await getSession(userId);
 
-    if (requiredRoles.length === 0) {
-      return queryFunction(search, user);
-    }
+    // Check if the user is an admin or has the necessary permission
+    const isAdmin = user.permissions.some((p) => p.isAdmin);
+    const hasPermission = permission
+      ? user.permissions.some((p) => p[permission])
+      : true;
 
-    if (!requiredRoles.some((role) => user.role.includes(role))) {
-      return [];
+    if (!(isAdmin || hasPermission)) {
+      throw new Error(`Sie verfügen nicht über die nötigen Berechtigungen`);
     }
 
     return queryFunction(search, user);
+  };
+
+type AuthQueryFunction<T> = (session: SessionProps) => Promise<T | null>;
+
+export const authQuery =
+  <T>(queryFunction: AuthQueryFunction<T>, permission?: string) =>
+  async (): Promise<T | null> => {
+    const { userId } = auth();
+
+    const user = await getSession(userId);
+
+    // Check if the user is an admin or has the necessary permission
+    const isAdmin = user.permissions.some((p) => p.isAdmin);
+    const hasPermission = permission
+      ? user.permissions.some((p) => p[permission])
+      : true;
+
+    if (!(isAdmin || hasPermission)) {
+      throw new Error(`Sie verfügen nicht über die nötigen Berechtigungen`);
+    }
+
+    return queryFunction(user);
+  };
+
+export const authAdminQuery =
+  <T>(queryFunction: (session: SessionProps) => Promise<T>) =>
+  async (): Promise<T> => {
+    const { userId } = auth();
+
+    const user = await getSession(userId);
+
+    return queryFunction(user);
   };

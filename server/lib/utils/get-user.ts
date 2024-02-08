@@ -1,30 +1,49 @@
-import { getServerSession } from "next-auth/next";
+import { auth } from "@server/lib/auth";
 import { authOptions } from "@server/lib/auth-options";
 import { prisma } from "@/server/db";
+import { cache } from "react";
 
-export const getUser = async () => {
-  const session = await getServerSession(authOptions);
+export type GetUserProps = {
+  id: string;
+  profileId: string;
+  email: string;
+  role: string[];
+  organizationId: string | null;
+  organizationName: string | undefined;
+};
+
+export const getUser: () => Promise<GetUserProps | null> = cache(async () => {
+  const session = await auth();
 
   if (!session) {
     return null;
   }
 
-  const user = await prisma.profile.findFirst({
-    where: { userId: session.user.id },
+  const user = await prisma.user.findFirst({
+    where: { id: session.user?.id },
     select: {
-      userId: true,
       id: true,
+
       email: true,
       role: true,
       organizationId: true,
+      organization: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 
+  if (!user) {
+    return null;
+  }
+
   return {
-    id: user?.userId,
-    profileId: user?.id,
-    email: user?.email,
-    role: user?.role,
-    organizationId: user?.organizationId,
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    organizationId: user.organizationId,
+    organizationName: user.organization?.name,
   };
-};
+});

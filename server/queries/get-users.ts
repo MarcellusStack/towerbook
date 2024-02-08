@@ -1,35 +1,21 @@
+"use server";
 import { prisma } from "@server/db";
-import { authQuery } from "@server/lib/utils/query-clients";
-import { unstable_cache } from "next/cache";
+import { authFilterQuery } from "@server/lib/utils/query-clients";
 
-export const getUsers = authQuery(async (search, user) => {
-  const users = await unstable_cache(
-    async (search) => {
-      const userData = await prisma.profile.findMany({
-        where: {
-          organizationId: user.organizationId,
-          email: {
-            contains: search ?? undefined,
-          },
-        },
-        select: {
-          userId: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          role: true,
-          birthDate: true,
-          towers: true,
-        },
-      });
-      return userData;
+export const getUsers = authFilterQuery(async (search, session) => {
+  return await prisma.user.findMany({
+    where: {
+      organizationId: session.organizationId,
+      email: {
+        contains: search ?? undefined,
+      },
     },
-    [],
-    {
-      tags: ["users"],
-      revalidate: 1,
-    }
-  )(search);
-
-  return users;
-});
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      birthDate: true,
+    },
+  });
+}, "readUser");

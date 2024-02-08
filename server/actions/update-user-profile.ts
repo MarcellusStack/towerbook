@@ -1,15 +1,15 @@
 "use server";
 import { prisma } from "@server/db";
-import { supabase } from "@server/supabase";
-import { adminAction } from "@server/lib/utils/action-clients";
-import { userProfileSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { authAction } from "@server/lib/utils/action-clients";
+import { userAccountSchema } from "@schemas/index";
+import { revalidatePath } from "next/cache";
+import { encrypt } from "@/utils";
+import { clerkClient } from "@clerk/nextjs";
 
-export const updateUserProfile = adminAction(
-  userProfileSchema,
+export const updateUserAccount = authAction("updateUser")(
+  userAccountSchema,
   async (
     {
-      picture,
       gender,
       firstName,
       lastName,
@@ -22,7 +22,6 @@ export const updateUserProfile = adminAction(
       houseNumber,
       zipCode,
       location,
-      email,
       phone,
       drkMember,
       drkMemberLocation,
@@ -35,18 +34,17 @@ export const updateUserProfile = adminAction(
       differentBankholder,
       userId,
     },
-    { user }
+    { session }
   ) => {
     try {
       await prisma.$transaction(
         async (tx) => {
-          const profile = await tx.profile.update({
+          const user = await tx.user.update({
             where: {
-              organizationId: user.organizationId,
-              userId: userId,
+              organizationId: session.organizationId,
+              id: userId,
             },
             data: {
-              picture: picture,
               gender: gender,
               firstName: firstName,
               lastName: lastName,
@@ -59,7 +57,6 @@ export const updateUserProfile = adminAction(
               houseNumber: houseNumber,
               zipCode: zipCode,
               location: location,
-              email: email,
               phone: phone,
               drkMember: drkMember,
               drkMemberLocation: drkMemberLocation,
@@ -67,42 +64,47 @@ export const updateUserProfile = adminAction(
               emergencyContactFirstName: emergencyContactFirstName,
               emergencyContactPhone: emergencyContactPhone,
               bankName: bankName,
-              iban: iban,
-              bic: bic,
+              iban: encrypt(iban),
+              bic: encrypt(bic),
               differentBankholder: differentBankholder,
             },
-            select: { id: true },
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              birthDate: true,
+            },
           });
 
-          if (!profile.id) {
-            throw new Error("Couldnt update profile");
+          if (!user) {
+            throw new Error("Benutzer konnte nicht aktualisiert werden");
           }
 
-          const { error } = await supabase.auth.admin.updateUserById(
-            userId,
+          const syncClerkAccount = await clerkClient.users.updateUser(user.id, {
+            publicMetadata: {
+              firstName: user.firstName,
+              lastName: user.lastName,
+              birthDate: user.birthDate,
+            },
+          });
 
-            {
-              email: email,
-            }
-          );
-
-          if (error) {
-            throw new Error("Couldnt update user");
+          if (!syncClerkAccount) {
+            throw new Error("Benutzer konnte nicht aktualisiert werden");
           }
-          return profile;
         },
         {
-          maxWait: 15000, // default: 2000
-          timeout: 15000, // default: 5000
+          maxWait: 15000,
+          timeout: 15000,
         }
       );
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Benutzer");
     }
 
-    revalidateTag(userId);
-    revalidateTag("users");
+    revalidatePath("/", "layout");
 
-    return `Der Benutzer ${firstName} ${lastName} wurde aktualisiert.`;
+    return {
+      message: `Der Benutzer wurde aktualisiert`,
+    };
   }
 );

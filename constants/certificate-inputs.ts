@@ -1,6 +1,7 @@
 export const certificateInputs = [
   {
     section: "Schimmen",
+    sectionAnchor: "swim",
     inputs: [
       {
         label: "Rettungsschwimmer",
@@ -26,6 +27,7 @@ export const certificateInputs = [
   },
   {
     section: "Medizinisch",
+    sectionAnchor: "medical",
     inputs: [
       {
         label: "Sanitätsausbildung",
@@ -59,6 +61,7 @@ export const certificateInputs = [
   },
   {
     section: "Führungsausbildung",
+    sectionAnchor: "leadership-training",
     inputs: [
       {
         label: "Truppführer",
@@ -80,6 +83,7 @@ export const certificateInputs = [
   },
   {
     section: "Fahrzeug-Qualifikation",
+    sectionAnchor: "vehicle-qualification",
     inputs: [
       {
         label: "KFZ Führerschein Klasse",
@@ -109,6 +113,7 @@ export const certificateInputs = [
   },
   {
     section: "Funkzeugnisse",
+    sectionAnchor: "radio-certificate",
     inputs: [
       {
         label: "SRC- Schein",
@@ -122,6 +127,7 @@ export const certificateInputs = [
   },
   {
     section: "Sonstige Qualifikation",
+    sectionAnchor: "other-qualification",
     inputs: [
       {
         label: "Drohnenklasse",
@@ -139,6 +145,7 @@ export const certificateInputs = [
   },
   {
     section: "Ausbilder Qualifikation",
+    sectionAnchor: "instructor-qualification",
     inputs: [
       {
         label: "Ausbilder Schwimmen",
@@ -160,6 +167,7 @@ export const certificateInputs = [
   },
   {
     section: "Unterweisungen",
+    sectionAnchor: "instructions",
     inputs: [
       {
         label: "Wachgänger",

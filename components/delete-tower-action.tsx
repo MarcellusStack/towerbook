@@ -15,7 +15,6 @@ export const DeleteTowerAction = ({ id }: { id: string }) => {
         Sind sie sicher, dass Sie diesen Turm löschen wollen? Diese Aktion ist
         unwiderruflich.
       </Text>
-
       <Group gap="sm">
         <Button
           fullWidth

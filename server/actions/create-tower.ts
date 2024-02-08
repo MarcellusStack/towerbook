@@ -1,40 +1,34 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createTowerSchema } from "@schemas/index";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type TowerType } from "@prisma/client";
 
-export const createTower = adminAction(
+export const createTower = authAction("createTower")(
   createTowerSchema,
-  async ({ name, type, number, location }, { user }) => {
+  async ({ name, main, type, number, location }, { session }) => {
     try {
-      const tower = await prisma.tower.create({
+      await prisma.tower.create({
         data: {
           name: name,
+          main: main,
           type: type as TowerType,
           number: number,
           location: location,
           organization: {
             connect: {
-              id: user.organizationId as string,
+              id: session.organizationId as string,
             },
           },
         },
-        select: {
-          id: true,
-        },
       });
-
-      if (!tower.id) {
-        throw new Error("Couldnt create tower");
-      }
     } catch (error) {
-      throw new Error("Fehler beim Erstellen des Turms");
+      throw new Error("Fehler beim erstellen des Turms");
     }
 
-    revalidateTag("towers");
+    revalidatePath("/", "layout");
 
-    return `Der Turm wurde erstellt.`;
+    return { message: `Der Turm wurde erstellt` };
   }
 );

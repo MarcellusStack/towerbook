@@ -10,14 +10,12 @@ import {
   Text,
   Badge,
   SimpleGrid,
-  Button,
   ActionIcon,
   rem,
 } from "@mantine/core";
 import Image from "next/image";
 import Link from "next/link";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { modals } from "@mantine/modals";
 
 export type TowerProps = {
   id: string;

@@ -2,8 +2,7 @@
 
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import { Modal, Button, TextInput, Text, Stack } from "@mantine/core";
-import * as z from "zod";
+import { Button, TextInput, Text, Stack } from "@mantine/core";
 import { organizationSchema } from "@schemas/index";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { createOrg } from "@/server/actions/create-organization";
@@ -18,6 +17,7 @@ export const CreateOrganizationForm = () => {
 
   const { execute, result, status } = useActionNotification({
     action: createOrg,
+    redirectUrl: "/dashboard",
   });
   return (
     <form onSubmit={form.onSubmit((values) => execute(values))}>
@@ -27,8 +27,7 @@ export const CreateOrganizationForm = () => {
           verwalten. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind.
         </Text>
         <TextInput
-          label="Name"
-          placeholder="name"
+          label="Name der Organisation"
           {...form.getInputProps("name")}
         />
 

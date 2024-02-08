@@ -21,13 +21,27 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@app/*": ["./app/*"],
+      "@search-list/*": ["./app/(dashboard)/protocols/search-list/*"],
+      "@user/*": ["./app/(dashboard)/users/*"],
+      "@towers/*": ["./app/(dashboard)/towers/*"],
+      "@permissions/*": ["./app/(dashboard)/permissions/*"],
+      "@onboarding/*": ["./app/(authentication)/onboarding/*"],
+      "@organization/*": ["./app/(authentication)/organization/*"],
+      "@towerdays/*": ["./app/(dashboard)/tower-days/*"],
+      "@accomodations/*": ["./app/(dashboard)/accomodations/*"],
+      "@settings/*": ["./app/(dashboard)/settings/*"],
+      "@users/*": ["./app/(dashboard)/users/*"],
       "@components/*": ["./components/*"],
       "@server/*": ["./server/*"],
       "@schemas/*": ["./schemas/*"],
       "@constants/*": ["./constants/*"],
       "@hooks/*": ["./hooks/*"],
       "@utils/*": ["./utils/*"],
-      "@styles/*": ["./styles/*"]
+      "@styles/*": ["./styles/*"],
+      "@type/*": ["./type/*"],
+      "@services/*": ["./services/*"],
+      "@data/*": ["./data/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

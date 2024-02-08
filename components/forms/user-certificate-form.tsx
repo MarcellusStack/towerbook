@@ -1,33 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import {
-  PasswordInput,
-  TextInput,
-  Button,
-  Stack,
-  Anchor,
-  Fieldset,
-  SimpleGrid,
-  FileInput,
-  Select,
-  Text,
-  NumberInput,
-  Checkbox,
-  MultiSelect,
-  Input,
-  ActionIcon,
-} from "@mantine/core";
+import { Button, Stack, Fieldset, SimpleGrid, Text } from "@mantine/core";
 import { userCertificateSchema } from "@/schemas";
-import { useAction } from "next-safe-action/hook";
-import Link from "next/link";
-import { signUp } from "@server/actions/sign-up";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { useRouter } from "next/navigation";
-import { DatePickerInput } from "@mantine/dates";
-import { updateUserProfile } from "@server/actions/update-user-profile";
 
-import { type Profile } from "@prisma/client";
+import { type User } from "@prisma/client";
 import { roles } from "@/constants/roles";
 import { updateUserCertificate } from "@/server/actions/update-user-certificate";
 import { uploadFile } from "@/server/actions/upload-file";
@@ -36,12 +14,11 @@ import { IconDownload, IconListSearch } from "@tabler/icons-react";
 import { UploadInput } from "@components/upload-input";
 import { certificateInputs } from "@constants/certificate-inputs";
 
-
-export const UserCertificateForm = ({ user }: { user: Profile }) => {
+export const UserCertificateForm = ({ user }: { user: User }) => {
   const form = useForm({
     validate: zodResolver(userCertificateSchema),
     initialValues: {
-      userId: user.userId,
+      userId: user.id,
       lifeguardLicense: user.lifeguardLicense,
       snorkelLicense: user.snorkelLicense,
       lifeguardWaterRescueService: user.lifeguardWaterRescueService,
@@ -91,6 +68,7 @@ export const UserCertificateForm = ({ user }: { user: Profile }) => {
       <Stack gap="md">
         {certificateInputs.map((section) => (
           <Fieldset
+            id={section.sectionAnchor}
             legend={
               <Text fw={700} size="xl">
                 {section.section}
@@ -108,7 +86,7 @@ export const UserCertificateForm = ({ user }: { user: Profile }) => {
                   form={form}
                   inputValue={form.getInputProps(input.inputProp).value}
                   inputProp={input.inputProp}
-                  userId={user.userId}
+                  userId={user.id}
                   fileType="pdf"
                 />
               ))}

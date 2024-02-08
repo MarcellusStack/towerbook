@@ -1,24 +1,17 @@
 "use client";
-import { roles } from "@/constants/roles";
-import { Badge, Table, Group, Text, ActionIcon, rem } from "@mantine/core";
+
+import { Table, Group, Text, ActionIcon } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { DeleteUserAction } from "@components/delete-user-action";
 import Link from "next/link";
 import { convertDate } from "@utils/index";
+import { DeleteModalAction } from "@components/delete-modal-action";
+import { type UserTableProps } from "@/server/queries/get-users";
+import { removeUserFromCompany } from "@/server/actions/remove-user-from-company";
 
-export type UsersTableProps = {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string[];
-  birthDate: string;
-};
-
-export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
+export const UserTableRow = ({ user }: { user: UserTableProps }) => {
   return (
-    <Table.Tr key={user.userId}>
+    <Table.Tr>
       <Table.Td>
         <Text size="sm">{user.firstName}</Text>
       </Table.Td>
@@ -29,37 +22,28 @@ export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
         <Text size="sm">{user.email}</Text>
       </Table.Td>
       <Table.Td>
-        <Group gap="xs">
-          {user.role.map((role) => (
-            <Badge color={roles.filter((r) => r.value === role)[0].color}>
-              {roles.filter((r) => r.value === role)[0].label}
-            </Badge>
-          ))}
-        </Group>
-      </Table.Td>
-      <Table.Td>
-        <Text size="sm">{convertDate(user.birthDate)}</Text>
+        <Text size="sm">{convertDate(new Date(user.birthDate))}</Text>
       </Table.Td>
       <Table.Td>
         <Group gap={0} justify="flex-end">
           <ActionIcon
             component={Link}
-            href={`/users/${user.userId}`}
+            href={`/users/${user.id}`}
             variant="subtle"
           >
-            <IconPencil
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
+            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
           <ActionIcon
             onClick={() => {
               modals.open({
                 title: "Benutzer löschen",
-
                 children: (
                   <>
-                    <DeleteUserAction userId={user.userId} />
+                    <DeleteModalAction
+                      id={user.id}
+                      action={removeUserFromCompany}
+                      model="Benutzer"
+                    />
                   </>
                 ),
               });
@@ -67,10 +51,7 @@ export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
             variant="subtle"
             color="red"
           >
-            <IconTrash
-              style={{ width: rem(16), height: rem(16) }}
-              stroke={1.5}
-            />
+            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </ActionIcon>
         </Group>
       </Table.Td>
@@ -78,7 +59,7 @@ export const UserTableRow = ({ user }: { user: UsersTableProps }) => {
   );
 };
 
-export function UsersTable({ users }: { users: UsersTableProps[] }) {
+export function UsersTable({ users }: { users: UserTableProps[] }) {
   return (
     <Table verticalSpacing="sm" striped withTableBorder>
       <Table.Thead>
@@ -86,14 +67,13 @@ export function UsersTable({ users }: { users: UsersTableProps[] }) {
           <Table.Th>Name</Table.Th>
           <Table.Th>Vorname</Table.Th>
           <Table.Th>E-Mail</Table.Th>
-          <Table.Th>Rolle</Table.Th>
           <Table.Th>Geburtsdatum</Table.Th>
           <Table.Th />
         </Table.Tr>
       </Table.Thead>
       <Table.Tbody>
         {users.map((user) => (
-          <UserTableRow user={user} />
+          <UserTableRow key={user.id} user={user} />
         ))}
       </Table.Tbody>
     </Table>

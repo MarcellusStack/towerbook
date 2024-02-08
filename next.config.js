@@ -8,8 +8,10 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    serverActions: true,
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
   },
 };
 

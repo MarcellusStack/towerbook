@@ -15,14 +15,13 @@ export const DeleteUserAction = ({ userId }: { userId: string }) => {
         Sind sie sicher, dass Sie diesen Benutzer löschen wollen? Diese Aktion
         ist unwiderruflich.
       </Text>
-
       <Group gap="sm">
         <Button
           fullWidth
           color="red"
           loading={status === "executing"}
           onClick={() => {
-            execute({ userId: userId });
+            execute({ id: userId });
           }}
         >
           Benutzer löschen

@@ -1,6 +1,5 @@
 "use client";
 import { useAction } from "next-safe-action/hook";
-
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { modals } from "@mantine/modals";
@@ -46,7 +45,7 @@ export const useActionNotification = ({
         withBorder: true,
         autoClose: 5000,
         title: "Erfolgreich",
-        message: data as string,
+        message: data.message as string,
         color: "green",
       });
 
@@ -57,6 +56,8 @@ export const useActionNotification = ({
       if (redirectUrl) {
         router.push(redirectUrl);
       }
+
+      return data;
     },
     onError(error, input, reset) {
       if (!error) {
@@ -66,12 +67,15 @@ export const useActionNotification = ({
       if (executeNotification) {
         notifications.hide(executeNotification);
       }
+
       notifications.show({
         id: "error-action-notification",
         withBorder: true,
         autoClose: 5000,
         title: "Fehler",
-        message: "Aktion fehlgeschlagen, versuchen sie es später erneut",
+        message: error.serverError
+          ? error.serverError
+          : "Aktion fehlgeschlagen, versuchen sie es später erneut",
         color: "red",
       });
     },

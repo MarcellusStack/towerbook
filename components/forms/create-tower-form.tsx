@@ -7,17 +7,21 @@ import {
   Stack,
   SegmentedControl,
   Text,
+  Checkbox,
 } from "@mantine/core";
 import { createTowerSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import Image from "next/image";
 import { createTower } from "@/server/actions/create-tower";
+import { LocationSelect } from "@components/location-select";
 
 export const CreateTowerForm = () => {
   const form = useForm({
+    name: "create-tower-form",
     validate: zodResolver(createTowerSchema),
     initialValues: {
       name: "",
+      main: false,
       type: "",
       number: "",
       location: "",
@@ -64,12 +68,22 @@ export const CreateTowerForm = () => {
           ]}
         />
         <TextInput label="Name" {...form.getInputProps("name")} />
+        <Checkbox
+          label="Hauptturm"
+          {...form.getInputProps("main", {
+            type: "checkbox",
+          })}
+        />
         <TextInput
           type="number"
           label="Turmnummer"
           {...form.getInputProps("number")}
         />
-        <TextInput label="Standort" {...form.getInputProps("location")} />
+        <LocationSelect
+          formActionId="create-tower-form"
+          formField="location"
+          label="Standort"
+        />
         <Button loading={status === "executing"} type="submit">
           Hinzufügen
         </Button>
