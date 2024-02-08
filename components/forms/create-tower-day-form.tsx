@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm, zodResolver } from "@mantine/form";
-import { Button, Stack } from "@mantine/core";
+import { Button, Checkbox, Group, Stack } from "@mantine/core";
 import { createTowerDaySchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
@@ -20,6 +20,9 @@ export const CreateTowerDayForm = () => {
       guardLeader: { id: "", firstName: "", lastName: "" },
       towerLeader: { id: "", firstName: "", lastName: "" },
       towerId: id,
+      addTodo: true,
+      addMaterial: true,
+      addWeather: true,
     },
   });
 
@@ -56,6 +59,20 @@ export const CreateTowerDayForm = () => {
           label="Turmleiter"
           initialValue={null}
         />
+        <Group>
+          <Checkbox
+            label="Todos"
+            {...form.getInputProps("addTodo", { type: "checkbox" })}
+          />
+          <Checkbox
+            label="Material"
+            {...form.getInputProps("addMaterial", { type: "checkbox" })}
+          />
+          <Checkbox
+            label="Wetter"
+            {...form.getInputProps("addWeather", { type: "checkbox" })}
+          />
+        </Group>
         <Button loading={status === "executing"} type="submit">
           Hinzufügen
         </Button>

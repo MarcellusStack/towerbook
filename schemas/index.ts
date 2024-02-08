@@ -277,6 +277,9 @@ export const createTowerDaySchema = z.object({
       .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
   }),
   towerId: z.string().min(1),
+  addTodo: z.boolean(),
+  addMaterial: z.boolean(),
+  addWeather: z.boolean(),
 });
 
 export const updatePermissionSchema = z.object({
