@@ -1,6 +1,6 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction, authAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { createTowerDaysSchema } from "@/schemas";
 import * as z from "zod";
 import { revalidatePath } from "next/cache";
@@ -41,19 +41,23 @@ export const getTowerdayAdministration = async (organizationId: string) => {
     throw new Error("Fehler beim laden der Organisation");
   }
 
-  const material = towerdayAdministration.material.map((item) => ({
-    ...item,
-    checked: "unchecked",
-    comment: "",
-  }));
+  const material =
+    towerdayAdministration.material &&
+    towerdayAdministration.material.map((item) => ({
+      ...item,
+      checked: "unchecked",
+      comment: "",
+    }));
 
-  const weather = towerdayAdministration.weather.map((item) => ({
-    ...item,
-    air_in_celsius: "",
-    water_in_celsius: "",
-    wind_in_bft: "",
-    wind_direction: "",
-  }));
+  const weather =
+    towerdayAdministration.weather &&
+    towerdayAdministration.weather.map((item) => ({
+      ...item,
+      air_in_celsius: "",
+      water_in_celsius: "",
+      wind_in_bft: "",
+      wind_direction: "",
+    }));
 
   const weekdaysNumber = {
     sunday: 0,
@@ -65,25 +69,27 @@ export const getTowerdayAdministration = async (organizationId: string) => {
     saturday: 6,
   };
 
-  const todos = towerdayAdministration?.todo
-    .filter((todo) => {
-      const today = new Date();
+  const todos =
+    towerdayAdministration.todo &&
+    towerdayAdministration?.todo
+      .filter((todo) => {
+        const today = new Date();
 
-      switch (todo.type) {
-        case "daily":
-          return true;
-        case "weekly":
-          return weekdaysNumber[todo.day] === today.getDay();
-        case "monthly":
-          return new Date(todo.date).getDate() === today.getDate();
-        default:
-          return false;
-      }
-    })
-    .map((todo) => ({
-      ...todo,
-      checked: false,
-    }));
+        switch (todo.type) {
+          case "daily":
+            return true;
+          case "weekly":
+            return weekdaysNumber[todo.day] === today.getDay();
+          case "monthly":
+            return new Date(todo.date).getDate() === today.getDate();
+          default:
+            return false;
+        }
+      })
+      .map((todo) => ({
+        ...todo,
+        checked: false,
+      }));
 
   return {
     material,
@@ -123,6 +129,7 @@ export const createTowerDays = authAction("createTowerday")(
         data: towerDayData,
       });
     } catch (error) {
+      console.log(error);
       throw new Error("Fehler beim Erstellen des Turm Tag");
     }
 
