@@ -5,6 +5,8 @@ import {
   ActionIcon,
   Button,
   Card,
+  Checkbox,
+  Group,
   SimpleGrid,
   Stack,
   Text,
@@ -25,6 +27,9 @@ export const CreateTowerDaysForm = () => {
       createdAt: new Date(),
       guardLeader: { id: "", firstName: "", lastName: "" },
       towerdays: [],
+      addTodo: true,
+      addMaterial: true,
+      addWeather: true,
     },
   });
 
@@ -54,11 +59,26 @@ export const CreateTowerDaysForm = () => {
           label="Wachleiter"
           initialValue={null}
         />
+        <Group>
+          <Checkbox
+            label="Todos"
+            {...form.getInputProps("addTodo", { type: "checkbox" })}
+          />
+          <Checkbox
+            label="Material"
+            {...form.getInputProps("addMaterial", { type: "checkbox" })}
+          />
+          <Checkbox
+            label="Wetter"
+            {...form.getInputProps("addWeather", { type: "checkbox" })}
+          />
+        </Group>
         <TowerComboboxButton
           formActionId="create-towerdays-form"
           formField="towerdays"
           label="Türme"
         />
+
         <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
           {form.values.towerdays.map((towerday, index) => (
             <Card key={`${towerday.id} - ${index}`} padding="xs" withBorder>

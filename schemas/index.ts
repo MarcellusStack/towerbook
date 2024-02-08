@@ -375,6 +375,9 @@ export const createTowerDaysSchema = z.object({
       }),
     })
   ),
+  addTodo: z.boolean(),
+  addMaterial: z.boolean(),
+  addWeather: z.boolean(),
 });
 
 export const createSearchListSchema = z.object({
