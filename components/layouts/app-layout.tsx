@@ -32,7 +32,7 @@ import {
   IconBed,
   IconUserShield,
 } from "@tabler/icons-react";
-import { navLinks } from "@constants/nav-links";
+import { navLinks, type NavLinkProps } from "@constants/nav-links";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
@@ -41,6 +41,26 @@ import { useAction } from "next-safe-action/hook";
 import { Breadcrumb } from "@components/breadcrumb";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
+import { useTransition } from "react";
+
+const NavLink = ({ link }: { link: NavLinkProps }) => {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  return (
+    <ActionIcon
+      component={Link}
+      href={link.href}
+      variant="subtle"
+      size="lg"
+      loading={isPending}
+      onClick={() => startTransition(() => router.push(link.href))}
+      aria-label={link.name}
+      disabled={link.disabled && link.disabled}
+    >
+      {link.icon}
+    </ActionIcon>
+  );
+};
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -262,16 +282,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
           <List spacing="sm" size="sm" center>
             {navLinks.map((link) => (
               <List.Item key={link.id} className="grid place-items-center">
-                <ActionIcon
-                  component={Link}
-                  href={link.href}
-                  variant="subtle"
-                  size="lg"
-                  aria-label={link.name}
-                  disabled={link.disabled && link.disabled}
-                >
-                  {link.icon}
-                </ActionIcon>
+                <NavLink link={link} />
                 <Divider mt="sm" />
               </List.Item>
             ))}
