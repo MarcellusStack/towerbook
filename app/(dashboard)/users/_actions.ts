@@ -33,7 +33,7 @@ export const deleteUser = authAction("deleteUser")(
             },
           });
 
-          await clerkClient.users.deleteUser(session.id);
+          await clerkClient.users.deleteUser(user.id);
         },
         {
           maxWait: 15000,
