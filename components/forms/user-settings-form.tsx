@@ -37,12 +37,6 @@ export const UserSettingsForm = ({ user }: { user: UserSettingsProps }) => {
     redirectUrl: "/organization",
   });
 
-  const deleteAccountAction = useActionNotification({
-    action: deleteAccount,
-    executeNotification: `Benutzer wird gelöscht`,
-    hideModals: true,
-    redirectUrl: "/",
-  });
   return (
     <Stack gap="md">
       <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">

@@ -139,12 +139,12 @@ export const UserSettingsAccountForm = ({
                 placeholder="Straße"
                 {...form.getInputProps("street")}
               />
-              <NumberInput
+              <TextInput
                 label="Hausnummer"
                 placeholder="Hausnummer"
                 {...form.getInputProps("houseNumber")}
               />
-              <NumberInput
+              <TextInput
                 label="Postleitzahl"
                 placeholder="Postleitzahl"
                 {...form.getInputProps("zipCode")}
