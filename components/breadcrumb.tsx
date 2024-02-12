@@ -1,12 +1,48 @@
 "use client";
-import React from "react";
-import { usePathname } from "next/navigation";
+import React, { useTransition } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Breadcrumbs, Anchor, ActionIcon } from "@mantine/core";
+import { Breadcrumbs, Anchor, ActionIcon, rem, Loader } from "@mantine/core";
 import { capitalizeFirstLetter, translate } from "@/utils/index";
-import { IconHome, IconLayoutDashboard } from "@tabler/icons-react";
+import {
+  IconChevronRight,
+  IconHome,
+  IconLayoutDashboard,
+} from "@tabler/icons-react";
+
+export type BreadcrumbLinkProps = {
+  item: string;
+  index: number;
+  slug: string[];
+};
+
+export const BreadcrumbLink = ({ item, index, slug }: BreadcrumbLinkProps) => {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  return (
+    <Anchor
+      component={Link}
+      className="no-underline"
+      href={index === 0 ? `/${item}` : `/${slug.slice(0, index + 1).join("/")}`}
+      onClick={() =>
+        startTransition(() =>
+          router.push(
+            index === 0 ? `/${item}` : `/${slug.slice(0, index + 1).join("/")}`
+          )
+        )
+      }
+      c={index === slug.length - 1 ? "blue" : "gray"}
+      fw={500}
+    >
+      {isPending && <Loader size="xs" color="blue" mr="xs" />}
+      {capitalizeFirstLetter(translate(item))}
+    </Anchor>
+  );
+};
 
 export const Breadcrumb = () => {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const pathname = usePathname();
 
   const slug = pathname.split("/").slice(1);
@@ -14,35 +50,23 @@ export const Breadcrumb = () => {
   if (!slug) return null;
 
   return (
-    <Breadcrumbs>
-      <Link href="/dashboard" passHref>
-        <Anchor component="span" fw={500}>
-          <ActionIcon color="gray">
-            <IconLayoutDashboard
-              style={{ width: "70%", height: "70%" }}
-              stroke={1.5}
-            />
-          </ActionIcon>
-        </Anchor>
-      </Link>
+    <Breadcrumbs separator={<IconChevronRight size={16} />}>
+      <Anchor
+        component={Link}
+        href="/dashboard"
+        fw={500}
+        onClick={() => startTransition(() => router.push("/dashboard"))}
+      >
+        <ActionIcon color="gray" loading={isPending}>
+          <IconLayoutDashboard
+            style={{ width: "70%", height: "70%" }}
+            stroke={1.5}
+          />
+        </ActionIcon>
+      </Anchor>
+
       {slug.map((item, index) => (
-        <Link
-          className="no-underline"
-          passHref
-          key={index}
-          href={
-            index === 0 ? `/${item}` : `/${slug.slice(0, index + 1).join("/")}`
-          }
-        >
-          <Anchor
-            className="no-underline"
-            component="span"
-            c={index === slug.length - 1 ? "blue" : "gray"}
-            fw={500}
-          >
-            {capitalizeFirstLetter(translate(item))}
-          </Anchor>
-        </Link>
+        <BreadcrumbLink key={item} item={item} index={index} slug={slug} />
       ))}
     </Breadcrumbs>
   );
