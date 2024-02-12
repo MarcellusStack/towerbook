@@ -1,14 +1,18 @@
-import { Box, Flex, Stack } from "@mantine/core";
+import { Box, Flex, Group, Stack } from "@mantine/core";
 import React from "react";
 import { Branding } from "@components/branding";
 import Image from "next/image";
+import { UserButton } from "@clerk/nextjs";
 
 export const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Box className="h-screen">
       <Flex className="h-full w-full">
         <Stack className="w-full md:w-1/2" p="md" justify="space-between">
-          <Branding />
+          <Group justify="space-between" className="w-full">
+            <Branding />
+            <UserButton afterSignOutUrl="/" />
+          </Group>
           <Stack className="max-w-[400px] min-w-[265px] self-center" gap="md">
             {children}
           </Stack>
