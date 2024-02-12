@@ -9,7 +9,6 @@ import {
   SimpleGrid,
   Select,
   Text,
-  NumberInput,
   Checkbox,
 } from "@mantine/core";
 import { userAccountSchema } from "@/schemas";
@@ -124,12 +123,12 @@ export const UserAccountForm = ({ user }: { user: UserAccountProps }) => {
               placeholder="Straße"
               {...form.getInputProps("street")}
             />
-            <NumberInput
+            <TextInput
               label="Hausnummer"
               placeholder="Hausnummer"
               {...form.getInputProps("houseNumber")}
             />
-            <NumberInput
+            <TextInput
               label="Postleitzahl"
               placeholder="Postleitzahl"
               {...form.getInputProps("zipCode")}
