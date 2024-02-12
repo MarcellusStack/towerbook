@@ -4,8 +4,8 @@ import { acceptInvite } from "@/server/actions/accept-invite";
 import { getUserInvitations } from "@/server/actions/get-user-invitations";
 import { InvitationExtendedProps } from "@/server/queries/get-invitations";
 import {
-  ActionIcon,
   Avatar,
+  Button,
   Card,
   Group,
   Skeleton,
@@ -29,16 +29,19 @@ export const Invite = ({ props }: { props: InvitationExtendedProps }) => {
           {props.organization.name.charAt(props.organization.name.length - 1)}
         </Avatar>
         <Text>{props.organization.name}</Text>
-        <ActionIcon
+        <Button
           loading={status === "executing"}
-          variant="subtle"
+          variant="filled"
           color="green"
           onClick={() => {
             execute({ id: props.id });
           }}
+          leftSection={
+            <IconCheck style={{ width: "70%", height: "70%" }} stroke={1.5} />
+          }
         >
-          <IconCheck style={{ width: "70%", height: "70%" }} stroke={1.5} />
-        </ActionIcon>
+          Annehmen
+        </Button>
       </Group>
     </Card>
   );
@@ -55,7 +58,7 @@ export const Invitations = () => {
   }, []);
 
   return (
-    <Stack gap="sm" mt="md">
+    <Stack gap="sm">
       {status === "executing" && <Skeleton w="100%" h={350} />}
       {result.data &&
         result.data.invitations.map((invitation: InvitationExtendedProps) => (

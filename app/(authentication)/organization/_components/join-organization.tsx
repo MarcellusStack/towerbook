@@ -4,9 +4,15 @@ import { Text, Stack, SegmentedControl, rem } from "@mantine/core";
 import { CreateOrganizationForm } from "@components/forms/create-organization-form";
 import { IconHomeMove, IconHomePlus } from "@tabler/icons-react";
 import { Invitations } from "@components/invitations";
+import { TableLoader } from "@/components/loader/table-loader";
+import { useGetInvitations } from "@organization/_data";
 
 export const JoinOrganization = () => {
   const [value, setValue] = useState("");
+
+  const { data: invitations, isPending } = useGetInvitations();
+
+  if (isPending || !invitations) return <TableLoader />;
   return (
     <>
       <SegmentedControl
@@ -23,6 +29,7 @@ export const JoinOrganization = () => {
               </Stack>
             ),
             value: "create",
+            disabled: invitations.length > 0 ? true : false,
           },
           {
             label: (
