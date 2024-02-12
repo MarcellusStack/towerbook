@@ -17,6 +17,7 @@ export const getTowersAction = authAction("readTower")(
           id: true,
           name: true,
           number: true,
+          location: true,
         },
       });
 

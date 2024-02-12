@@ -67,6 +67,7 @@ export const TowerComboboxButton = ({
               id: filteredTower[0].id,
               name: filteredTower[0].name,
               number: filteredTower[0].number,
+              location: filteredTower[0].location,
             },
             towerLeader: {
               id: "",
@@ -109,7 +110,7 @@ export const TowerComboboxButton = ({
                 )
                 .map((item) => (
                   <Combobox.Option value={item.id} key={item.id}>
-                    {item.name} {item.number}
+                    {item.name} {item.number} - {item.location}
                   </Combobox.Option>
                 ))
             ) : (

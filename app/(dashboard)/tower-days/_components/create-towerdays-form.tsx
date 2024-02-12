@@ -85,6 +85,8 @@ export const CreateTowerDaysForm = () => {
               <Stack gap="xs">
                 <Text>
                   {towerday.tower.name} {towerday.tower.number}
+                  {" - "}
+                  {towerday.tower.location}
                 </Text>
                 <UserSelect
                   formActionId="create-towerdays-form"
