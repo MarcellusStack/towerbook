@@ -10,7 +10,6 @@ import {
   Card,
   rem,
   ActionIcon,
-  Box,
   Avatar,
 } from "@mantine/core";
 import { towerDayWatchmanPlanSchema } from "@/schemas";
