@@ -66,13 +66,6 @@ export const UserSettingsAccountForm = ({
     redirectUrl: "/organization",
   });
 
-  const deleteAccountAction = useActionNotification({
-    action: deleteAccount,
-    executeNotification: `Benutzer wird gelöscht`,
-    hideModals: true,
-    redirectUrl: "/",
-  });
-
   return (
     <Stack gap="sm">
       <form onSubmit={form.onSubmit((values) => execute(values))}>
@@ -248,43 +241,6 @@ export const UserSettingsAccountForm = ({
         </Stack>
       </form>
       <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-        <Fieldset
-          style={{
-            borderColor: "var(--mantine-color-red-2)",
-          }}
-          id="delete-account"
-          legend={
-            <Text fw={700} size="xl">
-              Account löschen
-            </Text>
-          }
-        >
-          <Stack gap="sm">
-            <Text>
-              Entfernen Sie Ihr persönliches Konto und alle dazugehörigen
-              Inhalte dauerhaft von der Digitales Turmbuch. Diese Aktion kann
-              nicht rückgängig gemacht werden, daher setzen Sie bitte mit
-              Vorsicht fort.
-            </Text>
-            <Box className="self-end">
-              <ModalAction
-                color="red"
-                label="Account löschen"
-                content={
-                  <Button
-                    color="red"
-                    loading={deleteAccountAction.status === "executing"}
-                    className="self-end"
-                    onClick={() => deleteAccountAction.execute({})}
-                  >
-                    Löschen
-                  </Button>
-                }
-                loading={deleteAccountAction.status === "executing"}
-              />
-            </Box>
-          </Stack>
-        </Fieldset>
         <Fieldset
           style={{
             borderColor: "var(--mantine-color-red-2)",
