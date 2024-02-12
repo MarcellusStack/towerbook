@@ -5,8 +5,15 @@ import { useForm, zodResolver } from "@mantine/form";
 import { TextInput, Button, Stack } from "@mantine/core";
 import { onboardingSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { DatePickerInput } from "@mantine/dates";
+import { DateInput, DatePickerInput } from "@mantine/dates";
 import { createUser } from "@/app/(authentication)/onboarding/_actions";
+
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+// It is required to extend dayjs with customParseFormat plugin
+// in order to parse dates with custom format
+dayjs.extend(customParseFormat);
 
 export const Onboarding = () => {
   const form = useForm({
@@ -33,12 +40,18 @@ export const Onboarding = () => {
       <Stack gap="md">
         <TextInput label="Vorname" {...form.getInputProps("firstName")} />
         <TextInput label="Nachname" {...form.getInputProps("lastName")} />
-        <DatePickerInput
+        <DateInput
           locale="de"
           label="Geburtsdatum"
           valueFormat="DD.MM.YYYY"
           {...form.getInputProps("birthDate")}
         />
+        {/* <DatePickerInput
+          locale="de"
+          label="Geburtsdatum"
+          valueFormat="DD.MM.YYYY"
+          {...form.getInputProps("birthDate")}
+        /> */}
         <Button variant="filled" loading={status === "executing"} type="submit">
           Anmelden
         </Button>

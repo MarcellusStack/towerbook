@@ -105,6 +105,7 @@ export const PermissionForm = ({
       readTowerday: permission.readTowerday,
       updateTowerday: permission.updateTowerday,
       deleteTowerday: permission.deleteTowerday,
+      completeTowerdaySection: permission.completeTowerdaySection,
       completeTowerday: permission.completeTowerday,
       createDutyplan: permission.createDutyplan,
       readDutyplan: permission.readDutyplan,
