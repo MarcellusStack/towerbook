@@ -130,7 +130,6 @@ export const createTowerDays = authAction("createTowerday")(
         data: towerDayData,
       });
     } catch (error) {
-      console.log(error);
       throw new Error("Fehler beim Erstellen des Turm Tag");
     }
 
