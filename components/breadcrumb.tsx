@@ -2,9 +2,13 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Breadcrumbs, Anchor, ActionIcon } from "@mantine/core";
+import { Breadcrumbs, Anchor, ActionIcon, rem } from "@mantine/core";
 import { capitalizeFirstLetter, translate } from "@/utils/index";
-import { IconHome, IconLayoutDashboard } from "@tabler/icons-react";
+import {
+  IconChevronRight,
+  IconHome,
+  IconLayoutDashboard,
+} from "@tabler/icons-react";
 
 export const Breadcrumb = () => {
   const pathname = usePathname();
@@ -14,7 +18,7 @@ export const Breadcrumb = () => {
   if (!slug) return null;
 
   return (
-    <Breadcrumbs>
+    <Breadcrumbs separator={<IconChevronRight size={16} />}>
       <Link href="/dashboard" passHref>
         <Anchor component="span" fw={500}>
           <ActionIcon color="gray">
