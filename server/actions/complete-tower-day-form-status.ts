@@ -1,10 +1,10 @@
 "use server";
 import { prisma } from "@server/db";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { authAction } from "@server/lib/utils/action-clients";
 import { towerDayFormStatusSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 
-export const completeTowerDayFormStatus = adminAction(
+export const completeTowerDayFormStatus = authAction("completeTowerdaySection")(
   towerDayFormStatusSchema,
   async ({ id, form }, { session }) => {
     try {
@@ -22,16 +22,18 @@ export const completeTowerDayFormStatus = adminAction(
       });
 
       if (!towerday.id) {
-        throw new Error("Couldnt update tower day form status");
+        throw new Error(
+          "Turm Tag Formular nicht gefunden oder bereits abgeschlossen"
+        );
       }
-
-      revalidatePath("/", "layout");
-
-      return {
-        message: `Der Turm Tag Form Status wurde aktualisiert.`,
-      };
     } catch (error) {
-      throw new Error("Fehler beim aktualisieren des Turm Tag Form Status");
+      throw new Error("Fehler beim abschließen des Turm Tag Formular");
     }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Das Turm Tag Formular wurde aktualisiert`,
+    };
   }
 );
