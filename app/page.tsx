@@ -13,7 +13,7 @@ export default async function Index() {
         Aufzeichnungen und Informationen mit der Digitales Turmbuch App.
         Optimieren Sie Ihre Arbeitsabläufe und bleiben Sie organisiert.
       </Text>
-      <Button component={Link} href="/sign-up">
+      <Button component={Link} href="/sign-in">
         Jetzt Starten
       </Button>
     </AuthLayout>

@@ -3,8 +3,6 @@ import { prisma } from "@server/db";
 import { authAction } from "@server/lib/utils/action-clients";
 import { inviteUserSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
-import { sendEmail } from "@server/lib/utils/send-email";
-import { InviteEmail } from "@/components/emails/invite-email";
 import { toLowercaseAndTrim } from "@/utils";
 
 export const inviteUser = authAction("createInvitation")(
