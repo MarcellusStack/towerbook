@@ -36,6 +36,15 @@ export const getTowers = authFilterQuery(async (search, session) => {
       organizationId: session.organizationId,
       number: search ?? undefined,
     },
+    select: {
+      id: true,
+      number: true,
+      status: true,
+      location: true,
+      main: true,
+      type: true,
+      name:true,
+    },
   });
 }, "readTower");
 
@@ -53,6 +62,7 @@ export const getTowerOverview = authFilterQuery(async (search, session) => {
       id: true,
       status: true,
       main: true,
+      location: true,
     },
   });
 
@@ -65,9 +75,12 @@ export const getTowerOverview = authFilterQuery(async (search, session) => {
 
   const towerdays = await prisma.towerDay.findMany({
     where: {
-      towerId: tower.id,
+      organizationId: session.organizationId,
       createdAt: {
         gte: today,
+      },
+      tower: {
+        location: tower.location,
       },
     },
     orderBy: {

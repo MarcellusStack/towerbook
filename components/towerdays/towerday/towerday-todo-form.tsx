@@ -14,6 +14,7 @@ import {
   rem,
   ActionIcon,
   Box,
+  Textarea,
 } from "@mantine/core";
 import { towerDayTodoSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
@@ -66,6 +67,10 @@ export const TowerdayTodoForm = ({
                         placeholder="Todo"
                         {...form.getInputProps(`todo.${index}.todo`)}
                       />
+                      <Textarea
+                        placeholder="Bemerkung"
+                        {...form.getInputProps(`todo.${index}.comment`)}
+                      />
                       <Checkbox
                         color="green"
                         label="Erledigt"
@@ -96,6 +101,7 @@ export const TowerdayTodoForm = ({
                 form.insertListItem("todo", {
                   id: uuidv4(),
                   todo: "",
+                  comment: "",
                   checked: false,
                 });
               }}
