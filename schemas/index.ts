@@ -756,3 +756,9 @@ export const resetPasswordSchema = z.object({
     message: "Passwort muss mindestens 6 Zeichen lang sein",
   }),
 });
+
+export const passwordSchema = z.object({
+  password: z.string().min(8, {
+    message: "Passwort wird benötigt und muss mindestens 8 Zeichen lang sein",
+  }),
+});
