@@ -69,7 +69,12 @@ export const towerDayWatchmanPlanSchema = z.object({
 export const towerDayTodoSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   todo: z.array(
-    z.object({ id: z.string(), todo: z.string(), checked: z.boolean() })
+    z.object({
+      id: z.string(),
+      todo: z.string(),
+      comment: z.string(),
+      checked: z.boolean(),
+    })
   ),
 });
 
@@ -724,6 +729,13 @@ export const towerdayAdministrationMaterialSchema = z.object({
     z.object({
       id: z.string(),
       material: z.string(),
+      type: z.enum(["daily", "weekly", "monthly"], {
+        errorMap: () => ({
+          message: "Zeitraum wird benötigt",
+        }),
+      }),
+      day: z.string(),
+      date: z.union([z.string(), z.date()]),
     })
   ),
 });

@@ -58,6 +58,16 @@ export function TowerTable() {
           ...tableColumnProps,
         },
         {
+          accessor: "main",
+          title: "Haupt/Nebenturm",
+          render: ({ main }) => (
+            <Badge color="black" variant={main ? "filled" : "outline"}>
+              {main ? "Hauptturm" : "Nebenturm"}
+            </Badge>
+          ),
+          ...tableColumnProps,
+        },
+        {
           accessor: "name",
           title: "Name",
           ...tableColumnProps,
@@ -71,16 +81,6 @@ export function TowerTable() {
           accessor: "location",
           title: "Standort",
           ...tableColumnProps,
-        },
-        {
-          accessor: "main",
-          title: "Hauptturm",
-          ...tableColumnProps,
-          render: ({ main }) => (
-            <Badge color="black" variant={main ? "filled" : "outline"}>
-              {main ? "Hauptturm" : "Nebenturm"}
-            </Badge>
-          ),
         },
         {
           accessor: "actions",

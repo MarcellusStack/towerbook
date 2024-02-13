@@ -42,13 +42,38 @@ export const getTowerdayAdministration = async (organizationId: string) => {
     throw new Error("Fehler beim laden der Organisation");
   }
 
+  const weekdaysNumber = {
+    sunday: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+  };
+
   const material =
     towerdayAdministration.material &&
-    towerdayAdministration.material.map((item) => ({
-      ...item,
-      checked: "unchecked",
-      comment: "",
-    }));
+    towerdayAdministration?.material
+      .filter((material) => {
+        const today = new Date();
+
+        switch (material.type) {
+          case "daily":
+            return true;
+          case "weekly":
+            return weekdaysNumber[material.day] === today.getDay();
+          case "monthly":
+            return new Date(material.date).getDate() === today.getDate();
+          default:
+            return false;
+        }
+      })
+      .map((material) => ({
+        ...material,
+        checked: "unchecked",
+        comment: "",
+      }));
 
   const weather =
     towerdayAdministration.weather &&
@@ -59,16 +84,6 @@ export const getTowerdayAdministration = async (organizationId: string) => {
       wind_in_bft: "",
       wind_direction: "",
     }));
-
-  const weekdaysNumber = {
-    sunday: 0,
-    monday: 1,
-    tuesday: 2,
-    wednesday: 3,
-    thursday: 4,
-    friday: 5,
-    saturday: 6,
-  };
 
   const todos =
     towerdayAdministration.todo &&
@@ -90,6 +105,7 @@ export const getTowerdayAdministration = async (organizationId: string) => {
       .map((todo) => ({
         ...todo,
         checked: false,
+        comment: "",
       }));
 
   return {

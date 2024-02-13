@@ -438,7 +438,89 @@ export const OrganizationSettingsForm = ({
                             `material.${index}.material`
                           )}
                         />
-
+                        <Select
+                          placeholder="Zeitraum"
+                          data={[
+                            {
+                              label: "Täglich",
+                              value: "daily",
+                            },
+                            {
+                              label: "Wöchentlich",
+                              value: "weekly",
+                            },
+                            {
+                              label: "Monatlich",
+                              value: "monthly",
+                            },
+                          ]}
+                          {...towerdayAdministrationMaterialForm.getInputProps(
+                            `material.${index}.type`
+                          )}
+                        />
+                        {towerdayAdministrationMaterialForm.values.material[
+                          index
+                        ].type === "weekly" && (
+                          <Select
+                            placeholder="Wochentag"
+                            data={[
+                              {
+                                label: "Montag",
+                                value: "monday",
+                              },
+                              {
+                                label: "Dienstag",
+                                value: "tuesday",
+                              },
+                              {
+                                label: "Mittwoch",
+                                value: "wednesday",
+                              },
+                              {
+                                label: "Donnerstag",
+                                value: "thursday",
+                              },
+                              {
+                                label: "Freitag",
+                                value: "friday",
+                              },
+                              {
+                                label: "Samstag",
+                                value: "saturday",
+                              },
+                              {
+                                label: "Sonntag",
+                                value: "sunday",
+                              },
+                            ]}
+                            {...towerdayAdministrationMaterialForm.getInputProps(
+                              `material.${index}.day`
+                            )}
+                          />
+                        )}
+                        {towerdayAdministrationMaterialForm.values.material[
+                          index
+                        ].type === "monthly" && (
+                          <DatePickerInput
+                            clearable
+                            locale="de"
+                            placeholder="Tag"
+                            valueFormat="DD"
+                            {...towerdayAdministrationMaterialForm.getInputProps(
+                              `material.${index}.date`
+                            )}
+                            value={
+                              towerdayAdministrationMaterialForm.values
+                                .material[index].date
+                                ? new Date(
+                                    towerdayAdministrationMaterialForm.values.material[
+                                      index
+                                    ].date
+                                  )
+                                : null
+                            }
+                          />
+                        )}
                         <ActionIcon
                           className="self-end"
                           onClick={() => {
@@ -467,6 +549,9 @@ export const OrganizationSettingsForm = ({
                 towerdayAdministrationMaterialForm.insertListItem("material", {
                   id: uuidv4(),
                   material: "",
+                  type: "",
+                  day: "",
+                  date: new Date(),
                 });
               }}
             >
