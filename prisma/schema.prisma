@@ -183,6 +183,7 @@ model User {
   droneClass                  String?
   volunteerDataSheet          String?
   youthLeaderCard             String?
+  criminalRecord              String?
   instructorSwimmer           String?
   lifeguardInstructor         String?
   instructorWaterRescuer      String?

@@ -141,6 +141,10 @@ export const certificateInputs = [
         label: "Jugendleiter Karte",
         inputProp: "youthLeaderCard",
       },
+      {
+        label: "Führungszeugnis",
+        inputProp: "criminalRecord",
+      },
     ],
   },
   {
