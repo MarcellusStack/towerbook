@@ -15,6 +15,7 @@ export const UserCertificateForm = ({
   user: UserCertificateProps;
 }) => {
   const form = useForm({
+    name: "user-certificate-form",
     validate: zodResolver(userCertificateSchema),
     initialValues: {
       userId: user.id,
@@ -82,11 +83,10 @@ export const UserCertificateForm = ({
                     form.getInputProps(input.inputProp).value ??
                     "Datei hochladen"
                   }
-                  form={form}
+                  formActionId="user-certificate-form"
                   inputValue={form.getInputProps(input.inputProp).value}
                   inputProp={input.inputProp}
                   userId={user.id}
-                  fileType="pdf"
                 />
               ))}
             </SimpleGrid>

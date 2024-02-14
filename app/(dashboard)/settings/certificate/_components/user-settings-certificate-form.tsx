@@ -15,6 +15,7 @@ export const UserSettingsCertificateForm = ({
   user: UserCertificateProps;
 }) => {
   const form = useForm({
+    name: "user-settings-certificate-form",
     validate: zodResolver(certificateSchema),
     initialValues: {
       lifeguardLicense: user.lifeguardLicense,
@@ -75,18 +76,19 @@ export const UserSettingsCertificateForm = ({
           >
             <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
               {section.inputs.map((input) => (
-                <UploadInput
-                  label={input.label}
-                  placeholder={
-                    form.getInputProps(input.inputProp).value ??
-                    "Datei hochladen"
-                  }
-                  form={form}
-                  inputValue={form.getInputProps(input.inputProp).value}
-                  inputProp={input.inputProp}
-                  userId={user.id}
-                  fileType="pdf"
-                />
+                <Stack gap="sm">
+                  <UploadInput
+                    label={input.label}
+                    placeholder={
+                      form.getInputProps(input.inputProp).value ??
+                      "Datei hochladen"
+                    }
+                    formActionId="user-settings-certificate-form"
+                    inputValue={form.getInputProps(input.inputProp).value}
+                    inputProp={input.inputProp}
+                    userId={user.id}
+                  />
+                </Stack>
               ))}
             </SimpleGrid>
           </Fieldset>

@@ -9,28 +9,29 @@ import React from "react";
 import { downloadFile } from "@/server/actions/download-file";
 import { notifications } from "@mantine/notifications";
 import { useAction } from "next-safe-action/hook";
+import { createFormActions } from "@mantine/form";
 
 export const UploadInput = ({
   label,
   placeholder,
-  form,
+  formActionId,
   inputProp,
   inputValue,
   userId,
-  fileType,
 }: {
   label: string;
   placeholder: string;
-  form: any;
+  formActionId: string;
   inputProp: string;
   inputValue: string;
   userId: string;
-  fileType: "pdf" | "png";
 }) => {
   const upload = useActionNotification({
     action: uploadFile,
     executeNotification: `Datei wird hochgeladen`,
   });
+
+  const formAction = createFormActions(formActionId);
 
   //Used the useActionNotification template and removed some of the stuff that isnt needed because for now this is a one time thing to do another action
   //In the future we will prob need to make onsuccess, onerror, onexecute, etc. props for the hook and make it more dynamic
@@ -105,13 +106,13 @@ export const UploadInput = ({
           <IconDownload style={{ width: "70%", height: "70%" }} stroke={1.5} />
         </ActionIcon>
       }
-      accept={fileType === "pdf" ? "application/pdf" : "image/jpeg"}
+      accept="application/pdf"
       onChange={async (event) => {
         if (!event) return;
 
         const base64 = await convertBase64(event);
 
-        form.setFieldValue(inputProp, `${userId}_${event.name}`);
+        formAction.setFieldValue(inputProp, `${userId}_${event.name}`);
 
         upload.execute({
           file: base64,
