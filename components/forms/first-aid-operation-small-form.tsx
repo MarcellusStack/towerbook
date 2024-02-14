@@ -212,7 +212,7 @@ export const FirstAidOperationSmallForm = ({ operation }: { operation }) => {
               })}
             />
             <Checkbox
-              label="Splitter entfernt"
+              label="Splitter selbständig entfernt"
               {...form.getInputProps("splinterRemoved", {
                 type: "checkbox",
               })}
