@@ -25,7 +25,7 @@
       "@search-list/*": ["./app/(dashboard)/protocols/search-list/*"],
       "@user/*": ["./app/(dashboard)/users/*"],
       "@towers/*": ["./app/(dashboard)/towers/*"],
-      "@permissions/*": ["./app/(dashboard)/permissions/*"],
+      "@permissions/*": ["./app/(dashboard)/settings/permissions/*"],
       "@onboarding/*": ["./app/(authentication)/onboarding/*"],
       "@organization/*": ["./app/(authentication)/organization/*"],
       "@towerdays/*": ["./app/(dashboard)/tower-days/*"],
@@ -42,7 +42,7 @@
       "@type/*": ["./type/*"],
       "@services/*": ["./services/*"],
       "@data/*": ["./data/*"],
-      "@sign-up/*": ["./app/(authentication)/sign-up/*"],
+      "@sign-up/*": ["./app/(authentication)/sign-up/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

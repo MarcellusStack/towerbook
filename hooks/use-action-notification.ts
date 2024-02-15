@@ -3,6 +3,7 @@ import { useAction } from "next-safe-action/hook";
 import { notifications } from "@mantine/notifications";
 import { useRouter } from "next/navigation";
 import { modals } from "@mantine/modals";
+import { v4 as uuidv4 } from "uuid";
 
 export type ActionNotificationProps = {
   action: any;
@@ -41,7 +42,7 @@ export const useActionNotification = ({
         notifications.hide(executeNotification);
       }
       notifications.show({
-        id: "success-action-notification",
+        id: `success-action-notification-${uuidv4()}`,
         withBorder: true,
         autoClose: 5000,
         title: "Erfolgreich",
@@ -69,7 +70,7 @@ export const useActionNotification = ({
       }
 
       notifications.show({
-        id: "error-action-notification",
+        id: `error-action-notification-${uuidv4()}`,
         withBorder: true,
         autoClose: 5000,
         title: "Fehler",

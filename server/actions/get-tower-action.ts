@@ -15,6 +15,7 @@ export const getTowerAction = adminAction(
           id: true,
           name: true,
           number: true,
+          location: true,
         },
       });
 

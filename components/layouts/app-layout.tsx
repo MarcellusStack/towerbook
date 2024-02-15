@@ -17,7 +17,6 @@ import {
   IconSearch,
   IconBell,
   IconSettings,
-  IconRefresh,
   IconFileInfo,
   IconFileExport,
   IconLayoutDashboard,
@@ -289,15 +288,14 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
           </List>
           <List spacing="sm" size="sm" center>
             <List.Item className="grid place-items-center">
-              <ActionIcon
-                component={Link}
-                href="/settings"
-                variant="subtle"
-                size="lg"
-                aria-label="Settings"
-              >
-                <IconSettings stroke={1.5} />
-              </ActionIcon>
+              <NavLink
+                link={{
+                  id: "nav-GD5KD7GHZW",
+                  href: "/settings",
+                  icon: <IconSettings stroke={1.5} />,
+                  name: "Einstellungen",
+                }}
+              />
               <Divider mt="sm" />
             </List.Item>
           </List>

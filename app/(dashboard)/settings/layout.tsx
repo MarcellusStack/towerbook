@@ -3,6 +3,7 @@ import {
   IconLayoutDashboard,
   IconTopologyStar3,
   IconUser,
+  IconUserShield,
 } from "@tabler/icons-react";
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { PageTabs } from "@components/page-tabs";
@@ -27,6 +28,11 @@ export const links = [
     value: "organization",
     icon: <IconTopologyStar3 size={16} stroke={1.5} />,
     label: "Organisation",
+  },
+  {
+    value: "permissions",
+    icon: <IconUserShield size={16} stroke={1.5} />,
+    label: "Berechtigungen",
   },
 ];
 

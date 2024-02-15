@@ -4,7 +4,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
-import { PermissionLayout } from "./_components/permission-layout";
+import { PermissionLayout } from "@permissions/[id]/_components/permission-layout";
 import { getPermission } from "@permissions/[id]/_actions";
 
 export default async function Layout({

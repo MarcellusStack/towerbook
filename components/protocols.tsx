@@ -1,7 +1,16 @@
 "use client";
-import { Box, Card, SimpleGrid, Stack, ThemeIcon, Text } from "@mantine/core";
+import {
+  Box,
+  Card,
+  SimpleGrid,
+  Stack,
+  ThemeIcon,
+  Text,
+  ActionIcon,
+} from "@mantine/core";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useTransition } from "react";
 
 export type Protocol = {
   id: string;
@@ -11,20 +20,24 @@ export type Protocol = {
 };
 
 export const Protocol = ({ props }: { props: Protocol }) => {
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
   return (
     <Card
       key={props.id}
       component={Link}
       href={props.link}
+      onClick={() => startTransition(() => router.push(props.link))}
       padding="lg"
       radius="sm"
       withBorder
     >
       <Stack gap="md" align="center">
         <Box />
-        <ThemeIcon size="xl" variant="light">
+        <ActionIcon loading={isPending} size="xl" variant="light">
           {props.icon}
-        </ThemeIcon>
+        </ActionIcon>
         <Text fw={700} size="xl" ta="center">
           {props.name}
         </Text>

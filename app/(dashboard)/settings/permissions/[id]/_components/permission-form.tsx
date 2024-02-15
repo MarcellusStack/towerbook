@@ -13,6 +13,7 @@ import {
   ThemeIcon,
   rem,
   Text,
+  Textarea,
 } from "@mantine/core";
 import { createFormActions, useForm, zodResolver } from "@mantine/form";
 import {
@@ -20,6 +21,7 @@ import {
   IconCheck,
   IconChecklist,
   IconEye,
+  IconFileX,
   IconPencil,
   IconPlus,
   IconTrash,
@@ -29,7 +31,7 @@ import { PermissionProps, updatePermission } from "@permissions/[id]/_actions";
 import { updatePermissionSchema } from "@/schemas";
 import { permissions } from "@/constants";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { UserComboboxButton } from "@/components/user-combobox-button";
+import { EditLink } from "@/components/edit-link";
 
 export const PermissionSelect = ({
   formValue,
@@ -136,7 +138,6 @@ export const PermissionForm = ({
       readPermission: permission.readPermission,
       updatePermission: permission.updatePermission,
       deletePermission: permission.deletePermission,
-      users: permission.users,
     },
   });
 
@@ -193,6 +194,14 @@ export const PermissionForm = ({
                     />
                   </ThemeIcon>
                 </Table.Th>
+                <Table.Th className="w-0">
+                  <ThemeIcon variant="white" color="black" size="lg">
+                    <IconFileX
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  </ThemeIcon>
+                </Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -213,7 +222,7 @@ export const PermissionForm = ({
           </Table>
           <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
             <TextInput label="Name" {...form.getInputProps("name")} />
-            <TextInput
+            <Textarea
               label="Beschreibung"
               {...form.getInputProps("description")}
             />
@@ -223,39 +232,6 @@ export const PermissionForm = ({
                 type: "checkbox",
               })}
             />
-          </SimpleGrid>
-          <UserComboboxButton
-            label="Benutzer"
-            formActionId="permission-form"
-            formField="users"
-          />
-          <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
-            {form.values.users.map((user, index) => (
-              <Card key={`${user.id}`} padding="xs" withBorder>
-                <Group justify="space-between">
-                  <Avatar color="blue" radius="xl">
-                    {user.firstName?.charAt(0)}
-                    {user.lastName?.charAt(0)}
-                  </Avatar>
-                  <Group gap={rem(4)}>
-                    <Text>{user.firstName}</Text>
-                    <Text>{user.lastName}</Text>
-                  </Group>
-                  <ActionIcon
-                    onClick={() => {
-                      form.removeListItem("users", index);
-                    }}
-                    variant="subtle"
-                    color="red"
-                  >
-                    <IconTrash
-                      style={{ width: rem(16), height: rem(16) }}
-                      stroke={1.5}
-                    />
-                  </ActionIcon>
-                </Group>
-              </Card>
-            ))}
           </SimpleGrid>
         </Stack>
         <Card withBorder mt="sm" p="sm" pos="sticky" bottom={rem(12)}>

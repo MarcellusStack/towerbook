@@ -78,7 +78,6 @@ export const updatePermission = authAction("updatePermission")(
       readPermission,
       updatePermission,
       deletePermission,
-      users,
     },
     { session }
   ) => {
@@ -94,13 +93,13 @@ export const updatePermission = authAction("updatePermission")(
         throw new Error("Berechtigung nicht gefunden");
       }
 
-      const currentUserIds = permission.users.map((user) => user.id);
+      /* const currentUserIds = permission.users.map((user) => user.id);
 
       const usersToDisconnect = currentUserIds.filter(
         (id) => !users.includes(id)
       );
 
-      const usersToConnect = users.filter((id) => !currentUserIds.includes(id));
+      const usersToConnect = users.filter((id) => !currentUserIds.includes(id)); */
 
       await prisma.permission.update({
         where: {
@@ -157,10 +156,10 @@ export const updatePermission = authAction("updatePermission")(
           readPermission: readPermission,
           updatePermission: updatePermission,
           deletePermission: deletePermission,
-          users: {
+          /* users: {
             disconnect: usersToDisconnect.map((id) => ({ id })),
             connect: usersToConnect.map((user) => ({ id: user.id })),
-          },
+          }, */
         },
       });
     } catch (error) {
