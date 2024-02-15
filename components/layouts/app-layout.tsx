@@ -17,7 +17,6 @@ import {
   IconSearch,
   IconBell,
   IconSettings,
-  IconRefresh,
   IconFileInfo,
   IconFileExport,
   IconLayoutDashboard,
@@ -42,6 +41,7 @@ import { Breadcrumb } from "@components/breadcrumb";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { useTransition } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const NavLink = ({ link }: { link: NavLinkProps }) => {
   const [isPending, startTransition] = useTransition();
@@ -289,15 +289,14 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
           </List>
           <List spacing="sm" size="sm" center>
             <List.Item className="grid place-items-center">
-              <ActionIcon
-                component={Link}
-                href="/settings"
-                variant="subtle"
-                size="lg"
-                aria-label="Settings"
-              >
-                <IconSettings stroke={1.5} />
-              </ActionIcon>
+              <NavLink
+                link={{
+                  id: uuidv4(),
+                  href: "/settings",
+                  icon: <IconSettings stroke={1.5} />,
+                  name: "Einstellungen",
+                }}
+              />
               <Divider mt="sm" />
             </List.Item>
           </List>
