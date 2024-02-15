@@ -6,22 +6,27 @@ export const certificateInputs = [
       {
         label: "Rettungsschwimmer",
         inputProp: "lifeguardLicense",
+        inputExpirationProp: "lifeguardLicenseExpiration",
       },
       {
         label: "Schnorchel",
         inputProp: "snorkelLicense",
+        inputExpirationProp: "snorkelLicenseExpiration",
       },
       {
         label: "Rettungsschwimmer im Wasserrettungsdienst",
         inputProp: "lifeguardWaterRescueService",
+        inputExpirationProp: "lifeguardWaterRescueServiceExpiration",
       },
       {
         label: "Wasserretter",
         inputProp: "waterRescuer",
+        inputExpirationProp: "waterRescuerExpiration",
       },
       {
         label: "Fließwasserretter",
         inputProp: "riverRescuer",
+        inputExpirationProp: "riverRescuerExpiration",
       },
     ],
   },
@@ -32,30 +37,37 @@ export const certificateInputs = [
       {
         label: "Sanitätsausbildung",
         inputProp: "medicalTraining",
+        inputExpirationProp: "medicalTrainingExpiration",
       },
       {
         label: "Rettungshelfer",
         inputProp: "paramedicHelper",
+        inputExpirationProp: "paramedicHelperExpiration",
       },
       {
         label: "Rettungssanitäter",
         inputProp: "paramedic",
+        inputExpirationProp: "paramedicExpiration",
       },
       {
         label: "Rettungsassistent",
         inputProp: "paramedicAssistance",
+        inputExpirationProp: "paramedicAssistanceExpiration",
       },
       {
         label: "Notfallsanitäter",
         inputProp: "paramedicEmergency",
+        inputExpirationProp: "paramedicEmergencyExpiration",
       },
       {
         label: "Arzt",
         inputProp: "physician",
+        inputExpirationProp: "physicianExpiration",
       },
       {
         label: "Notarzt",
         inputProp: "physicianEmergency",
+        inputExpirationProp: "physicianEmergencyExpiration",
       },
     ],
   },
@@ -66,18 +78,22 @@ export const certificateInputs = [
       {
         label: "Truppführer",
         inputProp: "squadLeader",
+        inputExpirationProp: "squadLeaderExpiration",
       },
       {
         label: "Gruppenführer",
         inputProp: "groupLeader",
+        inputExpirationProp: "groupLeaderExpiration",
       },
       {
         label: "Wachleiter",
         inputProp: "guardLeader",
+        inputExpirationProp: "guardLeaderExpiration",
       },
       {
         label: "Zugführer",
         inputProp: "trainLeader",
+        inputExpirationProp: "trainLeaderExpiration",
       },
     ],
   },
@@ -88,26 +104,32 @@ export const certificateInputs = [
       {
         label: "KFZ Führerschein Klasse",
         inputProp: "carDrivingLicense",
+        inputExpirationProp: "carDrivingLicenseExpiration",
       },
       {
         label: "Blaulichtunterweisung",
         inputProp: "blueLightInstruction",
+        inputExpirationProp: "blueLightInstructionExpiration",
       },
       {
         label: "Bootsführer See",
         inputProp: "boatmanLake",
+        inputExpirationProp: "boatmanLakeExpiration",
       },
       {
         label: "Bootsführer Fließgewässer",
         inputProp: "boatmanInland",
+        inputExpirationProp: "boatmanInlandExpiration",
       },
       {
         label: "Rettungsbootführer",
         inputProp: "lifeboatOperator",
+        inputExpirationProp: "lifeboatOperatorExpiration",
       },
       {
         label: "RWC-Pilot Stage",
         inputProp: "rwcPilotStage",
+        inputExpirationProp: "rwcPilotStageExpiration",
       },
     ],
   },
@@ -118,10 +140,12 @@ export const certificateInputs = [
       {
         label: "SRC- Schein",
         inputProp: "srcCertificate",
+        inputExpirationProp: "srcCertificateExpiration",
       },
       {
         label: "BOS- Schein",
         inputProp: "bosCertificate",
+        inputExpirationProp: "bosCertificateExpiration",
       },
     ],
   },
@@ -132,18 +156,22 @@ export const certificateInputs = [
       {
         label: "Drohnenklasse",
         inputProp: "droneClass",
+        inputExpirationProp: "droneClassExpiration",
       },
       {
         label: "Ehrenamtsdatenblatt",
         inputProp: "volunteerDataSheet",
+        inputExpirationProp: "volunteerDataSheetExpiration",
       },
       {
         label: "Jugendleiter Karte",
         inputProp: "youthLeaderCard",
+        inputExpirationProp: "youthLeaderCardExpiration",
       },
       {
         label: "Führungszeugnis",
         inputProp: "criminalRecord",
+        inputExpirationProp: "criminalRecordExpiration",
       },
     ],
   },
@@ -154,18 +182,22 @@ export const certificateInputs = [
       {
         label: "Ausbilder Schwimmen",
         inputProp: "instructorSwimmer",
+        inputExpirationProp: "instructorSwimmerExpiration",
       },
       {
         label: "Ausbilder Rettungsschwimmen",
         inputProp: "lifeguardInstructor",
+        inputExpirationProp: "lifeguardInstructorExpiration",
       },
       {
         label: "Ausbilder Wasserretter",
         inputProp: "instructorWaterRescuer",
+        inputExpirationProp: "instructorWaterRescuerExpiration",
       },
       {
         label: "Ausbilder Sanitätsdienst",
         inputProp: "instructorMedicalService",
+        inputExpirationProp: "instructorMedicalServiceExpiration",
       },
     ],
   },
@@ -176,22 +208,27 @@ export const certificateInputs = [
       {
         label: "Wachgänger",
         inputProp: "guardWalker",
+        inputExpirationProp: "guardWalkerExpiration",
       },
       {
         label: "Boot",
         inputProp: "boat",
+        inputExpirationProp: "boatExpiration",
       },
       {
         label: "KFZ",
         inputProp: "car",
+        inputExpirationProp: "carExpiration",
       },
       {
         label: "RWC",
         inputProp: "rwc",
+        inputExpirationProp: "rwcExpiration",
       },
       {
         label: "Wachleiter",
         inputProp: "guardLeaderInstruction",
+        inputExpirationProp: "guardLeaderInstructionExpiration",
       },
     ],
   },

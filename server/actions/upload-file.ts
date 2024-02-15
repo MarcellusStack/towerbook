@@ -1,12 +1,12 @@
 "use server";
 
 import { supabase } from "@server/supabase";
-import { adminAction } from "@server/lib/utils/action-clients";
+import { adminAction, authAction } from "@server/lib/utils/action-clients";
 import { uploadFileSchema } from "@schemas/index";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { decode } from "base64-arraybuffer";
 
-export const uploadFile = adminAction(
+export const uploadFile = authAction()(
   uploadFileSchema,
   async ({ file, fileName, userId }, { session }) => {
     try {
@@ -35,6 +35,7 @@ export const uploadFile = adminAction(
 
       return { message: `Datei hochgeladen` };
     } catch (error) {
+      console.log(error);
       throw new Error("Fehler beim hochladen der Datei");
     }
   }
