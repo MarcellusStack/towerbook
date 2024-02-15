@@ -61,7 +61,9 @@ export const TowerSelect = ({
           const filteredTower =
             result.data &&
             result.data.towers.filter((tower) => tower.id === val);
-          setValue(`${filteredTower[0].name} ${filteredTower[0].number}`);
+          setValue(
+            `${filteredTower[0].name} ${filteredTower[0].number} - ${filteredTower[0].location}`
+          );
           formAction.setFieldValue(formField, filteredTower[0].id);
           combobox.closeDropdown();
         }}
@@ -99,7 +101,7 @@ export const TowerSelect = ({
                 )
                 .map((item) => (
                   <Combobox.Option value={item.id} key={item.id}>
-                    {item.name} {item.number}
+                    {item.name} {item.number} - {item.location}
                   </Combobox.Option>
                 ))
             ) : (
