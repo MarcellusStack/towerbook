@@ -41,7 +41,6 @@ import { Breadcrumb } from "@components/breadcrumb";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { useTransition } from "react";
-import { v4 as uuidv4 } from "uuid";
 
 const NavLink = ({ link }: { link: NavLinkProps }) => {
   const [isPending, startTransition] = useTransition();
@@ -291,7 +290,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
             <List.Item className="grid place-items-center">
               <NavLink
                 link={{
-                  id: uuidv4(),
+                  id: "nav-GD5KD7GHZW",
                   href: "/settings",
                   icon: <IconSettings stroke={1.5} />,
                   name: "Einstellungen",

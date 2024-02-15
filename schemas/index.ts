@@ -340,13 +340,6 @@ export const updatePermissionSchema = z.object({
   readPermission: z.boolean(),
   updatePermission: z.boolean(),
   deletePermission: z.boolean(),
-  users: z.array(
-    z.object({
-      id: z.string(),
-      firstName: z.string(),
-      lastName: z.string(),
-    })
-  ),
 });
 
 export const createTowerDaysSchema = z.object({

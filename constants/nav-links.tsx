@@ -50,13 +50,6 @@ export const navLinks: NavLinkProps[] = [
     name: "Benutzer",
   },
   {
-    id: "nav-UHDSGAS5HJ",
-    href: "/permissions",
-    icon: <IconUserShield stroke={1.5} />,
-    name: "Berechtigungen",
-  },
-
-  {
     id: "nav-ZCQ3ZSEKLJ",
     href: "/duty-plans",
     icon: <IconCalendarPin stroke={1.5} />,
