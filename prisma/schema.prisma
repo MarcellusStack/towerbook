@@ -148,6 +148,7 @@ model User {
   email                                 String              @unique
   phone                                 String?
   drkMember                             Boolean?            @default(false)
+  drkEmployee                           Boolean?            @default(false)
   drkMemberLocation                     String?
   emergencyContactLastName              String?
   emergencyContactFirstName             String?

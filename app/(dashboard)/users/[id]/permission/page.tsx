@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   const user = await queryClient.fetchQuery({
     queryKey: ["user-permission", id],
-    queryFn: async () => await getUserPermission(id, []),
+    queryFn: async () => await getUserPermission(id),
     staleTime: 0,
   });
 

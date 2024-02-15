@@ -43,6 +43,7 @@ export const UserSettingsAccountForm = ({
       location: user.location,
       phone: user.phone,
       drkMember: user.drkMember,
+      drkEmployee: user.drkEmployee,
       drkMemberLocation: user.drkMemberLocation,
       emergencyContactLastName: user.emergencyContactLastName,
       emergencyContactFirstName: user.emergencyContactFirstName,
@@ -164,6 +165,11 @@ export const UserSettingsAccountForm = ({
                 label="DRK Mitgliedschaft"
                 className="flex items-center"
                 {...form.getInputProps("drkMember", { type: "checkbox" })}
+              />
+              <Checkbox
+                label="Mitarbeiter DRK Rostock"
+                className="flex items-center"
+                {...form.getInputProps("drkEmployee", { type: "checkbox" })}
               />
               <TextInput
                 label="DRK Ortsverein"

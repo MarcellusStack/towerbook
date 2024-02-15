@@ -152,6 +152,7 @@ export const accountSchema = z.object({
   location: z.string().nullable(),
   phone: z.string().nullable(),
   drkMember: z.boolean().nullable(),
+  drkEmployee: z.boolean().nullable(),
   drkMemberLocation: z.string().nullable(),
   emergencyContactLastName: z.string().nullable(),
   emergencyContactFirstName: z.string().nullable(),
