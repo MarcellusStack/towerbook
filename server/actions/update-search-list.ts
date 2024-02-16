@@ -36,6 +36,7 @@ export const updateSearchList = authAction("updateProtocol")(
       supportOtherBeachArea,
       timeFound,
       handOverTo,
+      signature,
     },
     { session }
   ) => {
@@ -74,6 +75,7 @@ export const updateSearchList = authAction("updateProtocol")(
           supportOtherBeachArea: supportOtherBeachArea,
           timeFound: extractTimeFromDate(timeFound),
           handOverTo: handOverTo,
+          signature: signature,
         },
         select: { id: true },
       });

@@ -61,6 +61,7 @@ export const getSearchList = authFilterQuery(async (search, session) => {
       supportOtherBeachArea: true,
       timeFound: true,
       handOverTo: true,
+      signature: true,
       lifeguard: { select: { id: true, firstName: true, lastName: true } },
       tower: { select: { name: true, location: true, number: true } },
     },

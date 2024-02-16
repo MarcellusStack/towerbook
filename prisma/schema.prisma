@@ -279,6 +279,7 @@ model SearchList {
   supportOtherBeachArea     String?
   timeFound                 DateTime?    @db.Time(4)
   handOverTo                String?
+  signature                 Json?
   lifeguardId               String
   lifeguard                 User         @relation(fields: [lifeguardId], references: [id], onDelete: Cascade)
   tower                     Tower        @relation(fields: [towerId], references: [id], onDelete: Cascade)

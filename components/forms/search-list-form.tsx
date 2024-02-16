@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import {
   TextInput,
@@ -14,6 +14,8 @@ import {
   Textarea,
   MultiSelect,
   Space,
+  ActionIcon,
+  Group,
 } from "@mantine/core";
 import { searchListSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
@@ -24,12 +26,15 @@ import { updateSearchList } from "@server/actions/update-search-list";
 import { completeSearchList } from "@/server/actions/complete-search-list";
 import { convertTime } from "@/utils";
 import SignatureCanvas from "react-signature-canvas";
+import { IconPencilX } from "@tabler/icons-react";
+import { Signature } from "@components/signature";
 
 export const SearchListForm = ({
   searchlist,
 }: {
   searchlist: ExtendSearchListWithTowerProps;
 }) => {
+  const signatureRef = useRef();
   const form = useForm({
     name: "search-list-form",
     validate: zodResolver(searchListSchema),
@@ -63,6 +68,7 @@ export const SearchListForm = ({
       timeFound: convertTime(new Date(searchlist.timeFound)),
 
       handOverTo: searchlist.handOverTo,
+      signature: searchlist.signature,
     },
   });
 
@@ -75,6 +81,12 @@ export const SearchListForm = ({
     action: completeSearchList,
     executeNotification: `Sucheintrag wird abgeschlossen`,
   });
+
+  useEffect(() => {
+    signatureRef.current &&
+      searchlist.signature &&
+      signatureRef.current.fromData(searchlist.signature);
+  }, []);
 
   return (
     <form onSubmit={form.onSubmit((values) => update.execute(values))}>
@@ -119,11 +131,7 @@ export const SearchListForm = ({
               type="number"
             />
             <TextInput label="Kleidung" {...form.getInputProps("clothing")} />
-            <Textarea
-              rows={6}
-              label="Sonstige"
-              {...form.getInputProps("description")}
-            />
+            <Textarea label="Sonstige" {...form.getInputProps("description")} />
             <Checkbox
               label="Vorerkrankung"
               {...form.getInputProps("previousIllness", {
@@ -209,7 +217,7 @@ export const SearchListForm = ({
               label="Strandstreife"
               {...form.getInputProps("beachPatrol")}
             />
-            <TextInput
+            <Textarea
               label="Suche mit Boot"
               {...form.getInputProps("searchByBoat")}
             />
@@ -244,24 +252,20 @@ export const SearchListForm = ({
             <Box />
           </SimpleGrid>
           <Space h="sm" />
-          <Text size="sm" fw={500} mb="2">
-            Unterschrift
-          </Text>
-          <Box bg="gray.2">
-            <SignatureCanvas
-              penColor="black"
-              canvasProps={{
-                className: "w-full h-full ",
-              }}
-            />
-          </Box>
+
+          <Signature
+            formActionId="search-list-form"
+            formField="signature"
+            label="Unterschrift"
+            initialValue={searchlist.signature}
+          />
         </Fieldset>
         <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
           <Button
             variant="filled"
             type="submit"
             loading={update.status === "executing"}
-            className="self-start"
+            className="self-end"
           >
             Speichern
           </Button>
