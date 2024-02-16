@@ -36,6 +36,7 @@ export const userAccountQuery = authFilterQuery(async (search, session) => {
       email: true,
       phone: true,
       drkMember: true,
+      drkEmployee: true,
       drkMemberLocation: true,
       emergencyContactLastName: true,
       emergencyContactFirstName: true,
