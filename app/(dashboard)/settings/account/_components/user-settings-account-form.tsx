@@ -19,7 +19,7 @@ import { DatePickerInput } from "@mantine/dates";
 import { UserAccountProps } from "@users/[id]/account/_actions";
 import { updateUserSettingsAccount } from "@settings/account/_actions";
 import { ModalAction } from "@/components/modal-action";
-import { deleteAccount, leaveOrganization } from "@/server/actions/user";
+import { leaveOrganization } from "@/server/actions/user";
 
 export const UserSettingsAccountForm = ({
   user,

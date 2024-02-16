@@ -521,6 +521,17 @@ export const userCertificateSchema = z.intersection(
   })
 );
 
+const signaturePointSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  time: z.number(),
+  color: z.string(),
+});
+
+const signatureArraySchema = z.array(signaturePointSchema);
+
+const signatureSchema = z.array(signatureArraySchema);
+
 export const searchListSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   lifeguard: z.object({
@@ -558,6 +569,7 @@ export const searchListSchema = z.object({
   supportOtherBeachArea: z.string().nullable(),
   timeFound: z.string().nullable(),
   handOverTo: z.string().nullable(),
+  signature: signatureSchema,
 });
 
 export const firstAidOperationBigSchema = z.object({
