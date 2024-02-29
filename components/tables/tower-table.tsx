@@ -12,7 +12,7 @@ import { TableLoader } from "@components/loader/table-loader";
 import { MantineTable } from "@components/mantine-table";
 import { tableColumnProps } from "@/constants";
 import { TowerStatus } from "@towers/_components/tower-status";
-import { EditLink } from "@components/edit-link";
+import { EditLink, ViewLink } from "@/components/view-action-icon";
 
 export function TowerTable() {
   const searchParams = useSearchParams();
@@ -89,7 +89,7 @@ export function TowerTable() {
           width: "0%",
           render: ({ id }) => (
             <Group gap={0} justify="flex-end">
-              <EditLink href={`/towers/${id}`} />
+              <ViewLink href={`/towers/${id}`} />
               <ActionIcon
                 onClick={() => {
                   modals.open({

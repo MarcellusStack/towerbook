@@ -47,7 +47,9 @@ export const createBooking = authAction("createBooking")(
         }
       );
     } catch (error) {
-      throw new Error("Eine Buchung für dieses Datum ist nicht möglich da sie schon ausgebucht ist oder die Unterkunft nicht reservierbar ist");
+      throw new Error(
+        "Eine Buchung für dieses Datum ist nicht möglich da sie schon ausgebucht ist oder die Unterkunft nicht reservierbar ist"
+      );
     }
 
     revalidatePath("/", "layout");
@@ -62,11 +64,21 @@ export const deleteBooking = authAction("deleteBooking")(
   deleteSchema,
   async ({ id }, { session }) => {
     try {
-      await prisma.booking.delete({
+      const booking = await prisma.booking.findUnique({
         where: { id: id, userId: session.id },
       });
+
+      if (!booking) {
+        throw new Error("Buchung nicht gefunden");
+      }
+
+      if (booking.status !== "completed") {
+        await prisma.booking.delete({
+          where: { id: id, userId: session.id },
+        });
+      }
     } catch (error) {
-      throw new Error("Fehler beim Löschen der Buchung");
+      throw new Error("Fehler beim löschen der Buchung");
     }
 
     revalidatePath("/", "layout");

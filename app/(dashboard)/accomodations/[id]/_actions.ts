@@ -3,6 +3,8 @@ import { prisma } from "@/server/db";
 import { authFilterQuery } from "@/server/lib/utils/query-clients";
 
 export const getAccomodation = authFilterQuery(async (search, session) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   return await prisma.accomodation.findFirst({
     where: {
       organizationId: session.organizationId as string,
@@ -18,12 +20,23 @@ export const getAccomodation = authFilterQuery(async (search, session) => {
       availableBeds: true,
       reservable: true,
       bookings: {
+        where: {
+          status: {
+            not: "canceled",
+          },
+          date: {
+            gte: today,
+          },
+        },
         select: {
           id: true,
           date: true,
+          status: true,
           user: {
             select: {
               id: true,
+              firstName: true,
+              lastName: true,
             },
           },
         },
@@ -34,6 +47,8 @@ export const getAccomodation = authFilterQuery(async (search, session) => {
 
 export const getAccomodationBookings = authFilterQuery(
   async (search, session) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     return await prisma.accomodation.findFirst({
       where: {
         organizationId: session.organizationId as string,
@@ -41,13 +56,25 @@ export const getAccomodationBookings = authFilterQuery(
       },
       select: {
         id: true,
+        availableBeds: true,
         bookings: {
+          where: {
+            status: {
+              not: "canceled",
+            },
+            date: {
+              gte: today,
+            },
+          },
           select: {
             id: true,
             date: true,
+            status: true,
             user: {
               select: {
                 id: true,
+                firstName: true,
+                lastName: true,
               },
             },
           },

@@ -31,7 +31,7 @@ import { PermissionProps, updatePermission } from "@permissions/[id]/_actions";
 import { updatePermissionSchema } from "@/schemas";
 import { permissions } from "@/constants";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { EditLink } from "@/components/edit-link";
+import { EditLink } from "@/components/view-action-icon";
 
 export const PermissionSelect = ({
   formValue,

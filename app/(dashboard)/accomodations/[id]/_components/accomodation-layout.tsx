@@ -11,8 +11,9 @@ import { EnableAccomodationAction } from "@/components/accomodation/enable-accom
 import { DisableAccomodationAction } from "@/components/accomodation/disable-accomodation-action";
 import { useParams } from "next/navigation";
 import { useGetAccomodation } from "@accomodations/[id]/_data";
-import { useSession } from "next-auth/react";
+
 import { LayoutLoader } from "@/components/loader/layout-loader";
+import { Bookings } from "@accomodations/[id]/_components/bookings";
 
 export const AccomodationLayout = ({
   children,
@@ -41,6 +42,7 @@ export const AccomodationLayout = ({
         <GridCol span={4}>
           <Stack pt="sm" style={{ position: "sticky", top: 0 }}>
             <AccomodationOverview accomodation={accomodation} />
+
             {accomodation.reservable ? (
               <ModalAction
                 color="red"
@@ -56,6 +58,7 @@ export const AccomodationLayout = ({
                 content={<EnableAccomodationAction />}
               />
             )}
+            <Bookings />
           </Stack>
         </GridCol>
       </Grid>

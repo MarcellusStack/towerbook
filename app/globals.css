@@ -39,3 +39,11 @@ html {
   display: flex;
   align-items: center;
 }
+
+.greyed-out {
+  background-color: var(--mantine-color-gray-light) !important;
+}
+
+.fc-daygrid-day-number {
+  width: 100% !important;
+}

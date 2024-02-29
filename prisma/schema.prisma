@@ -481,12 +481,13 @@ model Accomodation {
 }
 
 model Booking {
-  id             String       @id @default(uuid())
-  date           DateTime     @db.Date
+  id             String        @id @default(uuid())
+  date           DateTime      @db.Date
+  status         BookingStatus @default(open)
   accomodationId String
   userId         String
-  accomodation   Accomodation @relation(fields: [accomodationId], references: [id], onDelete: Cascade)
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accomodation   Accomodation  @relation(fields: [accomodationId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([date, accomodationId, userId])
 }
@@ -581,6 +582,12 @@ enum Status {
   completed
   revision
   incomplete
+}
+
+enum BookingStatus {
+  open
+  confirmed
+  canceled
 }
 
 enum TowerDayFormStatus {
