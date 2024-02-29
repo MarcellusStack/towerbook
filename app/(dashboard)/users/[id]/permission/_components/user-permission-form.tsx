@@ -19,8 +19,8 @@ export const UserPermissionForm = ({ user }: { user: UserPermissionProps }) => {
   const form = useForm({
     validate: zodResolver(userPermissionsSchema),
     initialValues: {
-      role: user.role,
-      towers: user.towers.map((tower) => tower.id),
+      permissions: user.permissions,
+      towers: user.towers,
       userId: user.id,
     },
   });
@@ -43,23 +43,7 @@ export const UserPermissionForm = ({ user }: { user: UserPermissionProps }) => {
             </Text>
           }
         >
-          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm">
-            <MultiSelect
-              label="Rolle"
-              data={roles}
-              {...form.getInputProps("role")}
-            />
-            {/* <MultiSelect
-              label="Turm"
-              data={towers.map((tower) => ({
-                value: tower.id,
-                label: `${capitalizeFirstLetter(tower.type)} ${
-                  tower.number
-                } - ${tower.name}`,
-              }))}
-              {...form.getInputProps("towers")}
-            /> */}
-          </SimpleGrid>
+          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm"></SimpleGrid>
         </Fieldset>
         <Button
           loading={status === "executing"}

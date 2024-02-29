@@ -222,6 +222,24 @@ export const createAccomodationSchema = z.object({
     .min(1, { message: "Bitte fügen sie Betten hinzu." }),
 });
 
+export const updateAccomodationSchema = z.object({
+  id: z.string().min(1, { message: "Bitte fügen sie eine Id hinzu." }),
+  number: z.coerce
+    .number()
+    .min(1, { message: "Bitte fügen sie eine Nummer hinzu." }),
+  name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
+  street: z.string().min(1, { message: "Bitte fügen sie eine Straße hinzu." }),
+  zipCode: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Postleitzahl hinzu." }),
+  location: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
+  availableBeds: z.coerce
+    .number()
+    .min(1, { message: "Bitte fügen sie Betten hinzu." }),
+});
+
 export const createTowerSchema = z.object({
   name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu." }),
   main: z.boolean(),

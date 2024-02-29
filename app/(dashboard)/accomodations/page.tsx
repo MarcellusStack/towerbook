@@ -1,6 +1,6 @@
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
-import { Accomodations } from "@accomodations/_components/accomodations";
+import { AccomodationsTable } from "@accomodations/_components/accomodations-table";
 import { getAccomodations } from "@accomodations/_actions";
 import { CreateAccomodationForm } from "@accomodations/_components/create-accomodation-form";
 import {
@@ -35,7 +35,7 @@ export default async function Page({
         modalContent={<CreateAccomodationForm />}
       />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <Accomodations />
+        <AccomodationsTable />
       </HydrationBoundary>
     </>
   );

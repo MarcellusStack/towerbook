@@ -11,13 +11,14 @@ export const getUserPermission = authFilterQuery(async (search, session) => {
     select: {
       firstName: true,
       lastName: true,
-      towers: true,
-      permissions: {
+      towers: {
         select: {
           id: true,
           name: true,
+          location: true,
         },
       },
+      permissions: true,
       id: true,
     },
   });

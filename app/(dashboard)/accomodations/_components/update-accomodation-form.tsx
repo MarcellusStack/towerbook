@@ -11,29 +11,35 @@ import {
   Group,
   rem,
 } from "@mantine/core";
-import { createAccomodationSchema } from "@/schemas";
+import { updateAccomodationSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
-import { createAccomodation } from "@services/accomodation/actions";
+import { updateAccomodation } from "@accomodations/_actions";
 import { IconBed } from "@tabler/icons-react";
 import { LocationSelect } from "@/components/location-select";
+import { AccomodationsProps } from "@accomodations/_actions";
 
-export const CreateAccomodationForm = () => {
+export const UpdateAccomodationForm = ({
+  accomodation,
+}: {
+  accomodation: AccomodationsProps[0];
+}) => {
   const form = useForm({
-    name: "create-accomodation-form",
-    validate: zodResolver(createAccomodationSchema),
+    name: "update-accomodation-form",
+    validate: zodResolver(updateAccomodationSchema),
     initialValues: {
-      number: 0,
-      name: "",
-      street: "",
-      zipCode: "",
-      location: "",
-      availableBeds: 0,
+      id: accomodation.id,
+      number: accomodation.number,
+      name: accomodation.name,
+      street: accomodation.street,
+      zipCode: accomodation.zipCode,
+      location: accomodation.location,
+      availableBeds: accomodation.availableBeds,
     },
   });
 
   const { execute, result, status } = useActionNotification({
-    action: createAccomodation,
-    executeNotification: "Unterkunft wird erstellt",
+    action: updateAccomodation,
+    executeNotification: "Unterkunft wird aktualisiert",
     hideModals: true,
   });
 
@@ -53,9 +59,10 @@ export const CreateAccomodationForm = () => {
         <TextInput label="Straße" {...form.getInputProps("street")} />
         <TextInput label="Postleitzahl" {...form.getInputProps("zipCode")} />
         <LocationSelect
-          formActionId="create-accomodation-form"
+          formActionId="update-accomodation-form"
           formField="location"
           label="Standort"
+          initialValue={form.values.location}
         />
         <Stack gap={rem(4)}>
           <Text size="sm" fw={500}>
@@ -76,7 +83,7 @@ export const CreateAccomodationForm = () => {
           </Group>
         </Stack>
         <Button loading={status === "executing"} type="submit">
-          Hinzufügen
+          Aktualisieren
         </Button>
       </Stack>
     </form>

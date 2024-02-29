@@ -9,7 +9,7 @@ import { MantineTable } from "@components/mantine-table";
 import { tableColumnProps } from "@/constants";
 import { useGetPermissions } from "@permissions/_data";
 import { deletePermission } from "@permissions/_actions";
-import { EditLink } from "@/components/edit-link";
+import { ViewActionIcon } from "@/components/view-action-icon";
 
 export const PermissionsTable = () => {
   const searchParams = useSearchParams();
@@ -45,7 +45,7 @@ export const PermissionsTable = () => {
           width: "0%",
           render: ({ id }) => (
             <Group gap={0} justify="flex-end">
-              <EditLink href={`/settings/permissions/${id}`} />
+              <ViewActionIcon href={`/settings/permissions/${id}`} />
               <ActionIcon
                 onClick={() => {
                   modals.open({

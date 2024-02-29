@@ -4,8 +4,8 @@ import FullCalendar from "@fullcalendar/react";
 import deLocale from "@fullcalendar/core/locales/de";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { Card, Group, Stack, Text } from "@mantine/core";
-import { IconCalendar } from "@tabler/icons-react";
+import { Card, Group, Stack, Text, ThemeIcon } from "@mantine/core";
+import { IconCalendar, IconUser } from "@tabler/icons-react";
 import React from "react";
 import { modals } from "@mantine/modals";
 import { CreateBookingForm } from "@/components/booking/create-booking-form";
@@ -36,27 +36,87 @@ export const BookingCalendar = () => {
           <IconCalendar size={28} stroke={1.5} />
         </Group>
         <FullCalendar
+          dayCellContent={(args) => {
+            const bookingsOnThisDay = bookings.bookings.filter(
+              (book) =>
+                new Date(book.date).setHours(0, 0, 0, 0) ===
+                args.date.setHours(0, 0, 0, 0)
+            );
+
+            return (
+              <Group justify="space-between" w="100%">
+                <Group gap="2">
+                  <ThemeIcon variant="white" color="black" bg="transparent">
+                    <IconUser
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  </ThemeIcon>
+                  <Text size="sm">
+                    {`${bookingsOnThisDay.length}/${bookings.availableBeds}`}
+                  </Text>
+                </Group>
+
+                <Text>{args.date.getDate()}</Text>
+              </Group>
+            );
+          }}
+          dayCellClassNames={(args) => {
+            const bookingsOnThisDay = bookings.bookings.filter(
+              (book) =>
+                new Date(book.date).setHours(0, 0, 0, 0) ===
+                args.date.setHours(0, 0, 0, 0)
+            );
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (
+              args.date < today ||
+              bookingsOnThisDay.length >= bookings.availableBeds
+            ) {
+              return "greyed-out";
+            } else {
+              return "";
+            }
+          }}
+          selectAllow={(selectInfo) => {
+            const bookingsOnThisDay = bookings.bookings.filter(
+              (book) =>
+                new Date(book.date).setHours(0, 0, 0, 0) ===
+                new Date(selectInfo.startStr).setHours(0, 0, 0, 0)
+            );
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return (
+              bookingsOnThisDay.length < bookings.availableBeds &&
+              new Date(selectInfo.startStr) >= today
+            );
+          }}
           height={720}
           locales={[deLocale]}
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           selectable={true}
-          events={bookings.bookings.map((book) => ({
-            id: book.id,
-            allDay: true,
-            start: book.date,
-            end: book.date,
-            color: book.user.id === user?.id ? "green" : "gray",
-          }))}
           dateClick={(event) => {
-            modals.open({
-              title: "Reservierung hinzufügen",
-              children: (
-                <>
-                  <CreateBookingForm date={new Date(event.date)} />
-                </>
-              ),
-            });
+            const bookingsOnThisDay = bookings.bookings.filter(
+              (book) =>
+                new Date(book.date).setHours(0, 0, 0, 0) ===
+                new Date(event.date).setHours(0, 0, 0, 0)
+            );
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            if (
+              bookingsOnThisDay.length < bookings.availableBeds &&
+              event.date >= today
+            ) {
+              modals.open({
+                title: "Reservierung hinzufügen",
+                children: (
+                  <>
+                    <CreateBookingForm date={new Date(event.date)} />
+                  </>
+                ),
+              });
+            }
           }}
           eventClick={(event) => {
             modals.open({
