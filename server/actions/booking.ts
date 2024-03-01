@@ -33,6 +33,7 @@ export const createBooking = authAction("createBooking")(
 
           await tx.booking.create({
             data: {
+              organization: { connect: { id: session.organizationId } },
               date: formatDateTimeZone(new Date(date)),
               accomodation: { connect: { id: accomodationId } },
               user: {
@@ -72,7 +73,7 @@ export const deleteBooking = authAction("deleteBooking")(
         throw new Error("Buchung nicht gefunden");
       }
 
-      if (booking.status !== "completed") {
+      if (booking.status !== "open") {
         await prisma.booking.delete({
           where: { id: id, userId: session.id },
         });

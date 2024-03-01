@@ -58,7 +58,7 @@ export const AccomodationLayout = ({
                 content={<EnableAccomodationAction />}
               />
             )}
-            <Bookings />
+            <Bookings bookings={accomodation.bookings} />
           </Stack>
         </GridCol>
       </Grid>

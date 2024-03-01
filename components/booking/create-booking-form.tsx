@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
 
+import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { Button, SegmentedControl, Stack, Text } from "@mantine/core";
 import { bookSchema } from "@/schemas";
@@ -29,8 +29,10 @@ export const CreateBookingForm = ({ date }: { date: Date }) => {
     <Stack gap="md">
       <Text>{convertDate(date)}</Text>
       <SegmentedControl
-        data={["Für mich", "Für Benutzer"]}
-        defaultValue="Für mich"
+        data={[
+          { value: "user", label: "Für mich" },
+          { value: "users", label: "Für Benutzer" },
+        ]}
       />
       <Button
         loading={status === "executing"}
