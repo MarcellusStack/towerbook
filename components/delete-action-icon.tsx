@@ -18,7 +18,7 @@ export const DeleteActionIcon = ({ id, model, action }: DeleteActionProps) => {
           title: `${model} löschen`,
           children: (
             <>
-              <DeleteModalAction id={id} action={action} model="Unterkunft" />
+              <DeleteModalAction id={id} action={action} model={model} />
             </>
           ),
         });

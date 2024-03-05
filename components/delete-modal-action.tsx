@@ -19,8 +19,7 @@ export const DeleteModalAction = ({
   return (
     <Stack gap="md">
       <Text c="dimmed" size="sm">
-        Sind sie sicher, dass Sie diesen {model} löschen wollen? Diese Aktion
-        ist unwiderruflich.
+        Diese Aktion ist unwiderruflich.
       </Text>
 
       <Button

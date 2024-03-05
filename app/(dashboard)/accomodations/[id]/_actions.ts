@@ -102,7 +102,13 @@ export const confirmBooking = authAction("updateBooking")(
   async ({ id }, { session }) => {
     try {
       await prisma.booking.update({
-        where: { id: id, organizationId: session.organizationId },
+        where: {
+          id: id,
+          organizationId: session.organizationId,
+          accomodation: {
+            reservable: true,
+          },
+        },
         data: { status: "confirmed" },
       });
     } catch (error) {

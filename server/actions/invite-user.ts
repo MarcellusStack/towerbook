@@ -14,6 +14,7 @@ export const inviteUser = authAction("createInvitation")(
         emailAddress: email,
         redirectUrl: `${baseUrl}/sign-up`,
       });
+      console.log(invitation);
 
       if (!invitation) {
         throw new Error("Fehler beim Einladen des Benutzers");
@@ -39,6 +40,7 @@ export const inviteUser = authAction("createInvitation")(
         },
       });
     } catch (error) {
+      console.log(error);
       throw new Error("Fehler beim Einladen des Benutzer");
     }
 

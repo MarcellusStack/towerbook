@@ -9,7 +9,7 @@ import { tableColumnProps } from "@/constants";
 import { ViewActionIcon } from "@/components/view-action-icon";
 import { MantineTable } from "@/components/mantine-table";
 import { DeleteActionIcon } from "@/components/delete-action-icon";
-import { UpdateActionIcon } from "@/components/update-action-icon";
+import { UpdateActionIcon } from "@/components/edit-action-icon";
 import { UpdateAccomodationForm } from "@accomodations/_components/update-accomodation-form";
 
 export const AccomodationsTable = () => {

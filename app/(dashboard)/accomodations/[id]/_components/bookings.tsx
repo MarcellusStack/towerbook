@@ -1,32 +1,19 @@
+import { DangerModalActionIcon } from "@/components/danger-modal-action-icon";
+import { DeleteActionIcon } from "@/components/delete-action-icon";
 import { MantineTable } from "@/components/mantine-table";
-import { tableColumnProps } from "@/constants";
+import { bookingStatus, tableColumnProps } from "@/constants";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { convertDate } from "@/utils";
 import {
   AccomodationProps,
-  cancelBooking,
   confirmBooking,
   deleteBooking,
 } from "@accomodations/[id]/_actions";
-import {
-  ActionIcon,
-  Avatar,
-  Badge,
-  Card,
-  Group,
-  ScrollArea,
-  Stack,
-  Text,
-  ThemeIcon,
-  rem,
-} from "@mantine/core";
-import {
-  IconCalendarCancel,
-  IconCalendarEvent,
-  IconCheck,
-  IconX,
-} from "@tabler/icons-react";
+import { Avatar, Badge, Group, Stack, Text } from "@mantine/core";
+import { IconCalendarCancel, IconCheck } from "@tabler/icons-react";
 import React from "react";
+import { CancelBookingAction } from "@accomodations/[id]/_components/cancel-booking-action";
+import { UpdateActionIcon } from "@/components/update-action-icon";
 
 export const Bookings = ({
   bookings,
@@ -38,81 +25,11 @@ export const Bookings = ({
     executeNotification: "Buchung wird bestätigt",
   });
 
-  const remove = useActionNotification({
-    action: deleteBooking,
-    executeNotification: "Buchung wird gelöscht",
-  });
-
-  const cancel = useActionNotification({
-    action: cancelBooking,
-    executeNotification: "Buchung wird storniert",
-  });
-
   return (
     <Stack gap="sm">
       <Text fw={700} size="xl">
         Buchungen
       </Text>
-      <ScrollArea h={360}>
-        <Stack gap="xs">
-          {bookings
-            .filter((booking) => booking.status === "open")
-            .map((filteredBooking) => (
-              <Card key={filteredBooking.id} padding="xs" withBorder>
-                <Stack gap={rem(4)}>
-                  <Group gap="xs">
-                    <Avatar color="blue" radius="xl">
-                      {filteredBooking.user.firstName?.charAt(0)}
-                      {filteredBooking.user.lastName?.charAt(0)}
-                    </Avatar>
-                    <Group gap={rem(4)}>
-                      <Text>{filteredBooking.user.firstName}</Text>
-                      <Text>{filteredBooking.user.lastName}</Text>
-                    </Group>
-                  </Group>
-                  <Group gap={rem(4)}>
-                    <ThemeIcon variant="white" color="black" bg="transparent">
-                      <IconCalendarEvent
-                        style={{ width: "70%", height: "70%" }}
-                        stroke={1.5}
-                      />
-                    </ThemeIcon>
-                    <Text>{convertDate(filteredBooking.date)}</Text>
-                  </Group>
-                  <Group justify="end" gap={rem(4)}>
-                    <ActionIcon
-                      loading={remove.status === "executing"}
-                      onClick={() => {
-                        remove.execute({ id: filteredBooking.id });
-                      }}
-                      variant="outline"
-                      color="red"
-                      aria-label="decline booking"
-                    >
-                      <IconX
-                        style={{ width: "70%", height: "70%" }}
-                        stroke={1.5}
-                      />
-                    </ActionIcon>
-                    <ActionIcon
-                      loading={confirm.status === "executing"}
-                      onClick={() => {
-                        confirm.execute({ id: filteredBooking.id });
-                      }}
-                      variant="filled"
-                      aria-label="accept booking"
-                    >
-                      <IconCheck
-                        style={{ width: "70%", height: "70%" }}
-                        stroke={1.5}
-                      />
-                    </ActionIcon>
-                  </Group>
-                </Stack>
-              </Card>
-            ))}
-        </Stack>
-      </ScrollArea>
       <MantineTable
         records={bookings || []}
         columns={[
@@ -130,12 +47,23 @@ export const Bookings = ({
             ...tableColumnProps,
           },
           {
-            accessor: "firstName",
+            accessor: "user.firstName",
             title: "Vorname",
+            ...tableColumnProps,
           },
           {
-            accessor: "lastName",
+            accessor: "user.lastName",
             title: "Nachname",
+            ...tableColumnProps,
+          },
+          {
+            accessor: "status",
+            title: "Status",
+            render: ({ status }) => (
+              <Badge color={bookingStatus[status].color}>
+                {bookingStatus[status].label}
+              </Badge>
+            ),
             ...tableColumnProps,
           },
           {
@@ -145,18 +73,43 @@ export const Bookings = ({
             ...tableColumnProps,
           },
           {
-            accessor: "location",
-            title: "Standort",
-            ...tableColumnProps,
-          },
-          {
             accessor: "actions",
             title: "Aktionen",
             width: "0%",
-            render: ({ id }) => (
+            render: ({ id, status }) => (
               <Group gap={0} justify="flex-end">
-                <ViewActionIcon href={`/towers/${id}`} />
-                <DeleteActionIcon id={id} action={deleteTower} model="Turm" />
+                {status === "open" && (
+                  <>
+                    <UpdateActionIcon
+                      icon={
+                        <IconCheck
+                          style={{ width: "70%", height: "70%" }}
+                          stroke={1.5}
+                        />
+                      }
+                      label="Buchung bestätigen"
+                      action={confirmBooking}
+                      values={{ id: id }}
+                    />
+                    <DeleteActionIcon
+                      id={id}
+                      action={deleteBooking}
+                      model="Buchung"
+                    />
+                  </>
+                )}
+                {status === "confirmed" && (
+                  <DangerModalActionIcon
+                    icon={
+                      <IconCalendarCancel
+                        style={{ width: "70%", height: "70%" }}
+                        stroke={1.5}
+                      />
+                    }
+                    label="Buchung stornieren"
+                    action={<CancelBookingAction id={id} />}
+                  />
+                )}
               </Group>
             ),
             ...tableColumnProps,

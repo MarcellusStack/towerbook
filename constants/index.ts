@@ -6,6 +6,12 @@ export const status = {
   incomplete: { color: "red", label: "unvollständig" },
 };
 
+export const bookingStatus = {
+  open: { color: "gray", label: "offen" },
+  confirmed: { color: "green", label: "bestätigt" },
+  canceled: { color: "red", label: "storniert" },
+};
+
 export const tableColumnProps = {
   resizable: true,
   toggleable: true,
