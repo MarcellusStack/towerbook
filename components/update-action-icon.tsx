@@ -1,29 +1,38 @@
-import { ActionIcon } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil } from "@tabler/icons-react";
+"use client";
+import { useActionNotification } from "@/hooks/use-action-notification";
+import { ActionIcon, type ActionIconVariant } from "@mantine/core";
 import React from "react";
 
-export type UpdateActionProps = {
-  model: string;
-  modalContent: unknown;
+export type UpdateActionIconProps = {
+  icon: React.ReactNode;
+  label: string;
+  action: any;
+  values: { [key: string]: any };
+  variant?: ActionIconVariant;
 };
 
 export const UpdateActionIcon = ({
-  model,
-  modalContent,
-}: UpdateActionProps) => {
+  icon,
+  label,
+  action,
+  values,
+  variant = "subtle",
+}: UpdateActionIconProps) => {
+  const { execute, status } = useActionNotification({
+    action: action,
+    executeNotification: `${label}`,
+  });
   return (
     <ActionIcon
-      onClick={() => {
-        modals.open({
-          title: `${model} aktualisieren`,
-          children: <>{modalContent}</>,
-        });
-      }}
-      variant="subtle"
       color="blue"
+      variant={variant}
+      loading={status === "executing"}
+      onClick={() => {
+        execute({ ...values });
+      }}
+      aria-label={label}
     >
-      <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
+      {icon}
     </ActionIcon>
   );
 };
