@@ -5,7 +5,7 @@ import { useForm, zodResolver } from "@mantine/form";
 import { TextInput, Button, Stack } from "@mantine/core";
 import { onboardingSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { DateInput, DatePickerInput } from "@mantine/dates";
+import { DateInput } from "@mantine/dates";
 import { createUser } from "@/app/(authentication)/onboarding/_actions";
 
 import dayjs from "dayjs";
@@ -46,12 +46,7 @@ export const Onboarding = () => {
           valueFormat="DD.MM.YYYY"
           {...form.getInputProps("birthDate")}
         />
-        {/* <DatePickerInput
-          locale="de"
-          label="Geburtsdatum"
-          valueFormat="DD.MM.YYYY"
-          {...form.getInputProps("birthDate")}
-        /> */}
+
         <Button variant="filled" loading={status === "executing"} type="submit">
           Anmelden
         </Button>
