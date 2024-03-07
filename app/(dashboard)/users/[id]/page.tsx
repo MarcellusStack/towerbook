@@ -1,10 +1,11 @@
 import { UserDashboard } from "@users/[id]/_components/user-dashboard";
-import { getUserOverview } from "@/server/queries/get-user-overview";
+
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import { getUserDashboard } from "@users/[id]/_actions";
 
 export const dynamic = "force-dynamic";
 
@@ -14,8 +15,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["user-overview", id],
-    queryFn: async () => await getUserOverview(id),
+    queryKey: ["user-dashboard", id],
+    queryFn: async () => await getUserDashboard(id),
     staleTime: 0,
   });
 

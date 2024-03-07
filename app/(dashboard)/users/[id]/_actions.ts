@@ -23,7 +23,9 @@ export type UserLayoutProps = NonNullable<
   Awaited<ReturnType<typeof getUserLayout>>
 >;
 
-export const getUserOverview = authFilterQuery(async (search, session) => {
+export const getUserDashboard = authFilterQuery(async (search, session) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   return await prisma.user.findFirst({
     where: {
       organizationId: session.organizationId,
@@ -45,10 +47,29 @@ export const getUserOverview = authFilterQuery(async (search, session) => {
           endTime: true,
         },
       },
+      bookings: {
+        where: {
+          date: {
+            gte: today,
+          },
+        },
+        select: {
+          id: true,
+          date: true,
+          status: true,
+          accomodation: {
+            select: {
+              street: true,
+              zipCode: true,
+              location: true,
+            },
+          },
+        },
+      },
     },
   });
 }, "readUser");
 
-export type UserOverviewProps = NonNullable<
-  Awaited<ReturnType<typeof getUserOverview>>
+export type UserDashboardProps = NonNullable<
+  Awaited<ReturnType<typeof getUserDashboard>>
 >;
