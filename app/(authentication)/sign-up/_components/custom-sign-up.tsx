@@ -51,6 +51,7 @@ export const CustomSignUp = () => {
                 ticket,
                 password: values.password,
               });
+              router.push("/onboarding");
             } catch (error) {
               notifications.hide("custom-sign-up");
               notifications.show({

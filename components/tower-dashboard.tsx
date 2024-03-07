@@ -2,7 +2,6 @@
 
 import React from "react";
 import {
-  Box,
   Button,
   Card,
   Group,
@@ -16,7 +15,7 @@ import { useActionNotification } from "@/hooks/use-action-notification";
 import { updateTowerStatus } from "@/server/queries/tower";
 import { towerStatus } from "@/constants";
 import { useParams } from "next/navigation";
-import { useGetTowerOverview } from "@data/tower";
+import { useGetTower } from "@data/tower";
 import { TowerStatus } from "@towers/_components/tower-status";
 import { IconBroadcast, IconBroadcastOff, IconPlus } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
@@ -29,7 +28,8 @@ export const TowerDashboard = () => {
     executeNotification: `Turm Status wird aktualisiert`,
   });
   const { id } = useParams();
-  const { data: tower, isPending } = useGetTowerOverview(id as string);
+  const { data: tower, isPending } = useGetTower(id as string);
+  console.log(tower);
 
   if (isPending || !tower) return <DashboardLoader />;
 

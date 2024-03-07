@@ -42,7 +42,6 @@ export const AccomodationLayout = ({
         <GridCol span={4}>
           <Stack pt="sm" style={{ position: "sticky", top: 0 }}>
             <AccomodationOverview accomodation={accomodation} />
-
             {accomodation.reservable ? (
               <ModalAction
                 color="red"
@@ -58,7 +57,7 @@ export const AccomodationLayout = ({
                 content={<EnableAccomodationAction />}
               />
             )}
-            <Bookings />
+            <Bookings bookings={accomodation.bookings} />
           </Stack>
         </GridCol>
       </Grid>

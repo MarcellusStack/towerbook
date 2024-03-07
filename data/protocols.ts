@@ -7,14 +7,14 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 export const useGetFirstAidOperations = (search: string) => {
   return useQuery({
     queryKey: ["first-aid-operations"],
-    queryFn: async () => await getFirstAidOperations(search, []),
+    queryFn: async () => await getFirstAidOperations(search),
   });
 };
 
 export const useGetFirstAidOperation = (id: string) => {
   return useQuery({
     queryKey: ["first-aid-operation", id],
-    queryFn: async () => await getFirstAidOperation(id, []),
+    queryFn: async () => await getFirstAidOperation(id,),
     placeholderData: keepPreviousData,
   });
 };
@@ -22,13 +22,13 @@ export const useGetFirstAidOperation = (id: string) => {
 export const useGetGroupRegistrations = (search: string) => {
   return useQuery({
     queryKey: ["group-registrations"],
-    queryFn: async () => await getGroupRegistrations(search, []),
+    queryFn: async () => await getGroupRegistrations(search),
   });
 };
 
 export const useGetSearchLists = (search: string) => {
   return useQuery({
     queryKey: ["search-lists"],
-    queryFn: async () => await getSearchLists(search, []),
+    queryFn: async () => await getSearchLists(search),
   });
 };

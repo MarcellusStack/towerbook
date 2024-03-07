@@ -32,7 +32,6 @@ export const Invite = ({ props }: { props: InvitationExtendedProps }) => {
         <Button
           loading={status === "executing"}
           variant="filled"
-          color="green"
           onClick={() => {
             execute({ id: props.id });
           }}

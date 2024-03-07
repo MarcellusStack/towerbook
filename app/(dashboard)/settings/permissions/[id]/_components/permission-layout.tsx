@@ -16,7 +16,7 @@ import {
 import { useParams } from "next/navigation";
 import { useGetPermission } from "@permissions/[id]/_data";
 import { PermissionOverview } from "@permissions/[id]/_components/permission-overview";
-import { EditLink, ViewActionIcon } from "@/components/view-action-icon";
+import { ViewActionIcon } from "@/components/view-action-icon";
 import { QuickSearch } from "@/components/quick-search";
 
 export const PermissionLayout = ({
@@ -48,7 +48,6 @@ export const PermissionLayout = ({
         <GridCol span={4}>
           <Stack gap="sm">
             <PermissionOverview permission={permission} />
-
             <Stack gap="xs">
               <Text fw={700} size="xl">
                 Benutzer
@@ -67,7 +66,9 @@ export const PermissionLayout = ({
                           <Text>{user.firstName}</Text>
                           <Text>{user.lastName}</Text>
                         </Group>
-                        <ViewActionIcon href={`/users/${user.id}/permissions`} />
+                        <ViewActionIcon
+                          href={`/users/${user.id}/permissions`}
+                        />
                       </Group>
                     </Card>
                   ))}

@@ -1,38 +1,33 @@
-"use client";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { ActionIcon, type ActionIconVariant } from "@mantine/core";
+import { Button, ButtonProps } from "@mantine/core";
 import React from "react";
 
-export type UpdateActionIconProps = {
-  icon: React.ReactNode;
+type ButtonActionProps = ButtonProps & {
   label: string;
   action: any;
   values: { [key: string]: any };
-  variant?: ActionIconVariant;
 };
 
-export const UpdateActionIcon = ({
-  icon,
+export const ButtonAction = ({
   label,
   action,
   values,
-  variant = "subtle",
-}: UpdateActionIconProps) => {
+  ...props
+}: ButtonActionProps) => {
   const { execute, status } = useActionNotification({
     action: action,
     executeNotification: `${label}`,
   });
+
   return (
-    <ActionIcon
-      color="blue"
-      variant={variant}
+    <Button
       loading={status === "executing"}
       onClick={() => {
         execute({ ...values });
       }}
-      aria-label={label}
+      {...props}
     >
-      {icon}
-    </ActionIcon>
+      {props.children}
+    </Button>
   );
 };

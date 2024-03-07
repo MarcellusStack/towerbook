@@ -31,6 +31,7 @@ model Organization {
   towerdays          TowerDay[]
   accomodations      Accomodation[]
   permissions        Permission[]
+  bookings           Booking[]
 }
 
 model Invitation {
@@ -327,6 +328,9 @@ model FirstAidOperation {
   guardLeaderId                String
   guardLeader                  User                  @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade)
   helper                       Json?
+  signatureGuardLeader         Json?
+  signatureFirstAider          Json?
+  signatureSecondAider         Json?
   commissionedControlCenter    Boolean               @default(false)
   emergencyMedicalIntervention Boolean               @default(false)
   transportAmbulance           Boolean               @default(false)
@@ -486,6 +490,8 @@ model Booking {
   status         BookingStatus @default(open)
   accomodationId String
   userId         String
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   accomodation   Accomodation  @relation(fields: [accomodationId], references: [id], onDelete: Cascade)
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -587,6 +593,7 @@ enum Status {
 enum BookingStatus {
   open
   confirmed
+  request_canceled
   canceled
 }
 

@@ -1,10 +1,6 @@
 "use client";
-import { Group, ActionIcon, ThemeIcon, Badge } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconPencil, IconTrash } from "@tabler/icons-react";
-import Link from "next/link";
+import { Group, Badge } from "@mantine/core";
 import Image from "next/image";
-import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteTower } from "@server/actions/delete-tower";
 import { useGetTowers } from "@data/tower";
 import { useSearchParams } from "next/navigation";
@@ -12,7 +8,8 @@ import { TableLoader } from "@components/loader/table-loader";
 import { MantineTable } from "@components/mantine-table";
 import { tableColumnProps } from "@/constants";
 import { TowerStatus } from "@towers/_components/tower-status";
-import { EditLink, ViewLink } from "@/components/view-action-icon";
+import { ViewActionIcon } from "@/components/view-action-icon";
+import { DeleteActionIcon } from "../delete-action-icon";
 
 export function TowerTable() {
   const searchParams = useSearchParams();
@@ -89,30 +86,8 @@ export function TowerTable() {
           width: "0%",
           render: ({ id }) => (
             <Group gap={0} justify="flex-end">
-              <ViewLink href={`/towers/${id}`} />
-              <ActionIcon
-                onClick={() => {
-                  modals.open({
-                    title: "Turm löschen",
-                    children: (
-                      <>
-                        <DeleteModalAction
-                          id={id}
-                          action={deleteTower}
-                          model="Turm"
-                        />
-                      </>
-                    ),
-                  });
-                }}
-                variant="subtle"
-                color="red"
-              >
-                <IconTrash
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
+              <ViewActionIcon href={`/towers/${id}`} />
+              <DeleteActionIcon id={id} action={deleteTower} model="Turm" />
             </Group>
           ),
           ...tableColumnProps,

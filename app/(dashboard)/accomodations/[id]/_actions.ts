@@ -1,6 +1,10 @@
 "use server";
 import { prisma } from "@/server/db";
+import { authAction } from "@/server/lib/utils/action-clients";
 import { authFilterQuery } from "@/server/lib/utils/query-clients";
+import { convertDate } from "@/utils";
+import { revalidatePath } from "next/cache";
+import { z } from "zod";
 
 export const getAccomodation = authFilterQuery(async (search, session) => {
   const today = new Date();
@@ -92,3 +96,143 @@ export type AccomodationProps = NonNullable<
 export type AccomodationBookingsProps = NonNullable<
   Awaited<ReturnType<typeof getAccomodationBookings>>
 >;
+
+export const confirmBooking = authAction("updateBooking")(
+  z.object({ id: z.string().min(1) }),
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.update({
+        where: {
+          id: id,
+          organizationId: session.organizationId,
+          accomodation: {
+            reservable: true,
+          },
+        },
+        data: { status: "confirmed" },
+      });
+    } catch (error) {
+      throw new Error(
+        "Die Buchung konnte nicht bestätigt werden, bitte versuchen Sie es erneut"
+      );
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben die Buchung bestätigt`,
+    };
+  }
+);
+
+export const deleteBooking = authAction("deleteBooking")(
+  z.object({ id: z.string().min(1) }),
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.deleteMany({
+        where: {
+          id: id,
+          organizationId: session.organizationId,
+          status: {
+            notIn: ["confirmed", "request_canceled"],
+          },
+        },
+      });
+    } catch (error) {
+      throw new Error(
+        "Die Buchung konnte nicht gelöscht werden, bitte versuchen Sie es erneut"
+      );
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben die Buchung gelöscht`,
+    };
+  }
+);
+
+export const cancelBooking = authAction("updateBooking")(
+  z.object({ id: z.string().min(1) }),
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.update({
+        where: {
+          id: id,
+          organizationId: session.organizationId,
+          status: {
+            in: ["confirmed", "request_canceled"],
+          },
+        },
+        data: { status: "canceled" },
+      });
+    } catch (error) {
+      throw new Error(
+        "Die Buchung konnte nicht storniert werden, bitte versuchen Sie es erneut"
+      );
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben die Buchung storniert`,
+    };
+  }
+);
+
+export const requestCancelBooking = authAction("")(
+  z.object({ id: z.string().min(1) }),
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.update({
+        where: {
+          id: id,
+          userId: session.id,
+          organizationId: session.organizationId,
+          status: {
+            equals: "confirmed",
+          },
+        },
+        data: { status: "request_canceled" },
+      });
+    } catch (error) {
+      throw new Error(
+        "Die Buchung konnte nicht storniert werden, bitte versuchen Sie es erneut"
+      );
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben eine Stornierungsanfrage gesendet`,
+    };
+  }
+);
+
+export const deleteUserBooking = authAction("")(
+  z.object({ id: z.string().min(1) }),
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.deleteMany({
+        where: {
+          id: id,
+          userId: session.id,
+          organizationId: session.organizationId,
+          status: {
+            notIn: ["confirmed", "request_canceled"],
+          },
+        },
+      });
+    } catch (error) {
+      throw new Error(
+        "Die Buchung konnte nicht gelöscht werden, bitte versuchen Sie es erneut"
+      );
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben die Buchung gelöscht`,
+    };
+  }
+);

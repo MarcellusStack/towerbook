@@ -7,7 +7,7 @@ import { convertDate, formatDateTimeZone } from "@/utils";
 
 export const createBooking = authAction("createBooking")(
   bookSchema,
-  async ({ date, accomodationId }, { session }) => {
+  async ({ date, accomodationId, users }, { session }) => {
     try {
       await prisma.$transaction(
         async (tx) => {
@@ -23,23 +23,43 @@ export const createBooking = authAction("createBooking")(
           const bookedBedsCount = await tx.booking.count({
             where: {
               date: formatDateTimeZone(new Date(date)),
+              status: {
+                not: "canceled",
+              },
               accomodationId: accomodationId,
             },
           });
 
-          if (bookedBedsCount >= accomodation.availableBeds) {
+          const totalBedsNeeded =
+            bookedBedsCount + (users.length > 0 ? users.length : 1);
+
+          if (totalBedsNeeded > accomodation.availableBeds) {
             throw new Error("Es sind keine Betten mehr verfügbar");
           }
 
-          await tx.booking.create({
-            data: {
-              date: formatDateTimeZone(new Date(date)),
-              accomodation: { connect: { id: accomodationId } },
-              user: {
-                connect: { id: session.id },
+          if (users.length > 0) {
+            await Promise.all(
+              users.map((userId) =>
+                tx.booking.create({
+                  data: {
+                    organization: { connect: { id: session.organizationId } },
+                    date: formatDateTimeZone(new Date(date)),
+                    accomodation: { connect: { id: accomodationId } },
+                    user: { connect: { id: userId } },
+                  },
+                })
+              )
+            );
+          } else {
+            await tx.booking.create({
+              data: {
+                organization: { connect: { id: session.organizationId } },
+                date: formatDateTimeZone(new Date(date)),
+                accomodation: { connect: { id: accomodationId } },
+                user: { connect: { id: session.id } },
               },
-            },
-          });
+            });
+          }
         },
         {
           maxWait: 15000,
@@ -72,7 +92,7 @@ export const deleteBooking = authAction("deleteBooking")(
         throw new Error("Buchung nicht gefunden");
       }
 
-      if (booking.status !== "completed") {
+      if (booking.status !== "open") {
         await prisma.booking.delete({
           where: { id: id, userId: session.id },
         });

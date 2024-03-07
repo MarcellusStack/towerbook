@@ -30,6 +30,7 @@ export const shiftSchema = z.object({
 export const bookSchema = z.object({
   date: z.date(),
   accomodationId: z.string().min(1, { message: "Unterkunft Id wird benötigt" }),
+  users: z.array(z.string()),
 });
 
 export const baseUserSchema = z.object({
@@ -616,6 +617,9 @@ export const firstAidOperationBigSchema = z.object({
   helper: z.array(
     z.object({ id: z.string(), firstName: z.string(), lastName: z.string() })
   ),
+  signatureGuardLeader: signatureSchema,
+  signatureFirstAider: signatureSchema,
+  signatureSecondAider: signatureSchema,
   commissionedControlCenter: z.boolean(),
   emergencyMedicalIntervention: z.boolean(),
   transportAmbulance: z.boolean(),

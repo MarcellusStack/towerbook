@@ -12,6 +12,7 @@ import {
   Box,
   Card,
   Textarea,
+  Space,
 } from "@mantine/core";
 import { firstAidOperationBigSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
@@ -23,6 +24,7 @@ import { UserComboboxButton } from "@components/user-combobox-button";
 import { UserFormCard } from "../user-form-card";
 import { InputCheck } from "@components/inputs/input-check";
 import { updateFirstAidOperationBig } from "@server/actions/update-first-aid-operation-big";
+import { Signature } from "@components/signature";
 
 export const FirstAidOperationBigForm = ({
   operation,
@@ -48,6 +50,9 @@ export const FirstAidOperationBigForm = ({
       operationLocation: operation.operationLocation,
       guardLeader: operation.guardLeader,
       helper: operation.helper === null ? new Array() : operation.helper,
+      signatureGuardLeader: operation.signatureGuardLeader,
+      signatureFirstAider: operation.signatureFirstAider,
+      signatureSecondAider: operation.signatureSecondAider,
       commissionedControlCenter: operation.commissionedControlCenter,
       emergencyMedicalIntervention: operation.emergencyMedicalIntervention,
       transportAmbulance: operation.transportAmbulance,
@@ -265,6 +270,27 @@ export const FirstAidOperationBigForm = ({
               />
             ))}
           </SimpleGrid>
+          <Space h="sm" />
+          <Stack gap="sm">
+            <Signature
+              formActionId="first-aid-operation-big-form"
+              formField="signatureGuardLeader"
+              label="Unterschrift Wachleiter"
+              initialValue={operation.signatureGuardLeader}
+            />
+            <Signature
+              formActionId="first-aid-operation-big-form"
+              formField="signatureFirstAider"
+              label="Unterschrift Helfer 1"
+              initialValue={operation.signatureFirstAider}
+            />
+            <Signature
+              formActionId="first-aid-operation-big-form"
+              formField="signatureSecondAider"
+              label="Unterschrift Helfer 2"
+              initialValue={operation.signatureSecondAider}
+            />
+          </Stack>
         </Fieldset>
         <Fieldset
           id="insert-your-title-here"

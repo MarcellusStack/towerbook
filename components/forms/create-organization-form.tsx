@@ -15,7 +15,7 @@ export const CreateOrganizationForm = () => {
     },
   });
 
-  const { execute, result, status } = useActionNotification({
+  const { execute, status } = useActionNotification({
     action: createOrg,
     redirectUrl: "/dashboard",
   });
@@ -31,7 +31,7 @@ export const CreateOrganizationForm = () => {
           {...form.getInputProps("name")}
         />
 
-        <Button loading={status === "executing"} type="submit">
+        <Button variant="filled" loading={status === "executing"} type="submit">
           Erstellen
         </Button>
       </Stack>

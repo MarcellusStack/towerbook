@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { TowerDashboard } from "@/components/tower-dashboard";
-import { getTowerOverview } from "@/server/queries/tower";
+import { getTower } from "@/server/queries/tower";
 import {
   HydrationBoundary,
   QueryClient,
@@ -15,8 +15,8 @@ export default async function Page({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
 
   const tower = await queryClient.fetchQuery({
-    queryKey: ["tower-overview", id],
-    queryFn: async () => await getTowerOverview(id),
+    queryKey: ["tower", id],
+    queryFn: async () => await getTower(id),
     staleTime: 0,
   });
 

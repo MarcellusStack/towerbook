@@ -1,4 +1,4 @@
-import { getTower } from "@/server/queries/get-tower";
+import { getTower } from "@/server/queries/tower";
 import { SecondaryPageTabs } from "@/components/secondary-page-tabs";
 import {
   IconBroadcast,
