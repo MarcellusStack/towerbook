@@ -6,25 +6,23 @@ import { useActionNotification } from "@/hooks/use-action-notification";
 import { convertDate } from "@/utils";
 import {
   AccomodationProps,
+  cancelBooking,
   confirmBooking,
   deleteBooking,
 } from "@accomodations/[id]/_actions";
-import { Avatar, Badge, Group, Stack, Text } from "@mantine/core";
+
+import { Avatar, Badge, Button, Group, Stack, Text, rem } from "@mantine/core";
 import { IconCalendarCancel, IconCheck } from "@tabler/icons-react";
 import React from "react";
 import { CancelBookingAction } from "@accomodations/[id]/_components/cancel-booking-action";
 import { UpdateActionIcon } from "@/components/update-action-icon";
+import { ButtonAction } from "@/components/button-action";
 
 export const Bookings = ({
   bookings,
 }: {
   bookings: AccomodationProps["bookings"];
 }) => {
-  const confirm = useActionNotification({
-    action: confirmBooking,
-    executeNotification: "Buchung wird bestätigt",
-  });
-
   return (
     <Stack gap="sm">
       <Text fw={700} size="xl">
@@ -77,45 +75,50 @@ export const Bookings = ({
             title: "Aktionen",
             width: "0%",
             render: ({ id, status }) => (
-              <Group gap={0} justify="flex-end">
+              <Stack gap={rem(4)} justify="flex-end">
                 {status === "open" && (
                   <>
-                    <UpdateActionIcon
-                      icon={
-                        <IconCheck
-                          style={{ width: "70%", height: "70%" }}
-                          stroke={1.5}
-                        />
-                      }
+                    <ButtonAction
+                      size="compact-sm"
+                      variant="light"
                       label="Buchung bestätigen"
                       action={confirmBooking}
                       values={{ id: id }}
-                    />
-                    <DeleteActionIcon
-                      id={id}
+                    >
+                      Bestätigen
+                    </ButtonAction>
+                    <ButtonAction
+                      size="compact-sm"
+                      variant="light"
+                      color="red"
+                      label="Buchung löschen"
                       action={deleteBooking}
-                      model="Buchung"
-                    />
+                      values={{ id: id }}
+                    >
+                      Löschen
+                    </ButtonAction>
                   </>
                 )}
-                {status === "confirmed" && (
-                  <DangerModalActionIcon
-                    icon={
-                      <IconCalendarCancel
-                        style={{ width: "70%", height: "70%" }}
-                        stroke={1.5}
-                      />
-                    }
-                    label="Buchung stornieren"
-                    action={<CancelBookingAction id={id} />}
-                  />
+                {(status === "confirmed" || status === "request_canceled") && (
+                  <>
+                    <ButtonAction
+                      size="compact-sm"
+                      variant="light"
+                      color="red"
+                      label="Buchung wird storniert"
+                      action={cancelBooking}
+                      values={{ id: id }}
+                    >
+                      Buchung stornieren
+                    </ButtonAction>
+                  </>
                 )}
-              </Group>
+              </Stack>
             ),
             ...tableColumnProps,
           },
         ]}
-        storeKey="towers-table"
+        storeKey="bookings-table"
       />
     </Stack>
   );

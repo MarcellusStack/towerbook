@@ -134,7 +134,7 @@ export const deleteBooking = authAction("deleteBooking")(
           id: id,
           organizationId: session.organizationId,
           status: {
-            not: "confirmed",
+            notIn: ["confirmed", "request_canceled"],
           },
         },
       });
@@ -160,7 +160,9 @@ export const cancelBooking = authAction("updateBooking")(
         where: {
           id: id,
           organizationId: session.organizationId,
-          status: "confirmed",
+          status: {
+            in: ["confirmed", "request_canceled"],
+          },
         },
         data: { status: "canceled" },
       });
@@ -174,6 +176,63 @@ export const cancelBooking = authAction("updateBooking")(
 
     return {
       message: `Sie haben die Buchung storniert`,
+    };
+  }
+);
+
+export const requestCancelBooking = authAction("")(
+  z.object({ id: z.string().min(1) }),
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.update({
+        where: {
+          id: id,
+          userId: session.id,
+          organizationId: session.organizationId,
+          status: {
+            equals: "confirmed",
+          },
+        },
+        data: { status: "request_canceled" },
+      });
+    } catch (error) {
+      throw new Error(
+        "Die Buchung konnte nicht storniert werden, bitte versuchen Sie es erneut"
+      );
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben eine Stornierungsanfrage gesendet`,
+    };
+  }
+);
+
+export const deleteUserBooking = authAction("")(
+  z.object({ id: z.string().min(1) }),
+  async ({ id }, { session }) => {
+    try {
+      await prisma.booking.deleteMany({
+        where: {
+          id: id,
+          userId: session.id,
+          organizationId: session.organizationId,
+          status: {
+            notIn: ["confirmed", "request_canceled"],
+          },
+        },
+      });
+    } catch (error) {
+      throw new Error(
+        "Die Buchung konnte nicht gelöscht werden, bitte versuchen Sie es erneut"
+      );
+    }
+
+    revalidatePath("/", "layout");
+
+    return {
+      message: `Sie haben die Buchung gelöscht`,
     };
   }
 );

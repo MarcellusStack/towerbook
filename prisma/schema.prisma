@@ -590,6 +590,7 @@ enum Status {
 enum BookingStatus {
   open
   confirmed
+  request_canceled
   canceled
 }
 

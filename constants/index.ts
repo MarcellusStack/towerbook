@@ -9,6 +9,7 @@ export const status = {
 export const bookingStatus = {
   open: { color: "gray", label: "offen" },
   confirmed: { color: "green", label: "bestätigt" },
+  request_canceled: { color: "yellow", label: "Stornierungsanfrage" },
   canceled: { color: "red", label: "storniert" },
 };
 
