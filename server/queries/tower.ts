@@ -5,6 +5,7 @@ import { towerStatusSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
 
 import { authFilterQuery } from "@server/lib/utils/query-clients";
+import { cache } from "react";
 
 export const updateTowerStatus = authAction("updateTower")(
   towerStatusSchema,
@@ -43,67 +44,79 @@ export const getTowers = authFilterQuery(async (search, session) => {
       location: true,
       main: true,
       type: true,
-      name:true,
+      name: true,
     },
   });
 }, "readTower");
 
 export type TowersProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>;
 
-export type TowerProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>[0];
+/* export type TowerProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>[0]; */
 
-export const getTowerOverview = authFilterQuery(async (search, session) => {
-  const tower = await prisma.tower.findFirst({
-    where: {
-      organizationId: session.organizationId,
-      id: search,
-    },
-    select: {
-      id: true,
-      status: true,
-      main: true,
-      location: true,
-    },
-  });
-
-  if (!tower) {
-    throw new Error("Turm nicht gefunden");
-  }
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const towerdays = await prisma.towerDay.findMany({
-    where: {
-      organizationId: session.organizationId,
-      createdAt: {
-        gte: today,
+export const getTower = cache(
+  authFilterQuery(async (search, session) => {
+    const tower = await prisma.tower.findFirst({
+      where: {
+        organizationId: session.organizationId,
+        id: search,
       },
-      tower: {
-        location: tower.location,
+      select: {
+        name: true,
+        number: true,
+        id: true,
+        status: true,
+        main: true,
+        location: true,
       },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 25,
-    select: {
-      id: true,
-      createdAt: true,
-      startedAt: true,
-      status: true,
-    },
-  });
+    });
 
-  return {
-    ...tower,
-    towerdays,
-  };
-}, "readTower");
+    if (!tower) {
+      throw new Error("Turm nicht gefunden");
+    }
 
-export type TowerOverviewProps = NonNullable<
-  Awaited<ReturnType<typeof getTowerOverview>>
->;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const searchlists = await prisma.searchList.findMany({
+      where: {
+        organizationId: session.organizationId,
+        date: {
+          gte: today,
+        },
+      },
+    });
+
+    const towerdays = await prisma.towerDay.findMany({
+      where: {
+        organizationId: session.organizationId,
+        createdAt: {
+          gte: today,
+        },
+        tower: {
+          location: tower.location,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 25,
+      select: {
+        id: true,
+        createdAt: true,
+        startedAt: true,
+        status: true,
+      },
+    });
+
+    return {
+      ...tower,
+      searchlists,
+      towerdays,
+    };
+  }, "readTower")
+);
+
+export type getTowerProps = NonNullable<Awaited<ReturnType<typeof getTower>>>;
 
 export const getTowerTowerDays = authFilterQuery(async (search, session) => {
   return await prisma.towerDay.findMany({
