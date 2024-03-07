@@ -617,6 +617,9 @@ export const firstAidOperationBigSchema = z.object({
   helper: z.array(
     z.object({ id: z.string(), firstName: z.string(), lastName: z.string() })
   ),
+  signatureGuardLeader: signatureSchema,
+  signatureFirstAider: signatureSchema,
+  signatureSecondAider: signatureSchema,
   commissionedControlCenter: z.boolean(),
   emergencyMedicalIntervention: z.boolean(),
   transportAmbulance: z.boolean(),

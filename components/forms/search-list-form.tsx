@@ -34,7 +34,6 @@ export const SearchListForm = ({
 }: {
   searchlist: ExtendSearchListWithTowerProps;
 }) => {
-  const signatureRef = useRef();
   const form = useForm({
     name: "search-list-form",
     validate: zodResolver(searchListSchema),
@@ -66,7 +65,6 @@ export const SearchListForm = ({
       searchRWC: searchlist.searchRWC,
       supportOtherBeachArea: searchlist.supportOtherBeachArea,
       timeFound: convertTime(new Date(searchlist.timeFound)),
-
       handOverTo: searchlist.handOverTo,
       signature: searchlist.signature,
     },
@@ -81,12 +79,6 @@ export const SearchListForm = ({
     action: completeSearchList,
     executeNotification: `Sucheintrag wird abgeschlossen`,
   });
-
-  useEffect(() => {
-    signatureRef.current &&
-      searchlist.signature &&
-      signatureRef.current.fromData(searchlist.signature);
-  }, []);
 
   return (
     <form onSubmit={form.onSubmit((values) => update.execute(values))}>

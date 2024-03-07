@@ -13,7 +13,7 @@ export const Signature = ({
   formActionId: string;
   formField: string;
   label: string;
-  initialValue?: string | null;
+  initialValue?: JSON | null;
 }) => {
   const formAction = createFormActions(formActionId);
   const signatureRef = useRef();

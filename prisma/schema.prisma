@@ -328,6 +328,9 @@ model FirstAidOperation {
   guardLeaderId                String
   guardLeader                  User                  @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade)
   helper                       Json?
+  signatureGuardLeader         Json?
+  signatureFirstAider          Json?
+  signatureSecondAider         Json?
   commissionedControlCenter    Boolean               @default(false)
   emergencyMedicalIntervention Boolean               @default(false)
   transportAmbulance           Boolean               @default(false)
