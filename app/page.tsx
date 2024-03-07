@@ -1,6 +1,7 @@
 import { AuthLayout } from "@/components/layouts/auth-layout";
 import Link from "next/link";
 import { Title, Text, Button } from "@mantine/core";
+import { ButtonLink } from "@/components/button-link";
 
 export default async function Index() {
   return (
@@ -13,9 +14,7 @@ export default async function Index() {
         Aufzeichnungen und Informationen mit der Digitales Turmbuch App.
         Optimieren Sie Ihre Arbeitsabläufe und bleiben Sie organisiert.
       </Text>
-      <Button component={Link} href="/sign-in">
-        Jetzt Starten
-      </Button>
+      <ButtonLink title="Jetzt Starten" href="/sign-in" />
     </AuthLayout>
   );
 }
