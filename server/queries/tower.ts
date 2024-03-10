@@ -83,6 +83,20 @@ export const getTower = cache(
         date: {
           gte: today,
         },
+        status: {
+          not: "completed",
+        },
+        tower: {
+          location: tower.location,
+        },
+      },
+      select: {
+        id: true,
+        timeSearched: true,
+        firstName: true,
+        lastName: true,
+        handOverTo: true,
+        status: true,
       },
     });
 
