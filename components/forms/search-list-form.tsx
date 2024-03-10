@@ -124,11 +124,9 @@ export const SearchListForm = ({
             />
             <TextInput label="Kleidung" {...form.getInputProps("clothing")} />
             <Textarea label="Sonstige" {...form.getInputProps("description")} />
-            <Checkbox
+            <Textarea
               label="Vorerkrankung"
-              {...form.getInputProps("previousIllness", {
-                type: "checkbox",
-              })}
+              {...form.getInputProps("previousIllness")}
             />
           </SimpleGrid>
         </Fieldset>

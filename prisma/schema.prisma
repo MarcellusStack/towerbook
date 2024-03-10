@@ -249,10 +249,10 @@ model User {
 }
 
 model SearchList {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(open)
+  id                        String       @id @default(uuid())
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+  status                    Status       @default(open)
   date                      DateTime
   timeSearched              DateTime     @db.Time(4)
   firstName                 String
@@ -261,7 +261,7 @@ model SearchList {
   stature                   String?
   height                    Int?
   clothing                  String?
-  previousIllness           Boolean      @default(false)
+  previousIllness           String?
   firstNameReportingPerson  String?
   lastNameReportingPerson   String?
   phoneReportingPerson      String?

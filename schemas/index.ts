@@ -541,9 +541,9 @@ export const userCertificateSchema = z.intersection(
 );
 
 const signaturePointSchema = z.object({
-  x: z.number(),
-  y: z.number(),
-  time: z.number(),
+  x: z.coerce.number(),
+  y: z.coerce.number(),
+  time: z.coerce.number(),
   color: z.string(),
 });
 
@@ -569,7 +569,7 @@ export const searchListSchema = z.object({
   stature: z.string().nullable(),
   height: z.string().nullable(),
   clothing: z.string().nullable(),
-  previousIllness: z.boolean(),
+  previousIllness: z.string().nullable(),
   firstNameReportingPerson: z.string().nullable(),
   lastNameReportingPerson: z.string().nullable(),
   phoneReportingPerson: z.string().nullable(),
