@@ -240,7 +240,8 @@ model User {
   shifts                                Shift[]
   guardLeaders                          TowerDay[]          @relation(name: "guardLeader")
   towerLeaders                          TowerDay[]          @relation(name: "towerLeader")
-  firstAidOperations                    FirstAidOperation[]
+  firstAidOperationsGuardLeaders        FirstAidOperation[] @relation(name: "firstAidOperationGuardLeader")
+  firstAidOperationsHelpers             FirstAidOperation[] @relation(name: "firstAidOperationHelper")
   searchlists                           SearchList[]
   bookings                              Booking[]
   permissions                           Permission[]
@@ -326,8 +327,8 @@ model FirstAidOperation {
   operationNumberWRD           String?
   operationLocation            String?
   guardLeaderId                String
-  guardLeader                  User                  @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade)
-  helper                       Json?
+  guardLeader                  User                  @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "firstAidOperationGuardLeader")
+  helper                       User[]               @relation(name: "firstAidOperationHelper")
   signatureGuardLeader         Json?
   signatureFirstAider          Json?
   signatureSecondAider         Json?

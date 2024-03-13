@@ -4,8 +4,8 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import { FirstAidOperation } from "@/components/protocols/first-aid-operation";
 import { notFound } from "next/navigation";
+import { FirstAidOperationLayout } from "@first-aid-operation/[id]/_components/first-aid-operation-layout";
 
 export default async function Layout({
   children,
@@ -31,7 +31,7 @@ export default async function Layout({
   return (
     <>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <FirstAidOperation>{children}</FirstAidOperation>
+        <FirstAidOperationLayout>{children}</FirstAidOperationLayout>
       </HydrationBoundary>
     </>
   );

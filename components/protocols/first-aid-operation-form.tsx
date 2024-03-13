@@ -45,12 +45,13 @@ export const FirstAidOperationForm = () => {
 
   return (
     <>
-      {operation.type === "big" ? (
+      {operation.type === "big" && (
         <>
           <FirstAidOperationBigForm operation={operation} />
           <TableOfContents links={bigLinks} />
         </>
-      ) : (
+      )}
+      {operation.type === "small" && (
         <>
           <FirstAidOperationSmallForm operation={operation} />
           <TableOfContents links={smallLinks} />

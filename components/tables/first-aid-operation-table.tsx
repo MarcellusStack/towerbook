@@ -25,10 +25,11 @@ import { convertDate } from "@utils/index";
 import { DeleteModalAction } from "@components/delete-modal-action";
 import { type FirstAidOperationProps } from "@server/queries/get-first-aid-operations";
 import { deleteFirstAidOperation } from "@server/actions/delete-first-aid-operation";
-import { status } from "@/constants";
+import { status, tableColumnProps } from "@/constants";
 import { TableLoader } from "@components/loader/table-loader";
 import { useGetFirstAidOperations } from "@/data/protocols";
 import { useSearchParams } from "next/navigation";
+import { MantineTable } from "@components/mantine-table";
 
 export const FirstAidOperationTableRow = ({
   operation,
@@ -131,6 +132,73 @@ export const FirstAidOperationTable = () => {
           ))}
         </TableTbody>
       </Table>
+      <MantineTable
+        records={operations || []}
+        columns={[
+          {
+            accessor: "date",
+            title: "Datum",
+            render: ({ date }) => <>{convertDate(date)}</>,
+            ...tableColumnProps,
+          },
+          {
+            accessor: "type",
+            title: "Typ",
+            render: ({ type }) => (
+              <>
+                {type === "big" ? (
+                  <ThemeIcon variant="subtle" color="black">
+                    <IconAmbulance style={{ width: "70%", height: "70%" }} />
+                  </ThemeIcon>
+                ) : (
+                  <ThemeIcon variant="subtle" color="black">
+                    <IconFirstAidKit style={{ width: "70%", height: "70%" }} />
+                  </ThemeIcon>
+                )}{" "}
+              </>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "main",
+            title: "Haupt/Nebenturm",
+            render: ({ main }) => (
+              <Badge color="black" variant={main ? "filled" : "outline"}>
+                {main ? "Hauptturm" : "Nebenturm"}
+              </Badge>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "name",
+            title: "Name",
+            ...tableColumnProps,
+          },
+          {
+            accessor: "number",
+            title: "Nummer",
+            ...tableColumnProps,
+          },
+          {
+            accessor: "location",
+            title: "Standort",
+            ...tableColumnProps,
+          },
+          {
+            accessor: "actions",
+            title: "Aktionen",
+            width: "0%",
+            render: ({ id }) => (
+              <Group gap={0} justify="flex-end">
+                <ViewActionIcon href={`/towers/${id}`} />
+                <DeleteActionIcon id={id} action={deleteTower} model="Turm" />
+              </Group>
+            ),
+            ...tableColumnProps,
+          },
+        ]}
+        storeKey="first-aid-operation-table"
+      />
     </>
   );
 };
