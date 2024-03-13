@@ -10,6 +10,8 @@ import { tableColumnProps } from "@/constants";
 import { useGetPermissions } from "@permissions/_data";
 import { deletePermission } from "@permissions/_actions";
 import { ViewActionIcon } from "@/components/view-action-icon";
+import { DeleteActionIcon } from "@/components/delete-action-icon";
+import { UpdateModalActionIcon } from "@/components/update-modal-action-icon";
 
 export const PermissionsTable = () => {
   const searchParams = useSearchParams();
@@ -46,29 +48,17 @@ export const PermissionsTable = () => {
           render: ({ id }) => (
             <Group gap={0} justify="flex-end">
               <ViewActionIcon href={`/settings/permissions/${id}`} />
-              <ActionIcon
-                onClick={() => {
-                  modals.open({
-                    title: "Berechtigung löschen",
-                    children: (
-                      <>
-                        <DeleteModalAction
-                          id={id}
-                          action={deletePermission}
-                          model="Berechtiung"
-                        />
-                      </>
-                    ),
-                  });
-                }}
-                variant="subtle"
-                color="red"
-              >
-                <IconTrash
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
+              <UpdateModalActionIcon
+                model="Berechtigung"
+                modalContent={
+                  <UpdateAccomodationForm accomodation={accomodation} />
+                }
+              />
+              <DeleteActionIcon
+                id={id}
+                model="Berechtigung"
+                action={deletePermission}
+              />
             </Group>
           ),
           ...tableColumnProps,

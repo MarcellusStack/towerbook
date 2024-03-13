@@ -9,8 +9,8 @@ import { tableColumnProps } from "@/constants";
 import { ViewActionIcon } from "@/components/view-action-icon";
 import { MantineTable } from "@/components/mantine-table";
 import { DeleteActionIcon } from "@/components/delete-action-icon";
-import { UpdateActionIcon } from "@/components/edit-action-icon";
-import { UpdateAccomodationForm } from "@accomodations/_components/update-accomodation-form";
+import { UpdateModalActionIcon } from "@/components/update-modal-action-icon";
+import { UpdateAccomodationForm } from "@/app/(dashboard)/accomodations/_components/update-accomodation-form";
 
 export const AccomodationsTable = () => {
   const searchParams = useSearchParams();
@@ -63,7 +63,7 @@ export const AccomodationsTable = () => {
             render: (accomodation) => (
               <Group gap={0} justify="flex-end">
                 <ViewActionIcon href={`/accomodations/${accomodation.id}`} />
-                <UpdateActionIcon
+                <UpdateModalActionIcon
                   model="Unterkunft"
                   modalContent={
                     <UpdateAccomodationForm accomodation={accomodation} />

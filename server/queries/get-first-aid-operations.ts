@@ -25,6 +25,17 @@ export const getFirstAidOperations = authFilterQuery(
             lastName: true,
           },
         },
+        helper: {
+          orderBy: {
+            createdAt: "asc",
+          },
+          take: 1,
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
       },
     });
   },
