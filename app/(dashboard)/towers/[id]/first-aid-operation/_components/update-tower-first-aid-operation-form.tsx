@@ -2,7 +2,7 @@
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
 import { Button, Stack, Text, rem, SegmentedControl } from "@mantine/core";
-import { updateFirstAidOperationSchema } from "@/schemas";
+import { updateTowerFirstAidOperationSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { IconAmbulance, IconFirstAidKit } from "@tabler/icons-react";
 import { UserSelect } from "@/components/user-select";
@@ -18,7 +18,7 @@ export const UpdateTowerFirstAidOperationForm = ({
 }) => {
   const form = useForm({
     name: "update-tower-first-aid-operation-form",
-    validate: zodResolver(updateFirstAidOperationSchema),
+    validate: zodResolver(updateTowerFirstAidOperationSchema),
     initialValues: {
       id: operation.id,
       type: operation.type,

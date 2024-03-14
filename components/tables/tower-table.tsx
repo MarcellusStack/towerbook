@@ -10,6 +10,8 @@ import { tableColumnProps } from "@/constants";
 import { TowerStatus } from "@towers/_components/tower-status";
 import { ViewActionIcon } from "@/components/view-action-icon";
 import { DeleteActionIcon } from "../delete-action-icon";
+import { UpdateModalActionIcon } from "@components/update-modal-action-icon";
+import { UpdateTowerForm } from "@towers/_components/update-tower-form";
 
 export function TowerTable() {
   const searchParams = useSearchParams();
@@ -84,10 +86,16 @@ export function TowerTable() {
           accessor: "actions",
           title: "Aktionen",
           width: "0%",
-          render: ({ id }) => (
+          render: (tower) => (
             <Group gap={0} justify="flex-end">
-              <ViewActionIcon href={`/towers/${id}`} />
-              <DeleteActionIcon id={id} action={deleteTower} model="Turm" />
+              <ViewActionIcon href={`/towers/${tower.id}`} />
+              <UpdateModalActionIcon
+                model="Turm"
+                modalContent={
+                  <UpdateTowerForm tower={tower} />
+                }
+              />
+              <DeleteActionIcon id={tower.id} action={deleteTower} model="Turm" />
             </Group>
           ),
           ...tableColumnProps,

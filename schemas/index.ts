@@ -253,6 +253,19 @@ export const createTowerSchema = z.object({
     .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
 });
 
+export const updateTowerSchema = z.object({
+  id: z.string().min(1, { message: "Bitte fügen sie eine Id hinzu" }),
+  name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu" }),
+  main: z.boolean(),
+  type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu" }),
+  number: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Turmnummer hinzu" }),
+  location: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Standort hinzu" }),
+});
+
 export const createPermissionSchema = z.object({
   name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu" }),
   description: z
