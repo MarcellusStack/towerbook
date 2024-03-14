@@ -1,8 +1,5 @@
 "use client";
-import { Group, ActionIcon, Text } from "@mantine/core";
-import { modals } from "@mantine/modals";
-import { IconTrash } from "@tabler/icons-react";
-import { DeleteModalAction } from "@components/delete-modal-action";
+import { Group, Text } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
 import { TableLoader } from "@components/loader/table-loader";
 import { MantineTable } from "@components/mantine-table";
@@ -12,6 +9,7 @@ import { deletePermission } from "@permissions/_actions";
 import { ViewActionIcon } from "@/components/view-action-icon";
 import { DeleteActionIcon } from "@/components/delete-action-icon";
 import { UpdateModalActionIcon } from "@/components/update-modal-action-icon";
+import { UpdatePermissionForm } from "@permissions/_components/update-permission-form";
 
 export const PermissionsTable = () => {
   const searchParams = useSearchParams();
@@ -45,17 +43,15 @@ export const PermissionsTable = () => {
           accessor: "actions",
           title: "Aktionen",
           width: "0%",
-          render: ({ id }) => (
+          render: (permission) => (
             <Group gap={0} justify="flex-end">
-              <ViewActionIcon href={`/settings/permissions/${id}`} />
+              <ViewActionIcon href={`/settings/permissions/${permission.id}`} />
               <UpdateModalActionIcon
                 model="Berechtigung"
-                modalContent={
-                  <UpdateAccomodationForm accomodation={accomodation} />
-                }
+                modalContent={<UpdatePermissionForm permission={permission} />}
               />
               <DeleteActionIcon
-                id={id}
+                id={permission.id}
                 model="Berechtigung"
                 action={deletePermission}
               />

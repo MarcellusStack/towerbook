@@ -266,7 +266,8 @@ export const updateTowerSchema = z.object({
     .min(1, { message: "Bitte fügen sie einen Standort hinzu" }),
 });
 
-export const createPermissionSchema = z.object({
+export const updatePermissionSchemaForm = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
   name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu" }),
   description: z
     .string()
@@ -773,6 +774,7 @@ export const firstAidOperationSmallSchema = z.object({
   startTime: z.string().nullable(),
   endTime: z.string().nullable(),
   operationLocation: z.string().nullable(),
+  accidentTime: z.string().nullable(),
   guardLeader: z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
     firstName: z

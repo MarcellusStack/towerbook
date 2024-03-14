@@ -6,7 +6,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { getPermissions } from "@permissions/_actions";
-import { CreatePermissionForm } from "@permissions/_components/create-permissions-form";
+import { CreatePermissionForm } from "@/app/(dashboard)/settings/permissions/_components/create-permission-form";
 import { PermissionsTable } from "@permissions/_components/permissions-table";
 
 export const dynamic = "force-dynamic";

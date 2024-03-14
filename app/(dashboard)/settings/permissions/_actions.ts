@@ -2,7 +2,12 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/server/db";
 import { authAction } from "@server/lib/utils/action-clients";
-import { createPermissionSchema, deleteSchema } from "@schemas/index";
+import {
+  createPermissionSchema,
+  deleteSchema,
+  updatePermissionSchema,
+  updatePermissionSchemaForm,
+} from "@schemas/index";
 import { authFilterQuery } from "@/server/lib/utils/query-clients";
 import { cache } from "react";
 
@@ -53,6 +58,27 @@ export const createPermission = authAction("createPermission")(
     revalidatePath("/", "layout");
 
     return { message: `Die Berechtigung wurde erstellt` };
+  }
+);
+
+export const updatePermission = authAction("updatePermission")(
+  updatePermissionSchemaForm,
+  async ({ id, name, description }, { session }) => {
+    try {
+      await prisma.permission.update({
+        where: { id: id, organizationId: session.organizationId as string },
+        data: {
+          name: name,
+          description: description,
+        },
+      });
+    } catch (error) {
+      throw new Error("Fehler beim aktualisieren der Berechtigung");
+    }
+
+    revalidatePath("/", "layout");
+
+    return { message: `Die Berechtigung wurde aktualisiert` };
   }
 );
 
