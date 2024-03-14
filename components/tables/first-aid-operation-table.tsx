@@ -105,7 +105,7 @@ export const FirstAidOperationTable = () => {
                   href={`/protocols/first-aid-operation/${operation.id}`}
                 />
                 <UpdateModalActionIcon
-                  model="Unterkunft"
+                  model="Erste-Hilfe-Einsatz"
                   modalContent={
                     <UpdateFirstAidOperationForm operation={operation} />
                   }

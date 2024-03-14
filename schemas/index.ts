@@ -440,6 +440,18 @@ export const updateFirstAidOperationSchema = z.object({
   towerId: z.string().min(1),
 });
 
+export const updateTowerFirstAidOperationSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu." }),
+  date: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
+  startTime: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
+  guardLeader: z.object({
+    id: z.string().min(1, { message: "Id wird benötigt" }),
+    firstName: z.string(),
+    lastName: z.string(),
+  }),
+});
+
 export const createGroupRegistrationSchema = z.object({
   date: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
   time: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),

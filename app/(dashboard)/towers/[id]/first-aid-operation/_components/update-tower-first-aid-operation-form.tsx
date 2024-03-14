@@ -5,20 +5,19 @@ import { Button, Stack, Text, rem, SegmentedControl } from "@mantine/core";
 import { updateFirstAidOperationSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { IconAmbulance, IconFirstAidKit } from "@tabler/icons-react";
-import { FirstAidOperationProps } from "@/server/queries/get-first-aid-operations";
-import { TowerSelect } from "@/components/tower-select";
 import { UserSelect } from "@/components/user-select";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { convertTime } from "@/utils";
-import { updateFirstAidOperation } from "@first-aid-operation/_actions";
+import { TowerFirstAidOperationProps } from "@/server/queries/get-tower-first-aid-operations";
+import { updateTowerFirstAidOperation } from "@towers/[id]/first-aid-operation/_actions";
 
-export const UpdateFirstAidOperationForm = ({
+export const UpdateTowerFirstAidOperationForm = ({
   operation,
 }: {
-  operation: FirstAidOperationProps;
+  operation: TowerFirstAidOperationProps;
 }) => {
   const form = useForm({
-    name: "update-first-aid-operation-form",
+    name: "update-tower-first-aid-operation-form",
     validate: zodResolver(updateFirstAidOperationSchema),
     initialValues: {
       id: operation.id,
@@ -26,12 +25,11 @@ export const UpdateFirstAidOperationForm = ({
       date: new Date(operation.date),
       startTime: convertTime(new Date(operation.startTime)),
       guardLeader: operation.guardLeader,
-      towerId: operation.tower.id,
     },
   });
 
   const { execute, result, status } = useActionNotification({
-    action: updateFirstAidOperation,
+    action: updateTowerFirstAidOperation,
     executeNotification: "Einsatz wird aktualisiert",
     hideModals: true,
   });
@@ -86,7 +84,7 @@ export const UpdateFirstAidOperationForm = ({
         />
         <TimeInput label="Uhrzeit" {...form.getInputProps("startTime")} />
         <UserSelect
-          formActionId="update-first-aid-operation-form"
+          formActionId="update-tower-first-aid-operation-form"
           formField="guardLeader"
           label="Wachleiter"
           initialValue={operation.guardLeader.id}
@@ -94,17 +92,6 @@ export const UpdateFirstAidOperationForm = ({
         {form.errors.guardLeader && (
           <Text size="xs" c="red" mt="-xs">
             Bitte fügen Sie ein Wachleiter hinzu
-          </Text>
-        )}
-        <TowerSelect
-          formActionId="update-first-aid-operation-form"
-          formField="towerId"
-          label="Turm"
-          initialValue={operation.tower.id}
-        />
-        {form.errors.towerId && (
-          <Text size="xs" c="red" mt="-xs">
-            Bitte fügen Sie ein Turm hinzu
           </Text>
         )}
         <Button loading={status === "executing"} type="submit">
