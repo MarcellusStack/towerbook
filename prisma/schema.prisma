@@ -328,7 +328,7 @@ model FirstAidOperation {
   operationLocation            String?
   guardLeaderId                String
   guardLeader                  User                  @relation(fields: [guardLeaderId], references: [id], onDelete: Cascade, name: "firstAidOperationGuardLeader")
-  helper                       User[]               @relation(name: "firstAidOperationHelper")
+  helper                       User[]                @relation(name: "firstAidOperationHelper")
   signatureGuardLeader         Json?
   signatureFirstAider          Json?
   signatureSecondAider         Json?
