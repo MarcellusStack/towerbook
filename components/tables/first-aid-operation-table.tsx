@@ -1,29 +1,8 @@
 "use client";
 
-import {
-  Table,
-  Group,
-  Text,
-  ActionIcon,
-  TableThead,
-  TableTr,
-  TableTh,
-  TableTbody,
-  TableTd,
-  ThemeIcon,
-  Badge,
-} from "@mantine/core";
-import { modals } from "@mantine/modals";
-import {
-  IconAmbulance,
-  IconFirstAidKit,
-  IconPencil,
-  IconTrash,
-} from "@tabler/icons-react";
-import Link from "next/link";
+import { Group, ThemeIcon, Badge } from "@mantine/core";
+import { IconAmbulance, IconFirstAidKit } from "@tabler/icons-react";
 import { convertDate } from "@utils/index";
-import { DeleteModalAction } from "@components/delete-modal-action";
-import { type FirstAidOperationProps } from "@server/queries/get-first-aid-operations";
 import { deleteFirstAidOperation } from "@server/actions/delete-first-aid-operation";
 import {
   status as firstAidOperationStatus,
@@ -35,7 +14,8 @@ import { useSearchParams } from "next/navigation";
 import { MantineTable } from "@components/mantine-table";
 import { DeleteActionIcon } from "@components/delete-action-icon";
 import { ViewActionIcon } from "@components/view-action-icon";
-import { EditActionIcon } from "../update-modal-action-icon";
+import { UpdateModalActionIcon } from "@components/update-modal-action-icon";
+import { UpdateFirstAidOperationForm } from "@/app/(dashboard)/protocols/first-aid-operation/_components/update-first-aid-operation-form";
 
 export const FirstAidOperationTable = () => {
   const searchParams = useSearchParams();
@@ -119,17 +99,19 @@ export const FirstAidOperationTable = () => {
             accessor: "actions",
             title: "Aktionen",
             width: "0%",
-            render: ({ id }) => (
+            render: (operation) => (
               <Group gap={0} justify="flex-end">
-                <ViewActionIcon href={`/protocols/first-aid-operation/${id}`} />
-                <EditActionIcon
+                <ViewActionIcon
+                  href={`/protocols/first-aid-operation/${operation.id}`}
+                />
+                <UpdateModalActionIcon
                   model="Unterkunft"
                   modalContent={
-                    <UpdateAccomodationForm accomodation={accomodation} />
+                    <UpdateFirstAidOperationForm operation={operation} />
                   }
                 />
                 <DeleteActionIcon
-                  id={id}
+                  id={operation.id}
                   action={deleteFirstAidOperation}
                   model="Erste-Hilfe-Einsatz"
                 />

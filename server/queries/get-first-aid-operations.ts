@@ -12,15 +12,18 @@ export const getFirstAidOperations = authFilterQuery(
         id: true,
         status: true,
         date: true,
+        startTime: true,
         type: true,
         tower: {
           select: {
+            id: true,
             name: true,
             number: true,
           },
         },
         guardLeader: {
           select: {
+            id: true,
             firstName: true,
             lastName: true,
           },
