@@ -11,7 +11,11 @@ export const updateTowerFirstAidOperation = authAction("updateProtocol")(
   async ({ id, type, date, startTime, guardLeader }, { session }) => {
     try {
       await prisma.firstAidOperation.update({
-        where: { id: id, organizationId: session.organizationId as string },
+        where: {
+          id: id,
+          organizationId: session.organizationId as string,
+          status: { notIn: ["revision", "completed"] },
+        },
         data: {
           type: type as FirstAidOperationType,
           date: new Date(date as Date),
