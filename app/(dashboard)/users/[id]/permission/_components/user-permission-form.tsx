@@ -8,15 +8,18 @@ import {
   SimpleGrid,
   Text,
   MultiSelect,
+  Grid,
 } from "@mantine/core";
 import { userPermissionsSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { roles } from "@/constants/roles";
 import { updateUserPermissions } from "@/server/actions/update-user-permission";
 import { UserPermissionProps } from "@users/[id]/permission/_actions";
+import { PermissionMultiSelect } from "@/components/permission-multiselect";
 
 export const UserPermissionForm = ({ user }: { user: UserPermissionProps }) => {
   const form = useForm({
+    name: "user-permission-form",
     validate: zodResolver(userPermissionsSchema),
     initialValues: {
       permissions: user.permissions,
@@ -43,11 +46,23 @@ export const UserPermissionForm = ({ user }: { user: UserPermissionProps }) => {
             </Text>
           }
         >
-          <SimpleGrid cols={3} spacing="sm" verticalSpacing="sm"></SimpleGrid>
+          <Grid gutter="sm">
+            <Grid.Col span={3}>
+              <PermissionMultiSelect
+                formActionId="user-permission-form"
+                formField="permissions"
+                label="Berechtigungen"
+                initialValue={user.permissions}
+              />
+            </Grid.Col>
+          </Grid>
         </Fieldset>
         <Button
-          loading={status === "executing"}
-          type="submit"
+          /* loading={status === "executing"}
+          type="submit" */
+          onClick={() => {
+            console.log(form.values);
+          }}
           className="self-start"
         >
           Speichern

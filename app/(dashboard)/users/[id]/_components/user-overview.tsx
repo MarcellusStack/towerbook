@@ -64,15 +64,17 @@ export const UserOverview = ({ user }: { user: UserLayoutProps }) => {
           >
             {convertDate(new Date(user.birthDate))}
           </List.Item>
-          <List.Item
-            icon={
-              <ThemeIcon variant="light">
-                <IconPhone style={{ width: "70%", height: "70%" }} />
-              </ThemeIcon>
-            }
-          >
-            {user.phone}
-          </List.Item>
+          {user.phone && (
+            <List.Item
+              icon={
+                <ThemeIcon variant="light">
+                  <IconPhone style={{ width: "70%", height: "70%" }} />
+                </ThemeIcon>
+              }
+            >
+              {user.phone}
+            </List.Item>
+          )}
         </List>
       </Stack>
     </Card>

@@ -18,7 +18,9 @@ export const getUserPermission = authFilterQuery(async (search, session) => {
           location: true,
         },
       },
-      permissions: true,
+      permissions: {
+        select: { name: true, id: true },
+      },
       id: true,
     },
   });
