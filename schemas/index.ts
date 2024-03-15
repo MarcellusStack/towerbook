@@ -253,7 +253,21 @@ export const createTowerSchema = z.object({
     .min(1, { message: "Bitte fügen sie einen Standort hinzu." }),
 });
 
-export const createPermissionSchema = z.object({
+export const updateTowerSchema = z.object({
+  id: z.string().min(1, { message: "Bitte fügen sie eine Id hinzu" }),
+  name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu" }),
+  main: z.boolean(),
+  type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu" }),
+  number: z
+    .string()
+    .min(1, { message: "Bitte fügen sie eine Turmnummer hinzu" }),
+  location: z
+    .string()
+    .min(1, { message: "Bitte fügen sie einen Standort hinzu" }),
+});
+
+export const updatePermissionSchemaForm = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
   name: z.string().min(1, { message: "Bitte fügen sie einen Namen hinzu" }),
   description: z
     .string()
@@ -421,15 +435,35 @@ export const createFirstAidOperationSchema = z.object({
   startTime: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
   guardLeader: z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
-
-    firstName: z
-      .string()
-      .min(1, { message: "Bitte fügen sie einen Vornamen hinzu." }),
-    lastName: z
-      .string()
-      .min(1, { message: "Bitte fügen sie einen Nachnamen hinzu." }),
+    firstName: z.string(),
+    lastName: z.string(),
   }),
   towerId: z.string().min(1),
+});
+
+export const updateFirstAidOperationSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu." }),
+  date: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
+  startTime: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
+  guardLeader: z.object({
+    id: z.string().min(1, { message: "Id wird benötigt" }),
+    firstName: z.string(),
+    lastName: z.string(),
+  }),
+  towerId: z.string().min(1),
+});
+
+export const updateTowerFirstAidOperationSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  type: z.string().min(1, { message: "Bitte fügen sie ein Typ hinzu." }),
+  date: z.date({ invalid_type_error: "Bitte fügen sie ein Datum hinzu." }),
+  startTime: z.string().min(1, { message: "Bitte fügen sie eine Zeit hinzu." }),
+  guardLeader: z.object({
+    id: z.string().min(1, { message: "Id wird benötigt" }),
+    firstName: z.string(),
+    lastName: z.string(),
+  }),
 });
 
 export const createGroupRegistrationSchema = z.object({
@@ -541,9 +575,9 @@ export const userCertificateSchema = z.intersection(
 );
 
 const signaturePointSchema = z.object({
-  x: z.number(),
-  y: z.number(),
-  time: z.number(),
+  x: z.coerce.number(),
+  y: z.coerce.number(),
+  time: z.coerce.number(),
   color: z.string(),
 });
 
@@ -569,7 +603,7 @@ export const searchListSchema = z.object({
   stature: z.string().nullable(),
   height: z.string().nullable(),
   clothing: z.string().nullable(),
-  previousIllness: z.boolean(),
+  previousIllness: z.string().nullable(),
   firstNameReportingPerson: z.string().nullable(),
   lastNameReportingPerson: z.string().nullable(),
   phoneReportingPerson: z.string().nullable(),
@@ -740,6 +774,7 @@ export const firstAidOperationSmallSchema = z.object({
   startTime: z.string().nullable(),
   endTime: z.string().nullable(),
   operationLocation: z.string().nullable(),
+  accidentTime: z.string().nullable(),
   guardLeader: z.object({
     id: z.string().min(1, { message: "Id wird benötigt" }),
     firstName: z

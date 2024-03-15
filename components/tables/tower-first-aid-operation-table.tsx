@@ -1,101 +1,29 @@
 "use client";
 
 import {
-  Table,
   Group,
-  Text,
-  ActionIcon,
-  TableThead,
-  TableTr,
-  TableTh,
-  TableTbody,
-  TableTd,
   ThemeIcon,
   Badge,
 } from "@mantine/core";
-import { modals } from "@mantine/modals";
 import {
   IconAmbulance,
   IconFirstAidKit,
-  IconPencil,
-  IconTrash,
 } from "@tabler/icons-react";
-import Link from "next/link";
 import { convertDate } from "@utils/index";
-import { DeleteModalAction } from "@components/delete-modal-action";
 import { deleteFirstAidOperation } from "@server/actions/delete-first-aid-operation";
-import { status } from "@/constants";
-import { ExtendFirstAidOperationsWithGuardLeaderProps } from "@server/queries/get-tower-first-aid-operations";
+import {
+  status as firstAidOperationStatus,
+  tableColumnProps,
+} from "@/constants";
+
 import { useParams } from "next/navigation";
 import { TableLoader } from "@components/loader/table-loader";
 import { useGetTowerFirstAidOperations } from "@/data/tower";
-
-export const TowerFirstAidOperationTableRow = ({
-  operation,
-}: {
-  operation: ExtendFirstAidOperationsWithGuardLeaderProps;
-}) => {
-  return (
-    <TableTr key={operation.id}>
-      <TableTd>{convertDate(operation.date)}</TableTd>
-      <TableTd>
-        {operation.type === "big" ? (
-          <ThemeIcon variant="subtle" color="black">
-            <IconAmbulance style={{ width: "70%", height: "70%" }} />
-          </ThemeIcon>
-        ) : (
-          <ThemeIcon variant="subtle" color="black">
-            <IconFirstAidKit style={{ width: "70%", height: "70%" }} />
-          </ThemeIcon>
-        )}
-      </TableTd>
-      <TableTd>
-        <Badge color={status[operation.status].color}>
-          {status[operation.status].label}
-        </Badge>
-      </TableTd>
-
-      <TableTd>
-        <Text size="sm">
-          {operation.guardLeader.firstName} {operation.guardLeader.lastName}
-        </Text>
-      </TableTd>
-      <TableTd>
-        <Group gap={0} justify="flex-end">
-          <ActionIcon
-            size="md"
-            component={Link}
-            href={`/protocols/first-aid-operation/${operation.id}`}
-            variant="subtle"
-          >
-            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon
-            onClick={() => {
-              modals.open({
-                title: "Einsatz löschen",
-                children: (
-                  <>
-                    <DeleteModalAction
-                      id={operation.id}
-                      action={deleteFirstAidOperation}
-                      model="Einsatz"
-                    />
-                  </>
-                ),
-              });
-            }}
-            size="md"
-            variant="subtle"
-            color="red"
-          >
-            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </TableTd>
-    </TableTr>
-  );
-};
+import { ViewActionIcon } from "@components/view-action-icon";
+import { MantineTable } from "@components/mantine-table";
+import { UpdateModalActionIcon } from "../update-modal-action-icon";
+import { DeleteActionIcon } from "../delete-action-icon";
+import { UpdateTowerFirstAidOperationForm } from "@towers/[id]/first-aid-operation/_components/update-tower-first-aid-operation-form";
 
 export const TowerFirstAidOperationTable = () => {
   const { id } = useParams();
@@ -107,26 +35,91 @@ export const TowerFirstAidOperationTable = () => {
   if (isPending) return <TableLoader />;
   return (
     <>
-      <Table verticalSpacing="sm" striped withTableBorder>
-        <TableThead>
-          <TableTr>
-            <TableTh>Datum</TableTh>
-            <TableTh>Typ</TableTh>
-            <TableTh>Status</TableTh>
-            <TableTh>Wachleiter</TableTh>
-            <TableTh />
-          </TableTr>
-        </TableThead>
-        <TableTbody>
-          {operations &&
-            operations.map((operation) => (
-              <TowerFirstAidOperationTableRow
-                key={operation.id}
-                operation={operation}
-              />
-            ))}
-        </TableTbody>
-      </Table>
+      <MantineTable
+        records={operations || []}
+        columns={[
+          {
+            accessor: "date",
+            title: "Datum",
+            render: ({ date }) => <>{convertDate(date)}</>,
+            ...tableColumnProps,
+          },
+          {
+            accessor: "type",
+            title: "Typ",
+            render: ({ type }) => (
+              <>
+                {type === "big" ? (
+                  <ThemeIcon variant="subtle" color="black">
+                    <IconAmbulance style={{ width: "70%", height: "70%" }} />
+                  </ThemeIcon>
+                ) : (
+                  <ThemeIcon variant="subtle" color="black">
+                    <IconFirstAidKit style={{ width: "70%", height: "70%" }} />
+                  </ThemeIcon>
+                )}
+              </>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "status",
+            title: "Status",
+            render: ({ status }) => (
+              <Badge color={firstAidOperationStatus[status].color}>
+                {firstAidOperationStatus[status].label}
+              </Badge>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "helper",
+            title: "Ersthelfer",
+            render: ({ helper }) => (
+              <>
+                {helper.length > 0 &&
+                  `${helper[0].firstName} ${helper[0].lastName}`}
+              </>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "guardLeader",
+            title: "Wachleiter",
+            render: ({ guardLeader }) => (
+              <>
+                {guardLeader.firstName} {guardLeader.lastName}
+              </>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "actions",
+            title: "Aktionen",
+            width: "0%",
+            render: (operation) => (
+              <Group gap={0} justify="flex-end">
+                <ViewActionIcon
+                  href={`/protocols/first-aid-operation/${operation.id}`}
+                />
+                <UpdateModalActionIcon
+                  model="Erste-Hilfe-Einsatz"
+                  modalContent={
+                    <UpdateTowerFirstAidOperationForm operation={operation} />
+                  }
+                />
+                <DeleteActionIcon
+                  id={operation.id}
+                  action={deleteFirstAidOperation}
+                  model="Erste-Hilfe-Einsatz"
+                />
+              </Group>
+            ),
+            ...tableColumnProps,
+          },
+        ]}
+        storeKey="tower-first-aid-operation-table"
+      />
     </>
   );
 };

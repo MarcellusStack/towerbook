@@ -19,21 +19,17 @@ export default authMiddleware({
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 
     if (auth.userId) {
-      const userMetadata = await clerkClient.users.getUser(auth.userId);
+      const user = await clerkClient.users.getUser(auth.userId);
 
       // Redirect logged in users that are missing firstname, lastname, birthday to onboarding
-      if (
-        userMetadata.publicMetadata.firstName === undefined ||
-        userMetadata.publicMetadata.lastName === undefined ||
-        userMetadata.publicMetadata.birthDate === undefined
-      ) {
+      if (user.firstName === null || user.lastName === null) {
         if (nextUrl.pathname !== "/onboarding") {
           const onboarding = new URL("/onboarding", req.url);
           return Response.redirect(onboarding);
         }
       }
       // Redirect logged in users that are missing organization name and id to organization
-      else if (userMetadata.privateMetadata.organizationId === undefined) {
+      else if (user.privateMetadata.organizationId === undefined) {
         if (nextUrl.pathname !== "/organization") {
           const organization = new URL("/organization", req.url);
           return Response.redirect(organization);

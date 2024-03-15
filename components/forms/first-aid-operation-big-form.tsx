@@ -13,6 +13,8 @@ import {
   Card,
   Textarea,
   Space,
+  Avatar,
+  ActionIcon,
 } from "@mantine/core";
 import { firstAidOperationBigSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
@@ -25,6 +27,9 @@ import { UserFormCard } from "../user-form-card";
 import { InputCheck } from "@components/inputs/input-check";
 import { updateFirstAidOperationBig } from "@server/actions/update-first-aid-operation-big";
 import { Signature } from "@components/signature";
+import { tableColumnProps } from "@/constants";
+import { MantineTable } from "@components/mantine-table";
+import { IconTrash } from "@tabler/icons-react";
 
 export const FirstAidOperationBigForm = ({
   operation,
@@ -50,9 +55,9 @@ export const FirstAidOperationBigForm = ({
       operationLocation: operation.operationLocation,
       guardLeader: operation.guardLeader,
       helper: operation.helper === null ? new Array() : operation.helper,
-      signatureGuardLeader: operation.signatureGuardLeader,
-      signatureFirstAider: operation.signatureFirstAider,
-      signatureSecondAider: operation.signatureSecondAider,
+      signatureGuardLeader: operation.signatureGuardLeader || [],
+      signatureFirstAider: operation.signatureFirstAider || [],
+      signatureSecondAider: operation.signatureSecondAider || [],
       commissionedControlCenter: operation.commissionedControlCenter,
       emergencyMedicalIntervention: operation.emergencyMedicalIntervention,
       transportAmbulance: operation.transportAmbulance,
@@ -254,21 +259,6 @@ export const FirstAidOperationBigForm = ({
               label="Wachleiter"
               initialValue={`${operation.guardLeader.firstName} ${operation.guardLeader.lastName}`}
             />
-            <UserComboboxButton
-              label="Helfer"
-              formActionId="first-aid-operation-big-form"
-              formField="helper"
-            />
-            <Box />
-            <Box />
-            {form.values.helper.map((helper, index) => (
-              <UserFormCard
-                props={helper}
-                index={index}
-                formField="helper"
-                formActionId="first-aid-operation-big-form"
-              />
-            ))}
           </SimpleGrid>
           <Space h="sm" />
           <Stack gap="sm">
@@ -277,6 +267,57 @@ export const FirstAidOperationBigForm = ({
               formField="signatureGuardLeader"
               label="Unterschrift Wachleiter"
               initialValue={operation.signatureGuardLeader}
+            />
+            <UserComboboxButton
+              label="Helfer"
+              formActionId="first-aid-operation-big-form"
+              formField="helper"
+            />
+            <MantineTable
+              records={form.values.helper || []}
+              columns={[
+                {
+                  accessor: "user",
+                  title: "Benutzer",
+                  render: ({ firstName, lastName }) => (
+                    <>
+                      <Avatar color="blue" radius="xl">
+                        {firstName?.charAt(0)}
+                        {lastName?.charAt(0)}
+                      </Avatar>
+                    </>
+                  ),
+                  ...tableColumnProps,
+                },
+                {
+                  accessor: "name",
+                  title: "name",
+                  render: ({ firstName, lastName }) =>
+                    `${firstName} ${lastName}`,
+                  ...tableColumnProps,
+                },
+                {
+                  accessor: "actions",
+                  title: "Aktionen",
+                  width: "0%",
+                  render: ({}, index) => (
+                    <ActionIcon
+                      onClick={() => {
+                        form.removeListItem("helper", index);
+                      }}
+                      variant="subtle"
+                      color="red"
+                    >
+                      <IconTrash
+                        style={{ width: "70%", height: "70%" }}
+                        stroke={1.5}
+                      />
+                    </ActionIcon>
+                  ),
+                  ...tableColumnProps,
+                },
+              ]}
+              storeKey="first-aid-operation-big-helper-table"
             />
             <Signature
               formActionId="first-aid-operation-big-form"

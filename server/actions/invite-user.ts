@@ -13,8 +13,8 @@ export const inviteUser = authAction("createInvitation")(
       const invitation = await clerkClient.invitations.createInvitation({
         emailAddress: email,
         redirectUrl: `${baseUrl}/sign-up`,
+        ignoreExisting: true,
       });
-      console.log(invitation);
 
       if (!invitation) {
         throw new Error("Fehler beim Einladen des Benutzers");
@@ -40,7 +40,6 @@ export const inviteUser = authAction("createInvitation")(
         },
       });
     } catch (error) {
-      console.log(error);
       throw new Error("Fehler beim Einladen des Benutzer");
     }
 

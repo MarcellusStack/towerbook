@@ -1,14 +1,7 @@
 "use server";
 import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
-import { type Role, FirstAidOperation, Tower, User } from "@prisma/client";
-import { type FirstAidOperationProps } from "@server/queries/get-first-aid-operations";
 import { cache } from "react";
-
-export type ExtendFirstAidOperationsWithGuardLeaderProps =
-  FirstAidOperationProps & {
-    guardLeader: Pick<User, "firstName" | "lastName">;
-  };
 
 export const getTowerFirstAidOperations = cache(
   authFilterQuery(async (search, session) => {
@@ -21,14 +14,35 @@ export const getTowerFirstAidOperations = cache(
         id: true,
         status: true,
         date: true,
+        startTime: true,
         type: true,
         guardLeader: {
           select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        helper: {
+          orderBy: {
+            createdAt: "asc",
+          },
+          take: 1,
+          select: {
+            id: true,
             firstName: true,
             lastName: true,
           },
         },
       },
     });
-  })
+  }, "readProtocol")
 );
+
+export type TowerFirstAidOperationsProps = NonNullable<
+  Awaited<ReturnType<typeof getTowerFirstAidOperations>>
+>;
+
+export type TowerFirstAidOperationProps = NonNullable<
+  Awaited<ReturnType<typeof getTowerFirstAidOperations>>
+>[0];

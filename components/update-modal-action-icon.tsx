@@ -3,15 +3,15 @@ import { modals } from "@mantine/modals";
 import { IconPencil } from "@tabler/icons-react";
 import React from "react";
 
-export type UpdateActionProps = {
+export type UpdateModalActionProps = {
   model: string;
   modalContent: unknown;
 };
 
-export const UpdateActionIcon = ({
+export const UpdateModalActionIcon = ({
   model,
   modalContent,
-}: UpdateActionProps) => {
+}: UpdateModalActionProps) => {
   return (
     <ActionIcon
       onClick={() => {

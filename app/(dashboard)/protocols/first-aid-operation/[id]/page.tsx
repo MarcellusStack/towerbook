@@ -1,7 +1,4 @@
 import { getFirstAidOperation } from "@server/queries/get-first-aid-operation";
-import { FirstAidOperationBigForm } from "@/components/forms/first-aid-operation-big-form";
-import { TableOfContents } from "@components/table-of-contents";
-import { FirstAidOperationSmallForm } from "@components/forms/first-aid-operation-small-form";
 import { notFound } from "next/navigation";
 import { FirstAidOperationForm } from "@/components/protocols/first-aid-operation-form";
 import {

@@ -11,15 +11,14 @@ import {
   Text,
   useCombobox,
   Loader,
-  Button,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useDebouncedValue } from "@mantine/hooks";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { getUserAction } from "@/server/actions/get-user-action";
 import { createFormActions } from "@mantine/form";
+import { getPermissionAction } from "@/server/actions/permission";
 
-export const UserMultiSelect = ({
+export const PermissionMultiSelect = ({
   formActionId,
   formField,
   label,
@@ -28,19 +27,19 @@ export const UserMultiSelect = ({
   formActionId: string;
   formField: string;
   label: string;
-  initialValue?: { id: string; firstName: string; lastName: string }[] | [];
+  initialValue?: { id: string; name: string }[] | null;
 }) => {
   const formAction = createFormActions(formActionId);
   const [firstOpen, setFirstOpen] = useState(false);
-  const [value, setValue] = useState<
-    { id: string; firstName: string; lastName: string }[] | []
-  >(initialValue || []);
+  const [value, setValue] = useState<{ id: string; name: string }[] | null>(
+    initialValue || []
+  );
   const [search, setSearch] = useState("");
 
   const [debounced] = useDebouncedValue(search, 300);
   const { execute, result, status } = useActionNotification({
-    action: getUserAction,
-    executeNotification: `Benutzer werden geladen`,
+    action: getPermissionAction,
+    executeNotification: `Berechtigungen werden geladen`,
   });
   const combobox = useCombobox({
     onDropdownClose: () => {
@@ -65,13 +64,6 @@ export const UserMultiSelect = ({
 
   return (
     <Stack gap={rem(4)}>
-      <Button
-        onClick={() => {
-          console.log(value);
-        }}
-      >
-        Test
-      </Button>
       <Text component="label" size="sm" fw={500}>
         {label}
       </Text>
@@ -79,6 +71,7 @@ export const UserMultiSelect = ({
         store={combobox}
         onOptionSubmit={(val) => {
           const isItemSelected = value.some((v) => v.id === val);
+
           if (isItemSelected) {
             setValue(value.filter((v) => v.id !== val));
             formAction.removeListItem(
@@ -86,16 +79,16 @@ export const UserMultiSelect = ({
               value.findIndex((v) => v.id === val)
             );
           } else {
-            const filteredUser =
+            const filteredPermission =
               result.data &&
-              result.data.users.filter((user) => user.id === val);
-
+              result.data.permissions.filter(
+                (permission) => permission.id === val
+              );
             setValue([
               ...value,
               {
-                firstName: filteredUser[0].firstName,
-                lastName: filteredUser[0].lastName,
-                id: filteredUser[0].id,
+                name: filteredPermission[0].name,
+                id: filteredPermission[0].id,
               },
             ]);
             formAction.insertListItem(formField, val);
@@ -115,7 +108,7 @@ export const UserMultiSelect = ({
                     formAction.removeListItem(formField, index);
                   }}
                 >
-                  {item.firstName} {item.lastName}
+                  {item.name}
                 </Pill>
               ))}
 
@@ -124,7 +117,7 @@ export const UserMultiSelect = ({
                   onFocus={() => combobox.openDropdown()}
                   onBlur={() => combobox.closeDropdown()}
                   value={search}
-                  placeholder="Benutzer suchen"
+                  placeholder="Berechtigung suchen"
                   onChange={(event) => {
                     combobox.updateSelectedOptionIndex();
                     setSearch(event.currentTarget.value);
@@ -136,8 +129,8 @@ export const UserMultiSelect = ({
         </Combobox.Target>
         <Combobox.Dropdown>
           <Combobox.Options>
-            {result.data && result.data.users.length > 0 ? (
-              result.data.users.map((item) => (
+            {result.data && result.data.permissions.length > 0 ? (
+              result.data.permissions.map((item) => (
                 <Combobox.Option
                   value={item.id}
                   key={item.id}
@@ -145,15 +138,15 @@ export const UserMultiSelect = ({
                 >
                   <Group gap="sm">
                     {value.includes(item.id) ? <CheckIcon size={12} /> : null}
-                    {item.firstName} {item.lastName}
+                    {item.name}
                   </Group>
                 </Combobox.Option>
               ))
             ) : (
               <Combobox.Empty>
                 {result.data &&
-                  result.data.users.length === 0 &&
-                  "Keine Benutzer gefunden"}
+                  result.data.permissions.length === 0 &&
+                  "Keine Berechtigungen gefunden"}
                 {status === "executing" && <Loader />}
               </Combobox.Empty>
             )}

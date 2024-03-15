@@ -13,8 +13,8 @@ export const DashboardCard = ({
   children,
 }: DashboardCardProps) => {
   return (
-    <Card withBorder p="sm">
-      <Stack gap="sm">
+    <Card withBorder p="sm" h="100%">
+      <Stack gap="sm" justify="space-between" h="100%">
         <Group justify="space-between">
           <Text fw={700} size="xl">
             {title}

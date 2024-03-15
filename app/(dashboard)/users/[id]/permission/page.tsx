@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getUserPermission } from "@server/queries/get-user-permission";
+import { getUserPermission } from "@users/[id]/permission/_actions";
 import {
   HydrationBoundary,
   QueryClient,

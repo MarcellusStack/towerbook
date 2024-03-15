@@ -23,6 +23,9 @@
       "@/*": ["./*"],
       "@app/*": ["./app/*"],
       "@search-list/*": ["./app/(dashboard)/protocols/search-list/*"],
+      "@first-aid-operation/*": [
+        "./app/(dashboard)/protocols/first-aid-operation/*"
+      ],
       "@user/*": ["./app/(dashboard)/users/*"],
       "@towers/*": ["./app/(dashboard)/towers/*"],
       "@permissions/*": ["./app/(dashboard)/settings/permissions/*"],

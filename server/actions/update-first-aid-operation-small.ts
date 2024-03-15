@@ -15,6 +15,7 @@ export const updateFirstAidOperationSmall = authAction("updateProtocol")(
       startTime,
       endTime,
       operationLocation,
+      accidentTime,
       guardLeader,
       helper,
       emergencyEvent,
@@ -37,6 +38,36 @@ export const updateFirstAidOperationSmall = authAction("updateProtocol")(
     { session }
   ) => {
     try {
+      const currentOperation = await prisma.firstAidOperation.findUnique({
+        where: { id: id },
+        include: {
+          helper: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+      });
+
+      if (!currentOperation) {
+        throw new Error("Einsatz nicht gefunden");
+      }
+
+      const currentHelperIds = currentOperation.helper.map(
+        (helper) => helper.id
+      );
+      const newHelperIds = helper.map((helper) => helper.id);
+
+      const disconnectHelpers = currentHelperIds.filter(
+        (helper) => !newHelperIds.includes(helper)
+      );
+
+      // Find helpers to connect (those in new helpers but not in current helpers)
+      const connectHelpers = newHelperIds.filter(
+        (helper) => !currentHelperIds.includes(helper)
+      );
       await prisma.firstAidOperation.update({
         where: {
           organizationId: session.organizationId as string,
@@ -50,8 +81,12 @@ export const updateFirstAidOperationSmall = authAction("updateProtocol")(
           startTime: extractTimeFromDate(startTime as string),
           endTime: extractTimeFromDate(endTime as string),
           operationLocation: operationLocation,
+          accidentTime: extractTimeFromDate(accidentTime as string),
           guardLeader: { connect: { id: guardLeader.id } },
-          helper: helper,
+          helper: {
+            connect: connectHelpers.map((id) => ({ id: id })),
+            disconnect: disconnectHelpers.map((id) => ({ id: id })),
+          },
           emergencyEvent: emergencyEvent,
           sysBloodPressure: parseInt(sysBloodPressure),
           diaBloodPressure: parseInt(diaBloodPressure),
