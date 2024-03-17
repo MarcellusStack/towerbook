@@ -30,6 +30,7 @@ import {
   IconUserSearch,
   IconBed,
   IconUserShield,
+  IconTopologyStar3,
 } from "@tabler/icons-react";
 import { navLinks, type NavLinkProps } from "@constants/nav-links";
 import Link from "next/link";
@@ -114,14 +115,20 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       leftSection: <IconUsers stroke={1.5} />,
     },
     {
+      id: "organization",
+      label: "Organisation",
+      onClick: () => router.push("/settings/organization"),
+      leftSection: <IconTopologyStar3 stroke={1.5} />,
+    },
+    {
       id: "permissions",
       label: "Berechtigungen",
-      onClick: () => router.push("/permissions"),
+      onClick: () => router.push("/settings/permissions"),
       leftSection: <IconUserShield stroke={1.5} />,
     },
     {
       id: "duty-plans",
-      label: "Dienstpläne",
+      label: "Monatswachplan",
       onClick: () => router.push("/duty-plans"),
       leftSection: <IconCalendarPin stroke={1.5} />,
     },
