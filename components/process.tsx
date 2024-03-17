@@ -9,6 +9,7 @@ import {
   ActionIcon,
   Stack,
   Button,
+  Indicator,
 } from "@mantine/core";
 
 import {
@@ -65,44 +66,72 @@ export const Process = ({ process, title, href, form }: ProcessProps) => {
   return (
     <Group gap="sm" wrap="nowrap" className="w-full">
       <Group wrap="nowrap" gap="sm">
-        <ActionIcon
-          loading={status === "executing"}
-          size="xl"
-          color={handleProcessColor(process)}
-          onClick={() => {
-            if (!hasAccess) {
-              return;
-            }
-            modals.open({
-              title: `${title} in Bearbeitung setzen`,
-              children: (
-                <>
-                  <Stack gap="md">
-                    <Text size="sm">
-                      Sind sie sicher, dass Sie diesen Prozess in Bearbeitung
-                      setzen wollen? Diese Aktion ist unwiderruflich.
-                    </Text>
-                    <Button
-                      variant="filled"
-                      onClick={() => {
-                        execute({ id: id, form: form });
-                      }}
-                    >
-                      Prozess zurücksetzen
-                    </Button>
-                  </Stack>
-                </>
-              ),
-            });
-          }}
+        <Indicator
+          color="red"
+          mt="xs"
+          processing
+          size={14}
+          withBorder
+          disabled={process !== "incomplete"}
         >
-          {process === "open" && <IconCircle stroke={1.5} />}
-          {process === "ongoing" && <IconCircleDashed stroke={1.5} />}
-          {process === "completed" && <IconCircleCheck stroke={1.5} />}
-          {process === "incomplete" && (
-            <IconCircleX style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          )}
-        </ActionIcon>
+          <ActionIcon
+            loading={status === "executing"}
+            size="xl"
+            variant="light"
+            color={handleProcessColor(process)}
+            onClick={() => {
+              if (!hasAccess) {
+                return;
+              }
+              modals.open({
+                title: `${title} in Bearbeitung setzen`,
+                children: (
+                  <>
+                    <Stack gap="md">
+                      <Text size="sm">
+                        Sind sie sicher, dass Sie diesen Prozess in Bearbeitung
+                        setzen wollen? Diese Aktion ist unwiderruflich.
+                      </Text>
+                      <Button
+                        variant="filled"
+                        onClick={() => {
+                          execute({ id: id, form: form });
+                        }}
+                      >
+                        Prozess zurücksetzen
+                      </Button>
+                    </Stack>
+                  </>
+                ),
+              });
+            }}
+          >
+            {process === "open" && (
+              <IconCircle
+                stroke={1.5}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )}
+            {process === "ongoing" && (
+              <IconCircleDashed
+                stroke={1.5}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )}
+            {process === "completed" && (
+              <IconCircleCheck
+                stroke={1.5}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )}
+            {process === "incomplete" && (
+              <IconCircleX
+                style={{ width: "100%", height: "100%" }}
+                stroke={1.5}
+              />
+            )}
+          </ActionIcon>
+        </Indicator>
         <Anchor component={Link} href={href}>
           <Text size="md">{title}</Text>
         </Anchor>
