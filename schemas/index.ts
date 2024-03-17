@@ -172,9 +172,10 @@ export const userAccountSchema = z.intersection(
 );
 
 export const userPermissionsSchema = z.object({
-  role: z.array(z.string()),
-  userId: z.string().min(1, { message: "User Id wird benötigt" }),
-  towers: z.array(z.string()),
+  id: z.string().min(1, { message: "User Id wird benötigt" }),
+  permissions: z.array(
+    z.object({ id: z.string().min(1), name: z.string().min(1) })
+  ),
 });
 
 export const uploadFileSchema = z.object({
@@ -345,6 +346,8 @@ export const updatePermissionSchema = z.object({
   updateTowerday: z.boolean(),
   deleteTowerday: z.boolean(),
   completeTowerday: z.boolean(),
+  completeTowerdaySection: z.boolean(),
+  resetTowerdaySection: z.boolean(),
   createDutyplan: z.boolean(),
   readDutyplan: z.boolean(),
   updateDutyplan: z.boolean(),
@@ -871,5 +874,14 @@ export const resetPasswordSchema = z.object({
 export const passwordSchema = z.object({
   password: z.string().min(8, {
     message: "Passwort wird benötigt und muss mindestens 8 Zeichen lang sein",
+  }),
+});
+
+export const createPermissionSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name wird benötigt",
+  }),
+  description: z.string().min(1, {
+    message: "Beschreibung wird benötigt",
   }),
 });

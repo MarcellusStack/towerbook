@@ -46,7 +46,8 @@
       "@services/*": ["./services/*"],
       "@data/*": ["./data/*"],
       "@sign-up/*": ["./app/(authentication)/sign-up/*"],
-      "@dashboard/*": ["./app/(dashboard)/dashboard/*"]
+      "@dashboard/*": ["./app/(dashboard)/dashboard/*"],
+      "@stores/*": ["./stores/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

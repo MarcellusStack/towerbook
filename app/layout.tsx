@@ -15,6 +15,8 @@ import { ReactNode } from "react";
 
 import Providers from "@/server/lib/providers";
 import { deDe } from "@clerk/localizations";
+import { PermissionsProvider } from "@/stores/permissions";
+import { getPermissions } from "@/server/lib/utils/get-permissions";
 
 export const metadata = {
   title: "My Mantine app",
@@ -26,6 +28,7 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
+  const permissions = await getPermissions();
   return (
     <html lang="en">
       <head>
@@ -36,7 +39,11 @@ export default async function RootLayout({
           <Providers>
             <MantineProvider>
               <Notifications />
-              <ModalsProvider>{children}</ModalsProvider>
+              <ModalsProvider>
+                <PermissionsProvider permissions={permissions}>
+                  {children}
+                </PermissionsProvider>
+              </ModalsProvider>
             </MantineProvider>
           </Providers>
         </ClerkProvider>

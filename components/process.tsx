@@ -23,6 +23,7 @@ import { modals } from "@mantine/modals";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { useParams } from "next/navigation";
 import { resetTowerDayFormStatus } from "@server/actions/reset-tower-day-form-status";
+import { usePermissions } from "@/stores/permissions";
 
 export type ProcessProps = {
   process: Status;
@@ -58,6 +59,7 @@ export const Process = ({ process, title, href, form }: ProcessProps) => {
     executeNotification: `Revision wird abgeschlossen`,
     hideModals: true,
   });
+  const { permissions, hasAccess } = usePermissions("resetTowerdaySection");
 
   const { id } = useParams();
   return (
@@ -68,6 +70,9 @@ export const Process = ({ process, title, href, form }: ProcessProps) => {
           size="xl"
           color={handleProcessColor(process)}
           onClick={() => {
+            if (!hasAccess) {
+              return;
+            }
             modals.open({
               title: `${title} in Bearbeitung setzen`,
               children: (

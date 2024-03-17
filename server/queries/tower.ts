@@ -32,10 +32,21 @@ export const updateTowerStatus = authAction("updateTower")(
 );
 
 export const getTowers = authFilterQuery(async (search, session) => {
+  // Check if the user has a relation with any towers
+  const userTowers = await prisma.user.findUnique({
+    where: { id: session.id },
+    select: { towers: { select: { id: true } } },
+  });
+
+  const userTowerIds = userTowers?.towers.map((tower) => tower.id);
+
+  // If the user has a relation with any towers, return only those towers
+  // If not, return all towers
   return await prisma.tower.findMany({
     where: {
       organizationId: session.organizationId,
       number: search ?? undefined,
+      id: userTowerIds?.length ? { in: userTowerIds } : undefined,
     },
     select: {
       id: true,
@@ -50,8 +61,6 @@ export const getTowers = authFilterQuery(async (search, session) => {
 }, "readTower");
 
 export type TowersProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>;
-
-/* export type TowerProps = NonNullable<Awaited<ReturnType<typeof getTowers>>>[0]; */
 
 export const getTower = cache(
   authFilterQuery(async (search, session) => {

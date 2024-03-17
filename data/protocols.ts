@@ -14,7 +14,7 @@ export const useGetFirstAidOperations = (search: string) => {
 export const useGetFirstAidOperation = (id: string) => {
   return useQuery({
     queryKey: ["first-aid-operation", id],
-    queryFn: async () => await getFirstAidOperation(id,),
+    queryFn: async () => await getFirstAidOperation(id),
     placeholderData: keepPreviousData,
   });
 };

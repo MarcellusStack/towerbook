@@ -11,6 +11,7 @@ export type PageTabsProps = {
     value: string;
     icon: React.ReactNode;
     label: string;
+    disabled?: boolean;
   }[];
 };
 
@@ -34,6 +35,7 @@ export const PageTabs = ({ page, links }: PageTabsProps) => {
           <Tabs.Tab
             key={link.value}
             value={link.value}
+            disabled={link.disabled}
             leftSection={
               isPending && loadingTab === link.value ? (
                 <Loader color="blue" size="xs" />
