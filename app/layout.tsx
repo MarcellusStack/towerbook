@@ -15,8 +15,6 @@ import { ReactNode } from "react";
 
 import Providers from "@/server/lib/providers";
 import { deDe } from "@clerk/localizations";
-import { PermissionsProvider } from "@/stores/permissions";
-import { getPermissions } from "@/server/lib/utils/get-permissions";
 
 export const metadata = {
   title: "My Mantine app",
