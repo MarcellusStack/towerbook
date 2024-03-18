@@ -39,14 +39,6 @@ export const createUser = action(
           }
 
           await clerkClient.users.updateUser(auth.id, { firstName, lastName });
-
-          /* await clerkClient.users.updateUserMetadata(auth.id, {
-            publicMetadata: {
-              firstName: firstName,
-              lastName: lastName,
-              birthDate: birthDate,
-            },
-          }); */
         },
         {
           maxWait: 15000,
