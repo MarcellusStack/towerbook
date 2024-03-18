@@ -1,3 +1,5 @@
+import { TowerdayDashboard } from "@towerdays/[id]/_components/towerday-dashboard";
+
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -8,5 +10,5 @@ export default async function Page({ params }: { params: { id: string } }) {
     notFound();
   } */
 
-  return "Overview";
+  return <TowerdayDashboard />;
 }
