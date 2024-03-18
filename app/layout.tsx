@@ -28,7 +28,6 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  const permissions = await getPermissions();
   return (
     <html lang="en">
       <head>
@@ -39,11 +38,7 @@ export default async function RootLayout({
           <Providers>
             <MantineProvider>
               <Notifications />
-              <ModalsProvider>
-                <PermissionsProvider permissions={permissions}>
-                  {children}
-                </PermissionsProvider>
-              </ModalsProvider>
+              <ModalsProvider>{children}</ModalsProvider>
             </MantineProvider>
           </Providers>
         </ClerkProvider>

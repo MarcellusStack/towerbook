@@ -1,4 +1,6 @@
 import { AppLayout } from "@/components/layouts/app-layout";
+import { getPermissions } from "@/server/lib/utils/get-permissions";
+import { PermissionsProvider } from "@/stores/permissions";
 
 export const metadata = {
   title: "My Mantine app",
@@ -10,5 +12,12 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  return <AppLayout>{children}</AppLayout>;
+  const permissions = await getPermissions();
+  return (
+    <AppLayout>
+      <PermissionsProvider permissions={permissions}>
+        {children}
+      </PermissionsProvider>
+    </AppLayout>
+  );
 }
