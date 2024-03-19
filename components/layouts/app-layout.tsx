@@ -10,6 +10,10 @@ import {
   Divider,
   Stack,
   Box,
+  Popover,
+  Text,
+  Notification,
+  ScrollArea,
 } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { Branding } from "@/components/branding";
@@ -42,6 +46,12 @@ import { Breadcrumb } from "@components/breadcrumb";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { useTransition } from "react";
+
+import dynamic from "next/dynamic";
+
+const Notifications = dynamic(() => import("../notifications-container"), {
+  ssr: false,
+});
 
 const NavLink = ({ link }: { link: NavLinkProps }) => {
   const [isPending, startTransition] = useTransition();
@@ -252,14 +262,22 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 placeholder: "Suche...",
               }}
             />
-            <ActionIcon
-              variant="light"
-              size="lg"
-              aria-label="Search"
-              radius="xl"
-            >
-              <IconBell stroke={1.5} />
-            </ActionIcon>
+            <Popover width={350} position="bottom" withArrow shadow="md">
+              <Popover.Target>
+                <ActionIcon
+                  variant="light"
+                  size="lg"
+                  aria-label="open notifications"
+                  radius="xl"
+                >
+                  <IconBell stroke={1.5} />
+                </ActionIcon>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <Notifications />
+              </Popover.Dropdown>
+            </Popover>
+
             {/* <ActionIcon
               loading={refresh.status === "executing"}
               onClick={() => refresh.execute({})}
