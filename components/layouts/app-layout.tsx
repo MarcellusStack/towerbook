@@ -243,6 +243,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
             >
               <IconSearch stroke={1.5} />
             </ActionIcon>
+
             <Spotlight
               actions={actions}
               nothingFound="Nothing found..."
@@ -257,7 +258,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 placeholder: "Suche...",
               }}
             />
-            <Notifications />
+            {/* <Notifications /> */}
 
             {/* <ActionIcon
               loading={refresh.status === "executing"}

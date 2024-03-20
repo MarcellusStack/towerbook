@@ -27,7 +27,7 @@ export const createSearchList = authAction("createProtocol")(
       throw new Error("Fehler beim Erstellen des Sucheintrag");
     }
 
-    revalidatePath("/", "layout");
+    /* revalidatePath("/", "layout"); */
 
     channel.publish("organization:1", {
       body: `${firstName} ${lastName} am ${convertDate(
