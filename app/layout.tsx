@@ -15,11 +15,19 @@ import { ReactNode } from "react";
 
 import Providers from "@/server/lib/providers";
 import { deDe } from "@clerk/localizations";
+import dynamic from "next/dynamic";
 
 export const metadata = {
   title: "My Mantine app",
   description: "I have followed setup instructions carefully",
 };
+
+const NotificationsContainer = dynamic(
+  () => import("../components/notifications-container"),
+  {
+    ssr: false,
+  }
+);
 
 export default async function RootLayout({
   children,
@@ -33,12 +41,14 @@ export default async function RootLayout({
       </head>
       <body>
         <ClerkProvider localization={deDe}>
-          <Providers>
-            <MantineProvider>
-              <Notifications />
-              <ModalsProvider>{children}</ModalsProvider>
-            </MantineProvider>
-          </Providers>
+          <NotificationsContainer>
+            <Providers>
+              <MantineProvider>
+                <Notifications />
+                <ModalsProvider>{children}</ModalsProvider>
+              </MantineProvider>
+            </Providers>
+          </NotificationsContainer>
         </ClerkProvider>
       </body>
     </html>
