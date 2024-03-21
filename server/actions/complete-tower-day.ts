@@ -82,14 +82,14 @@ export const completeTowerDay = adminAction(
             },
           });
 
-          if (updatedTowerday && updatedTowerday.status === "completed") {
+          /* if (updatedTowerday && updatedTowerday.status === "completed") {
             await tx.tower.update({
               where: { id: towerday.towerId },
               data: {
                 status: "beach_closed",
               },
             });
-          }
+          } */
         },
         {
           maxWait: 15000,

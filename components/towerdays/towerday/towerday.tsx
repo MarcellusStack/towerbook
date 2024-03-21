@@ -8,6 +8,7 @@ import {
   Grid,
   GridCol,
   Group,
+  ScrollArea,
   Stack,
   Text,
 } from "@mantine/core";
@@ -45,7 +46,10 @@ export const Towerday = ({ children }: { children: React.ReactNode }) => {
           </Text>
         }
       />
-      <TowerDayProcess towerday={towerday} />
+      <ScrollArea w="100%">
+        <TowerDayProcess towerday={towerday} />
+      </ScrollArea>
+
       <Grid>
         <GridCol span={8}>
           {towerday.status === "completed" && (

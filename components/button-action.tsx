@@ -17,6 +17,7 @@ export const ButtonAction = ({
   const { execute, status } = useActionNotification({
     action: action,
     executeNotification: `${label}`,
+    hideModals: true,
   });
 
   return (

@@ -40,6 +40,7 @@ export type ProcessProps = {
     | "materialStatus"
     | "dutyplanStatus";
   lastProcess?: boolean;
+  id: string;
 };
 
 const handleProcessColor = (process: Status) => {
@@ -63,6 +64,7 @@ export const Process = ({
   href,
   form,
   lastProcess,
+  id,
 }: ProcessProps) => {
   const { execute, status } = useActionNotification({
     action: resetTowerDayFormStatus,
@@ -73,7 +75,6 @@ export const Process = ({
   const router = useRouter();
   const { permissions, hasAccess } = usePermissions("resetTowerdaySection");
 
-  const { id } = useParams();
   return (
     <Group gap="sm" wrap="nowrap" className="w-full">
       <Group wrap="nowrap" gap="sm">
@@ -181,47 +182,51 @@ export const TowerDayProcess = ({
 }) => {
   return (
     <Box style={{ position: "sticky", top: 0, left: 0, overflow: "auto" }}>
-      <ScrollArea w="100%">
-        <Group gap="sm" wrap="nowrap">
-          <Process
-            process={towerday.watchmanStatus}
-            href={`/tower-days/${towerday.id}/watchman-plan`}
-            title="Team"
-            form="watchmanStatus"
-          />
-          <Process
-            process={towerday.todoStatus}
-            href={`/tower-days/${towerday.id}/todo`}
-            title="Todo"
-            form="todoStatus"
-          />
-          <Process
-            process={towerday.incidentStatus}
-            href={`/tower-days/${towerday.id}/incident`}
-            title="Vorkommnisse"
-            form="incidentStatus"
-          />
-          <Process
-            process={towerday.weatherStatus}
-            href={`/tower-days/${towerday.id}/weather`}
-            title="Wetter"
-            form="weatherStatus"
-          />
-          <Process
-            process={towerday.materialStatus}
-            href={`/tower-days/${towerday.id}/material`}
-            title="Material Prüfung"
-            form="materialStatus"
-          />
-          <Process
-            process={towerday.dutyplanStatus}
-            href={`/tower-days/${towerday.id}/duty-plan`}
-            title="Wachplan"
-            form="dutyplanStatus"
-            lastProcess={true}
-          />
-        </Group>
-      </ScrollArea>
+      <Group gap="sm" wrap="nowrap">
+        <Process
+          process={towerday.watchmanStatus}
+          href={`/tower-days/${towerday.id}/watchman-plan`}
+          title="Team"
+          form="watchmanStatus"
+          id={towerday.id}
+        />
+        <Process
+          process={towerday.todoStatus}
+          href={`/tower-days/${towerday.id}/todo`}
+          title="Todo"
+          form="todoStatus"
+          id={towerday.id}
+        />
+        <Process
+          process={towerday.incidentStatus}
+          href={`/tower-days/${towerday.id}/incident`}
+          title="Vorkommnisse"
+          form="incidentStatus"
+          id={towerday.id}
+        />
+        <Process
+          process={towerday.weatherStatus}
+          href={`/tower-days/${towerday.id}/weather`}
+          title="Wetter"
+          form="weatherStatus"
+          id={towerday.id}
+        />
+        <Process
+          process={towerday.materialStatus}
+          href={`/tower-days/${towerday.id}/material`}
+          title="Material Prüfung"
+          form="materialStatus"
+          id={towerday.id}
+        />
+        <Process
+          process={towerday.dutyplanStatus}
+          href={`/tower-days/${towerday.id}/duty-plan`}
+          title="Wachplan"
+          form="dutyplanStatus"
+          lastProcess={true}
+          id={towerday.id}
+        />
+      </Group>
     </Box>
   );
 };
