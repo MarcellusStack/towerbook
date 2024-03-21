@@ -15,73 +15,7 @@ import { MantineTable } from "@components/mantine-table";
 import { ViewActionIcon } from "../view-action-icon";
 import { DeleteActionIcon } from "../delete-action-icon";
 
-export const TowerDayTableRow = ({
-  towerday,
-}: {
-  towerday: TowerDaysProps[0];
-}) => {
-  return (
-    <Table.Tr>
-      <Table.Td>
-        <Text size="sm">{convertDate(new Date(towerday.createdAt))}</Text>
-      </Table.Td>
-      <Table.Td>
-        <Text size="sm">{convertTime(new Date(towerday.startedAt))}</Text>
-      </Table.Td>
-      <Table.Td>
-        <Badge color={status[towerday.status].color}>
-          {status[towerday.status].label}
-        </Badge>
-      </Table.Td>
-      <Table.Td>
-        <Text size="sm">
-          Turm {towerday.tower.number} {towerday.tower.location}
-        </Text>
-      </Table.Td>
-      <Table.Td>
-        <Text size="sm">
-          {towerday.guardLeader.firstName} {towerday.guardLeader.lastName}
-        </Text>
-      </Table.Td>
-      <Table.Td>
-        <Text size="sm">
-          {towerday.towerLeader.firstName} {towerday.towerLeader.lastName}
-        </Text>
-      </Table.Td>
-      <Table.Td>
-        <Group gap={0} justify="flex-end">
-          <ActionIcon
-            component={Link}
-            href={`/tower-days/${towerday.id}`}
-            variant="subtle"
-          >
-            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          </ActionIcon>
-          <ActionIcon
-            onClick={() => {
-              modals.open({
-                title: "Turm Tag löschen",
-                children: (
-                  <>
-                    <DeleteModalAction
-                      id={towerday.id}
-                      action={deleteTowerDay}
-                      model="Turm Tag"
-                    />
-                  </>
-                ),
-              });
-            }}
-            variant="subtle"
-            color="red"
-          >
-            <IconTrash style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </Table.Td>
-    </Table.Tr>
-  );
-};
+
 
 export function TowerDaysTable() {
   const searchParams = useSearchParams();
@@ -153,7 +87,6 @@ export function TowerDaysTable() {
             render: (towerdays) => (
               <Group gap={0} justify="flex-end">
                 <ViewActionIcon href={`/tower-days/${towerdays.id}`} />
-
                 <DeleteActionIcon
                   id={towerdays.id}
                   action={deleteTowerDay}
