@@ -12,6 +12,12 @@ export const getTowerDays = authFilterQuery(async (search, session) => {
       createdAt: true,
       startedAt: true,
       status: true,
+      watchmanStatus: true,
+      todoStatus: true,
+      incidentStatus: true,
+      weatherStatus: true,
+      materialStatus: true,
+      dutyplanStatus: true,
       guardLeader: {
         select: {
           firstName: true,
@@ -23,6 +29,7 @@ export const getTowerDays = authFilterQuery(async (search, session) => {
         select: {
           location: true,
           number: true,
+          name: true,
         },
       },
     },

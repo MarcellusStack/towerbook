@@ -8,6 +8,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { CreateTowerDaysForm } from "@towerdays/_components/create-towerdays-form";
+import { DailyTowerdays } from "@towerdays/_components/today-towerdays";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,7 @@ export default async function Page({
       />
       <HydrationBoundary state={dehydrate(queryClient)}>
         <TowerDaysTable />
+        <DailyTowerdays />
       </HydrationBoundary>
     </>
   );
