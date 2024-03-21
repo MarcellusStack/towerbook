@@ -60,7 +60,7 @@ export const acceptInvite = authAction()(
           }
 
           await clerkClient.users.updateUserMetadata(session.id, {
-            privateMetadata: {
+            publicMetadata: {
               organizationId: user.organization.id,
             },
           });

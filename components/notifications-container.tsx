@@ -1,11 +1,10 @@
 "use client";
 
-import { useSession, useUser } from "@clerk/nextjs";
+import { useSession } from "@clerk/nextjs";
 import {
   ScrollArea,
   Stack,
   Notification,
-  Loader,
   Popover,
   ActionIcon,
   Indicator,
@@ -40,10 +39,13 @@ export const Notifications = () => {
     console.log("Connected to Ably!");
   });
 
-  const { channel } = useChannel(`[?rewind=10]organization:1`, (message) => {
-    setMessages((previousMessages) => [...previousMessages, message]);
-    setNewMessage(true); // Set newMessage to true when a new message arrives
-  });
+  const { channel } = useChannel(
+    `[?rewind=10]organization:${session?.user.publicMetadata.organizationId}`,
+    (message) => {
+      setMessages((previousMessages) => [...previousMessages, message]);
+      setNewMessage(true); // Set newMessage to true when a new message arrives
+    }
+  );
 
   const handlePopoverOpen = () => {
     setOpened((prev) => !prev); // Toggle the opened state of the popover

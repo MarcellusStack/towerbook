@@ -29,7 +29,7 @@ export default authMiddleware({
         }
       }
       // Redirect logged in users that are missing organization name and id to organization
-      else if (user.privateMetadata.organizationId === undefined) {
+      else if (user.publicMetadata.organizationId === undefined) {
         if (nextUrl.pathname !== "/organization") {
           const organization = new URL("/organization", req.url);
           return Response.redirect(organization);
