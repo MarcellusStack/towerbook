@@ -188,15 +188,18 @@ export const downloadFileSchema = z.object({
   fileName: z.string().min(1, { message: "Dateiname wird benötigt" }),
 });
 
-export const createUserSchema = z.intersection(
-  baseUserSchema,
-  z.object({
-    password: z
-      .string()
-      .min(6, { message: "Passwort muss mindestens 6 Zeichen lang sein." }),
-    role: z.string().min(1, { message: "Bitte fügen sie eine Rolle hinzu." }),
-  })
-);
+export const createUserSchema = z.object({
+  email: z.string().email({
+    message: "Keine gültige E-Mail",
+  }),
+  password: z.string().min(8, {
+    message: "Passwort wird benötigt und muss mindestens 8 Zeichen lang sein",
+  }),
+  firstName: z.string().min(1, { message: "Vorname wird benötigt" }),
+  lastName: z.string().min(1, { message: "Nachname wird benötigt" }),
+  birthDate: z.date({ invalid_type_error: "Geburtsdatum wird benötigt" }),
+  permissionId: z.string().min(1, { message: "Berechtigung wird benötigt" }),
+});
 
 export const inviteUserSchema = z.object({
   email: z.string().email({
