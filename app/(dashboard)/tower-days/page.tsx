@@ -1,14 +1,13 @@
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { getTowerDays } from "@/server/queries/tower-days";
-import { TowerDaysTable } from "@/components/tables/tower-days-table";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import { CreateTowerDaysForm } from "@towerdays/_components/create-towerdays-form";
-import { DailyTowerdays } from "@towerdays/_components/today-towerdays";
+import { Towerdays } from "@towerdays/_components/towerdays";
 
 export const dynamic = "force-dynamic";
 
@@ -36,8 +35,7 @@ export default async function Page({
         modalContent={<CreateTowerDaysForm />}
       />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <TowerDaysTable />
-        <DailyTowerdays />
+        <Towerdays />
       </HydrationBoundary>
     </>
   );
