@@ -2,7 +2,7 @@ import { Card, Group, Stack, Text } from "@mantine/core";
 import React from "react";
 
 export type DashboardCardProps = {
-  title: string;
+  title: React.ReactNode;
   icon: React.ReactNode;
   children: React.ReactNode;
 };
