@@ -164,7 +164,10 @@ export const completeTowerDays = authAction("completeTowerday")(
       await prisma.$transaction(
         async (tx) => {
           const towerdays = await tx.towerDay.findMany({
-            where: { id: { in: ids } },
+            where: {
+              id: { in: ids },
+              status: { notIn: ["open", "completed"] },
+            },
             select: {
               id: true,
               towerId: true,
@@ -189,7 +192,9 @@ export const completeTowerDays = authAction("completeTowerday")(
 
           const updatePromises = towerdays.map((towerday) =>
             tx.towerDay.update({
-              where: { id: towerday.id },
+              where: {
+                id: towerday.id,
+              },
               data: {
                 watchmanStatus:
                   towerday.watchmanStatus !== "completed"
