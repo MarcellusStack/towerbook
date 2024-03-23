@@ -27,13 +27,12 @@ export const createSearchList = authAction("createProtocol")(
       throw new Error("Fehler beim Erstellen des Sucheintrag");
     }
 
-    revalidatePath("/(dashboard)/protocols/search-list", "page");
-
     channel.publish(`organization:${session.organizationId}`, {
       body: `${firstName} ${lastName} am ${convertDate(
         new Date(date)
       )} um ${timeSearched} Uhr wurde vermisst gemeldet.`,
     });
+    revalidatePath("/(dashboard)/protocols/search-list", "page");
 
     return { message: `Der Sucheintrag wurde erstellt` };
   }
