@@ -65,13 +65,6 @@ export const UserMultiSelect = ({
 
   return (
     <Stack gap={rem(4)}>
-      <Button
-        onClick={() => {
-          console.log(value);
-        }}
-      >
-        Test
-      </Button>
       <Text component="label" size="sm" fw={500}>
         {label}
       </Text>
