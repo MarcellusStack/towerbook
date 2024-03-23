@@ -9,8 +9,8 @@ import { convertDate, extractTimeFromDate } from "@/utils";
 export const createSearchList = authAction("createProtocol")(
   createSearchListSchema,
   async ({ date, timeSearched, firstName, lastName, towerId }, { session }) => {
-    /* const ably = new Ably.Rest(process.env.ABLY_ADMIN_API_KEY); */
-    /* const channel = ably.channels.get("organization:1"); */
+    const ably = new Ably.Rest(process.env.ABLY_ADMIN_API_KEY);
+    const channel = ably.channels.get("organization:1");
     try {
       await prisma.searchList.create({
         data: {
@@ -29,11 +29,11 @@ export const createSearchList = authAction("createProtocol")(
 
     revalidatePath("/(dashboard)/protocols/search-list", "page");
 
-    /* channel.publish("organization:1", {
+    channel.publish("organization:1", {
       body: `${firstName} ${lastName} am ${convertDate(
         new Date(date)
       )} um ${timeSearched} Uhr wurde vermisst gemeldet.`,
-    }); */
+    });
 
     return { message: `Der Sucheintrag wurde erstellt` };
   }

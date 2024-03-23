@@ -258,7 +258,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 placeholder: "Suche...",
               }}
             />
-            {/* <Notifications /> */}
+            <Notifications />
 
             {/* <ActionIcon
               loading={refresh.status === "executing"}

@@ -7,12 +7,12 @@ export const metadata = {
   title: "My Mantine app",
   description: "I have followed setup instructions carefully",
 };
-/* const NotificationsContainer = dynamic(
+const NotificationsContainer = dynamic(
   () => import("../../components/notifications-container"),
   {
     ssr: false,
   }
-); */
+);
 
 export default async function Layout({
   children,
@@ -22,13 +22,13 @@ export default async function Layout({
   const permissions = await getPermissions();
   return (
     <>
-      {/* <NotificationsContainer> */}
-      <AppLayout>
-        <PermissionsProvider permissions={permissions}>
-          {children}
-        </PermissionsProvider>
-      </AppLayout>
-      {/* </NotificationsContainer> */}
+      <NotificationsContainer>
+        <AppLayout>
+          <PermissionsProvider permissions={permissions}>
+            {children}
+          </PermissionsProvider>
+        </AppLayout>
+      </NotificationsContainer>
     </>
   );
 }
