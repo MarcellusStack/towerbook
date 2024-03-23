@@ -7,21 +7,13 @@ import { MantineTable } from "@components/mantine-table";
 import { ViewActionIcon } from "@components/view-action-icon";
 import { DeleteActionIcon } from "@components/delete-action-icon";
 import { TowerDaysProps } from "@/server/queries/tower-days";
-import { DatePickerInput, type DatesRangeValue } from "@mantine/dates";
-import { useState } from "react";
 import { DateInputFilter } from "@/app/(dashboard)/tower-days/_components/dateinput-filter";
-import { useSearchParams } from "next/navigation";
 
 export const TowerdaysTable = ({
   towerdays,
 }: {
   towerdays: TowerDaysProps;
 }) => {
-  const searchParams = useSearchParams();
-
-  const date = searchParams.get("createdAt");
-
-  console.log(date);
   return (
     <>
       <MantineTable
