@@ -3,8 +3,17 @@ import { prisma } from "@server/db";
 import { authFilterQuery } from "@server/lib/utils/query-clients";
 
 export const getTowerDays = authFilterQuery(async (search, session) => {
+  const dateFilter = search
+    ? {
+        createdAt: {
+          equals: new Date(search),
+        },
+      }
+    : {};
+
   return await prisma.towerDay.findMany({
     where: {
+      ...dateFilter,
       organizationId: session.organizationId as string,
     },
     select: {
