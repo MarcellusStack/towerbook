@@ -2,31 +2,40 @@
 import { ButtonAction } from "@/components/button-action";
 import { ButtonModalAction } from "@/components/button-modal-action";
 import { DashboardCard } from "@/components/dashboard-card";
-import { Process, TowerDayProcess } from "@/components/process";
-import { Stack, Group, Text, rem, ScrollArea } from "@mantine/core";
+import { Process } from "@/components/process";
+import { Badge, Stack, rem } from "@mantine/core";
 import { IconBroadcast, IconChecklist } from "@tabler/icons-react";
 import React from "react";
 import { completeTowerDays } from "@towerdays/_actions";
 import { TowerDaysProps } from "@/server/queries/tower-days";
-import { tableColumnProps } from "@/constants";
+import { status as globalStatus, tableColumnProps } from "@/constants";
 import { MantineTable } from "@/components/mantine-table";
-import { DatePickerInput } from "@mantine/dates";
 import "dayjs/locale/de";
+
+import { convertDate } from "@/utils";
 
 export const DailyTowerdaysTable = ({
   towerdays,
 }: {
   towerdays: TowerDaysProps;
 }) => {
+  const currentDate = new Date();
+  currentDate.setHours(0, 0, 0, 0); // set the time to 00:00:00
+
+  const filteredTowerdays = (towerdays || []).filter((towerday) => {
+    const towerdayDate = new Date(towerday.createdAt);
+    towerdayDate.setHours(0, 0, 0, 0); // set the time to 00:00:00
+    return towerdayDate.getTime() === currentDate.getTime();
+  });
   return (
     <>
       <DashboardCard
-        title="Tägliche Turmtage"
+        title={`Tägliche Turmtage vom ${convertDate(new Date())}`}
         icon={<IconBroadcast size={28} stroke={1.5} />}
       >
         <Stack gap="sm">
           <MantineTable
-            records={towerdays || []}
+            records={filteredTowerdays || []}
             columns={[
               {
                 accessor: "tower",
@@ -41,6 +50,16 @@ export const DailyTowerdaysTable = ({
               {
                 accessor: "tower.location",
                 title: "Standort",
+                ...tableColumnProps,
+              },
+              {
+                accessor: "status",
+                title: "Status",
+                render: ({ status }) => (
+                  <Badge color={globalStatus[status].color}>
+                    {globalStatus[status].label}
+                  </Badge>
+                ),
                 ...tableColumnProps,
               },
               {
@@ -174,7 +193,9 @@ export const DailyTowerdaysTable = ({
               <ButtonAction
                 label="Aktion wird ausgeführt"
                 action={completeTowerDays}
-                values={{ ids: towerdays.map((towerday) => towerday.id) }}
+                values={{
+                  ids: filteredTowerdays.map((towerday) => towerday.id),
+                }}
               >
                 Alle Turmtage abschließen
               </ButtonAction>
@@ -182,11 +203,6 @@ export const DailyTowerdaysTable = ({
           >
             Alle Turmtage abschließen
           </ButtonModalAction>
-          <DatePickerInput
-            locale="de"
-            type="range"
-            placeholder="Datum auswählen"
-          />
         </Stack>
       </DashboardCard>
     </>
