@@ -14,15 +14,15 @@ export const dynamic = "force-dynamic";
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { search: string };
+  searchParams: { createdAt: string };
 }) {
-  const { search } = searchParams;
+  const { createdAt } = searchParams;
 
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["tower-days", search],
-    queryFn: async () => await getTowerDays(search),
+    queryKey: ["tower-days", createdAt],
+    queryFn: async () => await getTowerDays(createdAt),
     staleTime: 0,
   });
 

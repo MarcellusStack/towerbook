@@ -10,8 +10,10 @@ import { DailyTowerdaysTable } from "@towerdays/_components/daily-towerdays-tabl
 
 export const Towerdays = () => {
   const searchParams = useSearchParams();
-  const search = searchParams.get("search");
-  const { data: towerdays, isPending } = useGetTowerdays(search as string);
+
+  const createdAt = searchParams.get("createdAt");
+
+  const { data: towerdays, isPending } = useGetTowerdays(createdAt);
 
   if (isPending || !towerdays) return <TableLoader />;
   return (
