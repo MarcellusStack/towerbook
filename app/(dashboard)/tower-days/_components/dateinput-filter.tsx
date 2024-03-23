@@ -1,6 +1,4 @@
-"use client";
 import { DatePickerInput } from "@mantine/dates";
-import { useDebouncedValue } from "@mantine/hooks";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -14,21 +12,23 @@ export const DateInputFilter = () => {
   const [date, setDate] = useState<Date | null>(
     searchParamsDate ? new Date(searchParamsDate) : null
   );
-  const [query] = useDebouncedValue(date, 750);
 
   useEffect(() => {
-    if (!query) {
-      router.push(`${pathName}`);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    if (date) {
+      newSearchParams.set("createdAt", date.toString());
     } else {
-      router.push(`${pathName}?createdAt=${query}`);
+      newSearchParams.delete("createdAt");
     }
-  }, [query]);
+    router.push(`${pathName}?${newSearchParams.toString()}`);
+  }, [date]);
 
   return (
     <DatePickerInput
+      clearable
       locale="de"
       value={date}
-      onChange={setDate}
+      onChange={(newDate) => setDate(newDate)}
       valueFormat="DD.MM.YYYY"
       placeholder="Datum auswählen"
       popoverProps={{ withinPortal: false }}
