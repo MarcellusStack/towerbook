@@ -20,7 +20,7 @@ export default async function Layout({
 
   const searchlist = await queryClient.fetchQuery({
     queryKey: ["searchlist", id],
-    queryFn: async () => await getSearchList(id, []),
+    queryFn: async () => await getSearchList(id),
     staleTime: 0,
   });
 

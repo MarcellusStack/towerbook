@@ -23,6 +23,7 @@ export const FirstAidOperationTable = () => {
   const { data: operations, isPending } = useGetFirstAidOperations(
     search as string
   );
+ 
 
   if (isPending || !operations) return <TableLoader />;
   return (

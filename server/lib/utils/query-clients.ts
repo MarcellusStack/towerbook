@@ -1,4 +1,3 @@
-"use server";
 import { auth } from "@clerk/nextjs";
 import { SessionProps, getSession } from "@/server/lib/utils/get-session";
 

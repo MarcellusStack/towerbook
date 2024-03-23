@@ -23,7 +23,6 @@ import { type FirstAidOperationProps } from "@/server/queries/get-first-aid-oper
 import { convertTime } from "@/utils";
 import { UserSelect } from "@components/user-select";
 import { UserComboboxButton } from "@components/user-combobox-button";
-import { UserFormCard } from "../user-form-card";
 import { InputCheck } from "@components/inputs/input-check";
 import { updateFirstAidOperationBig } from "@server/actions/update-first-aid-operation-big";
 import { Signature } from "@components/signature";

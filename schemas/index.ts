@@ -172,9 +172,10 @@ export const userAccountSchema = z.intersection(
 );
 
 export const userPermissionsSchema = z.object({
-  role: z.array(z.string()),
-  userId: z.string().min(1, { message: "User Id wird benötigt" }),
-  towers: z.array(z.string()),
+  id: z.string().min(1, { message: "User Id wird benötigt" }),
+  permissions: z.array(
+    z.object({ id: z.string().min(1), name: z.string().min(1) })
+  ),
 });
 
 export const uploadFileSchema = z.object({
@@ -187,15 +188,18 @@ export const downloadFileSchema = z.object({
   fileName: z.string().min(1, { message: "Dateiname wird benötigt" }),
 });
 
-export const createUserSchema = z.intersection(
-  baseUserSchema,
-  z.object({
-    password: z
-      .string()
-      .min(6, { message: "Passwort muss mindestens 6 Zeichen lang sein." }),
-    role: z.string().min(1, { message: "Bitte fügen sie eine Rolle hinzu." }),
-  })
-);
+export const createUserSchema = z.object({
+  email: z.string().email({
+    message: "Keine gültige E-Mail",
+  }),
+  password: z.string().min(8, {
+    message: "Passwort wird benötigt und muss mindestens 8 Zeichen lang sein",
+  }),
+  firstName: z.string().min(1, { message: "Vorname wird benötigt" }),
+  lastName: z.string().min(1, { message: "Nachname wird benötigt" }),
+  birthDate: z.date({ invalid_type_error: "Geburtsdatum wird benötigt" }),
+  permissionId: z.string().min(1, { message: "Berechtigung wird benötigt" }),
+});
 
 export const inviteUserSchema = z.object({
   email: z.string().email({
@@ -345,6 +349,8 @@ export const updatePermissionSchema = z.object({
   updateTowerday: z.boolean(),
   deleteTowerday: z.boolean(),
   completeTowerday: z.boolean(),
+  completeTowerdaySection: z.boolean(),
+  resetTowerdaySection: z.boolean(),
   createDutyplan: z.boolean(),
   readDutyplan: z.boolean(),
   updateDutyplan: z.boolean(),
@@ -871,5 +877,14 @@ export const resetPasswordSchema = z.object({
 export const passwordSchema = z.object({
   password: z.string().min(8, {
     message: "Passwort wird benötigt und muss mindestens 8 Zeichen lang sein",
+  }),
+});
+
+export const createPermissionSchema = z.object({
+  name: z.string().min(1, {
+    message: "Name wird benötigt",
+  }),
+  description: z.string().min(1, {
+    message: "Beschreibung wird benötigt",
   }),
 });

@@ -98,8 +98,9 @@ export const permissions = [
       "readTowerday",
       "updateTowerday",
       "deleteTowerday",
-      "completeTowerdaySection",
       "completeTowerday",
+      "completeTowerdaySection",
+      "resetTowerdaySection",
     ],
   },
   {

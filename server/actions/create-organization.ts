@@ -60,7 +60,7 @@ export const createOrg = authAction()(
       }
 
       await clerkClient.users.updateUserMetadata(session.id, {
-        privateMetadata: {
+        publicMetadata: {
           organizationId: organization.id,
         },
       });

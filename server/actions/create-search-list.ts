@@ -1,13 +1,16 @@
 "use server";
 import { prisma } from "@server/db";
+import Ably from "ably/promises";
 import { authAction } from "@server/lib/utils/action-clients";
 import { createSearchListSchema } from "@schemas/index";
 import { revalidatePath } from "next/cache";
-import { extractTimeFromDate } from "@/utils";
+import { convertDate, extractTimeFromDate } from "@/utils";
 
 export const createSearchList = authAction("createProtocol")(
   createSearchListSchema,
   async ({ date, timeSearched, firstName, lastName, towerId }, { session }) => {
+    const ably = new Ably.Rest(process.env.ABLY_ADMIN_API_KEY);
+    const channel = ably.channels.get("organization:1");
     try {
       await prisma.searchList.create({
         data: {
@@ -24,7 +27,13 @@ export const createSearchList = authAction("createProtocol")(
       throw new Error("Fehler beim Erstellen des Sucheintrag");
     }
 
-    revalidatePath("/", "layout");
+    revalidatePath("/(dashboard)/protocols/search-list", "page");
+
+    channel.publish("organization:1", {
+      body: `${firstName} ${lastName} am ${convertDate(
+        new Date(date)
+      )} um ${timeSearched} Uhr wurde vermisst gemeldet.`,
+    });
 
     return { message: `Der Sucheintrag wurde erstellt` };
   }

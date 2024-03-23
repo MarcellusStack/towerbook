@@ -5,13 +5,18 @@ import {
   Badge,
   Button,
   Card,
+  Center,
   Grid,
   Group,
+  Progress,
+  RingProgress,
+  ScrollArea,
   Select,
   SimpleGrid,
   Stack,
   Text,
   ThemeIcon,
+  rem,
 } from "@mantine/core";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { updateTowerStatus } from "@/server/queries/tower";
@@ -20,11 +25,15 @@ import { useParams } from "next/navigation";
 import { useGetTower } from "@data/tower";
 import { TowerStatus } from "@towers/_components/tower-status";
 import {
+  IconAmbulance,
   IconBroadcast,
   IconBroadcastOff,
+  IconCalendarPin,
   IconCheck,
+  IconFirstAidKit,
   IconPlus,
   IconUserSearch,
+  IconWriting,
   IconX,
 } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
@@ -34,7 +43,10 @@ import { DashboardCard } from "@components/dashboard-card";
 import { ViewActionIcon } from "@components/view-action-icon";
 import { MantineTable } from "@components/mantine-table";
 import { status as searchlistStatus } from "@/constants";
-import { convertDate, convertTime } from "@/utils";
+import { convertTime } from "@/utils";
+import FullCalendar from "@fullcalendar/react";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import deLocale from "@fullcalendar/core/locales/de";
 
 export const TowerDashboard = () => {
   const { execute, result, status } = useActionNotification({
@@ -119,11 +131,353 @@ export const TowerDashboard = () => {
           </DashboardCard>
         </Grid.Col>
         <Grid.Col span={3}>
-          <DashboardCard></DashboardCard>
+          <DashboardCard
+            title="Heutiger Turm Tag Prozess"
+            icon={<IconBroadcast size={28} stroke={1.5} />}
+          >
+            <Stack gap="sm">
+              <Text>0 / 6</Text>
+              <Progress value={0} size="md" color="blue" radius="xl" />
+            </Stack>
+          </DashboardCard>
         </Grid.Col>
         <Grid.Col span={3}>
           <DashboardCard></DashboardCard>
         </Grid.Col>
+        <Grid.Col span={3}>
+          <DashboardCard
+            title="Erste-Hilfe-Einsatz(groß)"
+            icon={<IconAmbulance size={28} stroke={1.5} />}
+          >
+            <ScrollArea>
+              <Group wrap="nowrap" className="whitespace-nowrap">
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[{ value: 0, color: "gray" }]}
+                    label={
+                      <Text ta="center" size="xs">
+                        0
+                      </Text>
+                    }
+                  />
+                  <Text>offen</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 40,
+                        color: "yellow",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        2
+                      </Text>
+                    }
+                  />
+                  <Text>in Bearbeitung</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 30,
+                        color: "green",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        3
+                      </Text>
+                    }
+                  />
+                  <Text>abgeschlossen</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 70,
+                        color: "orange",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        7
+                      </Text>
+                    }
+                  />
+                  <Text>in Revision</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 70,
+                        color: "red",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        7
+                      </Text>
+                    }
+                  />
+                  <Text>unvollständig</Text>
+                </Stack>
+              </Group>
+            </ScrollArea>
+          </DashboardCard>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <DashboardCard
+            title="Erste-Hilfe-Einsatz(klein)"
+            icon={<IconFirstAidKit size={28} stroke={1.5} />}
+          >
+            <ScrollArea>
+              <Group wrap="nowrap" className="whitespace-nowrap">
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[{ value: 0, color: "gray" }]}
+                    label={
+                      <Text ta="center" size="xs">
+                        0
+                      </Text>
+                    }
+                  />
+                  <Text>offen</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 40,
+                        color: "yellow",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        2
+                      </Text>
+                    }
+                  />
+                  <Text>in Bearbeitung</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 30,
+                        color: "green",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        3
+                      </Text>
+                    }
+                  />
+                  <Text>abgeschlossen</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 70,
+                        color: "orange",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        7
+                      </Text>
+                    }
+                  />
+                  <Text>in Revision</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 70,
+                        color: "red",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        7
+                      </Text>
+                    }
+                  />
+                  <Text>unvollständig</Text>
+                </Stack>
+              </Group>
+            </ScrollArea>
+          </DashboardCard>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <DashboardCard
+            title="Personen Suchliste"
+            icon={<IconUserSearch size={28} stroke={1.5} />}
+          >
+            <ScrollArea>
+              <Group wrap="nowrap" className="whitespace-nowrap">
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[{ value: 0, color: "gray" }]}
+                    label={
+                      <Text ta="center" size="xs">
+                        0
+                      </Text>
+                    }
+                  />
+                  <Text>offen</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 40,
+                        color: "yellow",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        2
+                      </Text>
+                    }
+                  />
+                  <Text>in Bearbeitung</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 30,
+                        color: "green",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        3
+                      </Text>
+                    }
+                  />
+                  <Text>abgeschlossen</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 70,
+                        color: "orange",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        7
+                      </Text>
+                    }
+                  />
+                  <Text>in Revision</Text>
+                </Stack>
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 70,
+                        color: "red",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        7
+                      </Text>
+                    }
+                  />
+                  <Text>unvollständig</Text>
+                </Stack>
+              </Group>
+            </ScrollArea>
+          </DashboardCard>
+        </Grid.Col>
+        <Grid.Col span={3}>
+          <DashboardCard
+            title="Doku Kinder Gruppen"
+            icon={<IconWriting size={28} stroke={1.5} />}
+          >
+            <ScrollArea>
+              <Group wrap="nowrap" className="whitespace-nowrap">
+                <Stack gap="0" align="center">
+                  <RingProgress
+                    size={80}
+                    roundCaps
+                    thickness={8}
+                    sections={[
+                      {
+                        value: 30,
+                        color: "green",
+                      },
+                    ]}
+                    label={
+                      <Text size="xs" ta="center">
+                        3
+                      </Text>
+                    }
+                  />
+                  <Text>abgeschlossen</Text>
+                </Stack>
+              </Group>
+            </ScrollArea>
+          </DashboardCard>
+        </Grid.Col>
+
         <Grid.Col span={6}>
           <DashboardCard
             title="Aktuelle Personen Suche"
@@ -187,6 +541,32 @@ export const TowerDashboard = () => {
                 },
               ]}
               storeKey="tower-search-list-table"
+            />
+          </DashboardCard>
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <DashboardCard
+            title="Aktueller Wachplan"
+            icon={<IconCalendarPin size={28} stroke={1.5} />}
+          >
+            <FullCalendar
+              contentHeight="auto"
+              locales={[deLocale]}
+              plugins={[timeGridPlugin]}
+              slotMinTime={"08:00:00"}
+              slotMaxTime={"19:00:00"}
+              slotDuration={"01:00"}
+              initialView="timeGridDay"
+              /* events={shifts
+                .filter((shift) => shift.type === shiftType)
+                .map((filteredShift, index) => ({
+                  index: index,
+                  id: filteredShift.id,
+                  title: `${filteredShift.user.firstName} ${filteredShift.user.lastName}`,
+                  start: filteredShift.startTime,
+                  end: filteredShift.endTime,
+                  color: filteredShift.type === "duty" ? "green" : "gray",
+                }))} */
             />
           </DashboardCard>
         </Grid.Col>

@@ -29,7 +29,7 @@ export const SearchListLayout = ({
         title="Personen Suchliste"
         extraInfo={
           <Text size="lg" c="dimmed">
-            {searchlist.firstName} {searchlist.lastName}
+            {searchlist.firstName} {searchlist.lastName}{" "}
             {convertDate(new Date(searchlist.date))}
           </Text>
         }

@@ -47,3 +47,7 @@ html {
 .fc-daygrid-day-number {
   width: 100% !important;
 }
+
+.no-shadow {
+  box-shadow: none !important;
+}

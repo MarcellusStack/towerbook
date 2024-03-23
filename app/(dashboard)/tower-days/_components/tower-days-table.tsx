@@ -3,19 +3,17 @@ import { Badge, Group } from "@mantine/core";
 import { convertDate, convertTime } from "@utils/index";
 import { deleteTowerDay } from "@/server/actions/delete-tower-day";
 import { status as globalStatus, tableColumnProps } from "@/constants";
-import { useSearchParams } from "next/navigation";
-import { TableLoader } from "@components/loader/table-loader";
-import { useGetTowerdays } from "@/data/towerdays";
 import { MantineTable } from "@components/mantine-table";
-import { ViewActionIcon } from "../view-action-icon";
-import { DeleteActionIcon } from "../delete-action-icon";
+import { ViewActionIcon } from "@components/view-action-icon";
+import { DeleteActionIcon } from "@components/delete-action-icon";
+import { TowerDaysProps } from "@/server/queries/tower-days";
+import { DateInputFilter } from "@/app/(dashboard)/tower-days/_components/dateinput-filter";
 
-export function TowerDaysTable() {
-  const searchParams = useSearchParams();
-  const search = searchParams.get("search");
-  const { data: towerdays, isPending } = useGetTowerdays(search as string);
-
-  if (isPending) return <TableLoader />;
+export const TowerdaysTable = ({
+  towerdays,
+}: {
+  towerdays: TowerDaysProps;
+}) => {
   return (
     <>
       <MantineTable
@@ -25,6 +23,8 @@ export function TowerDaysTable() {
             accessor: "createdAt",
             title: "Datum",
             render: ({ createdAt }) => <>{convertDate(new Date(createdAt))}</>,
+            filter: () => <DateInputFilter />,
+            /* filtering: Boolean(birthdaySearchRange), */
             ...tableColumnProps,
           },
           {
@@ -48,9 +48,14 @@ export function TowerDaysTable() {
             title: "Turm",
             render: ({ tower }) => (
               <>
-                Turm {tower.number} {tower.location}
+                {tower.number} {tower.location}
               </>
             ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "tower.location",
+            title: "Standort",
             ...tableColumnProps,
           },
           {
@@ -94,4 +99,4 @@ export function TowerDaysTable() {
       />
     </>
   );
-}
+};

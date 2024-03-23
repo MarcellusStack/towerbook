@@ -14,11 +14,11 @@ export const TowerHeading = () => {
 
   return (
     <SecondaryAppHeading
-      title={`Turm ${tower.number}`}
+      title={`${tower.name} ${tower.number}`}
       extraInfo={
         <Group gap="xs">
           <Text size="lg" c="dimmed">
-            {tower.name} {tower.location}
+            {tower.location}
           </Text>
           <Badge color="black" variant={tower.main ? "filled" : "outline"}>
             {tower.main ? "Hauptturm" : "Nebenturm"}

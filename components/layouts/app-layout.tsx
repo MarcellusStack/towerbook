@@ -10,6 +10,10 @@ import {
   Divider,
   Stack,
   Box,
+  Popover,
+  Text,
+  Notification,
+  ScrollArea,
 } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { Branding } from "@/components/branding";
@@ -30,6 +34,7 @@ import {
   IconUserSearch,
   IconBed,
   IconUserShield,
+  IconTopologyStar3,
 } from "@tabler/icons-react";
 import { navLinks, type NavLinkProps } from "@constants/nav-links";
 import Link from "next/link";
@@ -41,6 +46,7 @@ import { Breadcrumb } from "@components/breadcrumb";
 import Image from "next/image";
 import { UserButton } from "@clerk/nextjs";
 import { useTransition } from "react";
+import { Notifications } from "@components/notifications-container";
 
 const NavLink = ({ link }: { link: NavLinkProps }) => {
   const [isPending, startTransition] = useTransition();
@@ -114,14 +120,20 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
       leftSection: <IconUsers stroke={1.5} />,
     },
     {
+      id: "organization",
+      label: "Organisation",
+      onClick: () => router.push("/settings/organization"),
+      leftSection: <IconTopologyStar3 stroke={1.5} />,
+    },
+    {
       id: "permissions",
       label: "Berechtigungen",
-      onClick: () => router.push("/permissions"),
+      onClick: () => router.push("/settings/permissions"),
       leftSection: <IconUserShield stroke={1.5} />,
     },
     {
       id: "duty-plans",
-      label: "Dienstpläne",
+      label: "Monatswachplan",
       onClick: () => router.push("/duty-plans"),
       leftSection: <IconCalendarPin stroke={1.5} />,
     },
@@ -231,6 +243,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
             >
               <IconSearch stroke={1.5} />
             </ActionIcon>
+
             <Spotlight
               actions={actions}
               nothingFound="Nothing found..."
@@ -245,14 +258,8 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 placeholder: "Suche...",
               }}
             />
-            <ActionIcon
-              variant="light"
-              size="lg"
-              aria-label="Search"
-              radius="xl"
-            >
-              <IconBell stroke={1.5} />
-            </ActionIcon>
+            <Notifications />
+
             {/* <ActionIcon
               loading={refresh.status === "executing"}
               onClick={() => refresh.execute({})}

@@ -1,28 +1,28 @@
 import { PrimaryAppHeading } from "@components/typography/primary-app-heading";
 import { QuickSearchAdd } from "@/components/quick-search-add";
 import { getTowerDays } from "@/server/queries/tower-days";
-import { TowerDaysTable } from "@/components/tables/tower-days-table";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import { CreateTowerDaysForm } from "@towerdays/_components/create-towerdays-form";
+import { Towerdays } from "@towerdays/_components/towerdays";
 
 export const dynamic = "force-dynamic";
 
 export default async function Page({
   searchParams,
 }: {
-  searchParams: { search: string };
+  searchParams: { createdAt: string };
 }) {
-  const { search } = searchParams;
+  const { createdAt } = searchParams;
 
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["tower-days", search],
-    queryFn: async () => await getTowerDays(search),
+    queryKey: ["tower-days", createdAt],
+    queryFn: async () => await getTowerDays(createdAt),
     staleTime: 0,
   });
 
@@ -35,7 +35,7 @@ export default async function Page({
         modalContent={<CreateTowerDaysForm />}
       />
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <TowerDaysTable />
+        <Towerdays />
       </HydrationBoundary>
     </>
   );

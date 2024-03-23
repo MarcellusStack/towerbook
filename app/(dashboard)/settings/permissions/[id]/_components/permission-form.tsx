@@ -22,8 +22,10 @@ import {
   IconChecklist,
   IconEye,
   IconFileX,
+  IconListCheck,
   IconPencil,
   IconPlus,
+  IconRestore,
   IconTrash,
 } from "@tabler/icons-react";
 import React from "react";
@@ -31,7 +33,6 @@ import { PermissionProps, updatePermission } from "@permissions/[id]/_actions";
 import { updatePermissionSchema } from "@/schemas";
 import { permissions } from "@/constants";
 import { useActionNotification } from "@/hooks/use-action-notification";
-import { EditLink } from "@/components/view-action-icon";
 
 export const PermissionSelect = ({
   formValue,
@@ -107,8 +108,9 @@ export const PermissionForm = ({
       readTowerday: permission.readTowerday,
       updateTowerday: permission.updateTowerday,
       deleteTowerday: permission.deleteTowerday,
-      completeTowerdaySection: permission.completeTowerdaySection,
       completeTowerday: permission.completeTowerday,
+      completeTowerdaySection: permission.completeTowerdaySection,
+      resetTowerdaySection: permission.resetTowerdaySection,
       createDutyplan: permission.createDutyplan,
       readDutyplan: permission.readDutyplan,
       updateDutyplan: permission.updateDutyplan,
@@ -196,7 +198,15 @@ export const PermissionForm = ({
                 </Table.Th>
                 <Table.Th className="w-0">
                   <ThemeIcon variant="white" color="black" size="lg">
-                    <IconFileX
+                    <IconListCheck
+                      style={{ width: "70%", height: "70%" }}
+                      stroke={1.5}
+                    />
+                  </ThemeIcon>
+                </Table.Th>
+                <Table.Th className="w-0">
+                  <ThemeIcon variant="white" color="black" size="lg">
+                    <IconRestore
                       style={{ width: "70%", height: "70%" }}
                       stroke={1.5}
                     />

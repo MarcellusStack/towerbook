@@ -154,3 +154,101 @@ export const createTowerDays = authAction("createTowerday")(
     return { message: `Der Turm Tag wurde erstellt` };
   }
 );
+
+export const completeTowerDays = authAction("completeTowerday")(
+  z.object({
+    ids: z.array(z.string().min(1, { message: "Id wird benötigt" })),
+  }),
+  async ({ ids }) => {
+    try {
+      await prisma.$transaction(
+        async (tx) => {
+          const towerdays = await tx.towerDay.findMany({
+            where: {
+              id: { in: ids },
+              status: { notIn: ["open", "completed"] },
+            },
+            select: {
+              id: true,
+              towerId: true,
+              watchmanStatus: true,
+              todoStatus: true,
+              incidentStatus: true,
+              weatherStatus: true,
+              materialStatus: true,
+              dutyplanStatus: true,
+            },
+          });
+
+          if (towerdays.length === 0) {
+            throw new Error("Couldnt find any tower days");
+          }
+
+          await tx.revision.deleteMany({
+            where: {
+              modelId: { in: ids },
+            },
+          });
+
+          const updatePromises = towerdays.map((towerday) =>
+            tx.towerDay.update({
+              where: {
+                id: towerday.id,
+              },
+              data: {
+                watchmanStatus:
+                  towerday.watchmanStatus !== "completed"
+                    ? "incomplete"
+                    : "completed",
+                todoStatus:
+                  towerday.todoStatus !== "completed"
+                    ? "incomplete"
+                    : "completed",
+                incidentStatus:
+                  towerday.incidentStatus !== "completed"
+                    ? "incomplete"
+                    : "completed",
+                dutyplanStatus:
+                  towerday.dutyplanStatus !== "completed"
+                    ? "incomplete"
+                    : "completed",
+                weatherStatus:
+                  towerday.weatherStatus !== "completed"
+                    ? "incomplete"
+                    : "completed",
+                materialStatus:
+                  towerday.materialStatus !== "completed"
+                    ? "incomplete"
+                    : "completed",
+              },
+            })
+          );
+
+          await Promise.all(updatePromises);
+
+          // Uncomment this if you want to update the tower status when all tower days are completed
+          /* if (updatedTowerdays && updatedTowerdays.every(towerday => towerday.status === "completed")) {
+            await tx.tower.updateMany({
+              where: { id: { in: towerdays.map(towerday => towerday.towerId) } },
+              data: {
+                status: "beach_closed",
+              },
+            });
+          } */
+        },
+        {
+          maxWait: 15000,
+          timeout: 15000,
+        }
+      );
+
+      revalidatePath("/", "layout");
+
+      return {
+        message: `Der Turm Tag Status wurde aktualisiert`,
+      };
+    } catch (error) {
+      throw new Error("Fehler beim aktualisieren des Turm Tag Status");
+    }
+  }
+);

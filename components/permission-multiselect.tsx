@@ -91,7 +91,10 @@ export const PermissionMultiSelect = ({
                 id: filteredPermission[0].id,
               },
             ]);
-            formAction.insertListItem(formField, val);
+            formAction.insertListItem(formField, {
+              name: filteredPermission[0].name,
+              id: filteredPermission[0].id,
+            });
           }
         }}
         withinPortal={true}

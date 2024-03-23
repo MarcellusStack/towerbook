@@ -66,9 +66,7 @@ export const PermissionLayout = ({
                           <Text>{user.firstName}</Text>
                           <Text>{user.lastName}</Text>
                         </Group>
-                        <ViewActionIcon
-                          href={`/users/${user.id}/permissions`}
-                        />
+                        <ViewActionIcon href={`/users/${user.id}/permission`} />
                       </Group>
                     </Card>
                   ))}

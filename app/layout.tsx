@@ -12,7 +12,6 @@ import { Notifications } from "@mantine/notifications";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { ModalsProvider } from "@mantine/modals";
 import { ReactNode } from "react";
-
 import Providers from "@/server/lib/providers";
 import { deDe } from "@clerk/localizations";
 

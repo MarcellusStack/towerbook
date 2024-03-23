@@ -9,6 +9,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { Users } from "@users/_components/users";
+import { UserForm } from "@users/_components/user-form";
 
 export const dynamic = "force-dynamic";
 
@@ -39,7 +40,7 @@ export default async function Page({
       <QuickSearchAdd
         modalTitle="Benutzer einladen"
         modalDescription="Laden Sie hier Benutzer für Ihre Organisation ein. Klicken Sie auf 'Hinzufügen', wenn Sie fertig sind."
-        modalContent={<InviteUserForm />}
+        modalContent={<UserForm />}
       />
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Users />

@@ -68,6 +68,7 @@ model Tower {
   firstAidOperations FirstAidOperation[]
   revisions          Revision[]
 
+  @@unique([number, location])
   @@index(organizationId)
 }
 
@@ -520,8 +521,9 @@ model Permission {
   readTowerday            Boolean      @default(false)
   updateTowerday          Boolean      @default(false)
   deleteTowerday          Boolean      @default(false)
-  completeTowerdaySection Boolean      @default(false)
   completeTowerday        Boolean      @default(false)
+  completeTowerdaySection Boolean      @default(false)
+  resetTowerdaySection    Boolean      @default(false)
   createDutyplan          Boolean      @default(false)
   readDutyplan            Boolean      @default(false)
   updateDutyplan          Boolean      @default(false)

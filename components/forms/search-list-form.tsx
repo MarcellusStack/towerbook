@@ -66,7 +66,7 @@ export const SearchListForm = ({
       supportOtherBeachArea: searchlist.supportOtherBeachArea,
       timeFound: convertTime(new Date(searchlist.timeFound)),
       handOverTo: searchlist.handOverTo,
-      signature: searchlist.signature,
+      signature: searchlist.signature || [],
     },
   });
 

@@ -29,7 +29,7 @@ export default authMiddleware({
         }
       }
       // Redirect logged in users that are missing organization name and id to organization
-      else if (user.privateMetadata.organizationId === undefined) {
+      else if (user.publicMetadata.organizationId === undefined) {
         if (nextUrl.pathname !== "/organization") {
           const organization = new URL("/organization", req.url);
           return Response.redirect(organization);
@@ -44,6 +44,7 @@ export default authMiddleware({
     // Allow users visiting public routes to access them
     return NextResponse.next();
   },
+  apiRoutes: ["/api(.*)"],
 });
 
 export const config = {

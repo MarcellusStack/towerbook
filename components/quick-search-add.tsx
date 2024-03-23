@@ -4,7 +4,7 @@ import { useDebouncedValue } from "@mantine/hooks";
 import { Button, TextInput, Text, Group } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import React, { ReactNode, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { modals } from "@mantine/modals";
 import { usePathname } from "next/navigation";
 
@@ -21,16 +21,21 @@ export const QuickSearchAdd = ({
 }: QuickSearchAddProps) => {
   const router = useRouter();
   const pathName = usePathname();
+  const searchParams = useSearchParams();
 
-  const [text, setText] = useState("");
+  const search = searchParams.get("search");
+
+  const [text, setText] = useState(search ? search : "");
   const [query] = useDebouncedValue(text, 750);
 
   useEffect(() => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
     if (!query) {
-      router.push(`${pathName}`);
+      newSearchParams.delete("search");
     } else {
-      router.push(`${pathName}?search=${query}`);
+      newSearchParams.set("search", query);
     }
+    router.push(`${pathName}?${newSearchParams.toString()}`);
   }, [query]);
   return (
     <>
