@@ -16,14 +16,31 @@ import {
   useChannel,
   useConnectionStateListener,
 } from "ably/react";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 
 const NotificationsContainer = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const client = new Ably.Realtime.Promise({ authUrl: "/api/ably" });
+  const [client, setClient] = useState<Ably.Types.RealtimePromise | null>(null);
+
+  useEffect(() => {
+    const ablyClient = new Ably.Realtime.Promise({ authUrl: "/api/ably" });
+    setClient(ablyClient);
+
+    // Clean up function to close the connection when the component is unmounted
+    return () => {
+      ablyClient.close();
+    };
+  }, []); // Empty dependency array ensures this runs once on mount and not on updates
+
+  // Don't render children until the client is ready
+  if (!client) {
+    return null;
+  }
+
   return <AblyProvider client={client}>{children}</AblyProvider>;
 };
 
