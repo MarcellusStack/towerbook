@@ -10,7 +10,7 @@ export const createSearchList = authAction("createProtocol")(
   createSearchListSchema,
   async ({ date, timeSearched, firstName, lastName, towerId }, { session }) => {
     const ably = new Ably.Rest(process.env.ABLY_ADMIN_API_KEY);
-    const channel = ably.channels.get("organization:1");
+    const channel = ably.channels.get(`organization:${session.organizationId}`);
     try {
       await prisma.searchList.create({
         data: {
@@ -29,7 +29,7 @@ export const createSearchList = authAction("createProtocol")(
 
     revalidatePath("/(dashboard)/protocols/search-list", "page");
 
-    channel.publish("organization:1", {
+    channel.publish(`organization:${session.organizationId}`, {
       body: `${firstName} ${lastName} am ${convertDate(
         new Date(date)
       )} um ${timeSearched} Uhr wurde vermisst gemeldet.`,
