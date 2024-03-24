@@ -5,6 +5,7 @@ import {
   IconCalendarPin,
   IconClipboardPlus,
   IconLayoutDashboard,
+  IconSettings,
   IconUserSearch,
   IconUsersGroup,
 } from "@tabler/icons-react";
@@ -48,6 +49,11 @@ export const links = [
     icon: <IconCalendarPin size={16} stroke={1.5} />,
     label: "Wachplan",
     disabled: true,
+  },
+  {
+    value: "settings",
+    icon: <IconSettings size={16} stroke={1.5} />,
+    label: "Einstellungen",
   },
 ];
 
