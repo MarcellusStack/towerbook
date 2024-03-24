@@ -53,8 +53,7 @@ export const navLinks: NavLinkProps[] = [
     id: "nav-ZCQ3ZSEKLJ",
     href: "/duty-plans",
     icon: <IconCalendarPin stroke={1.5} />,
-    name: "Monatsplan",
-    disabled: true,
+    name: "Monatsplan/Jahresplanung/Saisonplanung",
   },
   {
     id: "nav-HEGSGR52GS",
