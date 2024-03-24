@@ -829,6 +829,22 @@ export const towerdayAdministrationTodoSchema = z.object({
   ),
 });
 
+export const todoSchema = z.object({
+  todos: z.array(
+    z.object({
+      id: z.string(),
+      todo: z.string(),
+      type: z.enum(["daily", "weekly", "monthly"], {
+        errorMap: () => ({
+          message: "Zeitraum wird benötigt",
+        }),
+      }),
+      day: z.string(),
+      date: z.union([z.string(), z.date()]),
+    })
+  ),
+});
+
 export const towerdayAdministrationMaterialSchema = z.object({
   material: z.array(
     z.object({
@@ -845,7 +861,32 @@ export const towerdayAdministrationMaterialSchema = z.object({
   ),
 });
 
+export const materialsSchema = z.object({
+  materials: z.array(
+    z.object({
+      id: z.string(),
+      material: z.string(),
+      type: z.enum(["daily", "weekly", "monthly"], {
+        errorMap: () => ({
+          message: "Zeitraum wird benötigt",
+        }),
+      }),
+      day: z.string(),
+      date: z.union([z.string(), z.date()]),
+    })
+  ),
+});
+
 export const towerdayAdministrationWeatherSchema = z.object({
+  weather: z.array(
+    z.object({
+      id: z.string(),
+      time: z.string(),
+    })
+  ),
+});
+
+export const weatherSchema = z.object({
   weather: z.array(
     z.object({
       id: z.string(),

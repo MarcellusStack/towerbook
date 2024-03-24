@@ -10,16 +10,11 @@ import {
   Divider,
   Stack,
   Box,
-  Popover,
-  Text,
-  Notification,
-  ScrollArea,
 } from "@mantine/core";
 import { Spotlight, SpotlightActionData, spotlight } from "@mantine/spotlight";
 import { Branding } from "@/components/branding";
 import {
   IconSearch,
-  IconBell,
   IconSettings,
   IconFileInfo,
   IconFileExport,
