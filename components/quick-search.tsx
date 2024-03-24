@@ -3,22 +3,27 @@
 import { useDebouncedValue } from "@mantine/hooks";
 import { TextInput } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 export const QuickSearch = () => {
   const router = useRouter();
   const pathName = usePathname();
+  const searchParams = useSearchParams();
 
-  const [text, setText] = useState("");
+  const search = searchParams.get("search");
+
+  const [text, setText] = useState(search ? search : "");
   const [query] = useDebouncedValue(text, 750);
 
   useEffect(() => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
     if (!query) {
-      router.push(`${pathName}`);
+      newSearchParams.delete("search");
     } else {
-      router.push(`${pathName}?search=${query}`);
+      newSearchParams.set("search", query);
     }
+    router.push(`${pathName}?${newSearchParams.toString()}`);
   }, [query]);
   return (
     <>
