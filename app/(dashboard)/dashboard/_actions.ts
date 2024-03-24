@@ -14,6 +14,20 @@ export const getUserDashboard = cache(
       select: {
         firstName: true,
         lastName: true,
+        organization: {
+          select: {
+            towerLocations: true,
+            towers: {
+              take: 1,
+            },
+            permissions: {
+              take: 2,
+            },
+            members: {
+              take: 2,
+            },
+          },
+        },
       },
     });
   })
