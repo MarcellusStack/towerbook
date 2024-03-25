@@ -9,7 +9,6 @@ import {
   SimpleGrid,
   Select,
   Text,
-  NumberInput,
   Checkbox,
   Box,
 } from "@mantine/core";
