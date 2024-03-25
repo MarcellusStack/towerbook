@@ -543,6 +543,8 @@ export const certificateSchema = z.object({
   lifeboatOperatorExpiration: z.date().nullable(),
   rwcPilotStage: z.string().nullable(),
   rwcPilotStageExpiration: z.date().nullable(),
+  fasty: z.string().nullable(),
+  fastyExpiration: z.date().nullable(),
   srcCertificate: z.string().nullable(),
   srcCertificateExpiration: z.date().nullable(),
   bosCertificate: z.string().nullable(),

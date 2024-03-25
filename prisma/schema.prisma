@@ -203,6 +203,8 @@ model User {
   lifeboatOperatorExpiration            DateTime?           @db.Date
   rwcPilotStage                         String?
   rwcPilotStageExpiration               DateTime?           @db.Date
+  fasty                                 String?
+  fastyExpiration                       DateTime?           @db.Date
   srcCertificate                        String?
   srcCertificateExpiration              DateTime?           @db.Date
   bosCertificate                        String?

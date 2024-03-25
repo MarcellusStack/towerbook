@@ -66,6 +66,8 @@ export const UserCertificateForm = ({
       lifeboatOperatorExpiration: user.lifeboatOperatorExpiration,
       rwcPilotStage: user.rwcPilotStage,
       rwcPilotStageExpiration: user.rwcPilotStageExpiration,
+      fasty: user.fasty,
+      fastyExpiration: user.fastyExpiration,
       srcCertificate: user.srcCertificate,
       srcCertificateExpiration: user.srcCertificateExpiration,
       bosCertificate: user.bosCertificate,

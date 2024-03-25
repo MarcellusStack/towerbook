@@ -54,6 +54,8 @@ export const getUserCertificate = authFilterQuery(async (search, session) => {
       lifeboatOperatorExpiration: true,
       rwcPilotStage: true,
       rwcPilotStageExpiration: true,
+      fasty: true,
+      fastyExpiration: true,
       srcCertificate: true,
       srcCertificateExpiration: true,
       bosCertificate: true,

@@ -54,6 +54,8 @@ export const updateUserCertificate = authAction("updateUser")(
       lifeboatOperatorExpiration,
       rwcPilotStage,
       rwcPilotStageExpiration,
+      fasty,
+      fastyExpiration,
       srcCertificate,
       srcCertificateExpiration,
       bosCertificate,
@@ -176,6 +178,8 @@ export const updateUserCertificate = authAction("updateUser")(
           rwcPilotStageExpiration: convertStringToDateOrNull(
             rwcPilotStageExpiration
           ),
+          fasty: fasty,
+          fastyExpiration: convertStringToDateOrNull(fastyExpiration),
           srcCertificate: srcCertificate,
           srcCertificateExpiration: convertStringToDateOrNull(
             srcCertificateExpiration

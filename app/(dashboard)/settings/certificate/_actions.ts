@@ -58,6 +58,8 @@ export const getUserSettingsCertificate = authQuery(async (session) => {
       lifeboatOperatorExpiration: true,
       rwcPilotStage: true,
       rwcPilotStageExpiration: true,
+      fasty: true,
+      fastyExpiration: true,
       srcCertificate: true,
       srcCertificateExpiration: true,
       bosCertificate: true,
@@ -142,6 +144,8 @@ export const updateUserSettingsCertificate = authAction()(
       lifeboatOperatorExpiration,
       rwcPilotStage,
       rwcPilotStageExpiration,
+      fasty,
+      fastyExpiration,
       srcCertificate,
       srcCertificateExpiration,
       bosCertificate,
@@ -264,6 +268,8 @@ export const updateUserSettingsCertificate = authAction()(
           rwcPilotStageExpiration: convertStringToDateOrNull(
             rwcPilotStageExpiration
           ),
+          fasty: fasty,
+          fastyExpiration: convertStringToDateOrNull(fastyExpiration),
           srcCertificate: srcCertificate,
           srcCertificateExpiration: convertStringToDateOrNull(
             srcCertificateExpiration

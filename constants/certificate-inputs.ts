@@ -131,6 +131,11 @@ export const certificateInputs = [
         inputProp: "rwcPilotStage",
         inputExpirationProp: "rwcPilotStageExpiration",
       },
+      {
+        label: "Fasty",
+        inputProp: "fasty",
+        inputExpirationProp: "fastyExpiration",
+      },
     ],
   },
   {
