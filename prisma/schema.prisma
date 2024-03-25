@@ -68,7 +68,7 @@ model Tower {
   firstAidOperations FirstAidOperation[]
   revisions          Revision[]
 
-  @@unique([number, location])
+  @@unique([number, location, organizationId])
   @@index(organizationId)
 }
 
