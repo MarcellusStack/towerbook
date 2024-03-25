@@ -7,7 +7,9 @@ import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
 import { useParams } from "next/navigation";
 import { createTowerDay } from "@/server/actions/create-tower-day";
-import { UserSelect } from "@components/user-select";
+
+import { GuardLeaderSelect } from "@components/guard-leader-select";
+import { LifeguardSelect } from "@components/lifeguard-select";
 
 export const CreateTowerDayForm = () => {
   const { id } = useParams();
@@ -47,13 +49,13 @@ export const CreateTowerDayForm = () => {
           {...form.getInputProps("createdAt")}
         />
 
-        <UserSelect
+        <GuardLeaderSelect
           formActionId="create-tower-day-form"
           formField="guardLeader"
           label="Wachleiter"
           initialValue={null}
         />
-        <UserSelect
+        <LifeguardSelect
           formActionId="create-tower-day-form"
           formField="towerLeader"
           label="Turmleiter"

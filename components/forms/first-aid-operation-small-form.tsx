@@ -20,14 +20,14 @@ import { firstAidOperationSmallSchema } from "@/schemas";
 import { useActionNotification } from "@/hooks/use-action-notification";
 import { TimeInput } from "@mantine/dates";
 import { convertTime } from "@/utils";
-import { UserSelect } from "@components/user-select";
-import { UserComboboxButton } from "@components/user-combobox-button";
 import { InputCheck } from "@components/inputs/input-check";
 import { updateFirstAidOperationSmall } from "@server/actions/update-first-aid-operation-small";
 import { FirstAidOperationProps } from "@/server/queries/get-first-aid-operation";
 import { MantineTable } from "@components/mantine-table";
 import { tableColumnProps } from "@/constants";
 import { IconTrash } from "@tabler/icons-react";
+import { GuardLeaderSelect } from "@components/guard-leader-select";
+import { LifeguardSelectButton } from "@components/lifeguard-select-button";
 
 export const FirstAidOperationSmallForm = ({
   operation,
@@ -125,7 +125,7 @@ export const FirstAidOperationSmallForm = ({
               label="Unfallzeit"
               {...form.getInputProps("accidentTime")}
             />
-            <UserSelect
+            <GuardLeaderSelect
               formActionId="first-aid-operation-small-form"
               formField="guardLeader"
               label="Wachleiter"
@@ -134,7 +134,7 @@ export const FirstAidOperationSmallForm = ({
           </SimpleGrid>
           <Space h="sm" />
           <Stack gap="sm">
-            <UserComboboxButton
+            <LifeguardSelectButton
               label="Helfer"
               formActionId="first-aid-operation-small-form"
               formField="helper"

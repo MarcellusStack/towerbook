@@ -7,10 +7,10 @@ import { createFirstAidOperationSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { convertTime } from "@/utils";
-import { UserSelect } from "@components/user-select";
 import { IconAmbulance, IconFirstAidKit } from "@tabler/icons-react";
 import { createFirstAidOperation } from "@server/actions/create-first-aid-operation";
 import { useParams } from "next/navigation";
+import { GuardLeaderSelect } from "@components/guard-leader-select";
 
 export const CreateTowerFirstAidOperationForm = () => {
   const { id } = useParams();
@@ -81,7 +81,7 @@ export const CreateTowerFirstAidOperationForm = () => {
           {...form.getInputProps("date")}
         />
         <TimeInput label="Uhrzeit" {...form.getInputProps("startTime")} />
-        <UserSelect
+        <GuardLeaderSelect
           formActionId="create-tower-first-aid-operation-form"
           formField="guardLeader"
           label="Wachleiter"

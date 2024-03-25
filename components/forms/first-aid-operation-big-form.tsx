@@ -21,14 +21,14 @@ import { useActionNotification } from "@/hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { type FirstAidOperationProps } from "@/server/queries/get-first-aid-operation";
 import { convertTime } from "@/utils";
-import { UserSelect } from "@components/user-select";
-import { UserComboboxButton } from "@components/user-combobox-button";
 import { InputCheck } from "@components/inputs/input-check";
 import { updateFirstAidOperationBig } from "@server/actions/update-first-aid-operation-big";
 import { Signature } from "@components/signature";
 import { tableColumnProps } from "@/constants";
 import { MantineTable } from "@components/mantine-table";
 import { IconTrash } from "@tabler/icons-react";
+import { GuardLeaderSelect } from "@components/guard-leader-select";
+import { LifeguardSelectButton } from "@components/lifeguard-select-button";
 
 export const FirstAidOperationBigForm = ({
   operation,
@@ -252,7 +252,7 @@ export const FirstAidOperationBigForm = ({
               label="Einsatzort"
               {...form.getInputProps("operationLocation")}
             />
-            <UserSelect
+            <GuardLeaderSelect
               formActionId="first-aid-operation-big-form"
               formField="guardLeader"
               label="Wachleiter"
@@ -267,7 +267,7 @@ export const FirstAidOperationBigForm = ({
               label="Unterschrift Wachleiter"
               initialValue={operation.signatureGuardLeader}
             />
-            <UserComboboxButton
+            <LifeguardSelectButton
               label="Helfer"
               formActionId="first-aid-operation-big-form"
               formField="helper"
@@ -290,7 +290,7 @@ export const FirstAidOperationBigForm = ({
                 },
                 {
                   accessor: "name",
-                  title: "name",
+                  title: "Name",
                   render: ({ firstName, lastName }) =>
                     `${firstName} ${lastName}`,
                   ...tableColumnProps,

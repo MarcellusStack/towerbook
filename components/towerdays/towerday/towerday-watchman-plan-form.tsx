@@ -20,6 +20,8 @@ import { UserSelect } from "@components/user-select";
 import { updateTowerDayWatchmanPlan } from "@/server/actions/update-tower-day-watchman-plan";
 import { TowerDayFormAction } from "@/components/tower-day-form-action";
 import { TowerdayWatchmanPlanProps } from "@/server/queries/get-tower-day-watchman-plan";
+import { GuardLeaderSelect } from "@/components/guard-leader-select";
+import { LifeguardSelect } from "@/components/lifeguard-select";
 
 export const TowerdayWatchmanPlanForm = ({
   towerday,
@@ -54,13 +56,13 @@ export const TowerdayWatchmanPlanForm = ({
         >
           <Stack gap="sm">
             <SimpleGrid cols={2} spacing="sm" verticalSpacing="sm">
-              <UserSelect
+              <GuardLeaderSelect
                 formActionId="tower-day-watchman-plan-form"
                 formField="guardLeader"
                 label="Wachleiter"
                 initialValue={`${towerday.guardLeader.firstName} ${towerday.guardLeader.lastName}`}
               />
-              <UserSelect
+              <LifeguardSelect
                 formActionId="tower-day-watchman-plan-form"
                 formField="towerLeader"
                 label="Turmleiter"

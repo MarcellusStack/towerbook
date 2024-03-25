@@ -1,23 +1,15 @@
 "use client";
 import React from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import {
-  Button,
-  Stack,
-  SegmentedControl,
-  Text,
-  rem,
-} from "@mantine/core";
-import {
-  createFirstAidOperationSchema,
-} from "@/schemas";
+import { Button, Stack, SegmentedControl, Text, rem } from "@mantine/core";
+import { createFirstAidOperationSchema } from "@/schemas";
 import { TowerSelect } from "@components/tower-select";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput, TimeInput } from "@mantine/dates";
 import { convertTime } from "@/utils";
-import { UserSelect } from "@components/user-select";
 import { IconAmbulance, IconFirstAidKit } from "@tabler/icons-react";
 import { createFirstAidOperation } from "@server/actions/create-first-aid-operation";
+import { GuardLeaderSelect } from "@components/guard-leader-select";
 
 export const CreateFirstAidOperationForm = () => {
   const form = useForm({
@@ -87,7 +79,7 @@ export const CreateFirstAidOperationForm = () => {
           {...form.getInputProps("date")}
         />
         <TimeInput label="Uhrzeit" {...form.getInputProps("startTime")} />
-        <UserSelect
+        <GuardLeaderSelect
           formActionId="create-first-aid-operation-form"
           formField="guardLeader"
           label="Wachleiter"

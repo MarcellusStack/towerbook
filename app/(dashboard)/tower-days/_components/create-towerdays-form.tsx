@@ -14,10 +14,11 @@ import {
 import { createTowerDaysSchema } from "@/schemas";
 import { useActionNotification } from "@hooks/use-action-notification";
 import { DatePickerInput } from "@mantine/dates";
-import { UserSelect } from "@components/user-select";
 import { TowerComboboxButton } from "@towerdays/_components/towerdays-combobox-button";
 import { IconTrash } from "@tabler/icons-react";
 import { createTowerDays } from "@towerdays/_actions";
+import { GuardLeaderSelect } from "@/components/guard-leader-select";
+import { LifeguardSelect } from "@/components/lifeguard-select";
 
 export const CreateTowerDaysForm = () => {
   const form = useForm({
@@ -53,7 +54,7 @@ export const CreateTowerDaysForm = () => {
           valueFormat="DD.MM.YYYY"
           {...form.getInputProps("createdAt")}
         />
-        <UserSelect
+        <GuardLeaderSelect
           formActionId="create-towerdays-form"
           formField="guardLeader"
           label="Wachleiter"
@@ -88,7 +89,7 @@ export const CreateTowerDaysForm = () => {
                   {" - "}
                   {towerday.tower.location}
                 </Text>
-                <UserSelect
+                <LifeguardSelect
                   formActionId="create-towerdays-form"
                   formField={`towerdays.${index}.towerLeader`}
                   label="Turmleiter"
