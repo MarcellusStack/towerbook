@@ -83,11 +83,8 @@ export const updateUserAccount = authAction("updateUser")(
           }
 
           const syncClerkAccount = await clerkClient.users.updateUser(user.id, {
-            publicMetadata: {
-              firstName: user.firstName,
-              lastName: user.lastName,
-              birthDate: user.birthDate,
-            },
+            firstName: user.firstName,
+            lastName: user.lastName,
           });
 
           if (!syncClerkAccount) {
