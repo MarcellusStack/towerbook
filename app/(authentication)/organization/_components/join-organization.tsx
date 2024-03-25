@@ -24,7 +24,10 @@ export const JoinOrganization = () => {
           {
             label: (
               <Stack gap={0} align="center">
-                <IconHomePlus style={{ width: rem(32), height: rem(32) }} />
+                <IconHomePlus
+                  style={{ width: rem(32), height: rem(32) }}
+                  stroke={1.5}
+                />
                 <Text size="lg">Organisation Erstellen</Text>
               </Stack>
             ),
@@ -34,7 +37,10 @@ export const JoinOrganization = () => {
           {
             label: (
               <Stack gap={0} align="center">
-                <IconHomeMove style={{ width: rem(32), height: rem(32) }} />
+                <IconHomeMove
+                  style={{ width: rem(32), height: rem(32) }}
+                  stroke={1.5}
+                />
                 <Text size="lg">Einladung annehmen</Text>
               </Stack>
             ),
