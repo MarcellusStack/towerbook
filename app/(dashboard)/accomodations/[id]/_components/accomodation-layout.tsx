@@ -46,7 +46,7 @@ export const AccomodationLayout = ({
               <ModalAction
                 color="red"
                 icon={<IconBedOff />}
-                label="Unterkunft sperren"
+                label="Unterkunft nicht verfügbar"
                 content={<DisableAccomodationAction />}
               />
             ) : (
