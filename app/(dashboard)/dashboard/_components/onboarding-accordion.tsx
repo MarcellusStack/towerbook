@@ -23,6 +23,14 @@ const OnboardingAccordion = ({
   icon,
   steps,
 }: OnboardingAccordionProps) => {
+  // Check if all steps are completed
+  const allStepsCompleted = steps.every((step) => step.completed);
+
+  // If all steps are completed, do not render the component
+  if (allStepsCompleted) {
+    return null;
+  }
+
   return (
     <Stack gap="0" w={512}>
       <DashboardCard

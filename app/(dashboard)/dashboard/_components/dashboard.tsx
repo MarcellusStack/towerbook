@@ -72,7 +72,7 @@ export const Dashboard = () => {
             value: "Benutzer erstellen",
             description:
               "Benutzer sind Personen, die an Ihren Türmen, Einsätze durchführen und Turmtage verwalten. Sie können Benutzer erstellen oder einladen, um sie Ihren Türmen zuzuweisen und ihnen Berechtigungen zu erteilen. Benutzer können nach Bedarf hinzugefügt, bearbeitet oder gelöscht werden.",
-            completed: user.organization?.members.length > 2,
+            completed: user.organization?.members.length > 1,
             href: "/users",
             allowLink: user.organization?.permissions.length > 1,
           },
