@@ -17,7 +17,7 @@ export const links = [
   {
     value: "account",
     icon: <IconUser size={16} stroke={1.5} />,
-    label: "Account",
+    label: "Stammdaten",
   },
   {
     value: "certificate",
