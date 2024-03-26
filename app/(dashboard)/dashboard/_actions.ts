@@ -12,8 +12,17 @@ export const getUserDashboard = cache(
         id: session.id,
       },
       select: {
+        gender: true,
         firstName: true,
         lastName: true,
+        salutation: true,
+        birthDate: true,
+        street: true,
+        houseNumber: true,
+        zipCode: true,
+        location: true,
+        phone: true,
+        lifeguardLicense: true,
         organization: {
           select: {
             towerLocations: true,

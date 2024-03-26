@@ -1,7 +1,7 @@
 import { ButtonLink } from "@/components/button-link";
 import { DashboardCard } from "@/components/dashboard-card";
 import { Accordion, Stack, Text, ThemeIcon } from "@mantine/core";
-import { IconSquare, IconSquareCheck, IconUser } from "@tabler/icons-react";
+import { IconSquare, IconSquareCheck } from "@tabler/icons-react";
 import React from "react";
 
 export type OnboardingAccordionProps = {
@@ -17,7 +17,7 @@ export type OnboardingAccordionProps = {
   }[];
 };
 
-const OnboardingAccordion = ({
+export const OnboardingAccordion = ({
   title,
   description,
   icon,
@@ -85,5 +85,3 @@ const OnboardingAccordion = ({
     </Stack>
   );
 };
-
-export default OnboardingAccordion;
