@@ -1,4 +1,5 @@
 "use server";
+import { requestCancelBookingSchema } from "@/schemas";
 import { prisma } from "@/server/db";
 import { authAction } from "@/server/lib/utils/action-clients";
 import { authFilterQuery } from "@/server/lib/utils/query-clients";
@@ -181,8 +182,8 @@ export const cancelBooking = authAction("updateBooking")(
 );
 
 export const requestCancelBooking = authAction("")(
-  z.object({ id: z.string().min(1) }),
-  async ({ id }, { session }) => {
+  requestCancelBookingSchema,
+  async ({ id, cancelComment }, { session }) => {
     try {
       await prisma.booking.update({
         where: {
@@ -192,6 +193,7 @@ export const requestCancelBooking = authAction("")(
           status: {
             equals: "confirmed",
           },
+          cancelComment: cancelComment,
         },
         data: { status: "request_canceled" },
       });

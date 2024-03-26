@@ -492,6 +492,7 @@ model Booking {
   id             String        @id @default(uuid())
   date           DateTime      @db.Date
   status         BookingStatus @default(open)
+  cancelComment  String?
   accomodationId String
   userId         String
   organizationId String

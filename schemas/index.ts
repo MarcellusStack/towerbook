@@ -15,6 +15,11 @@ export const organizationSchema = z.object({
     .min(3, { message: "Name muss mindestens 3 Zeichen lang sein." }),
 });
 
+export const requestCancelBookingSchema = z.object({
+  id: z.string().min(1, { message: "Id wird benötigt" }),
+  cancelComment: z.string().min(1, { message: "Bemerkung wird benötigt" }),
+});
+
 export const shiftSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
   startTime: z.date(),

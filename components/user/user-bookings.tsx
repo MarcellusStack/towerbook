@@ -1,14 +1,11 @@
-import { DangerModalActionIcon } from "@/components/danger-modal-action-icon";
-import { DeleteActionIcon } from "@/components/delete-action-icon";
 import { MantineTable } from "@/components/mantine-table";
 import { bookingStatus, tableColumnProps } from "@/constants";
 import { convertDate } from "@/utils";
-import { deleteUserBooking } from "@accomodations/[id]/_actions";
 import { SettingsDashboardProps } from "@settings/_actions";
 import { Badge, Group, Text } from "@mantine/core";
-import { IconCalendarX } from "@tabler/icons-react";
 import React from "react";
-import { RequestCancelBookingAction } from "@components/user/request-cancel-booking-action";
+import { RequestCancelBookingForm } from "@/components/user/request-cancel-booking-form";
+import { ButtonModalAction } from "@components/button-modal-action";
 
 export const UserBookings = ({
   bookings,
@@ -56,26 +53,14 @@ export const UserBookings = ({
           width: "0%",
           render: ({ id, status }) => (
             <Group gap={0} justify="flex-end">
-              {(status === "open" || status === "canceled") && (
-                <>
-                  <DeleteActionIcon
-                    id={id}
-                    action={deleteUserBooking}
-                    model="Buchung"
-                  />
-                </>
-              )}
               {status === "confirmed" && (
-                <DangerModalActionIcon
-                  icon={
-                    <IconCalendarX
-                      style={{ width: "70%", height: "70%" }}
-                      stroke={1.5}
-                    />
-                  }
-                  label="Stornierungsanfrage"
-                  action={<RequestCancelBookingAction id={id} />}
-                />
+                <ButtonModalAction
+                  color="red"
+                  size="compact-sm"
+                  content={<RequestCancelBookingForm id={id} />}
+                >
+                  Stornierungsanfrage
+                </ButtonModalAction>
               )}
             </Group>
           ),
