@@ -15,6 +15,7 @@ import { deleteBooking } from "@/server/actions/booking";
 import { useGetAccomodationBookings } from "@accomodations/[id]/_data";
 import { useParams } from "next/navigation";
 import { FormLoader } from "@/components/loader/form-loader";
+import { CreateMultipleBookingForm } from "@/components/booking/create-multiple-booking-form";
 
 export const BookingCalendar = () => {
   const { id } = useParams();
@@ -96,6 +97,35 @@ export const BookingCalendar = () => {
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           selectable={true}
+          select={(event) => {
+            const startDate = new Date(event.startStr).setHours(0, 0, 0, 0);
+            const endDate = new Date(event.endStr).setHours(0, 0, 0, 0);
+
+            const bookingsInRange = bookings.bookings.filter((book) => {
+              const bookDate = new Date(book.date).setHours(0, 0, 0, 0);
+              return bookDate >= startDate && bookDate <= endDate;
+            });
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (
+              bookingsInRange.length < bookings.availableBeds &&
+              new Date(event.startStr) >= today
+            ) {
+              modals.open({
+                title: "Reservierung hinzufügen",
+                children: (
+                  <>
+                    <CreateMultipleBookingForm
+                      startDate={new Date(event.startStr)}
+                      endDate={new Date(event.endStr)}
+                    />
+                  </>
+                ),
+              });
+            }
+          }}
           dateClick={(event) => {
             const bookingsOnThisDay = bookings.bookings.filter(
               (book) =>

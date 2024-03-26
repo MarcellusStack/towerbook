@@ -17,6 +17,7 @@ import React from "react";
 import { CancelBookingAction } from "@accomodations/[id]/_components/cancel-booking-action";
 import { UpdateActionIcon } from "@/components/update-action-icon";
 import { ButtonAction } from "@/components/button-action";
+import { QuickSearch } from "@/components/quick-search";
 
 export const Bookings = ({
   bookings,
@@ -28,8 +29,15 @@ export const Bookings = ({
       <Text fw={700} size="xl">
         Buchungen
       </Text>
+      <QuickSearch />
       <MantineTable
-        records={bookings || []}
+        records={
+          bookings.filter(
+            (booking) =>
+              booking.status !== "canceled" &&
+              booking.status !== "request_canceled"
+          ) || []
+        }
         columns={[
           {
             accessor: "user",
@@ -99,7 +107,7 @@ export const Bookings = ({
                     </ButtonAction>
                   </>
                 )}
-                {(status === "confirmed" || status === "request_canceled") && (
+                {status === "confirmed" && (
                   <>
                     <ButtonAction
                       size="compact-sm"
@@ -119,6 +127,90 @@ export const Bookings = ({
           },
         ]}
         storeKey="bookings-table"
+      />
+      <Text fw={700} size="xl">
+        Stornierte Buchungen
+      </Text>
+      <QuickSearch />
+      <MantineTable
+        records={
+          bookings.filter(
+            (booking) =>
+              booking.status === "canceled" ||
+              booking.status === "request_canceled"
+          ) || []
+        }
+        columns={[
+          {
+            accessor: "user",
+            title: "Benutzer",
+            render: ({ user }) => (
+              <>
+                <Avatar color="blue" radius="xl">
+                  {user.firstName?.charAt(0)}
+                  {user.lastName?.charAt(0)}
+                </Avatar>
+              </>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "user.firstName",
+            title: "Vorname",
+            ...tableColumnProps,
+          },
+          {
+            accessor: "user.lastName",
+            title: "Nachname",
+            ...tableColumnProps,
+          },
+          {
+            accessor: "status",
+            title: "Status",
+            render: ({ status }) => (
+              <Badge color={bookingStatus[status].color}>
+                {bookingStatus[status].label}
+              </Badge>
+            ),
+            ...tableColumnProps,
+          },
+          {
+            accessor: "date",
+            title: "Datum",
+            render: ({ date }) => <Text>{convertDate(date)}</Text>,
+            ...tableColumnProps,
+          },
+          {
+            accessor: "cancelComment",
+            title: "Bemerkung",
+            ...tableColumnProps,
+          },
+          {
+            accessor: "actions",
+            title: "Aktionen",
+            width: "0%",
+            render: ({ id, status }) => (
+              <Stack gap={rem(4)} justify="flex-end">
+                {status === "request_canceled" && (
+                  <>
+                    <ButtonAction
+                      size="compact-sm"
+                      variant="light"
+                      color="red"
+                      label="Buchung wird storniert"
+                      action={cancelBooking}
+                      values={{ id: id }}
+                    >
+                      Buchung stornieren
+                    </ButtonAction>
+                  </>
+                )}
+              </Stack>
+            ),
+            ...tableColumnProps,
+          },
+        ]}
+        storeKey="canceled-bookings-table"
       />
     </Stack>
   );

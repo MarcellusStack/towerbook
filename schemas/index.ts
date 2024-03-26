@@ -38,6 +38,13 @@ export const bookSchema = z.object({
   users: z.array(z.string()),
 });
 
+export const multipleBookSchema = z.object({
+  startDate: z.date(),
+  endDate: z.date(),
+  accomodationId: z.string().min(1, { message: "Unterkunft Id wird benötigt" }),
+  users: z.array(z.string()),
+});
+
 export const baseUserSchema = z.object({
   firstName: z
     .string()
