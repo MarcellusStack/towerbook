@@ -29,6 +29,9 @@ export const Dashboard = () => {
         <Grid.Col span={4}>
           <Card withBorder></Card>
         </Grid.Col>
+        <Grid.Col span={4}>
+          <Card withBorder></Card>
+        </Grid.Col>
       </Grid>
       <OnboardingAccordion
         title="Erste Schritte für Administratoren"
