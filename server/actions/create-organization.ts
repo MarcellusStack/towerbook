@@ -10,64 +10,65 @@ export const createOrg = authAction()(
   organizationSchema,
   async ({ name }, { session }) => {
     let organization;
+
     try {
-      organization = await prisma.organization.create({
-        data: {
-          name: name,
-          members: {
-            connect: { id: session.id },
-          },
-        },
-        select: {
-          id: true,
-          name: true,
-        },
-      });
-
-      if (!organization.id) {
-        throw new Error("Missing organization id");
-      }
-
-      const permission = prisma.permission.create({
-        data: {
-          name: "Admin",
-          description:
-            "Admin Rolle für die Organisation, durch diese Rolle hat der Benutzer alle Rechte in der Organisation.",
-          isAdmin: true,
-          organization: {
-            connect: {
-              id: organization.id,
+      await prisma.$transaction(
+        async (tx) => {
+          organization = await tx.organization.create({
+            data: {
+              name: name,
+              members: {
+                connect: { id: session.id },
+              },
             },
-          },
-          users: {
-            connect: {
-              id: session.id,
+            select: {
+              id: true,
+              name: true,
             },
-          },
+          });
+
+          await tx.permission.create({
+            data: {
+              name: "Admin",
+              description:
+                "Admin Rolle für die Organisation, durch diese Rolle hat der Benutzer alle Rechte in der Organisation.",
+              isAdmin: true,
+              organization: {
+                connect: {
+                  id: organization.id,
+                },
+              },
+              users: {
+                connect: {
+                  id: session.id,
+                },
+              },
+            },
+          });
+
+          
+
+          await clerkClient.users.updateUserMetadata(session.id, {
+            publicMetadata: {
+              organizationId: organization.id,
+            },
+          });
         },
-      });
-
-      // Execute the transaction
-      await prisma.$transaction([permission]);
-
-      const bucket = await supabase.storage.createBucket(organization.id, {
-        public: true,
-        fileSizeLimit: 5242880,
-      });
-
-      if (bucket.error) {
-        throw new Error("Konnte Bucket nicht erstellen");
-      }
-
+        {
+          maxWait: 15000,
+          timeout: 15000,
+        }
+      );
+      // Start a transaction
+    } catch (error) {
+      // If any operation fails, remove the organization id from the user in Clerk
       await clerkClient.users.updateUserMetadata(session.id, {
         publicMetadata: {
-          organizationId: organization.id,
+          organizationId: undefined,
         },
       });
 
-      revalidatePath("/", "layout");
-    } catch (error) {
-      // If any operation fails, delete the organization
+      // Delete the organization
       if (organization && organization.id) {
         await prisma.organization.delete({
           where: {
@@ -75,8 +76,10 @@ export const createOrg = authAction()(
           },
         });
       }
+
       throw new Error("Fehler beim Erstellen der Organisation");
     }
+    revalidatePath("/organization", "page");
     return {
       message: "Sie haben eine Organisation erstellt und können nun loslegen!",
     };
