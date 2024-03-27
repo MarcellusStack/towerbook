@@ -52,6 +52,22 @@ export const convertBase64 = (file: File) => {
   });
 };
 
+export const base64ToBlob = (base64: string): { blob: Blob; type: string } => {
+  const base64Data = base64.split(",")[1]; // Remove the data about the file type
+  const byteCharacters = atob(base64Data);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  const blob = new Blob([byteArray]);
+
+  const mimeType = base64.split(",")[0]; // e.g., "data:application/pdf;base64"
+  const fileType = mimeType.split("/")[1].split(";")[0]; // e.g., "pdf"
+
+  return { blob: blob, type: fileType };
+};
+
 export const convertStringToDateOrNull = (
   dateString: string | null | Date
 ): Date | null => {

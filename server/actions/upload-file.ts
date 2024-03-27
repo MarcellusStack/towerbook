@@ -21,7 +21,7 @@ export const uploadFile = authAction()(
       } */
 
       const uploadFile = await supabase.storage
-        .from(session.organizationId as string)
+        .from(session.organizationId)
         .upload(`${fileName}`, decode(file), {
           upsert: true,
           cacheControl: "0",
@@ -35,7 +35,6 @@ export const uploadFile = authAction()(
 
       return { message: `Datei hochgeladen` };
     } catch (error) {
-      console.log(error);
       throw new Error("Fehler beim hochladen der Datei");
     }
   }

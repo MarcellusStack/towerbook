@@ -191,13 +191,22 @@ export const userPermissionsSchema = z.object({
 });
 
 export const uploadFileSchema = z.object({
-  file: z.string().min(1, { message: "Datei wird benötigt" }),
+  file: z.string().refine(
+    (str) => {
+      const base64Regex =
+        /^(data:[a-z]+\/[a-z]+;base64,)?[a-zA-Z0-9+/]+={0,2}$/;
+      return base64Regex.test(str);
+    },
+    {
+      message: "Datei ist nicht im richtigen Format",
+    }
+  ),
   fileName: z.string().min(1, { message: "Dateiname wird benötigt" }),
-  userId: z.string().min(1, { message: "User Id wird benötigt" }),
 });
 
 export const downloadFileSchema = z.object({
   fileName: z.string().min(1, { message: "Dateiname wird benötigt" }),
+  field: z.string().min(1, { message: "Feld wird benötigt" }),
 });
 
 export const createUserSchema = z.object({

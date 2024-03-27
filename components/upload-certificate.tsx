@@ -10,12 +10,13 @@ import {
   IconCalendarX,
   IconDownload,
 } from "@tabler/icons-react";
-import React from "react";
+import React, { useState } from "react";
 import { downloadFile } from "@/server/actions/download-file";
 import { notifications } from "@mantine/notifications";
 import { useAction } from "next-safe-action/hook";
 import { DateInput } from "@mantine/dates";
 import { useDisclosure } from "@mantine/hooks";
+import { uploadPrivateFile } from "@/server/actions/upload-private-file";
 
 export const UploadCertificate = ({
   label,
@@ -31,7 +32,7 @@ export const UploadCertificate = ({
   userId: string;
 }) => {
   const upload = useActionNotification({
-    action: uploadFile,
+    action: uploadPrivateFile,
     executeNotification: `Datei wird hochgeladen`,
   });
 
@@ -107,7 +108,8 @@ export const UploadCertificate = ({
             aria-label="Download"
             onClick={() => {
               download.execute({
-                fileName: form.getInputProps(inputProp).value,
+                fileName: form.values[inputProp],
+                field: inputProp,
               });
             }}
           >
@@ -179,18 +181,20 @@ export const UploadCertificate = ({
           </Popover>
         </>
       }
-      accept="application/pdf"
+      accept="application/pdf,image/*"
       onChange={async (event) => {
         if (!event) return;
 
         const base64 = await convertBase64(event);
 
-        form.setFieldValue(inputProp, `${userId}_${event.name}`);
+        form.setFieldValue(
+          inputProp,
+          `${userId}_${inputProp}.${event.type.split("/")[1]}`
+        );
 
         upload.execute({
           file: base64,
-          fileName: `${userId}_${event.name}`,
-          userId: userId,
+          fileName: `${userId}_${inputProp}`,
         });
       }}
     />
