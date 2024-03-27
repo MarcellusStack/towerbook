@@ -10,6 +10,7 @@ import { OnboardingAccordion } from "@dashboard/_components/onboarding-accordion
 
 export const Dashboard = () => {
   const { data: user, isPending } = useGetUserDashboard();
+  console.log(user);
 
   if (isPending || !user || !user.organization) return <DashboardLoader />;
   return (

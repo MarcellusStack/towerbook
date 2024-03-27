@@ -6,6 +6,11 @@ import { cache } from "react";
 
 export const getUserDashboard = cache(
   authQuery(async (session) => {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
     return await prisma.user.findFirst({
       where: {
         organizationId: session.organizationId,
@@ -34,6 +39,18 @@ export const getUserDashboard = cache(
                 status: true,
                 location: true,
                 number: true,
+                towerdays: {
+                  where: {
+                    createdAt: {
+                      gte: todayStart,
+                      lte: todayEnd,
+                    },
+                  },
+                  select: {
+                    id: true,
+                    material: true,
+                  },
+                },
               },
             },
             permissions: {
