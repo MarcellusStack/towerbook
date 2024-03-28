@@ -6,20 +6,53 @@ import { Button, Text, Stack, Select } from "@mantine/core";
 import { shiftSchema } from "@schemas/index";
 import { UserSelect } from "@components/user-select";
 import { shiftTypes } from "@/constants/shift-types";
-import { DateTimePicker } from "@mantine/dates";
+import { DateTimePicker, TimeInput } from "@mantine/dates";
 import { modals } from "@mantine/modals";
 import { v4 as uuidv4 } from "uuid";
+import { ShiftType } from "@prisma/client";
+import { convertTime } from "@/utils";
 
-export const CreateShiftForm = ({ date }: { date?: Date }) => {
+export const CreateShiftForm = ({
+  time,
+  shiftType,
+}: {
+  time?: string; // Change the type of time to string
+  shiftType?: ShiftType;
+}) => {
   const formAction = createFormActions("tower-day-duty-plan-form");
+
+  const currentTime = new Date();
+  const currentHour = currentTime.getHours();
+  const currentMinute = currentTime.getMinutes();
+
+  const startTime = time
+    ? time
+    : convertTime(
+        new Date(currentTime.setHours(currentHour, currentMinute, 0))
+      );
+
+  const endTime = time
+    ? convertTime(
+        new Date(
+          currentTime.setHours(
+            Number(time.split(":")[0]) + 1,
+            Number(time.split(":")[1]),
+            0
+          )
+        )
+      )
+    : convertTime(
+        new Date(currentTime.setHours(currentHour + 1, currentMinute, 0))
+      );
+
   const form = useForm({
     name: "create-shift-form",
     validate: zodResolver(shiftSchema),
     initialValues: {
       id: uuidv4(),
-      startTime: date ? date : new Date(),
-      endTime: date ? new Date(date.getTime() + 60 * 60 * 1000) : new Date(),
-      type: "",
+      startTime,
+      endTime,
+      type: shiftType || "",
       user: {
         id: "",
         firstName: "",
@@ -31,7 +64,23 @@ export const CreateShiftForm = ({ date }: { date?: Date }) => {
   return (
     <form
       onSubmit={form.onSubmit((values) => {
-        formAction.insertListItem("shifts", values);
+        const startTime = new Date();
+        const [startHours, startMinutes] = values.startTime
+          .split(":")
+          .map(Number);
+        startTime.setHours(startHours, startMinutes);
+
+        const endTime = new Date();
+        const [endHours, endMinutes] = values.endTime.split(":").map(Number);
+        endTime.setHours(endHours, endMinutes);
+
+        const updatedValues = {
+          ...values,
+          startTime,
+          endTime,
+        };
+
+        formAction.insertListItem("shifts", updatedValues);
         modals.closeAll();
       })}
     >
@@ -40,20 +89,8 @@ export const CreateShiftForm = ({ date }: { date?: Date }) => {
           Erstellen Sie hier eine Schicht für Ihren Dienstplan. Klicken Sie auf
           'Erstellen', wenn Sie fertig sind.
         </Text>
-        <DateTimePicker
-          label="Von Datum und Uhrzeit"
-          defaultValue={new Date()}
-          locale="de"
-          valueFormat="DD.MM.YYYY HH:mm"
-          {...form.getInputProps("startTime")}
-        />
-        <DateTimePicker
-          label="Bis Datum und Uhrzeit"
-          defaultValue={new Date()}
-          locale="de"
-          valueFormat="DD.MM.YYYY HH:mm"
-          {...form.getInputProps("endTime")}
-        />
+        <TimeInput label="Von Uhrzeit" {...form.getInputProps("startTime")} />
+        <TimeInput label="Bis Uhrzeit" {...form.getInputProps("endTime")} />
         <Select
           label="Schicht Typ"
           data={shiftTypes}
@@ -65,7 +102,6 @@ export const CreateShiftForm = ({ date }: { date?: Date }) => {
           label="Benutzer"
           initialValue={null}
         />
-
         <Button type="submit">Erstellen</Button>
       </Stack>
     </form>

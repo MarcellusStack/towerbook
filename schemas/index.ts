@@ -22,8 +22,8 @@ export const requestCancelBookingSchema = z.object({
 
 export const shiftSchema = z.object({
   id: z.string().min(1, { message: "Id wird benötigt" }),
-  startTime: z.date(),
-  endTime: z.date(),
+  startTime: z.date().or(z.string()),
+  endTime: z.date().or(z.string()),
   type: z.string().min(1, { message: "Schicht Typ wird benötigt" }),
   user: z.object({
     id: z.string().min(1, { message: "User Id wird benötigt" }),

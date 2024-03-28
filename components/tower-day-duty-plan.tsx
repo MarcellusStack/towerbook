@@ -9,6 +9,7 @@ import { CreateShiftForm } from "@components/forms/create-shift-form";
 import { createFormActions } from "@mantine/form";
 import { type ShiftType, type Shift, type Profile } from "@prisma/client";
 import { shiftTypes } from "@/constants/shift-types";
+import { convertTime } from "@/utils";
 
 export type ShiftProps = Pick<Shift, "id" | "startTime" | "endTime" | "type">;
 
@@ -26,6 +27,7 @@ export const TowerDayDutyPlan = ({
   const formAction = createFormActions("tower-day-duty-plan-form");
   return (
     <FullCalendar
+      allDaySlot={false}
       height={720}
       locales={[deLocale]}
       plugins={[timeGridPlugin, interactionPlugin]}
@@ -37,13 +39,15 @@ export const TowerDayDutyPlan = ({
       titleFormat={(info) =>
         `${shiftTypes.filter((type) => type.value === shiftType)[0].label}`
       }
-      
       dateClick={(event) => {
         modals.open({
           title: "Schicht hinzufügen",
           children: (
             <>
-              <CreateShiftForm date={new Date(event.date)} />
+              <CreateShiftForm
+                shiftType={shiftType}
+                time={convertTime(new Date(event.date))}
+              />
             </>
           ),
         });
