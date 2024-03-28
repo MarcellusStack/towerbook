@@ -93,7 +93,7 @@ export const updateTowerDayDutyPlan = authAction("updateDutyplan")(
     } catch (error) {
       throw new Error("Fehler beim aktualisieren des Dienstplan");
     }
-    revalidatePath("/", "layout");
+    revalidatePath(`/tower-days/${towerDayId}/duty-plan`, "page");
 
     return {
       message: `Der Dienstplan wurde aktualisiert`,
