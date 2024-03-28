@@ -14,7 +14,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
           queries: {
             refetchOnWindowFocus: false,
             refetchOnMount: false,
-            staleTime: 0,
+            staleTime: 10000, // Data is considered fresh for 10 seconds
           },
         },
       })
