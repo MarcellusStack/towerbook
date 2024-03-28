@@ -1,16 +1,24 @@
 "use client";
 
-import { Card, Flex, Grid, Text } from "@mantine/core";
-import { IconUser, IconUserCog } from "@tabler/icons-react";
+import { Box, Card, Flex, Grid, Text, ThemeIcon } from "@mantine/core";
+import {
+  IconBuildingBroadcastTower,
+  IconCheck,
+  IconUser,
+  IconUserCog,
+  IconX,
+} from "@tabler/icons-react";
 import React from "react";
 import { useGetUserDashboard } from "@dashboard/_data";
 import { DashboardLoader } from "@/components/loader/dashboard-loader";
 import { DashboardCard } from "@/components/dashboard-card";
 import { OnboardingAccordion } from "@dashboard/_components/onboarding-accordion";
+import { TowerStatus } from "@towers/_components/tower-status";
+import { tableColumnProps } from "@/constants";
+import { MantineTable } from "@/components/mantine-table";
 
 export const Dashboard = () => {
   const { data: user, isPending } = useGetUserDashboard();
-  console.log(user);
 
   if (isPending || !user || !user.organization) return <DashboardLoader />;
   return (
@@ -30,9 +38,54 @@ export const Dashboard = () => {
         <Grid.Col span={4}>
           <Card withBorder></Card>
         </Grid.Col>
-        <Grid.Col span={4}>
-          <Card withBorder></Card>
-        </Grid.Col>
+        {user.organization.towers.map((tower) => (
+          <Grid.Col span={6}>
+            <DashboardCard
+              title={`${tower.name} ${tower.number} ${tower.location}`}
+              icon={<IconBuildingBroadcastTower size={28} stroke={1.5} />}
+            >
+              <TowerStatus status={tower.status} />
+              <MantineTable
+                hideColumnsToggle={true}
+                height={200}
+                minHeightRecords={2}
+                records={
+                  (tower.towerdays[0] && (tower.towerdays[0].material as [])) ||
+                  []
+                }
+                columns={[
+                  {
+                    accessor: "image",
+                    title: "Bild",
+                    render: () => <Box w={32} h={32} bg="gray" />,
+                    ...tableColumnProps,
+                  },
+                  {
+                    accessor: "material",
+                    title: "Material",
+                    ...tableColumnProps,
+                  },
+                  {
+                    accessor: "checked",
+                    title: "Einsatzbereit",
+                    render: ({ checked }) =>
+                      checked ? (
+                        <ThemeIcon color="green" variant="light">
+                          <IconCheck style={{ width: "70%", height: "70%" }} />
+                        </ThemeIcon>
+                      ) : (
+                        <ThemeIcon color="red" variant="light">
+                          <IconX style={{ width: "70%", height: "70%" }} />
+                        </ThemeIcon>
+                      ),
+                    ...tableColumnProps,
+                  },
+                ]}
+                storeKey="towerdays-materials-table"
+              />
+            </DashboardCard>
+          </Grid.Col>
+        ))}
       </Grid>
       <OnboardingAccordion
         title="Erste Schritte für Administratoren"
