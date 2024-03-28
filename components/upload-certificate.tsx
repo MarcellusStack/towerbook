@@ -187,10 +187,9 @@ export const UploadCertificate = ({
 
         const base64 = await convertBase64(event);
 
-        form.setFieldValue(
-          inputProp,
-          `${userId}_${inputProp}.${event.type.split("/")[1]}`
-        );
+        const fileType = event.type.split("/")[0];
+
+        form.setFieldValue(inputProp, `${userId}_${inputProp}.${fileType}`);
 
         upload.execute({
           file: base64,
