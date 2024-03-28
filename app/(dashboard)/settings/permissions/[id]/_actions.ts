@@ -87,6 +87,7 @@ export const updatePermission = authAction("updatePermission")(
       const permission = await prisma.permission.findUnique({
         where: { id: id, organizationId: session.organizationId },
         select: {
+          id: true,
           users: { select: { id: true } },
         },
       });
@@ -170,7 +171,7 @@ export const updatePermission = authAction("updatePermission")(
       throw new Error("Fehler beim aktualisieren der Berechtigung");
     }
 
-    revalidatePath("/", "layout");
+    revalidatePath(`/settings/permissions/${id}`, "page");
 
     return { message: `Die Berechtigung wurde aktualisiert` };
   }

@@ -1,10 +1,8 @@
 import {
   ActionIcon,
-  Avatar,
   Button,
   Card,
   Checkbox,
-  Group,
   Menu,
   SimpleGrid,
   Stack,
@@ -12,7 +10,6 @@ import {
   TextInput,
   ThemeIcon,
   rem,
-  Text,
   Textarea,
 } from "@mantine/core";
 import { createFormActions, useForm, zodResolver } from "@mantine/form";
@@ -21,7 +18,7 @@ import {
   IconCheck,
   IconChecklist,
   IconEye,
-  IconFileX,
+  IconInfoSquare,
   IconListCheck,
   IconPencil,
   IconPlus,
@@ -33,13 +30,14 @@ import { PermissionProps, updatePermission } from "@permissions/[id]/_actions";
 import { updatePermissionSchema } from "@/schemas";
 import { permissions } from "@/constants";
 import { useActionNotification } from "@/hooks/use-action-notification";
+import { modals } from "@mantine/modals";
 
 export const PermissionSelect = ({
   formValue,
   formField,
 }: {
   formValue: boolean;
-  formField: string;
+  formField: { name: string; field: string };
 }) => {
   const formAction = createFormActions("permission-form");
   return (
@@ -60,7 +58,7 @@ export const PermissionSelect = ({
       <Menu.Dropdown>
         <Menu.Item
           disabled={formValue}
-          onClick={() => formAction.setFieldValue(formField, true)}
+          onClick={() => formAction.setFieldValue(formField.field, true)}
           leftSection={
             <IconCheck style={{ width: rem(14), height: rem(14) }} />
           }
@@ -69,10 +67,18 @@ export const PermissionSelect = ({
         </Menu.Item>
         <Menu.Item
           disabled={!formValue}
-          onClick={() => formAction.setFieldValue(formField, false)}
+          onClick={() => formAction.setFieldValue(formField.field, false)}
           leftSection={<IconBan style={{ width: rem(14), height: rem(14) }} />}
         >
           kein Zugriff
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => modals.open({ title: formField.name })}
+          leftSection={
+            <IconInfoSquare style={{ width: rem(14), height: rem(14) }} />
+          }
+        >
+          Information
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>
@@ -219,9 +225,9 @@ export const PermissionForm = ({
                 <Table.Tr key={permission.name}>
                   <Table.Td>{permission.name}</Table.Td>
                   {permission.permissions.map((perm) => (
-                    <Table.Td key={perm}>
+                    <Table.Td key={perm.name}>
                       <PermissionSelect
-                        formValue={form.values[perm]}
+                        formValue={form.values[perm.field]}
                         formField={perm}
                       />
                     </Table.Td>
