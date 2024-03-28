@@ -148,7 +148,14 @@ export const TowerdayDutyPlanForm = ({
                 />
               </SimpleGrid>
             </Fieldset>
-            <Card withBorder mt="xs" p="sm" pos="sticky" bottom={0}>
+            <Card
+              withBorder
+              mt="xs"
+              p="sm"
+              pos="sticky"
+              bottom={0}
+              className="z-50"
+            >
               <TowerDayFormAction
                 updateStatus={update.status === "executing"}
                 form="dutyplanStatus"
