@@ -11,6 +11,8 @@ type MantineTableProps<T> = {
   records: T[];
   storeKey: string;
   height?: number;
+  minHeightRecords?: number;
+  hideColumnsToggle?: boolean;
   classes?: {
     root?: string;
     table?: string;
@@ -24,6 +26,9 @@ export const MantineTable = <T,>({
   columns,
   records,
   storeKey,
+  height,
+  minHeightRecords,
+  hideColumnsToggle = false,
 }: MantineTableProps<T>) => {
   const {
     effectiveColumns,
@@ -37,6 +42,9 @@ export const MantineTable = <T,>({
   return (
     <Stack>
       <DataTable
+        {...(height && minHeightRecords && records.length > minHeightRecords
+          ? { height }
+          : {})}
         withTableBorder
         borderRadius="sm"
         striped
@@ -46,17 +54,19 @@ export const MantineTable = <T,>({
         columns={effectiveColumns}
         records={records}
       />
-      <Group justify="right">
-        <Button size="compact-xs" onClick={resetColumnsWidth}>
-          Spaltenbreite zurücksetzen
-        </Button>
-        <Button size="compact-xs" onClick={resetColumnsOrder}>
-          Spaltenanordnung zurücksetzen
-        </Button>
-        <Button size="compact-xs" onClick={resetColumnsToggle}>
-          Spalten zurücksetzen
-        </Button>
-      </Group>
+      {hideColumnsToggle ? null : (
+        <Group justify="right">
+          <Button size="compact-xs" onClick={resetColumnsWidth}>
+            Spaltenbreite zurücksetzen
+          </Button>
+          <Button size="compact-xs" onClick={resetColumnsOrder}>
+            Spaltenanordnung zurücksetzen
+          </Button>
+          <Button size="compact-xs" onClick={resetColumnsToggle}>
+            Spalten zurücksetzen
+          </Button>
+        </Group>
+      )}
     </Stack>
   );
 };
