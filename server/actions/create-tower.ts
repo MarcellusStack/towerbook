@@ -27,7 +27,7 @@ export const createTower = authAction("createTower")(
       throw new Error("Fehler beim erstellen des Turms");
     }
 
-    revalidatePath("/", "layout");
+    revalidatePath("/towers", "page");
 
     return { message: `Der Turm wurde erstellt` };
   }
